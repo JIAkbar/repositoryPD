@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DIGILAB Repository — Fakultas Vokasi UM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Lato:ital,wght@0,300;0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─────────────────────────────────────────
+       Design Tokens — DIGILAB Repository
+       Sesuai mockup Natasya Adelia R.
+    ───────────────────────────────────────── */
+    :root {
+      --navy:       #2e3192;
+      --navy-dark:  #1e2166;
+      --navy-mid:   #3d43b0;
+      --bg:         #e8e8f0;
+      --bg-card:    #ffffff;
+      --text-dark:  #1a1a3e;
+      --text-mid:   #4a4a6a;
+      --text-muted: #8888aa;
+      --red:        #c0392b;
+      --red-dark:   #8b0000;
+      --orange:     #f97316;
+      --teal:       #0891b2;
+      --border:     #d4d4e8;
+      --shadow-sm:  0 1px 4px rgba(46,49,146,.08);
+      --shadow:     0 2px 10px rgba(46,49,146,.12);
+      --shadow-lg:  0 6px 24px rgba(46,49,146,.18);
+      --pill:       999px;
+      --r:          8px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--bg);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ═══════════════════════════ HEADER ═══ */
+    header {
+      background: var(--navy);
+      height: 66px;
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 2px 12px rgba(0,0,0,.25);
+    }
+
+    .header-brand {
+      display: flex; align-items: center; gap: 13px;
+      cursor: pointer; text-decoration: none; user-select: none;
+    }
+    .header-logo { width: 46px; height: 46px; flex-shrink: 0; }
+    .h-title {
+      font-family: 'Nunito', sans-serif; font-weight: 900;
+      font-size: 14.5px; color: #fff; letter-spacing: .4px; line-height: 1.15;
+    }
+    .h-sub {
+      font-family: 'Lato', sans-serif; font-weight: 300;
+      font-size: 10px; color: rgba(255,255,255,.78); letter-spacing: .3px;
+    }
+    .btn-user {
+      width: 38px; height: 38px; background: rgba(255,255,255,.15);
+      border-radius: 50%; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .18s;
+    }
+    .btn-user:hover { background: rgba(255,255,255,.28); }
+
+    /* ═══════════════════════════ FOOTER ═══ */
+    footer {
+      background: var(--navy); padding: 15px; text-align: center;
+      font-size: 12px; color: rgba(255,255,255,.75); flex-shrink: 0; letter-spacing: .2px;
+    }
+
+    /* ═══════════════════════════ PAGE SYSTEM ═══ */
+    main { flex: 1; display: flex; flex-direction: column; }
+    .page { display: none; flex: 1; flex-direction: column; animation: fadeIn .18s ease; }
+    .page.active { display: flex; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:none; } }
+
+    /* ═══════════════════════════ SHARED SEARCH ROW ═══ */
+    .search-row { display: flex; align-items: center; gap: 10px; }
+    .s-input {
+      flex: 1; height: 44px; padding: 0 20px;
+      border: 1.5px solid var(--border); border-radius: var(--pill);
+      font-family: 'Lato', sans-serif; font-size: 14px; color: var(--text-dark);
+      background: #fff; outline: none; transition: border-color .2s, box-shadow .2s;
+    }
+    .s-input:focus { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(46,49,146,.1); }
+    .s-input::placeholder { color: var(--text-muted); }
+
+    .s-select-wrap { position: relative; }
+    .s-select {
+      appearance: none; -webkit-appearance: none;
+      height: 44px; padding: 0 36px 0 18px;
+      background: var(--navy); color: #fff; border: none; border-radius: var(--pill);
+      font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 13.5px; cursor: pointer; outline: none;
+    }
+    .s-select-wrap::after {
+      content: '▾'; position: absolute; right: 12px; top: 50%;
+      transform: translateY(-50%); color: #fff; pointer-events: none; font-size: 12px;
+    }
+    .btn-cari {
+      height: 44px; padding: 0 22px; background: var(--navy); color: #fff;
+      border: none; border-radius: var(--pill); font-family: 'Nunito', sans-serif;
+      font-weight: 800; font-size: 14px; cursor: pointer;
+      display: flex; align-items: center; gap: 7px; white-space: nowrap;
+      transition: background .15s, transform .12s;
+    }
+    .btn-cari:hover { background: var(--navy-dark); transform: translateY(-1px); }
+    .btn-cari:active { transform: none; }
+
+    /* ═══════════════════════════ BERANDA ═══ */
+    #page-beranda { align-items: center; justify-content: center; }
+    .beranda-center {
+      width: 100%; max-width: 860px; padding: 60px 28px 80px; text-align: center;
+    }
+    .beranda-title {
+      font-family: 'Nunito', sans-serif; font-weight: 900;
+      font-size: clamp(38px, 7vw, 68px); color: var(--navy);
+      letter-spacing: -1.5px; line-height: 1.05; margin-bottom: 40px;
+    }
+    .beranda-search-card {
+      background: rgba(255,255,255,.65); border-radius: 14px;
+      padding: 20px; box-shadow: var(--shadow-lg); backdrop-filter: blur(4px);
+    }
+
+    /* Mindmap button in header */
+    .btn-mindmap {
+      height: 38px; padding: 0 16px;
+      background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25);
+      border-radius: var(--pill); color: #fff;
+      font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 12px;
+      cursor: pointer; display: flex; align-items: center; gap: 7px;
+      transition: background .15s; white-space: nowrap;
+    }
+    .btn-mindmap:hover { background: rgba(255,255,255,.28); }
+    .btn-mindmap-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--orange); animation: pulse-dot 2s infinite; flex-shrink: 0;
+    }
+    @keyframes pulse-dot {
+      0%,100% { opacity:1; transform:scale(1); }
+      50% { opacity:.4; transform:scale(.7); }
+    }
+
+    /* Mindmap full page */
+    #page-mindmap { flex-direction: column; background: var(--bg); }
+    #page-mindmap iframe { flex: 1; border: none; width: 100%; }
+
+    /* ═══════════════════════════ HASIL PENCARIAN ═══ */
+    #page-hasil { flex-direction: column; }
+    .hasil-top { background: #fff; border-bottom: 1px solid var(--border); }
+    .hasil-top-title {
+      font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 28px;
+      color: var(--navy); text-align: center; padding: 18px 0 6px;
+    }
+    .hasil-top-search { padding: 0 32px 18px; }
+    .hasil-content {
+      flex: 1; display: grid; grid-template-columns: 1fr 272px; gap: 24px;
+      padding: 24px 32px; max-width: 1120px; margin: 0 auto; width: 100%; align-items: start;
+    }
+    .result-list { display: flex; flex-direction: column; gap: 14px; }
+    .result-card {
+      background: #fff; border-radius: var(--r); padding: 16px;
+      display: flex; gap: 15px; align-items: flex-start;
+      box-shadow: var(--shadow-sm); cursor: pointer;
+      transition: box-shadow .2s, transform .15s; border: 1.5px solid transparent;
+    }
+    .result-card:hover { box-shadow: var(--shadow); border-color: rgba(46,49,146,.15); transform: translateY(-2px); }
+    .book-thumb { width: 68px; height: 84px; border-radius: 5px; overflow: hidden; flex-shrink: 0; }
+    .book-thumb svg { display: block; width: 100%; height: 100%; }
+    .result-info { flex: 1; min-width: 0; }
+    .result-judul {
+      font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14.5px;
+      color: var(--text-dark); line-height: 1.35; margin-bottom: 4px;
+    }
+    .result-penulis { font-style: italic; font-weight: 700; font-size: 13px; color: #c0392b; margin-bottom: 8px; }
+    .result-abstrak {
+      font-size: 13px; color: var(--text-mid); line-height: 1.55;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .result-badge {
+      flex-shrink: 0; background: #7b1c1c; color: #fff; border-radius: 6px;
+      padding: 8px 10px; text-align: center; font-family: 'Nunito', sans-serif;
+      font-weight: 700; font-size: 10.5px; line-height: 1.35; min-width: 72px;
+    }
+    .result-badge-num { display: block; font-size: 18px; font-weight: 900; margin-top: 2px; }
+    .hasil-panel {
+      background: #fff; border-radius: var(--r); padding: 20px;
+      box-shadow: var(--shadow-sm); position: sticky; top: 82px;
+    }
+    .panel-heading {
+      font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 17px;
+      color: var(--text-dark); padding-bottom: 10px; border-bottom: 2.5px solid var(--orange); margin-bottom: 14px;
+    }
+    .panel-info { font-size: 14px; color: var(--text-mid); line-height: 1.65; }
+    .panel-info strong { color: var(--text-dark); }
+    .pagination { display: flex; gap: 6px; margin-top: 20px; flex-wrap: wrap; }
+    .pg-btn {
+      padding: 6px 13px; border: 1.5px solid var(--border); border-radius: 6px;
+      background: #fff; font-family: 'Nunito', sans-serif; font-weight: 700;
+      font-size: 13px; color: var(--navy); cursor: pointer; transition: all .15s;
+    }
+    .pg-btn.active, .pg-btn:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+
+    /* ═══════════════════════════ DETAIL DOKUMEN ═══ */
+    #page-detail { flex-direction: column; }
+    .detail-topbar { background: #fff; border-bottom: 1px solid var(--border); padding: 14px 32px; }
+    .detail-body { flex: 1; padding: 28px 32px; max-width: 1120px; margin: 0 auto; width: 100%; }
+    .detail-layout { display: grid; grid-template-columns: 1fr 210px; gap: 24px; align-items: start; }
+    .section-title {
+      font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 19px;
+      color: var(--text-dark); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid var(--border);
+    }
+    .meta-table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-bottom: 28px; }
+    .meta-table td { padding: 7px 4px; vertical-align: top; }
+    .meta-table td:first-child { font-weight: 700; color: var(--text-dark); width: 145px; white-space: nowrap; }
+    .meta-table td:nth-child(2) { color: var(--text-muted); padding: 7px 6px; width: 8px; }
+    .meta-table td:last-child { color: var(--text-mid); }
+    .abstrak-card { background: #fff; border-radius: var(--r); padding: 22px; box-shadow: var(--shadow-sm); }
+    .abstrak-text { font-size: 13.5px; color: var(--text-mid); line-height: 1.75; }
+    .info-panel-title { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 17px; color: var(--text-dark); margin-bottom: 14px; }
+    .btn-info-action {
+      display: block; width: 100%; padding: 13px; margin-bottom: 10px;
+      border: none; border-radius: var(--r); background: var(--red); color: #fff;
+      font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 15px; cursor: pointer;
+      text-align: center; letter-spacing: .3px; transition: filter .15s, transform .12s;
+    }
+    .btn-info-action:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .btn-info-action:active { transform: none; }
+
+    /* ═══════════════════════════ LOGIN ═══ */
+    #page-login { align-items: center; justify-content: center; }
+    .login-wrap { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 24px; }
+    .login-card {
+      background: var(--navy); border-radius: 18px; padding: 52px 44px;
+      width: 100%; max-width: 420px; text-align: center;
+      box-shadow: 0 10px 40px rgba(46,49,146,.35);
+    }
+    .login-logo-area { margin-bottom: 36px; }
+    .login-logo-name { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 28px; color: #fff; letter-spacing: .5px; margin-top: 14px; line-height: 1; }
+    .login-logo-repo { font-family: 'Lato', sans-serif; font-weight: 300; font-size: 11px; letter-spacing: 4.5px; color: rgba(255,255,255,.65); margin-top: 3px; }
+    .login-input {
+      display: block; width: 100%; padding: 14px 20px; border-radius: var(--pill); border: none;
+      background: #fefce8; font-family: 'Lato', sans-serif; font-size: 14px; color: var(--text-dark);
+      outline: none; margin-bottom: 15px; transition: box-shadow .2s;
+    }
+    .login-input:focus { box-shadow: 0 0 0 3px rgba(255,255,255,.25); }
+    .login-input::placeholder { color: #aaa; }
+    .btn-login-submit {
+      padding: 14px 52px; border-radius: var(--pill); background: #3a3f8a; color: #fff;
+      font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 15px; border: none;
+      cursor: pointer; letter-spacing: 2px; margin-top: 6px; transition: background .2s, transform .12s;
+    }
+    .btn-login-submit:hover { background: var(--navy-dark); transform: translateY(-1px); }
+    .login-back { margin-top: 20px; font-size: 13px; color: rgba(255,255,255,.55); cursor: pointer; transition: color .15s; }
+    .login-back:hover { color: rgba(255,255,255,.9); }
+
+    /* ═══════════════════════════ KARYA ILMIAH ═══ */
+    #page-karya { flex-direction: column; }
+    .karya-body { flex: 1; padding: 30px 40px; max-width: 1060px; margin: 0 auto; width: 100%; }
+    .karya-page-title { text-align: center; margin-bottom: 28px; }
+    .karya-page-title h2 {
+      font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 34px;
+      color: var(--navy); display: inline-block; position: relative; padding-bottom: 8px;
+    }
+    .karya-page-title h2::after {
+      content: ''; position: absolute; bottom: 0; left: 20%; width: 60%;
+      height: 3.5px; background: var(--orange); border-radius: 2px;
+    }
+    .karya-toolbar { display: flex; gap: 12px; margin-bottom: 20px; align-items: center; }
+    .karya-search-box {
+      flex: 1; display: flex; background: #fff; border: 1.5px solid var(--border);
+      border-radius: var(--pill); align-items: center; padding: 0 16px; transition: border-color .2s;
+    }
+    .karya-search-box:focus-within { border-color: var(--navy); }
+    .karya-search-box input {
+      flex: 1; border: none; outline: none; padding: 10px 8px;
+      font-size: 14px; font-family: 'Lato', sans-serif; background: transparent; color: var(--text-dark);
+    }
+    .karya-search-box input::placeholder { color: var(--text-muted); }
+    .btn-unggah {
+      display: flex; align-items: center; gap: 8px; padding: 10px 22px;
+      border-radius: var(--pill); background: var(--teal); color: #fff; border: none;
+      font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14px; cursor: pointer;
+      transition: filter .15s, transform .12s;
+    }
+    .btn-unggah:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .karya-table-box { background: #fff; border-radius: var(--r); box-shadow: var(--shadow-sm); overflow: hidden; border: 1.5px solid var(--border); }
+    table.karya-tbl { width: 100%; border-collapse: collapse; }
+    .karya-tbl th {
+      padding: 13px 16px; text-align: left; font-family: 'Nunito', sans-serif;
+      font-weight: 800; font-size: 13.5px; color: var(--text-dark);
+      border-bottom: 2px solid var(--border); background: #fafafe;
+    }
+    .karya-tbl td { padding: 13px 16px; font-size: 13.5px; color: var(--text-mid); border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .karya-tbl tr:last-child td { border-bottom: none; }
+    .karya-tbl tbody tr:hover td { background: #f5f5fc; }
+    .st-badge { display: inline-flex; align-items: center; padding: 3px 11px; border-radius: var(--pill); font-size: 11.5px; font-weight: 700; font-family: 'Nunito', sans-serif; }
+    .st-disetujui { background: #d1fae5; color: #065f46; }
+    .st-pending    { background: #fef3c7; color: #92400e; }
+    .st-ditolak    { background: #fee2e2; color: #991b1b; }
+    .st-revisi     { background: #e0e7ff; color: #3730a3; }
+    .btn-aksi-sm {
+      padding: 5px 13px; border-radius: 6px; border: 1.5px solid var(--navy);
+      color: var(--navy); background: transparent; font-size: 12px;
+      font-family: 'Nunito', sans-serif; font-weight: 700; cursor: pointer; transition: all .15s;
+    }
+    .btn-aksi-sm:hover { background: var(--navy); color: #fff; }
+
+    /* ═══════════════════════════ OVERLAY ═══ */
+    .overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,.48);
+      z-index: 200; align-items: center; justify-content: center; padding: 24px;
+    }
+    .overlay.show { display: flex; animation: fadeIn .2s ease; }
+    .popup-box {
+      background: #fff; border-radius: 14px; padding: 40px 36px; text-align: center;
+      max-width: 380px; width: 100%; box-shadow: 0 12px 40px rgba(0,0,0,.2);
+    }
+    .popup-icon { font-size: 36px; margin-bottom: 14px; }
+    .popup-msg { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 17px; color: var(--navy); line-height: 1.45; margin-bottom: 24px; }
+    .popup-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .btn-popup-login {
+      padding: 11px 28px; border-radius: var(--pill); background: var(--navy); color: #fff;
+      border: none; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14px;
+      cursor: pointer; transition: background .15s;
+    }
+    .btn-popup-login:hover { background: var(--navy-dark); }
+    .btn-popup-close {
+      padding: 11px 22px; border-radius: var(--pill); background: #e8e8f0; color: var(--navy);
+      border: none; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 14px; cursor: pointer;
+    }
+    .btn-popup-close:hover { background: #d4d4e8; }
+
+    /* ═══════════════════════════ RESPONSIVE ═══ */
+    @media (max-width: 768px) {
+      .hasil-content { grid-template-columns: 1fr; padding: 16px; }
+      .hasil-panel { order: -1; position: static; }
+      .detail-layout { grid-template-columns: 1fr; }
+      .btn-info-action { display: inline-block; width: auto; margin-right: 8px; }
+      .karya-body { padding: 16px; }
+      .beranda-center { padding: 40px 16px 60px; }
+      .login-card { padding: 36px 24px; }
+      header { padding: 0 16px; }
+      .hasil-top-search { padding: 0 16px 14px; }
+      .detail-topbar, .detail-body { padding: 14px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════ HEADER ══════════════ -->
+<header>
+  <div class="header-brand" onclick="nav('beranda')" role="button" tabindex="0">
+    <svg class="header-logo" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="7" y="20" width="32" height="20" rx="2.5" fill="white" opacity=".92"/>
+      <rect x="7" y="20" width="4.5" height="20" rx="1.5" fill="rgba(255,255,255,.5)"/>
+      <path d="M23 20 C23 20 9 18 9 12 L9 20 Z" fill="rgba(255,255,255,.6)"/>
+      <path d="M23 20 C23 20 37 18 37 12 L37 20 Z" fill="rgba(255,255,255,.6)"/>
+      <line x1="23" y1="12" x2="23" y2="40" stroke="rgba(46,49,146,.3)" stroke-width="1"/>
+      <circle cx="16" cy="8"  r="2.2" fill="white"/>
+      <circle cx="23" cy="5"  r="2.2" fill="white"/>
+      <circle cx="30" cy="8"  r="2.2" fill="white"/>
+      <line x1="16" y1="10.2" x2="16" y2="14" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="23" y1="7.2"  x2="23" y2="12" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="30" y1="10.2" x2="30" y2="14" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M16 14 Q19.5 16.5 23 15.5 Q26.5 16.5 30 14" stroke="white" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div>
+      <div class="h-title">DIGILAB REPOSITORY</div>
+      <div class="h-sub">FAKULTAS VOKASI — UNIVERSITAS NEGERI MALANG</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <button class="btn-mindmap" onclick="nav('mindmap')" title="Peta Pengembangan">
+      <div class="btn-mindmap-dot"></div>
+      Peta Pikiran
+    </button>
+    <button class="btn-user" onclick="toggleUserMenu()" title="Akun / Login">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.314 3.582-6 8-6s8 2.686 8 6"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ══════════════ MAIN ══════════════ -->
+<main>
+
+  <!-- ▓▓▓ BERANDA ▓▓▓ -->
+  <section class="page active" id="page-beranda">
+    <div class="beranda-center">
+      <h1 class="beranda-title">DIGILAB Repository</h1>
+      <div class="beranda-search-card">
+        <div class="search-row">
+          <input class="s-input" id="kw-beranda" type="text"
+            placeholder="Masukkan kata kunci, tahun, jenis"
+            onkeydown="if(event.key==='Enter') doSearch('beranda')" />
+          <div class="s-select-wrap">
+            <select class="s-select" id="jenis-beranda">
+              <option value="">Semua Jenis</option>
+              <option value="Skripsi">Skripsi</option>
+              <option value="Tugas Akhir">Tugas Akhir</option>
+              <option value="Laporan PKL">Laporan PKL</option>
+              <option value="Proyek Inovasi">Proyek Inovasi</option>
+            </select>
+          </div>
+          <button class="btn-cari" onclick="doSearch('beranda')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            Cari
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ▓▓▓ PETA PIKIRAN ▓▓▓ -->
+  <section class="page" id="page-mindmap">
+    <iframe src="mindmap.html" title="Peta Penelitian DIGILAB" allow="fullscreen"></iframe>
+  </section>
+
+  <!-- ▓▓▓ HASIL PENCARIAN ▓▓▓ -->
+  <section class="page" id="page-hasil">
+    <div class="hasil-top">
+      <div class="hasil-top-title">DIGILAB Repository</div>
+      <div class="hasil-top-search">
+        <div class="search-row">
+          <input class="s-input" id="kw-hasil" type="text"
+            placeholder="Masukkan kata kunci, tahun, jenis"
+            onkeydown="if(event.key==='Enter') doSearch('hasil')" />
+          <div class="s-select-wrap">
+            <select class="s-select" id="jenis-hasil">
+              <option value="">Semua Jenis</option>
+              <option value="Skripsi">Skripsi</option>
+              <option value="Tugas Akhir">Tugas Akhir</option>
+              <option value="Laporan PKL">Laporan PKL</option>
+              <option value="Proyek Inovasi">Proyek Inovasi</option>
+            </select>
+          </div>
+          <button class="btn-cari" onclick="doSearch('hasil')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            Cari
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="hasil-content">
+      <div class="result-list" id="result-list"></div>
+      <div class="hasil-panel">
+        <div class="panel-heading">Hasil Pencarian</div>
+        <div class="panel-info">
+          Ditemukan <strong id="panel-count">0</strong> hasil<br>
+          dengan kata kunci:<br>
+          <strong id="panel-kw">—</strong>
+        </div>
+        <div class="pagination">
+          <button class="pg-btn">Previous</button>
+          <button class="pg-btn active">1</button>
+          <button class="pg-btn">Next</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ▓▓▓ DETAIL DOKUMEN ▓▓▓ -->
+  <section class="page" id="page-detail">
+    <div class="detail-topbar">
+      <div class="search-row">
+        <input class="s-input" id="kw-detail" type="text"
+          placeholder="Masukkan kata kunci"
+          onkeydown="if(event.key==='Enter') doSearch('detail')" />
+        <div class="s-select-wrap">
+          <select class="s-select">
+            <option value="">Jenis</option>
+            <option>Skripsi</option>
+            <option>Tugas Akhir</option>
+          </select>
+        </div>
+        <button class="btn-cari" onclick="doSearch('detail')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          Cari
+        </button>
+      </div>
+    </div>
+    <div class="detail-body">
+      <div class="detail-layout">
+        <div>
+          <div class="section-title">Detail Dokumen</div>
+          <table class="meta-table"><tbody id="detail-meta"></tbody></table>
+          <div class="abstrak-card">
+            <div class="section-title">Abstrak</div>
+            <p class="abstrak-text" id="detail-abstrak">—</p>
+          </div>
+        </div>
+        <div>
+          <div class="info-panel-title">Informasi</div>
+          <button class="btn-info-action" onclick="showPopup('PDF')">📄 PDF</button>
+          <button class="btn-info-action" onclick="showPopup('Penulis')">👤 Penulis</button>
+          <button class="btn-info-action" onclick="showPopup('Produk')">📦 Produk</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ▓▓▓ LOGIN ▓▓▓ -->
+  <section class="page" id="page-login">
+    <div class="login-wrap">
+      <div class="login-card">
+        <div class="login-logo-area">
+          <svg width="78" height="78" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="7" y="20" width="32" height="20" rx="2.5" fill="white" opacity=".92"/>
+            <rect x="7" y="20" width="4.5" height="20" rx="1.5" fill="rgba(255,255,255,.5)"/>
+            <path d="M23 20 C23 20 9 18 9 12 L9 20 Z" fill="rgba(255,255,255,.6)"/>
+            <path d="M23 20 C23 20 37 18 37 12 L37 20 Z" fill="rgba(255,255,255,.6)"/>
+            <line x1="23" y1="12" x2="23" y2="40" stroke="rgba(255,255,255,.25)" stroke-width="1"/>
+            <circle cx="16" cy="8"  r="2.2" fill="white"/>
+            <circle cx="23" cy="5"  r="2.2" fill="white"/>
+            <circle cx="30" cy="8"  r="2.2" fill="white"/>
+            <line x1="16" y1="10.2" x2="16" y2="14" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="23" y1="7.2"  x2="23" y2="12" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="30" y1="10.2" x2="30" y2="14" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M16 14 Q19.5 16.5 23 15.5 Q26.5 16.5 30 14" stroke="white" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+          </svg>
+          <div class="login-logo-name">DigiLab</div>
+          <div class="login-logo-repo">REPOSITORY</div>
+        </div>
+        <input class="login-input" type="email" id="login-email" placeholder="Masukkan email"
+          onkeydown="if(event.key==='Enter') document.getElementById('login-pass').focus()" />
+        <input class="login-input" type="password" id="login-pass" placeholder="Masukkan kata sandi"
+          onkeydown="if(event.key==='Enter') doLogin()" />
+        <button class="btn-login-submit" onclick="doLogin()">LOGIN</button>
+        <div class="login-back" onclick="nav('beranda')">← Kembali ke Beranda</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ▓▓▓ KARYA ILMIAH ▓▓▓ -->
+  <section class="page" id="page-karya">
+    <div class="karya-body">
+      <div class="karya-page-title"><h2>Karya Ilmiah</h2></div>
+      <div class="karya-toolbar">
+        <div class="karya-search-box">
+          <input type="text" placeholder="Search" id="kw-karya"
+            onkeydown="if(event.key==='Enter') filterKarya()"
+            oninput="filterKarya()" />
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </div>
+        <button class="btn-unggah">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Unggah
+        </button>
+      </div>
+      <div class="karya-table-box">
+        <table class="karya-tbl">
+          <thead>
+            <tr>
+              <th style="width:48px">No.</th>
+              <th>Judul</th>
+              <th style="width:130px">Jenis</th>
+              <th style="width:115px">Status</th>
+              <th style="width:76px">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="karya-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Hak cipta 2025 ©Perpustakaan Digital</footer>
+
+<!-- OVERLAY LOGIN POPUP -->
+<div class="overlay" id="overlay" onclick="closePopupOutside(event)">
+  <div class="popup-box">
+    <div class="popup-icon" id="popup-icon">🔒</div>
+    <div class="popup-msg" id="popup-msg">SILAHKAN LOGIN TERLEBIH DAHULU UNTUK MENGAKSES PDF!</div>
+    <div class="popup-actions">
+      <button class="btn-popup-login" onclick="nav('login');closePopup()">LOGIN</button>
+      <button class="btn-popup-close" onclick="closePopup()">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ SCRIPT ══════════════ -->
+<script>
+/* ─── DATA DEMO ─── */
+const KARYA_DATA = [
+  { id:1, judul:'Rancang Bangun Website Perpustakaan Keliling', penulis:'Karina, Aliya',
+    dosen:'Candra Ariawan, S.Kom., M.Kom.', tahun:2020, jenis:'Tugas Akhir',
+    noPanggil:'KAR/PD/TA/RAN/2020', bidang:'WEBSITE — PERPUSTAKAAN',
+    pembaca:20, warna:'#2e7d32',
+    abstrak:'Penelitian ini membahas perancangan dan pengembangan website perpustakaan keliling yang bertujuan memudahkan akses informasi bagi masyarakat. Sistem ini dikembangkan dengan pendekatan RAD dan mengintegrasikan fitur katalog digital, peminjaman online, serta notifikasi koleksi baru. Pengujian melalui validasi ahli dan uji pengguna menunjukkan tingkat kelayakan tinggi.' },
+  { id:2, judul:'Rancang Bangun Website Laundry Berbasis Lokasi', penulis:'Hartono',
+    dosen:'Dr. Budi Santoso, M.T.', tahun:2021, jenis:'Tugas Akhir',
+    noPanggil:'HAR/TI/TA/RAN/2021', bidang:'WEBSITE — TEKNOLOGI INFORMASI',
+    pembaca:34, warna:'#1565c0',
+    abstrak:'Sistem ini dirancang untuk memudahkan pengguna menemukan jasa laundry terdekat menggunakan teknologi GPS dan Google Maps API. Fitur utama meliputi pencarian berbasis jarak, pemesanan online, notifikasi status cucian, dan sistem pembayaran digital. Hasil pengujian blackbox menunjukkan seluruh fungsi berjalan sesuai spesifikasi.' },
+  { id:3, judul:'Rancang Bangun Mesin Pengolah Limbah Tekstil Ramah Lingkungan', penulis:'Suherman',
+    dosen:'Prof. Ir. Ahmad Syukur, M.T.', tahun:2022, jenis:'Skripsi',
+    noPanggil:'SUH/TM/SKR/RAN/2022', bidang:'TEKNIK MESIN — LINGKUNGAN',
+    pembaca:5, warna:'#bf360c',
+    abstrak:'Penelitian ini mengembangkan prototipe mesin pengolah limbah tekstil menggunakan prinsip daur ulang mekanik. Mesin mampu mengolah 50 kg limbah kain per jam menjadi serat daur ulang. Uji kinerja menunjukkan efisiensi konversi sebesar 78% dengan konsumsi energi lebih rendah dari metode konvensional.' },
+  { id:4, judul:'Sistem Informasi Akademik Terintegrasi Berbasis Cloud', penulis:'Dewi Rahayu, Siti Nurhaliza',
+    dosen:'Dr. Wahyu Pratama, M.Kom.', tahun:2023, jenis:'Tugas Akhir',
+    noPanggil:'DEW/TI/TA/SIS/2023', bidang:'SISTEM INFORMASI — AKADEMIK',
+    pembaca:87, warna:'#00695c',
+    abstrak:'Platform akademik berbasis cloud yang mengintegrasikan manajemen mahasiswa, jadwal, nilai, dan komunikasi dalam satu ekosistem terpadu. Dibangun dengan arsitektur microservices menggunakan Node.js dan PostgreSQL. Load testing menunjukkan sistem mampu menangani 500 pengguna konkuren tanpa degradasi performa.' },
+  { id:5, judul:'Perancangan Identitas Visual Brand Produk UMKM Kota Malang', penulis:'Ahmad Fauzi',
+    dosen:'Ir. Sinta Dewi, M.Ds.', tahun:2023, jenis:'Tugas Akhir',
+    noPanggil:'FAU/DKV/TA/DES/2023', bidang:'DESAIN KOMUNIKASI VISUAL',
+    pembaca:43, warna:'#6a1b9a',
+    abstrak:'Perancangan identitas visual komprehensif untuk lima produk UMKM unggulan Kota Malang mencakup logo, panduan merek, kemasan, dan materi pemasaran digital. Metodologi human-centered design digunakan untuk memastikan identitas visual autentik. Evaluasi menunjukkan peningkatan persepsi kualitas produk sebesar 65%.' },
+  { id:6, judul:'Analisis Efektivitas Pengelolaan Anggaran Daerah Kota Malang', penulis:'Rizki Amalia',
+    dosen:'Dr. Endang Wahyu, M.Ak.', tahun:2023, jenis:'Skripsi',
+    noPanggil:'RIZ/AK/SKR/ANA/2023', bidang:'AKUNTANSI — KEUANGAN DAERAH',
+    pembaca:62, warna:'#1565c0',
+    abstrak:'Penelitian menganalisis efektivitas pengelolaan anggaran daerah Kota Malang periode 2019–2023 menggunakan metode analisis rasio keuangan dan value for money. Temuan menunjukkan tingkat efektivitas rata-rata 89% dengan peningkatan konsistensi tiap tahun. Rekomendasi kebijakan dirumuskan untuk meningkatkan transparansi dan akuntabilitas.' }
+];
+
+const MY_KARYA = [
+  { no:1, judul:'Rancang Bangun Sistem Informasi Perpustakaan Digital Berbasis Web', jenis:'Tugas Akhir', status:'disetujui' },
+  { no:2, judul:'Implementasi Machine Learning untuk Klasifikasi Data Akademik', jenis:'Skripsi', status:'pending' },
+];
+
+let loggedIn = false;
+
+/* ─── NAVIGATION ─── */
+function nav(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const el = document.getElementById('page-' + page);
+  if (el) el.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleUserMenu() {
+  nav(loggedIn ? 'karya' : 'login');
+}
+
+/* ─── SEARCH ─── */
+function doSearch(from) {
+  const kw    = (document.getElementById('kw-' + from)?.value || '').trim();
+  const jenis = document.getElementById('jenis-' + from)?.value || '';
+
+  let hasil = KARYA_DATA;
+  if (kw) {
+    const q = kw.toLowerCase();
+    hasil = hasil.filter(k =>
+      k.judul.toLowerCase().includes(q) || k.penulis.toLowerCase().includes(q) ||
+      k.bidang.toLowerCase().includes(q) || k.abstrak.toLowerCase().includes(q) ||
+      String(k.tahun).includes(q)
+    );
+  }
+  if (jenis) hasil = hasil.filter(k => k.jenis === jenis);
+
+  renderHasil(hasil, kw || '(semua)');
+  nav('hasil');
+  requestAnimationFrame(() => {
+    const inp = document.getElementById('kw-hasil');
+    if (inp) inp.value = kw;
+  });
+}
+
+/* ─── RENDER HASIL ─── */
+function renderHasil(data, keyword) {
+  document.getElementById('panel-count').textContent = data.length;
+  document.getElementById('panel-kw').textContent    = keyword;
+  const list = document.getElementById('result-list');
+
+  if (!data.length) {
+    list.innerHTML = `<div style="text-align:center;padding:56px 24px;color:var(--text-muted)">
+      <div style="font-size:48px;margin-bottom:16px">🔍</div>
+      <div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:18px;color:var(--navy);margin-bottom:6px">Tidak ditemukan hasil</div>
+      <div style="font-size:14px">Coba kata kunci lain atau ubah filter jenis dokumen.</div>
+    </div>`;
+    return;
+  }
+
+  list.innerHTML = data.map(k => `
+    <div class="result-card" onclick="openDetail(${k.id})">
+      <div class="book-thumb">${bookSVG(k.warna)}</div>
+      <div class="result-info">
+        <div class="result-judul">${k.judul}</div>
+        <div class="result-penulis">${k.penulis}</div>
+        <div class="result-abstrak">${k.abstrak}</div>
+      </div>
+      <div class="result-badge">Jumlah<br>Pembaca<span class="result-badge-num">${k.pembaca}</span></div>
+    </div>`).join('');
+}
+
+function bookSVG(c) {
+  return `<svg viewBox="0 0 68 84" xmlns="http://www.w3.org/2000/svg">
+    <rect width="68" height="84" rx="4" fill="${c}"/>
+    <rect x="0" y="0" width="6" height="84" rx="3" fill="rgba(0,0,0,.18)"/>
+    <rect x="10" y="14" width="42" height="4"  rx="2"    fill="rgba(255,255,255,.55)"/>
+    <rect x="10" y="22" width="34" height="3"  rx="1.5"  fill="rgba(255,255,255,.35)"/>
+    <rect x="10" y="29" width="38" height="3"  rx="1.5"  fill="rgba(255,255,255,.35)"/>
+    <rect x="10" y="60" width="28" height="16" rx="3"    fill="rgba(255,200,0,.75)"/>
+    <rect x="12" y="64" width="16" height="2.5" rx="1.25" fill="rgba(0,0,0,.3)"/>
+    <rect x="12" y="70" width="11" height="2"   rx="1"   fill="rgba(0,0,0,.25)"/>
+  </svg>`;
+}
+
+/* ─── OPEN DETAIL ─── */
+function openDetail(id) {
+  const k = KARYA_DATA.find(x => x.id === id);
+  if (!k) return;
+  document.getElementById('kw-detail').value = k.judul;
+  const rows = [
+    ['Judul', k.judul], ['Penulis', k.penulis], ['Dosen Pembimbing', k.dosen],
+    ['Tahun', k.tahun], ['Jenis Dokumen', k.jenis], ['No. Panggil', k.noPanggil], ['Bidang', k.bidang],
+  ];
+  document.getElementById('detail-meta').innerHTML =
+    rows.map(([l,v]) => `<tr><td>${l}</td><td>:</td><td>${v}</td></tr>`).join('');
+  document.getElementById('detail-abstrak').textContent = k.abstrak;
+  nav('detail');
+}
+
+/* ─── POPUP ─── */
+function showPopup(type) {
+  const msgs = {
+    PDF:    ['🔒','SILAHKAN LOGIN TERLEBIH DAHULU UNTUK MENGAKSES PDF!'],
+    Penulis:['👤','SILAHKAN LOGIN TERLEBIH DAHULU UNTUK MELIHAT INFORMASI PENULIS!'],
+    Produk: ['📦','SILAHKAN LOGIN TERLEBIH DAHULU UNTUK MELIHAT PRODUK!'],
+  };
+  const [icon, msg] = msgs[type] || ['🔒','SILAHKAN LOGIN TERLEBIH DAHULU!'];
+  document.getElementById('popup-icon').textContent = icon;
+  document.getElementById('popup-msg').textContent  = msg;
+  document.getElementById('overlay').classList.add('show');
+}
+function closePopup() { document.getElementById('overlay').classList.remove('show'); }
+function closePopupOutside(e) { if (e.target === document.getElementById('overlay')) closePopup(); }
+
+/* ─── LOGIN ─── */
+function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass  = document.getElementById('login-pass').value;
+  if (!email || !pass) { ale
