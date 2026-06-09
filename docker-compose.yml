@@ -1,0 +1,49 @@
+version: '3.9'
+
+# ─── DIGILAB Repository — Docker Compose ───
+# Database: Supabase (cloud) — tidak perlu service DB lokal
+# Untuk dev tanpa Docker gunakan: test_server_lokal.bat
+
+services:
+
+  # ─── Backend API (Node.js + Express) ───
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: digilab_backend
+    restart: unless-stopped
+    env_file: ./backend/.env
+    environment:
+      NODE_ENV: development
+      PORT: 5000
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - digilab_net
+
+  # ─── Frontend (Vite) ───
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: digilab_frontend
+    restart: unless-stopped
+    environment:
+      VITE_API_URL: http://localhost:5000
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - digilab_net
+
+networks:
+  digilab_net:
+    driver: bridge

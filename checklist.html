@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checklist — DIGILAB Repository</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --navy:   #2e3192;
+  --navy-dk:#1e2070;
+  --orange: #f97316;
+  --green:  #16a34a;
+  --red:    #dc2626;
+  --bg:     #eeeef5;
+  --white:  #ffffff;
+  --border: #d1d5db;
+  --text:   #1f2937;
+  --muted:  #6b7280;
+}
+body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+/* Header */
+header {
+  background:var(--navy); padding:0 32px;
+  display:flex; align-items:center; justify-content:space-between;
+  height:60px; position:sticky; top:0; z-index:100;
+}
+.logo { display:flex; align-items:center; gap:10px; }
+.logo-icon { width:36px; height:36px; }
+.logo-text { color:#fff; }
+.logo-title { font-size:14px; font-weight:700; line-height:1; }
+.logo-sub   { font-size:10px; opacity:.75; font-weight:400; }
+.header-right { color:rgba(255,255,255,.5); font-size:12px; }
+
+/* Page title */
+.page-head {
+  background:var(--white); border-bottom:3px solid var(--orange);
+  padding:28px 40px 20px;
+}
+.page-head h1 {
+  font-size:26px; font-weight:800; color:var(--navy);
+  letter-spacing:-.02em; margin-bottom:4px;
+}
+.page-head p { font-size:13px; color:var(--muted); }
+
+/* Stats bar */
+.stats {
+  display:flex; gap:0;
+  background:var(--white); border-bottom:1px solid var(--border);
+  padding:0 40px;
+}
+.stat {
+  padding:14px 28px; border-right:1px solid var(--border);
+  text-align:center;
+}
+.stat:last-child { border-right:none; }
+.stat-n { font-size:22px; font-weight:800; line-height:1; }
+.stat-l { font-size:11px; color:var(--muted); margin-top:2px; font-weight:500; }
+
+/* Progress bar */
+.progress-wrap {
+  background:var(--white); padding:16px 40px;
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; gap:16px;
+}
+.progress-bar {
+  flex:1; height:8px; background:#e5e7eb; border-radius:4px; overflow:hidden;
+}
+.progress-fill {
+  height:100%; background:linear-gradient(90deg,var(--navy),var(--orange));
+  border-radius:4px; transition:width .4s;
+}
+.progress-label { font-size:13px; font-weight:700; color:var(--navy); min-width:40px; }
+
+/* Content */
+main { max-width:860px; margin:32px auto; padding:0 24px 60px; }
+
+/* Phase */
+.phase { background:var(--white); border-radius:12px; margin-bottom:20px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+.phase-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 20px; cursor:pointer; user-select:none;
+  border-bottom:1px solid var(--border);
+}
+.phase-header:hover { background:#f9fafb; }
+.phase-title-wrap { display:flex; align-items:center; gap:12px; }
+.phase-icon {
+  width:36px; height:36px; border-radius:9px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px; flex-shrink:0;
+}
+.phase-name { font-size:15px; font-weight:700; }
+.phase-meta { font-size:12px; color:var(--muted); margin-top:1px; }
+.phase-badge {
+  padding:4px 12px; border-radius:20px;
+  font-size:11px; font-weight:700;
+  display:flex; align-items:center; gap:6px;
+}
+.phase-arrow { font-size:12px; color:var(--muted); margin-left:8px; transition:transform .2s; }
+.phase-arrow.open { transform:rotate(180deg); }
+
+/* Items */
+.phase-items { padding:8px 16px 12px; display:none; }
+.phase-items.open { display:block; }
+
+.subgroup { margin-bottom:8px; }
+.subgroup-label {
+  font-size:11px; font-weight:700; text-transform:uppercase;
+  letter-spacing:.07em; color:var(--muted);
+  padding:10px 4px 6px; display:block;
+}
+
+.item {
+  display:flex; align-items:flex-start; gap:12px;
+  padding:10px 12px; border-radius:8px; margin-bottom:3px;
+  cursor:pointer; transition:background .15s;
+}
+.item:hover { background:#f3f4f6; }
+.item.done { opacity:.6; }
+
+.cb {
+  width:18px; height:18px; border-radius:5px; flex-shrink:0;
+  border:2px solid var(--border); margin-top:1px;
+  display:flex; align-items:center; justify-content:center;
+  transition:all .15s;
+}
+.item.done .cb {
+  background:var(--green); border-color:var(--green); color:#fff;
+  font-size:11px; font-weight:700;
+}
+.item-text { font-size:13.5px; line-height:1.45; }
+.item.done .item-text { text-decoration:line-through; color:var(--muted); }
+
+/* Filter */
+.filter-bar {
+  display:flex; gap:8px; margin-bottom:20px;
+}
+.filter-btn {
+  padding:7px 16px; border-radius:20px; border:1.5px solid var(--border);
+  font-size:12px; font-weight:600; cursor:pointer; background:var(--white);
+  color:var(--muted); transition:all .15s; font-family:'Inter',sans-serif;
+}
+.filter-btn.active, .filter-btn:hover {
+  border-color:var(--navy); color:var(--navy); background:#eef0fb;
+}
+
+/* Footer */
+footer {
+  background:var(--navy); color:rgba(255,255,255,.6);
+  text-align:center; padding:16px; font-size:12px;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <svg class="logo-icon" viewBox="0 0 36 36" fill="none">
+      <rect width="36" height="36" rx="8" fill="rgba(255,255,255,0.15)"/>
+      <path d="M10 26V14l8-4 8 4v12" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M14 26v-6h8v6" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="18" cy="10" r="2" fill="white"/>
+      <path d="M16 8.5 14 6M20 8.5 22 6M18 8 18 5" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+    </svg>
+    <div class="logo-text">
+      <div class="logo-title">DIGILAB REPOSITORY</div>
+      <div class="logo-sub">FAKULTAS VOKASI – UNIVERSITAS NEGERI MALANG</div>
+    </div>
+  </div>
+  <div class="header-right">Checklist Pengembangan</div>
+</header>
+
+<div class="page-head">
+  <h1>Checklist Project</h1>
+  <p>DIGILAB Repository · Hibah Skripsi 2026 · Natasya Adelia R.</p>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="stat-n" id="s-total">0</div><div class="stat-l">Total Item</div></div>
+  <div class="stat"><div class="stat-n" style="color:var(--green)" id="s-done">0</div><div class="stat-l">Selesai</div></div>
+  <div class="stat"><div class="stat-n" style="color:var(--orange)" id="s-left">0</div><div class="stat-l">Tersisa</div></div>
+  <div class="stat"><div class="stat-n" style="color:var(--navy)" id="s-pct">0%</div><div class="stat-l">Progress</div></div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-bar"><div class="progress-fill" id="pbar" style="width:0%"></div></div>
+  <div class="progress-label" id="pct-label">0%</div>
+</div>
+
+<main>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterItems('all',this)">Semua</button>
+    <button class="filter-btn" onclick="filterItems('pending',this)">Belum Selesai</button>
+    <button class="filter-btn" onclick="filterItems('done',this)">Sudah Selesai</button>
+  </div>
+
+  <div id="phases-container"></div>
+
+</main>
+
+<footer>Hak cipta 2025 ©Perpustakaan Digital &nbsp;·&nbsp; DIGILAB Repository</footer>
+
+<script>
+const phases = [
+  {
+    id:'p1', name:'Fase 1 — Requirements Planning', icon:'🔍',
+    iconBg:'#dbeafe', badgeColor:'#1d4ed8',
+    items:[
+      { text:'Identifikasi masalah penyimpanan karya ilmiah' },
+      { text:'Observasi lapangan perpustakaan Fakultas Vokasi' },
+      { text:'Wawancara mahasiswa perwakilan tiap prodi' },
+      { text:'Wawancara Ketua Program Studi (11 prodi)' },
+      { text:'Dokumentasi kebutuhan fungsional & non-fungsional' },
+      { text:'Persetujuan dokumen kebutuhan dari stakeholder' }
+    ]
+  },
+  {
+    id:'p2', name:'Fase 2 — RAD Design Workshop', icon:'🎨',
+    iconBg:'#fef3c7', badgeColor:'#b45309',
+    items:[
+      { text:'Perancangan iteratif bersama pengguna & pustakawan' },
+      { text:'Wireframe Halaman Beranda (search + filter Jenis)' },
+      { text:'Wireframe Hasil Pencarian (list karya + info total)' },
+      { text:'Wireframe Detail Dokumen (metadata + abstrak)' },
+      { text:'Wireframe popup proteksi login (PDF, Penulis, Produk)' },
+      { text:'Wireframe PDF Viewer (embed browser)' },
+      { text:'Wireframe Halaman Produk (galeri foto + video)' },
+      { text:'Wireframe Informasi Penulis' },
+      { text:'Wireframe Halaman Login' },
+      { text:'Wireframe Karya Ilmiah (daftar milik user)' },
+      { text:'Wireframe Unggah Step 1 — Detail Informasi' },
+      { text:'Wireframe Unggah Step 2 — Upload Dokumen & Media' },
+      { text:'Wireframe Unggah Step 3 — Konfirmasi' },
+      { text:'Wireframe Akun Saya (edit profil)' },
+      { text:'Review desain bersama pengguna & pustakawan' },
+      { text:'Finalisasi desain UI/UX' }
+    ]
+  },
+  {
+    id:'p3', name:'Fase 3 — Pembuatan Sistem', icon:'💻',
+    iconBg:'#f0fdf4', badgeColor:'#15803d',
+    subgroups:[
+      { label:'🗄️ Database', items:[
+        { text:'Desain ERD lengkap' },
+        { text:'Migration: tabel users' },
+        { text:'Migration: tabel program_studi (11 prodi)' },
+        { text:'Migration: tabel karya_ilmiah' },
+        { text:'Migration: tabel media_files (dokumen, foto, video)' },
+        { text:'Migration: tabel log_verifikasi' },
+        { text:'Seed data 11 program studi' }
+      ]},
+      { label:'⚙️ Backend API', items:[
+        { text:'Setup project Node.js + Express' },
+        { text:'API Auth: login, logout, JWT' },
+        { text:'API Karya: list, detail, search & filter' },
+        { text:'API Karya: upload mandiri mahasiswa (3-step)' },
+        { text:'API Karya: hak akses bantuan admin' },
+        { text:'API Validasi Admin: verifikasi / revisi / lolos' },
+        { text:'API Produk: galeri foto + video per karya' },
+        { text:'API Penulis: informasi penulis per karya' },
+        { text:'API User: edit profil, ubah kata sandi' },
+        { text:'Middleware autentikasi & otorisasi role' },
+        { text:'Upload handler: PDF, foto, video' },
+        { text:'Logika akses: luar kampus = per bab' },
+        { text:'Logika akses: lab perpustakaan = full page' }
+      ]},
+      { label:'🖥️ Frontend', items:[
+        { text:'Setup project Vite' },
+        { text:'Komponen Navbar (logo DigiLab, ikon akun)' },
+        { text:'Halaman Beranda — search + dropdown Jenis' },
+        { text:'Halaman Hasil Pencarian — list + pagination' },
+        { text:'Halaman Detail Dokumen — metadata + abstrak' },
+        { text:'Popup proteksi login (PDF, Penulis, Produk)' },
+        { text:'Halaman PDF Viewer (blokir download & screenshot)' },
+        { text:'Halaman Informasi Penulis' },
+        { text:'Halaman Produk — galeri foto + video player' },
+        { text:'Halaman Login — card terpusat' },
+        { text:'Halaman Karya Ilmiah user — tabel + Unggah' },
+        { text:'Unggah Step 1 — form metadata' },
+        { text:'Unggah Step 2 — drag & drop PDF + foto/video' },
+        { text:'Unggah Step 3 — konfirmasi + kirim' },
+        { text:'Halaman Akun Saya — edit profil + password' },
+        { text:'Blokir klik kanan & tangkap layar' },
+        { text:'Responsif mobile & tablet' }
+      ]},
+      { label:'🛡️ Keamanan Khusus', items:[
+        { text:'Blokir unduhan file dari frontend' },
+        { text:'Blokir tangkap layar (CSS + JS)' },
+        { text:'Deteksi jaringan kampus/lab untuk full access' }
+      ]}
+    ]
+  },
+  {
+    id:'p4', name:'Fase 4 — Pengujian & Validasi', icon:'🧪',
+    iconBg:'#faf5ff', badgeColor:'#7c3aed',
+    items:[
+      { text:'Uji Ahli Materi — kevalidan konten sistem' },
+      { text:'Uji Ahli Media — kevalidan tampilan & UX' },
+      { text:'Revisi berdasarkan hasil uji ahli' },
+      { text:'Pengujian fungsional semua alur pengguna' },
+      { text:'Pengujian alur validasi admin (verifikasi/revisi/lolos)' },
+      { text:'Pengujian proteksi login & akses dokumen' },
+      { text:'Pengujian responsivitas perangkat' },
+      { text:'Penerapan sistem di Fakultas Vokasi' }
+    ]
+  },
+  {
+    id:'p5', name:'Fase 5 — Luaran & Dokumentasi', icon:'🚀',
+    iconBg:'#fff1f2', badgeColor:'#be123c',
+    items:[
+      { text:'Website DIGILAB Repository live' },
+      { text:'Pengajuan HKI (Hak Kekayaan Intelektual)' },
+      { text:'Penulisan & submit artikel Jurnal Sinta 4' },
+      { text:'Publikasi di media sosial' },
+      { text:'Pembuatan poster penelitian' },
+      { text:'README.md & dokumentasi API lengkap' },
+      { text:'User manual sistem' }
+    ]
+  }
+];
+
+// State: simpan status tiap item
+const state = JSON.parse(localStorage.getItem('digilab-checklist') || '{}');
+
+function saveState() { localStorage.setItem('digilab-checklist', JSON.stringify(state)); }
+
+function getAllItems() {
+  const items = [];
+  phases.forEach(p => {
+    if (p.subgroups) p.subgroups.forEach(sg => sg.items.forEach(it => items.push({ phase:p.id, ...it })));
+    else p.items.forEach(it => items.push({ phase:p.id, ...it }));
+  });
+  return items;
+}
+
+function updateStats() {
+  const all = getAllItems();
+  const done = all.filter(it => state[it.text]);
+  const pct = all.length ? Math.round(done.length / all.length * 100) : 0;
+  document.getElementById('s-total').textContent = all.length;
+  document.getElementById('s-done').textContent  = done.length;
+  document.getElementById('s-left').textContent  = all.length - done.length;
+  document.getElementById('s-pct').textContent   = pct + '%';
+  document.getElementById('pbar').style.width    = pct + '%';
+  document.getElementById('pct-label').textContent = pct + '%';
+
+  // Update phase badges
+  phases.forEach(p => {
+    const phaseItems = p.subgroups
+      ? p.subgroups.flatMap(sg => sg.items)
+      : p.items;
+    const pDone = phaseItems.filter(it => state[it.text]).length;
+    const badge = document.getElementById('badge-'+p.id);
+    if (badge) {
+      badge.textContent = `${pDone}/${phaseItems.length}`;
+      badge.style.background = pDone === phaseItems.length ? '#dcfce7' : '#f1f5f9';
+      badge.style.color = pDone === phaseItems.length ? '#15803d' : '#64748b';
+    }
+  });
+}
+
+function toggle(key) {
+  state[key] = !state[key];
+  saveState();
+  const el = document.querySelector(`[data-key="${CSS.escape(key)}"]`);
+  if (el) {
+    el.classList.toggle('done', state[key]);
+    el.querySelector('.cb').textContent = state[key] ? '✓' : '';
+  }
+  updateStats();
+}
+
+function filterItems(type, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.item').forEach(el => {
+    const done = el.classList.contains('done');
+    if (type === 'all') el.style.display = '';
+    else if (type === 'done') el.style.display = done ? '' : 'none';
+    else el.style.display = !done ? '' : 'none';
+  });
+}
+
+function renderPhases() {
+  const container = document.getElementById('phases-container');
+  container.innerHTML = '';
+  phases.forEach((p, pi) => {
+    const phaseItems = p.subgroups ? p.subgroups.flatMap(sg=>sg.items) : p.items;
+    const pDone = phaseItems.filter(it => state[it.text]).length;
+
+    let itemsHTML = '';
+    if (p.subgroups) {
+      p.subgroups.forEach(sg => {
+        itemsHTML += `<div class="subgroup"><span class="subgroup-label">${sg.label}</span>`;
+        sg.items.forEach(it => {
+          itemsHTML += itemHTML(it);
+        });
+        itemsHTML += '</div>';
+      });
+    } else {
+      p.items.forEach(it => { itemsHTML += itemHTML(it); });
+    }
+
+    container.innerHTML += `
+      <div class="phase">
+        <div class="phase-header" onclick="togglePhase('${p.id}')">
+          <div class="phase-title-wrap">
+            <div class="phase-icon" style="background:${p.iconBg}">${p.icon}</div>
+            <div>
+              <div class="phase-name">${p.name}</div>
+              <div class="phase-meta">${phaseItems.length} item</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div class="phase-badge" id="badge-${p.id}"
+              style="background:#f1f5f9;color:#64748b;">
+              ${pDone}/${phaseItems.length}
+            </div>
+            <div class="phase-arrow" id="arrow-${p.id}">▼</div>
+          </div>
+        </div>
+        <div class="phase-items${pi===0?' open':''}" id="items-${p.id}">
+          ${itemsHTML}
+        </div>
+      </div>
+    `;
+  });
+  // Open first arrow
+  const firstArrow = document.getElementById('arrow-p1');
+  if (firstArrow) firstArrow.classList.add('open');
+}
+
+function itemHTML(it) {
+  const done = state[it.text];
+  return `
+    <div class="item${done?' done':''}" data-key="${it.text}" onclick="toggle('${it.text.replace(/'/g,"\\'")}')">
+      <div class="cb">${done?'✓':''}</div>
+      <div class="item-text">${it.text}</div>
+    </div>
+  `;
+}
+
+function togglePhase(id) {
+  const el = document.getElementById('items-'+id);
+  const ar = document.getElementById('arrow-'+id);
+  el.classList.toggle('open');
+  ar.classList.toggle('open');
+}
+
+renderPhases();
+updateStats();
+</script>
+</body>
+</html>
