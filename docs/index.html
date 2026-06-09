@@ -82,6 +82,23 @@
     }
     .btn-user:hover { background: rgba(255,255,255,.28); }
 
+    /* ── Header nav buttons ── */
+    .btn-nav {
+      height: 34px; padding: 0 13px;
+      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+      border-radius: var(--pill); color: rgba(255,255,255,.9);
+      font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 12px;
+      cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+      text-decoration: none; white-space: nowrap; flex-shrink: 0;
+      transition: background .15s, color .15s; line-height: 1;
+    }
+    .btn-nav:hover { background: rgba(255,255,255,.25); color: #fff; }
+    .btn-nav-accent { background: rgba(249,115,22,.3); border-color: rgba(249,115,22,.5); color: #fff; }
+    .btn-nav-accent:hover { background: rgba(249,115,22,.45); }
+    .btn-nav-user { padding: 0 11px; }
+    .btn-nav-logout { background: rgba(255,70,50,.25); border-color: rgba(255,120,100,.4); }
+    .btn-nav-logout:hover { background: rgba(255,70,50,.4); }
+
     /* ═══════════════════════════ FOOTER ═══ */
     footer {
       background: var(--navy); padding: 15px; text-align: center;
@@ -141,24 +158,7 @@
       padding: 20px; box-shadow: var(--shadow-lg); backdrop-filter: blur(4px);
     }
 
-    /* Mindmap button in header */
-    .btn-mindmap {
-      height: 38px; padding: 0 16px;
-      background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25);
-      border-radius: var(--pill); color: #fff;
-      font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 12px;
-      cursor: pointer; display: flex; align-items: center; gap: 7px;
-      transition: background .15s; white-space: nowrap;
-    }
-    .btn-mindmap:hover { background: rgba(255,255,255,.28); }
-    .btn-mindmap-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--orange); animation: pulse-dot 2s infinite; flex-shrink: 0;
-    }
-    @keyframes pulse-dot {
-      0%,100% { opacity:1; transform:scale(1); }
-      50% { opacity:.4; transform:scale(.7); }
-    }
+
 
     /* Mindmap full page */
     #page-mindmap { flex-direction: column; background: var(--bg); min-height: calc(100vh - 66px); }
@@ -272,6 +272,11 @@
     .btn-login-submit:hover { background: var(--navy-dark); transform: translateY(-1px); }
     .login-back { margin-top: 20px; font-size: 13px; color: rgba(255,255,255,.55); cursor: pointer; transition: color .15s; }
     .login-back:hover { color: rgba(255,255,255,.9); }
+    .login-error-box {
+      width: 100%; padding: 9px 13px; border-radius: 10px; gap: 7px; margin: 4px 0;
+      background: rgba(220,38,38,.18); border: 1px solid rgba(255,100,80,.4);
+      color: #fca5a5; font-size: 12.5px; font-weight: 700; align-items: center;
+    }
 
     /* ═══════════════════════════ KARYA ILMIAH ═══ */
     #page-karya { flex-direction: column; }
@@ -389,21 +394,29 @@
       <div class="h-sub">FAKULTAS VOKASI — UNIVERSITAS NEGERI MALANG</div>
     </div>
   </div>
-  <div style="display:flex;align-items:center;gap:10px;">
-    <button class="btn-mindmap" onclick="nav('beranda')" title="Beranda"
-      style="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.15);">
-      ⌂ Beranda
+  <div style="display:flex;align-items:center;gap:6px;flex-wrap:nowrap;flex-shrink:0;">
+    <a class="btn-nav" href="changelog.html" title="Changelog">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+      Changelog
+    </a>
+    <a class="btn-nav" href="checklist.html" title="Checklist">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Checklist
+    </a>
+    <button class="btn-nav" onclick="nav('beranda')" title="Beranda">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+      Beranda
     </button>
-    <button class="btn-mindmap" onclick="nav('mindmap')" title="Peta Pengembangan">
-      <div class="btn-mindmap-dot"></div>
+    <button class="btn-nav btn-nav-accent" onclick="nav('mindmap')" title="Peta Pengembangan">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="22"/><line x1="2" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="22" y2="12"/><line x1="4.22" y1="4.22" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.78" y2="19.78"/><line x1="19.78" y1="4.22" x2="16.24" y2="7.76"/><line x1="7.76" y1="16.24" x2="4.22" y2="19.78"/></svg>
       Peta Pikiran
     </button>
-    <button class="btn-user" onclick="toggleUserMenu()" title="Akun / Login" id="btn-user-icon">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.314 3.582-6 8-6s8 2.686 8 6"/></svg>
+    <button class="btn-nav btn-nav-user" onclick="toggleUserMenu()" title="Akun / Login" id="btn-user-icon">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
     </button>
-    <button class="btn-mindmap" id="btn-logout" onclick="doLogout()"
-      style="display:none;background:rgba(255,100,80,.25);border-color:rgba(255,150,130,.4);">
-      ↩ Keluar
+    <button class="btn-nav btn-nav-logout" id="btn-logout" onclick="doLogout()" style="display:none;" title="Keluar">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16,17 21,12 16,7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Keluar
     </button>
   </div>
 </header>
@@ -453,7 +466,7 @@
 
   <!-- ▓▓▓ PETA PIKIRAN ▓▓▓ -->
   <section class="page" id="page-mindmap">
-    <iframe src="mindmap.html" title="Peta Penelitian DIGILAB" allow="fullscreen"></iframe>
+    <iframe id="mindmap-iframe" title="Peta Penelitian DIGILAB" allow="fullscreen"></iframe>
   </section>
 
   <!-- ▓▓▓ HASIL PENCARIAN ▓▓▓ -->
@@ -670,14 +683,18 @@ function nav(page) {
   const el = document.getElementById('page-' + page);
   if (el) el.classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
-  // Trigger resize inside mindmap iframe after it becomes visible
+  // Lazy-load mindmap iframe on first visit, re-trigger resize on subsequent visits
   if (page === 'mindmap') {
-    setTimeout(() => {
-      const iframe = document.querySelector('#page-mindmap iframe');
-      if (iframe && iframe.contentWindow) {
-        iframe.contentWindow.dispatchEvent(new Event('resize'));
+    const iframe = document.getElementById('mindmap-iframe');
+    if (iframe) {
+      if (!iframe.src || iframe.src === window.location.href) {
+        iframe.src = 'mindmap.html';
+      } else {
+        setTimeout(() => {
+          if (iframe.contentWindow) iframe.contentWindow.dispatchEvent(new Event('resize'));
+        }, 100);
       }
-    }, 80);
+    }
   }
 }
 
@@ -786,6 +803,8 @@ const DUMMY_USERS = [
 ];
 
 function doLogin() {
+  const err = document.getElementById('login-error');
+  if (err) err.style.display = 'none';
   const email = document.getElementById('login-email').value.trim().toLowerCase();
   const pass  = document.getElementById('login-pass').value;
   if (!email || !pass) {
@@ -806,14 +825,11 @@ function doLogin() {
 }
 
 function showLoginError(msg) {
-  let err = document.getElementById('login-error');
-  if (!err) {
-    err = document.createElement('div');
-    err.id = 'login-error';
-    err.style.cssText = 'color:#c0392b;font-size:13px;margin-top:10px;text-align:center;font-weight:700;';
-    document.getElementById('login-pass').parentNode.insertAdjacentElement('afterend', err);
-  }
-  err.textContent = '⚠ ' + msg;
+  const err = document.getElementById('login-error');
+  if (!err) return;
+  err.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> ' + msg;
+  err.style.display = 'flex';
+  setTimeout(() => { err.style.display = 'none'; }, 4000);
 }
 
 function doLogout() {

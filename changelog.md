@@ -131,6 +131,20 @@
 
 ---
 
+
+## [2026-06-09] — Bugfix MindMap Tab + Redesign Header + Login UX
+
+### Fix
+- Perbaiki bug kritis `switchTab()`: ID mismatch `mindmap-canvas` → `canvas` — tombol Jadwal sekarang berfungsi
+- Perbaiki mindmap blank saat navigasi SPA: ganti dispatch resize ke **lazy-load iframe** (src hanya di-set saat pertama kali nav ke Peta Pikiran) — canvas sekarang selalu render
+- Perbaiki pesan error login muncul di luar card → dipindah ke dalam card sebagai balloon merah
+
+### Design
+- Redesign tombol header: ganti `btn-log` + `btn-mindmap` → unified `btn-nav` dengan ukuran konsisten (height 34px)
+- Tambah ikon SVG ke semua tombol header: Changelog (dokumen), Checklist (centang), Beranda (rumah), Peta Pikiran (radial), Akun (orang), Keluar (arrow-right-box)
+- Tombol Peta Pikiran: aksen oranye (`btn-nav-accent`)
+- Tombol Keluar: aksen merah halus (`btn-nav-logout`)
+
 <!-- Template entri berikutnya:
 
 ## [YYYY-MM-DD] — Judul
@@ -145,3 +159,15 @@
 - Update tampilan Z berdasarkan feedback
 
 -->
+
+## [2026-06-09] — Bugfix MindMap & Navigasi Header
+
+### Fix
+- Perbaiki `docs/mindmap.html` terpotong 25110 byte: `switchTab()`, `DOMContentLoaded`, `renderJadwal()` hilang — tulis ulang dengan Python
+- Tombol **Jadwal** sekarang berfungsi (switchTab + renderJadwal dipanggil)
+- MindMap sekarang render saat halaman dimuat (DOMContentLoaded → double requestAnimationFrame)
+- Sync fix ke `DIGILAB_MindMap.html`
+
+### Feat
+- Tambah tombol **📋 Changelog** dan **✅ Checklist** di header SPA
+- Salin `changelog.html` & `checklist.html` ke `docs/` agar dapat diakses via Vite & GitHub Pages
