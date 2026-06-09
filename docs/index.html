@@ -578,6 +578,7 @@
           onkeydown="if(event.key==='Enter') document.getElementById('login-pass').focus()" />
         <input class="login-input" type="password" id="login-pass" placeholder="Masukkan kata sandi"
           onkeydown="if(event.key==='Enter') doLogin()" />
+        <div id="login-error" class="login-error-box" style="display:none;"></div>
         <button class="btn-login-submit" onclick="doLogin()">LOGIN</button>
         <div class="login-back" onclick="nav('beranda')">← Kembali ke Beranda</div>
       </div>
@@ -819,6 +820,11 @@ function doLogin() {
   loggedIn = true;
   currentUser = user;
   document.getElementById('btn-logout').style.display = 'flex';
+  // Tampilkan nama user di header
+  const btnUser = document.getElementById('btn-user-icon');
+  const firstName = user.nama.split(' ')[0];
+  btnUser.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span style="max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${firstName}</span>`;
+  btnUser.title = user.nama;
   renderKarya(MY_KARYA);
   closePopup();
   nav('karya');
@@ -836,8 +842,12 @@ function doLogout() {
   loggedIn = false;
   currentUser = null;
   document.getElementById('btn-logout').style.display = 'none';
+  // Reset header user button
+  const btnUser = document.getElementById('btn-user-icon');
+  btnUser.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+  btnUser.title = 'Akun / Login';
   const err = document.getElementById('login-error');
-  if (err) err.textContent = '';
+  if (err) { err.textContent = ''; err.style.display = 'none'; }
   document.getElementById('login-email').value = '';
   document.getElementById('login-pass').value  = '';
   nav('beranda');
