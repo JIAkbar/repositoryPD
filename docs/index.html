@@ -161,8 +161,8 @@
     }
 
     /* Mindmap full page */
-    #page-mindmap { flex-direction: column; background: var(--bg); }
-    #page-mindmap iframe { flex: 1; border: none; width: 100%; }
+    #page-mindmap { flex-direction: column; background: var(--bg); min-height: calc(100vh - 66px); }
+    #page-mindmap iframe { flex: 1; border: none; width: 100%; min-height: calc(100vh - 66px); }
 
     /* ═══════════════════════════ HASIL PENCARIAN ═══ */
     #page-hasil { flex-direction: column; }
@@ -390,12 +390,20 @@
     </div>
   </div>
   <div style="display:flex;align-items:center;gap:10px;">
+    <button class="btn-mindmap" onclick="nav('beranda')" title="Beranda"
+      style="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.15);">
+      ⌂ Beranda
+    </button>
     <button class="btn-mindmap" onclick="nav('mindmap')" title="Peta Pengembangan">
       <div class="btn-mindmap-dot"></div>
       Peta Pikiran
     </button>
-    <button class="btn-user" onclick="toggleUserMenu()" title="Akun / Login">
+    <button class="btn-user" onclick="toggleUserMenu()" title="Akun / Login" id="btn-user-icon">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.314 3.582-6 8-6s8 2.686 8 6"/></svg>
+    </button>
+    <button class="btn-mindmap" id="btn-logout" onclick="doLogout()"
+      style="display:none;background:rgba(255,100,80,.25);border-color:rgba(255,150,130,.4);">
+      ↩ Keluar
     </button>
   </div>
 </header>
@@ -426,6 +434,18 @@
             Cari
           </button>
         </div>
+      </div>
+      <div style="margin-top:20px;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;">
+        <button onclick="nav('login')"
+          style="height:42px;padding:0 28px;background:var(--navy);color:#fff;border:none;border-radius:var(--pill);
+                 font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;cursor:pointer;
+                 display:flex;align-items:center;gap:8px;transition:background .15s,transform .12s;"
+          onmouseover="this.style.background='var(--navy-dark)';this.style.transform='translateY(-1px)'"
+          onmouseout="this.style.background='var(--navy)';this.style.transform='none'">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+          Masuk / Daftar
+        </button>
+        <span style="font-size:12px;color:var(--text-muted)">atau gunakan akun: <strong>mahasiswa@vokasi.um.ac.id</strong> / <strong>digilab123</strong></span>
       </div>
     </div>
 
@@ -642,6 +662,7 @@ const MY_KARYA = [
 ];
 
 let loggedIn = false;
+let currentUser = null;
 
 /* ─── NAVIGATION ─── */
 function nav(page) {
@@ -649,6 +670,15 @@ function nav(page) {
   const el = document.getElementById('page-' + page);
   if (el) el.classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Trigger resize inside mindmap iframe after it becomes visible
+  if (page === 'mindmap') {
+    setTimeout(() => {
+      const iframe = document.querySelector('#page-mindmap iframe');
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.dispatchEvent(new Event('resize'));
+      }
+    }, 80);
+  }
 }
 
 function toggleUserMenu() {
@@ -750,7 +780,74 @@ function closePopup() { document.getElementById('overlay').classList.remove('sho
 function closePopupOutside(e) { if (e.target === document.getElementById('overlay')) closePopup(); }
 
 /* ─── LOGIN ─── */
+const DUMMY_USERS = [
+  { email: 'mahasiswa@vokasi.um.ac.id', pass: 'digilab123', nama: 'Natasya Adelia R.' },
+  { email: 'admin@vokasi.um.ac.id',     pass: 'admin123',   nama: 'Admin Pustakawan'  },
+];
+
 function doLogin() {
-  const email = document.getElementById('login-email').value.trim();
+  const email = document.getElementById('login-email').value.trim().toLowerCase();
   const pass  = document.getElementById('login-pass').value;
-  if (!email || !pass) { ale
+  if (!email || !pass) {
+    showLoginError('Mohon isi email dan kata sandi.');
+    return;
+  }
+  const user = DUMMY_USERS.find(u => u.email === email && u.pass === pass);
+  if (!user) {
+    showLoginError('Email atau kata sandi salah.');
+    return;
+  }
+  loggedIn = true;
+  currentUser = user;
+  document.getElementById('btn-logout').style.display = 'flex';
+  renderKarya(MY_KARYA);
+  closePopup();
+  nav('karya');
+}
+
+function showLoginError(msg) {
+  let err = document.getElementById('login-error');
+  if (!err) {
+    err = document.createElement('div');
+    err.id = 'login-error';
+    err.style.cssText = 'color:#c0392b;font-size:13px;margin-top:10px;text-align:center;font-weight:700;';
+    document.getElementById('login-pass').parentNode.insertAdjacentElement('afterend', err);
+  }
+  err.textContent = '⚠ ' + msg;
+}
+
+function doLogout() {
+  loggedIn = false;
+  currentUser = null;
+  document.getElementById('btn-logout').style.display = 'none';
+  const err = document.getElementById('login-error');
+  if (err) err.textContent = '';
+  document.getElementById('login-email').value = '';
+  document.getElementById('login-pass').value  = '';
+  nav('beranda');
+}
+
+/* ─── RENDER KARYA ─── */
+function renderKarya(data) {
+  const stMap = {
+    disetujui: ['st-disetujui', '\u2713 Disetujui'],
+    pending:   ['st-pending',   '\u23f3 Menunggu'],
+    ditolak:   ['st-ditolak',   '\u2715 Ditolak'],
+    revisi:    ['st-revisi',    '\u21a9 Revisi'],
+  };
+  document.getElementById('karya-tbody').innerHTML = data.length
+    ? data.map(k => {
+        const [cls, label] = stMap[k.status] || ['st-pending', k.status];
+        return '<tr>'
+          + '<td>' + k.no + '</td>'
+          + '<td>' + k.judul + '</td>'
+          + '<td>' + k.jenis + '</td>'
+          + '<td><span class="status-badge ' + cls + '">' + label + '</span></td>'
+          + '<td><button style="background:none;border:none;color:var(--navy);cursor:pointer;font-weight:700;font-size:12px;">Lihat</button></td>'
+          + '</tr>';
+      }).join('')
+    : '<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--text-muted)">Belum ada karya yang diunggah.</td></tr>';
+}
+</script>
+</body>
+</html>

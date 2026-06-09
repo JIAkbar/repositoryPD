@@ -75,6 +75,11 @@
 - [ ] Halaman Informasi Penulis
 - [ ] Halaman Produk — galeri foto + video player
 - [x] Halaman Login — card terpusat (navy card, logo besar)
+- [x] Dummy login: akun demo `mahasiswa@vokasi.um.ac.id / digilab123` & `admin@vokasi.um.ac.id / admin123`
+- [x] Validasi login: pesan error inline jika email/password salah
+- [x] Tombol logout di header (tersembunyi, muncul setelah login)
+- [x] Tombol "Masuk / Daftar" di halaman Beranda + hint kredensial demo
+- [x] Tombol "⌂ Beranda" di header
 - [x] Halaman Karya Ilmiah user — tabel + tombol Unggah
 - [ ] Halaman Unggah Step 1 — form metadata
 - [ ] Halaman Unggah Step 2 — drag & drop PDF + foto/video

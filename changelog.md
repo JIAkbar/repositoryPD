@@ -95,6 +95,42 @@
 
 ---
 
+## [2026-06-09] — Push ke GitHub
+
+### Chore
+- Inisiasi git repository di folder DIGILAB-Repository
+- Push initial commit ke `https://github.com/JIAkbar/repositoryPD` (branch `main`)
+- 26 objects, 45.63 KiB
+
+---
+
+## [2026-06-09] — Autentikasi Dummy & Restrukturisasi Folder
+
+### Feat
+- Tambah dummy login: 2 akun hardcoded (`mahasiswa@vokasi.um.ac.id/digilab123`, `admin@vokasi.um.ac.id/admin123`)
+- Tambah fungsi `doLogin()` dengan validasi kredensial + `showLoginError()` untuk pesan error inline
+- Tambah fungsi `doLogout()` — reset state, sembunyikan tombol logout, kembali ke Beranda
+- Tambah tombol **"↩ Keluar"** di header (tersembunyi, muncul setelah login)
+- Tambah tombol **"Masuk / Daftar"** di halaman Beranda dengan hint kredensial demo
+- Tambah tombol **"⌂ Beranda"** di header sebelah "Peta Pikiran"
+
+### Refactor
+- Rename folder `frontend/` → `docs/` agar compatible dengan GitHub Pages (`/docs` option)
+- Update `test_server_lokal.bat`, `docker-compose.yml`, `preview_frontend.bat` untuk path `docs/`
+- `docs/index.html` sekarang menjadi satu-satunya sumber frontend; folder `frontend/` dihapus
+- `frontend/src/` (assets, components, pages) kosong — tidak ada yang dipindahkan
+
+### Fix
+- Perbaiki truncasi file `index.html` (39246 byte cutoff) — root cause: Edit tool has size limit; migrasi ke Python `write` untuk file besar
+- Perbaiki mindmap canvas blank saat navigasi SPA (D3 init di `display:none`): gunakan double `requestAnimationFrame` + dispatch `resize` ke iframe 80ms setelah nav
+- Perbaiki tombol "← Kembali" di mindmap iframe yang keluar dari SPA: ganti `history.back()` dengan `window.parent.nav('beranda')`
+
+### Chore
+- Buat `preview_frontend.bat` — jalankan frontend saja tanpa backend/env (untuk demo cepat)
+- Tambah `*.bat` ke `.gitignore`
+
+---
+
 <!-- Template entri berikutnya:
 
 ## [YYYY-MM-DD] — Judul
