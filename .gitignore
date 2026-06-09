@@ -51,3 +51,6 @@ coverage/
 .cache/
 *.bak
 *.tmp
+
+# ─── Dev Scripts (Windows only, tidak perlu di repo) ───
+*.bat
