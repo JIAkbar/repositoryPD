@@ -28,7 +28,7 @@ services:
   # ─── Frontend (Vite) ───
   frontend:
     build:
-      context: ./frontend
+      context: ./docs
       dockerfile: Dockerfile
     container_name: digilab_frontend
     restart: unless-stopped
@@ -37,7 +37,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./frontend:/app
+      - ./docs:/app
       - /app/node_modules
     depends_on:
       - backend
