@@ -48,6 +48,118 @@
       --r:          8px;
     }
 
+
+    /* ══════════════════════════════════
+       TEMA — 5 pilihan clean modern
+    ══════════════════════════════════ */
+    [data-theme="emerald"] {
+      --navy:        #065f46;
+      --navy-dark:   #064e3b;
+      --navy-mid:    #047857;
+      --bg:          #f0fdf4;
+      --bg-card:     #ffffff;
+      --text-dark:   #022c22;
+      --text-mid:    #166534;
+      --text-muted:  #6b7280;
+      --orange:      #f59e0b;
+      --teal:        #10b981;
+      --border:      #bbf7d0;
+      --shadow-sm:   0 1px 4px rgba(6,95,70,.08);
+      --shadow:      0 2px 10px rgba(6,95,70,.12);
+      --shadow-lg:   0 6px 24px rgba(6,95,70,.18);
+    }
+    [data-theme="charcoal"] {
+      --navy:        #1c1c2e;
+      --navy-dark:   #0f0f1a;
+      --navy-mid:    #2d2d44;
+      --bg:          #f5f5f7;
+      --bg-card:     #ffffff;
+      --text-dark:   #1c1c2e;
+      --text-mid:    #44445a;
+      --text-muted:  #888899;
+      --orange:      #e85d04;
+      --teal:        #4cc9f0;
+      --border:      #dcdce4;
+      --shadow-sm:   0 1px 4px rgba(28,28,46,.08);
+      --shadow:      0 2px 10px rgba(28,28,46,.14);
+      --shadow-lg:   0 6px 24px rgba(28,28,46,.20);
+    }
+    [data-theme="violet"] {
+      --navy:        #4c1d95;
+      --navy-dark:   #2e1065;
+      --navy-mid:    #6d28d9;
+      --bg:          #f5f3ff;
+      --bg-card:     #ffffff;
+      --text-dark:   #1e1b4b;
+      --text-mid:    #4338ca;
+      --text-muted:  #8b5cf6;
+      --orange:      #f59e0b;
+      --teal:        #06b6d4;
+      --border:      #ddd6fe;
+      --shadow-sm:   0 1px 4px rgba(76,29,149,.08);
+      --shadow:      0 2px 10px rgba(76,29,149,.13);
+      --shadow-lg:   0 6px 24px rgba(76,29,149,.20);
+    }
+    [data-theme="rose"] {
+      --navy:        #881337;
+      --navy-dark:   #4c0519;
+      --navy-mid:    #be123c;
+      --bg:          #fff1f2;
+      --bg-card:     #ffffff;
+      --text-dark:   #1c0508;
+      --text-mid:    #9f1239;
+      --text-muted:  #9ca3af;
+      --orange:      #f97316;
+      --teal:        #0891b2;
+      --border:      #fecdd3;
+      --shadow-sm:   0 1px 4px rgba(136,19,55,.08);
+      --shadow:      0 2px 10px rgba(136,19,55,.13);
+      --shadow-lg:   0 6px 24px rgba(136,19,55,.20);
+    }
+
+    /* Theme Switcher */
+    #theme-switcher {
+      position: relative;
+    }
+    #theme-panel {
+      display: none;
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      background: #fff;
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.18);
+      z-index: 200;
+      width: 220px;
+      border: 1px solid rgba(0,0,0,.08);
+    }
+    #theme-panel.open { display: block; }
+    #theme-panel p {
+      font-family: 'Nunito', sans-serif; font-weight: 700;
+      font-size: 11px; color: #666; letter-spacing: .8px;
+      text-transform: uppercase; margin-bottom: 10px;
+    }
+    .theme-options { display: grid; grid-template-columns: repeat(5,1fr); gap: 8px; }
+    .theme-swatch {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 2.5px solid transparent;
+      cursor: pointer; transition: transform .15s, border-color .15s;
+      position: relative;
+    }
+    .theme-swatch:hover { transform: scale(1.15); }
+    .theme-swatch.active { border-color: #333; }
+    .theme-swatch[data-t="indigo"]  { background: #2e3192; }
+    .theme-swatch[data-t="emerald"] { background: #065f46; }
+    .theme-swatch[data-t="charcoal"]{ background: #1c1c2e; }
+    .theme-swatch[data-t="violet"]  { background: #4c1d95; }
+    .theme-swatch[data-t="rose"]    { background: #881337; }
+    .theme-label {
+      font-size: 9px; text-align: center; margin-top: 4px;
+      color: #888; font-family: 'Nunito', sans-serif;
+    }
+    .theme-option-wrap { display: flex; flex-direction: column; align-items: center; }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
 
@@ -425,6 +537,22 @@
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="22"/><line x1="2" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="22" y2="12"/><line x1="4.22" y1="4.22" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.78" y2="19.78"/><line x1="19.78" y1="4.22" x2="16.24" y2="7.76"/><line x1="7.76" y1="16.24" x2="4.22" y2="19.78"/></svg>
       Peta Pikiran
     </button>
+    <div id="theme-switcher">
+      <button class="btn-nav" id="btn-theme" onclick="toggleThemePanel()" title="Ganti Tema">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 0 20C6.5 22 2 17.5 2 12S6.5 2 12 2z" fill="currentColor" opacity=".2"/><circle cx="12" cy="12" r="4" fill="currentColor" opacity=".5"/></svg>
+        Tema
+      </button>
+      <div id="theme-panel">
+        <p>Pilih Tema</p>
+        <div class="theme-options">
+          <div class="theme-option-wrap"><div class="theme-swatch active" data-t="indigo"  onclick="setTheme('indigo')"></div><div class="theme-label">Indigo</div></div>
+          <div class="theme-option-wrap"><div class="theme-swatch" data-t="emerald"  onclick="setTheme('emerald')"></div><div class="theme-label">Emerald</div></div>
+          <div class="theme-option-wrap"><div class="theme-swatch" data-t="charcoal" onclick="setTheme('charcoal')"></div><div class="theme-label">Charcoal</div></div>
+          <div class="theme-option-wrap"><div class="theme-swatch" data-t="violet"   onclick="setTheme('violet')"></div><div class="theme-label">Violet</div></div>
+          <div class="theme-option-wrap"><div class="theme-swatch" data-t="rose"     onclick="setTheme('rose')"></div><div class="theme-label">Rose</div></div>
+        </div>
+      </div>
+    </div>
     <button class="btn-nav btn-nav-user" onclick="toggleUserMenu()" title="Akun / Login" id="btn-user-icon">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
     </button>
@@ -816,6 +944,34 @@ const DUMMY_USERS = [
   { email: 'mahasiswa@vokasi.um.ac.id', pass: 'digilab123', nama: 'Natasya Adelia R.' },
   { email: 'admin@vokasi.um.ac.id',     pass: 'admin123',   nama: 'Admin Pustakawan'  },
 ];
+
+/* ── THEME SWITCHER ── */
+function setTheme(t) {
+  document.documentElement.setAttribute('data-theme', t === 'indigo' ? '' : t);
+  localStorage.setItem('digilab-theme', t);
+  document.querySelectorAll('.theme-swatch').forEach(s => {
+    s.classList.toggle('active', s.dataset.t === t);
+  });
+  document.getElementById('theme-panel').classList.remove('open');
+}
+
+function toggleThemePanel() {
+  document.getElementById('theme-panel').classList.toggle('open');
+}
+
+// Tutup panel saat klik luar
+document.addEventListener('click', e => {
+  const sw = document.getElementById('theme-switcher');
+  if (sw && !sw.contains(e.target)) {
+    document.getElementById('theme-panel').classList.remove('open');
+  }
+});
+
+// Load tema dari localStorage saat halaman dibuka
+(function() {
+  const saved = localStorage.getItem('digilab-theme') || 'indigo';
+  setTheme(saved);
+})();
 
 function doLogin() {
   const err = document.getElementById('login-error');
