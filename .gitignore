@@ -54,3 +54,12 @@ coverage/
 
 # ─── Dev Scripts (Windows only, tidak perlu di repo) ───
 *.bat
+
+# ─── AI & Internal Context ───
+CLAUDE.md
+_context/
+data/
+
+# ─── Internal Tracking (tidak perlu di repo publik) ───
+changelog.md
+checklist.md
