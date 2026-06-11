@@ -20,7 +20,7 @@
   <meta name="twitter:image"       content="https://jiakbar.github.io/repositoryPD/og-image.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Lato:ital,wght@0,300;0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&family=Nunito+Sans:wght@400;600;700;800;900&family=Nunito:wght@400;600;700;800;900&family=Lato:ital,wght@0,300;0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
 
   <style>
     /* ─────────────────────────────────────────
@@ -28,19 +28,19 @@
        Sesuai mockup Natasya Adelia R.
     ───────────────────────────────────────── */
     :root {
-      --navy:       #2e3192;
-      --navy-dark:  #1e2166;
-      --navy-mid:   #3d43b0;
-      --bg:         #e8e8f0;
+      --navy:       #094e58;
+      --navy-dark:  #072e37;
+      --navy-mid:   #0d6b79;
+      --bg:         #f5f0e8;
       --bg-card:    #ffffff;
-      --text-dark:  #1a1a3e;
-      --text-mid:   #4a4a6a;
-      --text-muted: #8888aa;
+      --text-dark:  #122830;
+      --text-mid:   #2d5a65;
+      --text-muted: #6b8e96;
       --red:        #c0392b;
       --red-dark:   #8b0000;
-      --orange:     #f97316;
-      --teal:       #0891b2;
-      --border:     #d4d4e8;
+      --orange:     #e8821e;
+      --teal:       #14b8a6;
+      --border:     #dde8ea;
       --shadow-sm:  0 1px 4px rgba(46,49,146,.08);
       --shadow:     0 2px 10px rgba(46,49,146,.12);
       --shadow-lg:  0 6px 24px rgba(46,49,146,.18);
@@ -233,7 +233,7 @@
 
     /* ═══════════════════════════ PAGE SYSTEM ═══ */
     main { flex: 1; display: flex; flex-direction: column; }
-    .page { display: none; flex: 1; flex-direction: column; animation: fadeIn .18s ease; }
+    .page { display: none; flex: 1; flex-direction: column; }
     .page.active { display: flex; }
     @keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:none; } }
 
@@ -256,7 +256,7 @@
       font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 13.5px; cursor: pointer; outline: none;
     }
     .s-select-wrap::after {
-      content: '▾'; position: absolute; right: 12px; top: 50%;
+      content: '\25BE'; position: absolute; right: 12px; top: 50%;
       transform: translateY(-50%); color: #fff; pointer-events: none; font-size: 12px;
     }
     .btn-cari {
@@ -270,19 +270,154 @@
     .btn-cari:active { transform: none; }
 
     /* ═══════════════════════════ BERANDA ═══ */
-    #page-beranda { align-items: center; justify-content: center; }
+    #page-beranda { width: 100%; align-items: center; justify-content: center; }
     .beranda-center {
-      width: 100%; max-width: 860px; padding: 60px 28px 80px; text-align: center;
+      width: 100%; max-width: 980px; margin: 0 auto; padding: 60px 20px 80px; text-align: center;
+    }
+    #page-beranda {
+      background: linear-gradient(160deg, var(--navy-dark) 0%, var(--navy) 45%, var(--navy-mid) 100%) !important;
+      min-height: 100vh;
     }
     .beranda-title {
-      font-family: 'Nunito', sans-serif; font-weight: 900;
-      font-size: clamp(38px, 7vw, 68px); color: var(--navy);
-      letter-spacing: -1.5px; line-height: 1.05; margin-bottom: 40px;
+      font-family: 'Playfair Display', serif; font-weight: 900;
+      font-size: clamp(38px, 7vw, 72px); color: #fff;
+      letter-spacing: -1px; line-height: 1.05; margin-bottom: 32px;
     }
+    .beranda-title em {
+      font-style: italic; color: var(--orange);
+      display: block;
+    }
+    .beranda-sub {
+      font-family: 'Nunito Sans', sans-serif; font-size: 16px;
+      color: rgba(255,255,255,.65); line-height: 1.65;
+      margin-bottom: 36px; max-width: 480px; margin-left: auto; margin-right: auto;
+    }
+    .beranda-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-family: 'Nunito Sans', sans-serif; font-size: 11px; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: rgba(255,255,255,.7); border: 1px solid rgba(255,255,255,.2);
+      border-radius: 999px; padding: 5px 14px; margin-bottom: 24px;
+    }
+    .beranda-badge::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--orange); animation: pulse 1.8s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+    /* ── Beranda Search Card ── */
     .beranda-search-card {
-      background: rgba(255,255,255,.65); border-radius: 14px;
-      padding: 20px; box-shadow: var(--shadow-lg); backdrop-filter: blur(4px);
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.18);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-radius: 20px;
+      padding: 24px 24px 20px;
+      width: 100%;
+      box-shadow: 0 8px 32px rgba(0,0,0,.18);
+      box-sizing: border-box;
     }
+    .beranda-search-card .search-row {
+      display: flex; gap: 10px; align-items: center; margin-bottom: 12px;
+    }
+    .beranda-search-card .s-input {
+      flex: 1; height: 48px; padding: 0 20px;
+      background: rgba(255,255,255,.15) !important;
+      border: 1.5px solid rgba(255,255,255,.25) !important;
+      border-radius: 999px; color: #fff !important;
+      font-size: 14px; font-family: 'Lato', sans-serif;
+      outline: none; transition: border-color .2s;
+    }
+    .beranda-search-card .s-input::placeholder { color: rgba(255,255,255,.5) !important; }
+    .beranda-search-card .s-input:focus { border-color: rgba(255,255,255,.6) !important; }
+    .beranda-search-card .s-select-wrap {
+      position: relative; flex: 1;
+    }
+    .beranda-search-card .s-select {
+      width: 100%; height: 48px; padding: 0 36px 0 18px;
+      background: rgba(255,255,255,.15) !important;
+      border: 1.5px solid rgba(255,255,255,.25) !important;
+      border-radius: 999px; color: #fff !important;
+      font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 13px;
+      appearance: none; -webkit-appearance: none;
+      cursor: pointer; outline: none; transition: border-color .2s;
+    }
+    .beranda-search-card .s-select:focus { border-color: rgba(255,255,255,.6) !important; }
+    .beranda-search-card .s-select option { background: var(--navy); color: #fff; }
+    .beranda-search-card .s-select-wrap::after {
+      content: '\25BE'; position: absolute; right: 13px; top: 50%;
+      transform: translateY(-52%); color: rgba(255,255,255,.8) !important;
+      pointer-events: none; font-size: 13px;
+    }
+    .beranda-search-card .btn-cari {
+      flex-shrink: 0; height: 46px; padding: 0 22px;
+      background: var(--orange); border: none; border-radius: 999px;
+      color: #fff; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14px;
+      cursor: pointer; display: flex; align-items: center; gap: 7px;
+      transition: background .15s, transform .1s; white-space: nowrap;
+    }
+    .beranda-search-card .btn-cari:hover { background: #d07018; transform: translateY(-1px); }
+    .beranda-filter-row {
+      display: flex; gap: 8px;
+    }
+    .beranda-filter-row .s-select-wrap { flex: 1; }
+    /* V1 overrides */
+    [data-version="1"] { --navy:#2e3192; --navy-dark:#1e2166; --navy-mid:#3730a3; --bg:#e8e8f0; --orange:#f97316; --teal:#0891b2; --border:#d4d4e8; --text-dark:#1a1a3e; --text-mid:#4a4a6a; --text-muted:#8888aa; }
+    /* ── V1 BERANDA — desain Natasya asli (light bg, dark text) ── */
+    [data-version="1"] #page-beranda { background: var(--bg) !important; }
+    [data-version="1"] .beranda-badge { display:none !important; }
+    [data-version="1"] .beranda-title {
+      font-family:'Nunito',sans-serif !important; font-weight:900 !important;
+      color: var(--navy) !important; font-size:clamp(32px,5.5vw,60px) !important;
+      letter-spacing:0 !important; line-height:1.1 !important;
+    }
+    [data-version="1"] .beranda-title em {
+      color: var(--orange) !important; font-style:normal !important; display:block !important;
+    }
+    [data-version="1"] .beranda-sub { color: var(--text-mid) !important; }
+    [data-version="1"] .beranda-search-card {
+      background: #fff !important; border: 1.5px solid var(--border) !important;
+      backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+      box-shadow: 0 4px 20px rgba(46,49,146,.12) !important;
+      width: 100% !important; box-sizing: border-box !important;
+    }
+    [data-version="1"] .beranda-search-card .s-input {
+      background: #f4f4f8 !important; color: var(--text-dark) !important;
+      border: 1.5px solid var(--border) !important;
+    }
+    [data-version="1"] .beranda-search-card .s-input::placeholder { color: var(--text-muted) !important; }
+    [data-version="1"] .beranda-search-card .s-select {
+      background: #f4f4f8 !important; color: var(--text-dark) !important;
+      border: 1.5px solid var(--border) !important;
+    }
+    [data-version="1"] .beranda-search-card .s-select-wrap::after { border-top-color: var(--text-mid) !important; }
+    [data-version="1"] .beranda-search-card .btn-cari { background: var(--navy) !important; }
+    [data-version="1"] .beranda-search-card .btn-cari:hover { background: var(--navy-dark) !important; }
+    [data-version="1"] .beranda-stat-num { color: var(--navy) !important; }
+    [data-version="1"] .beranda-stat-label { color: var(--text-muted) !important; }
+    [data-version="1"] .beranda-stat-div { background: var(--border) !important; }
+    [data-version="1"] .beranda-btn-masuk {
+      background: var(--navy) !important;
+      box-shadow: 0 4px 18px rgba(46,49,146,.25) !important;
+    }
+    [data-version="1"] .beranda-btn-masuk:hover { background: var(--navy-dark) !important; }
+    [data-version="1"] .beranda-demo-text { color: var(--text-muted) !important; }
+    [data-version="1"] .beranda-demo-text strong { color: var(--text-dark) !important; }
+    [data-version="1"] #page-login { background:var(--bg) !important; background-image:none !important; }
+    [data-version="1"] .login-card { background:var(--navy) !important; border:none !important; backdrop-filter:none !important; }
+    /* btn-version-toggle */
+    .btn-version-toggle {
+      display: flex; align-items: center; gap: 6px; padding: 6px 14px;
+      border-radius: 999px; border: 1.5px solid rgba(255,255,255,.35);
+      background: var(--orange); color: #fff;
+      font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800;
+      cursor: pointer; transition: background .15s, border-color .15s;
+    }
+    .btn-version-toggle:hover { background: var(--navy-dark); border-color: rgba(255,255,255,.6); }
+    .v-badge {
+      background: rgba(255,255,255,.25); border-radius: 4px;
+      padding: 1px 5px; font-size: 11px; font-weight: 900;
+    }
+    /* beranda-search-card styles consolidated above */
 
 
 
@@ -373,10 +508,10 @@
     .btn-info-action:active { transform: none; }
 
     /* ═══════════════════════════ LOGIN ═══ */
-    #page-login { align-items: center; justify-content: center; }
+    #page-login { align-items: center; justify-content: center; background: linear-gradient(160deg, var(--navy-dark) 0%, var(--navy) 55%, var(--navy-mid) 100%) !important; }
     .login-wrap { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 24px; }
     .login-card {
-      background: var(--navy); border-radius: 18px; padding: 52px 44px;
+      background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(16px); border-radius: 18px; padding: 52px 44px;
       width: 100%; max-width: 420px; text-align: center;
       box-shadow: 0 10px 40px rgba(46,49,146,.35);
     }
@@ -780,9 +915,135 @@
 
     /* beranda filter extra row */
     .beranda-filter-extra {
-      display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;
+      display: flex; gap: 10px; flex-wrap: nowrap;
     }
-    .beranda-filter-extra .s-select-wrap { flex: 1; min-width: 140px; }
+    .beranda-filter-extra .s-select-wrap { flex: 1; min-width: 0; }
+
+  
+    
+    /* ── beranda stats ── */
+    .beranda-stats {
+      display: flex; align-items: center; justify-content: center;
+      gap: 28px; margin: 32px auto 0; flex-wrap: wrap; width: 100%; max-width: 700px;
+    }
+    .beranda-stat { text-align: center; }
+    .beranda-stat-num {
+      font-family: 'Nunito Sans', sans-serif; font-weight: 900;
+      font-size: 28px; line-height: 1; display: block; color: #fff;
+    }
+    .beranda-stat-label {
+      font-family: 'Nunito Sans', sans-serif; font-size: 10px;
+      font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
+      color: rgba(255,255,255,.5); display: block; margin-top: 4px;
+    }
+    .beranda-stat-div { width: 1px; height: 36px; background: rgba(255,255,255,.15); }
+    .beranda-cta-wrap {
+      margin: 24px auto 0; display: flex; flex-direction: column;
+      align-items: center; gap: 10px; width: 100%;
+    }
+    .beranda-btn-masuk {
+      height: 46px; padding: 0 36px; background: var(--orange); color: #fff;
+      border: none; border-radius: var(--pill); font-family: 'Nunito', sans-serif;
+      font-weight: 800; font-size: 15px; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: background .15s, transform .12s, box-shadow .15s;
+      box-shadow: 0 4px 16px rgba(0,0,0,.2);
+    }
+    .beranda-btn-masuk:hover {
+      background: #d07018; transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,.3);
+    }
+    .beranda-demo-text {
+      font-size: 12px; color: rgba(255,255,255,.5); letter-spacing: .3px;
+    }
+    .beranda-demo-text strong { color: rgba(255,255,255,.8); }
+
+    /* ══ iOS ANIMATIONS ══ */
+    .page.active { animation: pageEnter .3s cubic-bezier(.25,.46,.45,.94) both; }
+    @keyframes pageEnter {
+      from { opacity:0; transform:translateY(10px) scale(.997); }
+      to   { opacity:1; transform:translateY(0) scale(1); }
+    }
+    button, .btn-nav, .btn-cari { -webkit-tap-highlight-color:transparent; user-select:none; }
+    button:active, .btn-nav:active, .btn-cari:active,
+    .btn-version-toggle:active, .btn-info-action:active,
+    .btn-upload-next:active, .btn-unggah:active {
+      transform: scale(.93) !important;
+      opacity: .85;
+      transition: transform .07s ease !important;
+    }
+    .result-card { transition: transform .2s cubic-bezier(.25,.46,.45,.94), box-shadow .2s ease; }
+    .result-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.1) !important; }
+    .overlay.show .popup-box { animation: popupUp .3s cubic-bezier(.34,1.56,.64,1) both; }
+    @keyframes popupUp { from{transform:translateY(18px) scale(.93);opacity:0} to{transform:translateY(0) scale(1);opacity:1} }
+    .dropzone { transition: border-color .15s, background .15s, transform .18s; }
+    .dropzone:hover { transform: scale(1.01); }
+
+    /* ══ HAMBURGER ══ */
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 8px; border: none; background: transparent;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .hamburger span {
+      display: block; width: 22px; height: 2px; border-radius: 2px;
+      background: rgba(255,255,255,.85);
+      transition: transform .25s cubic-bezier(.34,1.56,.64,1), opacity .2s ease, width .2s ease;
+    }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; width: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+    .mobile-nav {
+      display: none; position: fixed; top: 66px; left: 0; right: 0;
+      background: var(--navy); z-index: 99; padding: 10px 14px 18px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.25);
+      border-top: 1px solid rgba(255,255,255,.08);
+      flex-direction: column; gap: 2px;
+    }
+    .mobile-nav.open { display: flex; animation: mobileIn .2s cubic-bezier(.25,.46,.45,.94) both; }
+    @keyframes mobileIn { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:none} }
+    .mobile-nav .btn-nav { width:100%; text-align:left; padding:10px 14px; border-radius:10px; font-size:14px; display:flex; align-items:center; gap:8px; }
+    .mobile-nav-divider { height:1px; background:rgba(255,255,255,.1); margin:6px 0; }
+
+    /* ══ MOBILE RESPONSIVE ══ */
+    @media (max-width: 768px) {
+      header { padding: 0 14px; }
+      .header-nav-desktop { display: none !important; }
+      .hamburger { display: flex !important; }
+      .h-sub { display: none; }
+      .beranda-center { padding: 36px 16px 52px !important; }
+      .beranda-title { font-size: clamp(28px, 9vw, 52px) !important; }
+      .beranda-sub { font-size: 14px !important; }
+      .search-row { flex-direction: column; gap: 8px; }
+      .search-row .s-select-wrap { width: 100%; }
+      .search-row .btn-cari { width: 100%; justify-content: center; }
+      .beranda-filter-extra { flex-direction: column !important; }
+      .beranda-filter-extra > * { min-width: unset !important; width: 100% !important; }
+      .beranda-stats { gap: 14px; flex-wrap: wrap; justify-content: center; }
+      .hasil-content { grid-template-columns: 1fr; padding: 16px; }
+      .hasil-panel { order: -1; position: static; }
+      .detail-layout { grid-template-columns: 1fr; }
+      .detail-topbar, .detail-body { padding: 14px 16px; }
+      .login-card { padding: 32px 18px !important; margin: 0 8px; }
+      .karya-body { padding: 16px; }
+      .karya-table-box { overflow-x: auto; }
+      .upload-wrap { padding: 20px 14px; }
+      .upload-row { grid-template-columns: 1fr !important; }
+      .upload-nav { flex-direction: column-reverse; gap: 8px; }
+      .upload-nav button { width: 100%; justify-content: center; }
+      .stepper { overflow-x: auto; padding-bottom: 4px; }
+      .akun-wrap { padding: 20px 14px; }
+      .penulis-wrap { padding: 18px 14px; }
+      .penulis-card { flex-direction: column; padding: 20px 14px; }
+      .produk-wrap { padding: 18px 14px; }
+      .foto-grid { grid-template-columns: repeat(2,1fr) !important; }
+      .btn-info-action { display: inline-block; width: auto; margin-right: 8px; }
+    }
+    @media (max-width: 480px) {
+      .beranda-title { font-size: 26px !important; }
+      .foto-grid { grid-template-columns: 1fr !important; }
+      .login-card { padding: 24px 14px !important; }
+    }
 
   </style>
 </head>
@@ -810,7 +1071,7 @@
       <div class="h-sub">FAKULTAS VOKASI — UNIVERSITAS NEGERI MALANG</div>
     </div>
   </div>
-  <div style="display:flex;align-items:center;gap:6px;flex-wrap:nowrap;flex-shrink:0;">
+  <div class="header-nav-desktop" style="display:flex;align-items:center;gap:6px;flex-wrap:nowrap;flex-shrink:0;">
     <a class="btn-nav" href="changelog.html" title="Changelog">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
       Changelog
@@ -826,6 +1087,14 @@
     <button class="btn-nav btn-nav-accent" onclick="nav('mindmap')" title="Peta Pengembangan">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="22"/><line x1="2" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="22" y2="12"/><line x1="4.22" y1="4.22" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.78" y2="19.78"/><line x1="19.78" y1="4.22" x2="16.24" y2="7.76"/><line x1="7.76" y1="16.24" x2="4.22" y2="19.78"/></svg>
       Peta Pikiran
+    </button>
+    <button class="btn-nav btn-nav-karya" onclick="nav('karya')" title="Karya Ilmiah">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      Karya Ilmiah
+    </button>
+    <button class="btn-version-toggle" id="btn-version" onclick="toggleVersion()" title="Ganti template desain">
+      <span class="v-badge" id="version-badge">V2</span>
+      Template
     </button>
     <div id="theme-switcher">
       <button class="btn-nav" id="btn-theme" onclick="toggleThemePanel()" title="Ganti Tema">
@@ -851,7 +1120,22 @@
       Keluar
     </button>
   </div>
+  <button class="hamburger" id="hamburger-btn" onclick="toggleMobileNav()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </header>
+<nav class="mobile-nav" id="mobile-nav">
+  <button class="btn-nav" onclick="navMobile('beranda')">🏠 Beranda</button>
+  <button class="btn-nav" onclick="navMobile('mindmap')">🗺 Peta Pikiran</button>
+  <button class="btn-nav" onclick="navMobile('karya')">📚 Karya Ilmiah</button>
+  <div class="mobile-nav-divider"></div>
+  <button class="btn-nav" onclick="openAkun();toggleMobileNav()">👤 Akun Saya</button>
+  <button class="btn-nav" onclick="toggleVersion();toggleMobileNav()">🔄 Ganti Template</button>
+  <a class="btn-nav" href="changelog.html">📄 Changelog</a>
+  <a class="btn-nav" href="checklist.html">✅ Checklist</a>
+  <div class="mobile-nav-divider"></div>
+  <button class="btn-nav" id="mobile-btn-logout" style="display:none;" onclick="doLogout();toggleMobileNav()">🚪 Keluar</button>
+</nav>
 
 <!-- ══════════════ MAIN ══════════════ -->
 <main>
@@ -859,11 +1143,13 @@
   <!-- ▓▓▓ BERANDA ▓▓▓ -->
   <section class="page active" id="page-beranda">
     <div class="beranda-center">
-      <h1 class="beranda-title">DIGILAB Repository</h1>
+      <div class="beranda-badge">Repositori Digital Vokasi UM</div>
+      <h1 class="beranda-title">Karya Ilmiah,<br><em>Mudah Dicari</em></h1>
+      <p class="beranda-sub">Sistem repositori karya ilmiah mahasiswa Fakultas Vokasi Universitas Negeri Malang &#8212; tersimpan, terorganisir, dan dapat diakses kapan saja.</p>
       <div class="beranda-search-card">
         <div class="search-row">
           <input class="s-input" id="kw-beranda" type="text"
-            placeholder="Masukkan kata kunci, tahun, jenis"
+            placeholder="Cari judul, penulis, kata kunci..."
             onkeydown="if(event.key==='Enter') doSearch('beranda')" />
           <div class="s-select-wrap">
             <select class="s-select" id="jenis-beranda">
@@ -909,18 +1195,30 @@
           </div>
         </div>
       </div>
-    </div>
-      <div style="margin-top:20px;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;">
-        <button onclick="nav('login')"
-          style="height:42px;padding:0 28px;background:var(--navy);color:#fff;border:none;border-radius:var(--pill);
-                 font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;cursor:pointer;
-                 display:flex;align-items:center;gap:8px;transition:background .15s,transform .12s;"
-          onmouseover="this.style.background='var(--navy-dark)';this.style.transform='translateY(-1px)'"
-          onmouseout="this.style.background='var(--navy)';this.style.transform='none'">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+      <div class="beranda-stats">
+        <div class="beranda-stat">
+          <span class="beranda-stat-num" style="color:#fff;">11</span>
+          <span class="beranda-stat-label">PROGRAM STUDI</span>
+        </div>
+        <div class="beranda-stat-div"></div>
+        <div class="beranda-stat">
+          <span class="beranda-stat-num" style="color:#fff;">500+</span>
+          <span class="beranda-stat-label">KARYA TERSIMPAN</span>
+        </div>
+        <div class="beranda-stat-div"></div>
+        <div class="beranda-stat">
+          <span class="beranda-stat-num" style="color:#fff;">6</span>
+          <span class="beranda-stat-label">JENIS KARYA</span>
+        </div>
+      </div>
+      <div class="beranda-cta-wrap">
+        <button class="beranda-btn-masuk" onclick="nav('login')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
           Masuk / Daftar
         </button>
-        <span style="font-size:12px;color:var(--text-muted)">atau gunakan akun: <strong>mahasiswa@vokasi.um.ac.id</strong> / <strong>digilab123</strong></span>
+        <span class="beranda-demo-text">
+          demo: <strong>admin</strong> / <strong>admin</strong>
+        </span>
       </div>
     </div>
 
@@ -938,7 +1236,7 @@
       <div class="hasil-top-search">
         <div class="search-row">
           <input class="s-input" id="kw-hasil" type="text"
-            placeholder="Masukkan kata kunci, tahun, jenis"
+            placeholder="Cari judul, penulis, kata kunci..."
             onkeydown="if(event.key==='Enter') doSearch('hasil')" />
           <div class="s-select-wrap">
             <select class="s-select" id="jenis-hasil">
@@ -1082,7 +1380,7 @@
 
 </main>
 
-<footer>Hak cipta 2025 ©Perpustakaan Digital</footer>
+<footer>© 2026 Natasya Adelia R. — DIGILAB Repository · Fakultas Vokasi, Universitas Negeri Malang</footer>
 
 <!-- OVERLAY LOGIN POPUP -->
 <div class="overlay" id="overlay" onclick="closePopupOutside(event)">
@@ -1142,25 +1440,30 @@ let currentUser = null;
 
 /* ─── NAVIGATION ─── */
 function nav(page) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  const el = document.getElementById('page-' + page);
-  if (el) el.classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-  // Lazy-load mindmap iframe on first visit, re-trigger resize on subsequent visits
-  if (page === 'mindmap') {
-    const iframe = document.getElementById('mindmap-iframe');
-    if (iframe) {
-      if (!iframe.src || iframe.src === window.location.href) {
-        iframe.src = 'mindmap.html';
-      } else {
-        setTimeout(() => {
-          if (iframe.contentWindow) iframe.contentWindow.dispatchEvent(new Event('resize'));
-        }, 100);
+  var current = document.querySelector('.page.active');
+  var next    = document.getElementById('page-' + page);
+  if (!next) return;
+  if (next === current) { window.scrollTo({top:0,behavior:'smooth'}); return; }
+  if (current) {
+    current.style.opacity    = '0';
+    current.style.transform  = 'translateY(-4px)';
+    current.style.transition = 'opacity .13s ease, transform .13s ease';
+  }
+  setTimeout(function() {
+    document.querySelectorAll('.page').forEach(function(p) {
+      p.classList.remove('active'); p.removeAttribute('style');
+    });
+    next.classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+    if (page === 'mindmap') {
+      var iframe = document.getElementById('mindmap-iframe');
+      if (iframe) {
+        if (!iframe.src || iframe.src === window.location.href) { iframe.src = 'mindmap.html'; }
+        else { setTimeout(function(){ if(iframe.contentWindow) iframe.contentWindow.dispatchEvent(new Event('resize')); }, 100); }
       }
     }
-  }
+  }, current ? 120 : 0);
 }
-
 function toggleUserMenu() {
   nav(loggedIn ? 'karya' : 'login');
 }
@@ -1261,8 +1564,9 @@ function closePopupOutside(e) { if (e.target === document.getElementById('overla
 
 /* ─── LOGIN ─── */
 const DUMMY_USERS = [
-  { email: 'mahasiswa@vokasi.um.ac.id', pass: 'digilab123', nama: 'Natasya Adelia R.' },
-  { email: 'admin@vokasi.um.ac.id',     pass: 'admin123',   nama: 'Admin Pustakawan'  },
+  { email: 'admin',                      pass: 'admin',      nama: 'Admin Pustakawan',  role: 'admin'     },
+  { email: 'admin@vokasi.um.ac.id',      pass: 'admin123',   nama: 'Admin Pustakawan',  role: 'admin'     },
+  { email: 'mahasiswa@vokasi.um.ac.id',  pass: 'digilab123', nama: 'Natasya Adelia R.', role: 'mahasiswa' },
 ];
 
 /* ── THEME SWITCHER ── */
@@ -1302,7 +1606,7 @@ function doLogin() {
     showLoginError('Mohon isi email dan kata sandi.');
     return;
   }
-  const user = DUMMY_USERS.find(u => u.email === email && u.pass === pass);
+  const user = DUMMY_USERS.find(u => (u.email === email || u.email.split('@')[0] === email) && u.pass === pass);
   if (!user) {
     showLoginError('Email atau kata sandi salah.');
     return;
@@ -1682,6 +1986,44 @@ function navToUpload() {
   updateStepper(1);
   nav('upload');
 }
+
+
+/* ══ VERSION SWITCHER ══ */
+function setVersion(v) {
+  document.documentElement.setAttribute('data-version', v);
+  localStorage.setItem('digilab-version', v);
+  var badge = document.getElementById('version-badge');
+  if (badge) badge.textContent = 'V' + v;
+}
+function toggleVersion() {
+  var cur = document.documentElement.getAttribute('data-version') || '2';
+  setVersion(cur === '1' ? '2' : '1');
+}
+(function() {
+  var saved = localStorage.getItem('digilab-version') || '2';
+  setVersion(saved);
+})();
+
+
+/* ══ MOBILE NAV ══ */
+function toggleMobileNav() {
+  var mn = document.getElementById('mobile-nav');
+  var btn = document.getElementById('hamburger-btn');
+  if (!mn || !btn) return;
+  var open = mn.classList.contains('open');
+  mn.classList.toggle('open', !open);
+  btn.classList.toggle('open', !open);
+}
+function navMobile(page) {
+  nav(page);
+  var mn = document.getElementById('mobile-nav'); var btn = document.getElementById('hamburger-btn');
+  if (mn) mn.classList.remove('open'); if (btn) btn.classList.remove('open');
+}
+document.addEventListener('click', function(e) {
+  var mn = document.getElementById('mobile-nav'); var btn = document.getElementById('hamburger-btn');
+  if (!mn || !btn) return;
+  if (!mn.contains(e.target) && !btn.contains(e.target)) { mn.classList.remove('open'); btn.classList.remove('open'); }
+});
 
 </script>
 

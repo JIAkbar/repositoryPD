@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+<script>
+  (function(){
+    var v = localStorage.getItem('digilab-version') || '2';
+    var t = localStorage.getItem('digilab-theme') || 'indigo';
+    var html = document.documentElement;
+    if (v === '1') html.setAttribute('data-version', '1');
+    if (t && t !== 'indigo') html.setAttribute('data-theme', t);
+  })();
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Changelog — DIGILAB Repository</title>
@@ -8,21 +17,14 @@
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 :root {
-  --navy:   #2e3192;
-  --navy-dk:#1e2070;
-  --orange: #f97316;
-  --bg:     #eeeef5;
-  --white:  #ffffff;
-  --border: #d1d5db;
-  --text:   #1f2937;
-  --muted:  #6b7280;
+  --bg-card: #ffffff;
 }
-body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text-dark); min-height:100vh; }
 
 /* Header */
 /* ── Header ── */
     header {
-      background: #2e3192; height: 66px; padding: 0 28px;
+      background: var(--navy); height: 66px; padding: 0 28px;
       display: flex; align-items: center; justify-content: space-between;
       flex-shrink: 0; position: sticky; top: 0; z-index: 50;
       box-shadow: 0 2px 12px rgba(0,0,0,.25);
@@ -45,7 +47,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); 
 
 /* Page title */
 .page-head {
-  background:var(--white); border-bottom:3px solid var(--orange);
+  background:var(--bg-card); border-bottom:3px solid var(--orange);
   padding:28px 40px 20px;
   display:flex; align-items:flex-end; justify-content:space-between;
 }
@@ -53,9 +55,9 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); 
   font-size:26px; font-weight:800; color:var(--navy);
   letter-spacing:-.02em; margin-bottom:4px;
 }
-.page-head p { font-size:13px; color:var(--muted); }
+.page-head p { font-size:13px; color:var(--text-muted); }
 .version-badge {
-  background: #1e2070; color: #fff;
+  background: var(--navy); color: #fff;
   padding: 3px 10px; border-radius: 6px;
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px; font-weight: 600; letter-spacing: .04em;
@@ -74,10 +76,10 @@ main { max-width:820px; margin:32px auto; padding:0 24px 60px; }
 .filter-bar { display:flex; gap:8px; margin-bottom:28px; flex-wrap:wrap; }
 .filter-btn {
   padding:7px 16px; border-radius:20px; border:1.5px solid var(--border);
-  font-size:12px; font-weight:600; cursor:pointer; background:var(--white);
-  color:var(--muted); transition:all .15s; font-family:'Inter',sans-serif;
+  font-size:12px; font-weight:600; cursor:pointer; background:var(--bg-card);
+  color:var(--text-muted); transition:all .15s; font-family:'Inter',sans-serif;
 }
-.filter-btn.active, .filter-btn:hover { border-color:var(--navy); color:var(--navy); background:#eef0fb; }
+.filter-btn.active, .filter-btn:hover { border-color:var(--navy); color:var(--navy); background:rgba(0,0,0,.06); }
 
 /* Timeline */
 .timeline { position:relative; }
@@ -91,12 +93,12 @@ main { max-width:820px; margin:32px auto; padding:0 24px 60px; }
 .entry-dot {
   position:absolute; left:12px; top:18px;
   width:18px; height:18px; border-radius:50%;
-  background:var(--white); border:2px solid var(--navy);
+  background:var(--bg-card); border:2px solid var(--navy);
   display:flex; align-items:center; justify-content:center;
   font-size:9px; z-index:1;
 }
 .entry-card {
-  background:var(--white); border-radius:12px;
+  background:var(--bg-card); border-radius:12px;
   border:1px solid var(--border);
   overflow:hidden;
   box-shadow:0 1px 3px rgba(0,0,0,.05);
@@ -110,7 +112,7 @@ main { max-width:820px; margin:32px auto; padding:0 24px 60px; }
 }
 .entry-date {
   font-family:'JetBrains Mono',monospace;
-  font-size:12px; font-weight:500; color:var(--muted);
+  font-size:12px; font-weight:500; color:var(--text-muted);
 }
 .entry-title { font-size:15px; font-weight:700; color:var(--navy); margin-top:2px; }
 .entry-tags { display:flex; gap:6px; flex-wrap:wrap; }
@@ -148,7 +150,7 @@ main { max-width:820px; margin:32px auto; padding:0 24px 60px; }
 /* Empty state */
 .empty {
   text-align:center; padding:60px 20px;
-  color:var(--muted); font-size:14px;
+  color:var(--text-muted); font-size:14px;
 }
 
 /* Footer */
@@ -159,14 +161,36 @@ footer {
 
 /* Add entry form */
 .add-wrap {
-  background:var(--white); border-radius:12px;
+  background:var(--bg-card); border-radius:12px;
   border:1.5px dashed var(--border);
   padding:20px; margin-bottom:32px;
   text-align:center; cursor:pointer;
-  transition:all .15s; color:var(--muted); font-size:13px;
+  transition:all .15s; color:var(--text-muted); font-size:13px;
 }
 .add-wrap:hover { border-color:var(--navy); color:var(--navy); background:#f8f9ff; }
-</style>
+
+    /* ═══ SHARED THEME SYSTEM ═══ */
+    :root {
+      --navy:       #094e58;
+      --navy-dark:  #072e37;
+      --navy-mid:   #0d6b79;
+      --bg:         #f5f0e8;
+      --bg-card:    #ffffff;
+      --text-dark:  #122830;
+      --text-mid:   #2d5a65;
+      --text-muted: #6b8e96;
+      --orange:     #e8821e;
+      --teal:       #14b8a6;
+      --border:     #dde8ea;
+      --pill:       999px;
+    }
+    [data-theme="emerald"] { --navy:#065f46; --navy-dark:#064e3b; --navy-mid:#047857; --bg:#f0fdf4; --text-dark:#022c22; --text-mid:#166534; --orange:#f59e0b; --teal:#10b981; --border:#bbf7d0; }
+    [data-theme="charcoal"] { --navy:#1c1c2e; --navy-dark:#0f0f1a; --navy-mid:#2d2d44; --bg:#f5f5f7; --text-dark:#1c1c2e; --text-mid:#44445a; --orange:#e85d04; --teal:#4cc9f0; --border:#dcdce4; }
+    [data-theme="violet"]   { --navy:#4c1d95; --navy-dark:#2e1065; --navy-mid:#6d28d9; --bg:#f5f3ff; --text-dark:#1e1b4b; --text-mid:#4338ca; --orange:#f59e0b; --teal:#06b6d4; --border:#ddd6fe; }
+    [data-theme="rose"]     { --navy:#881337; --navy-dark:#4c0519; --navy-mid:#be123c; --bg:#fff1f2; --text-dark:#1c0508; --text-mid:#9f1239; --orange:#f97316; --teal:#0891b2; --border:#fecdd3; }
+    [data-version="1"]      { --navy:#2e3192; --navy-dark:#1e2166; --bg:#e8e8f0; --orange:#f97316; --teal:#0891b2; --border:#d4d4e8; --text-dark:#1a1a3e; --text-mid:#4a4a6a; --text-muted:#8888aa; }
+
+  </style>
 </head>
 <body>
 
@@ -227,7 +251,7 @@ footer {
 
 </main>
 
-<footer>Hak cipta 2025 ©Perpustakaan Digital &nbsp;·&nbsp; DIGILAB Repository</footer>
+<footer>Hak cipta 2026 © Natasya Adelia R. &nbsp;·&nbsp; DIGILAB Repository</footer>
 
 <script>
 const changelog = [
@@ -358,6 +382,75 @@ const changelog = [
       ]}
     ]
   }
+,
+  {
+    version: 'v0.5.0', date: '2026-06-09',
+    title: 'Tema Switcher & OG Meta Tags',
+    sections: [
+      { type:'Feat', color:'#15803d', bg:'#dcfce7', items:[
+        'Tambah 5 pilihan tema warna: Indigo (default), Emerald, Charcoal, Violet, Rose',
+        'Theme switcher via CSS data-theme attribute + localStorage persistence',
+        'OG meta tags untuk preview link WhatsApp/Telegram',
+        'Fix display nama user di header setelah login'
+      ]},
+      { type:'Fix', color:'#b45309', bg:'#fef3c7', items:[
+        'Login error feedback inline (balloon merah dalam card)',
+        'Tombol Karya Ilmiah tampil setelah login'
+      ]}
+    ]
+  },
+  {
+    version: 'v0.6.0', date: '2026-06-11',
+    title: '5 Halaman Baru SPA',
+    sections: [
+      { type:'Feat', color:'#15803d', bg:'#dcfce7', items:[
+        'Halaman PDF Viewer (#page-pdf) — embed iframe + blokir download',
+        'Halaman Informasi Penulis (#page-penulis) — profil + tabel data',
+        'Halaman Produk (#page-produk) — galeri foto + video player demo',
+        'Halaman Unggah 3-Step (#page-upload) — stepper Metadata > Berkas > Konfirmasi',
+        'Halaman Akun Saya (#page-akun) — edit profil + ubah kata sandi',
+        'pendingPage redirect: login > redirect ke halaman yang diminta',
+        'Filter Beranda diperluas: Prodi + Tahun + Pembimbing'
+      ]}
+    ]
+  },
+  {
+    version: 'v0.7.0', date: '2026-06-11',
+    title: 'Redesign V2 Meruno + Template Toggle',
+    sections: [
+      { type:'Design', color:'#7c3aed', bg:'#ede9fe', items:[
+        'Redesign total ke V2 Meruno: hero teal gelap, Playfair Display serif, italic orange',
+        'Login card glassmorphism: backdrop-filter blur + rgba border',
+        'Tombol V1/V2 Template di header: toggle antar desain Natasya navy vs Meruno teal',
+        'V1 CSS override block: desain Natasya asli tetap tersimpan via data-version=1'
+      ]},
+      { type:'Feat', color:'#15803d', bg:'#dcfce7', items:[
+        'Kredensial demo tambahan: admin / admin (tanpa domain)',
+        'Login flexible match: email atau username saja',
+        'Beranda stats: 11 Prodi, 500+ Karya, 6 Jenis, demo akun'
+      ]}
+    ]
+  },
+  {
+    version: 'v0.8.0', date: '2026-06-11',
+    title: 'Animasi iOS + Mobile Responsive',
+    sections: [
+      { type:'Feat', color:'#15803d', bg:'#dcfce7', items:[
+        'Animasi transisi halaman mirip iOS: fade + slide-up dengan spring easing',
+        'Button press: scale(0.93) + spring bounce cubic-bezier(.34,1.56,.64,1)',
+        'Popup overlay: slide-up animation dari bawah',
+        'Hamburger menu responsif di header (max 768px)',
+        'Mobile nav drawer: slide-down dengan semua menu',
+        'Full mobile responsive: stacking layout, 768px + 480px breakpoint',
+        'Tap targets minimum 44px untuk touch'
+      ]},
+      { type:'Fix', color:'#b45309', bg:'#fef3c7', items:[
+        'Hak cipta diperbarui: Natasya Adelia R. 2026',
+        'Select dropdown arrow encoding fix',
+        'Sinkronisasi tema V1/V2 + 5 warna ke changelog.html dan checklist.html'
+      ]}
+    ]
+  }
 ];
 
 
@@ -378,7 +471,6 @@ function render(data) {
     tl.innerHTML = '<div class="empty">Tidak ada entri untuk filter ini.</div>';
     return;
   }
-
   data.forEach((entry, i) => {
     const allTags = [...new Set(entry.sections.map(s => s.type))];
     const tagsHTML = allTags.map(t => `<span class="tag ${tagClass[t]||'tag-chore'}">${typeEmoji[t]||''} ${t}</span>`).join('');
@@ -419,18 +511,18 @@ function render(data) {
     `;
   });
 
-  document.getElementById('entry-count').textContent = data.length ? data[0].version : '-';
+  document.getElementById('entry-count').textContent = data.length + ' entri';
 }
 
 function filterLog(type, btn) {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  if (type === 'all') { render(changelog); return; }
-  const filtered = changelog.filter(e => e.sections.some(s => s.type === type));
+  if (type === 'all') { render([...changelog].reverse()); return; }
+  const filtered = [...changelog].filter(e => e.sections.some(s => s.type === type)).reverse();
   render(filtered);
 }
 
-render(changelog);
+render([...changelog].reverse());
 </script>
 </body>
 </html>

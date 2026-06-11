@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+<script>
+  (function(){
+    var v = localStorage.getItem('digilab-version') || '2';
+    var t = localStorage.getItem('digilab-theme') || 'indigo';
+    var html = document.documentElement;
+    if (v === '1') html.setAttribute('data-version', '1');
+    if (t && t !== 'indigo') html.setAttribute('data-theme', t);
+  })();
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Checklist — DIGILAB Repository</title>
@@ -8,23 +17,17 @@
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 :root {
-  --navy:   #2e3192;
-  --navy-dk:#1e2070;
-  --orange: #f97316;
-  --green:  #16a34a;
-  --red:    #dc2626;
-  --bg:     #eeeef5;
-  --white:  #ffffff;
-  --border: #d1d5db;
-  --text:   #1f2937;
-  --muted:  #6b7280;
+  /* Static colors not in shared theme system */
+  --green:    #16a34a;
+  --red:      #dc2626;
+  --bg-card:  #ffffff;
 }
-body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text-dark); min-height:100vh; }
 
 /* Header */
 /* ── Header ── */
     header {
-      background: #2e3192; height: 66px; padding: 0 28px;
+      background: var(--navy); height: 66px; padding: 0 28px;
       display: flex; align-items: center; justify-content: space-between;
       flex-shrink: 0; position: sticky; top: 0; z-index: 50;
       box-shadow: 0 2px 12px rgba(0,0,0,.25);
@@ -47,19 +50,19 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); 
 
 /* Page title */
 .page-head {
-  background:var(--white); border-bottom:3px solid var(--orange);
+  background:var(--bg-card); border-bottom:3px solid var(--orange);
   padding:28px 40px 20px;
 }
 .page-head h1 {
   font-size:26px; font-weight:800; color:var(--navy);
   letter-spacing:-.02em; margin-bottom:4px;
 }
-.page-head p { font-size:13px; color:var(--muted); }
+.page-head p { font-size:13px; color:var(--text-muted); }
 
 /* Stats bar */
 .stats {
   display:flex; gap:0;
-  background:var(--white); border-bottom:1px solid var(--border);
+  background:var(--bg-card); border-bottom:1px solid var(--border);
   padding:0 40px;
 }
 .stat {
@@ -68,11 +71,11 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); 
 }
 .stat:last-child { border-right:none; }
 .stat-n { font-size:22px; font-weight:800; line-height:1; }
-.stat-l { font-size:11px; color:var(--muted); margin-top:2px; font-weight:500; }
+.stat-l { font-size:11px; color:var(--text-muted); margin-top:2px; font-weight:500; }
 
 /* Progress bar */
 .progress-wrap {
-  background:var(--white); padding:16px 40px;
+  background:var(--bg-card); padding:16px 40px;
   border-bottom:1px solid var(--border);
   display:flex; align-items:center; gap:16px;
 }
@@ -89,7 +92,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); 
 main { max-width:860px; margin:32px auto; padding:0 24px 60px; }
 
 /* Phase */
-.phase { background:var(--white); border-radius:12px; margin-bottom:20px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+.phase { background:var(--bg-card); border-radius:12px; margin-bottom:20px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,.06); }
 .phase-header {
   display:flex; align-items:center; justify-content:space-between;
   padding:16px 20px; cursor:pointer; user-select:none;
@@ -103,13 +106,13 @@ main { max-width:860px; margin:32px auto; padding:0 24px 60px; }
   font-size:18px; flex-shrink:0;
 }
 .phase-name { font-size:15px; font-weight:700; }
-.phase-meta { font-size:12px; color:var(--muted); margin-top:1px; }
+.phase-meta { font-size:12px; color:var(--text-muted); margin-top:1px; }
 .phase-badge {
   padding:4px 12px; border-radius:20px;
   font-size:11px; font-weight:700;
   display:flex; align-items:center; gap:6px;
 }
-.phase-arrow { font-size:12px; color:var(--muted); margin-left:8px; transition:transform .2s; }
+.phase-arrow { font-size:12px; color:var(--text-muted); margin-left:8px; transition:transform .2s; }
 .phase-arrow.open { transform:rotate(180deg); }
 
 /* Items */
@@ -119,7 +122,7 @@ main { max-width:860px; margin:32px auto; padding:0 24px 60px; }
 .subgroup { margin-bottom:8px; }
 .subgroup-label {
   font-size:11px; font-weight:700; text-transform:uppercase;
-  letter-spacing:.07em; color:var(--muted);
+  letter-spacing:.07em; color:var(--text-muted);
   padding:10px 4px 6px; display:block;
 }
 
@@ -142,7 +145,7 @@ main { max-width:860px; margin:32px auto; padding:0 24px 60px; }
   font-size:11px; font-weight:700;
 }
 .item-text { font-size:13.5px; line-height:1.45; }
-.item.done .item-text { text-decoration:line-through; color:var(--muted); }
+.item.done .item-text { text-decoration:line-through; color:var(--text-muted); }
 
 /* Filter */
 .filter-bar {
@@ -150,8 +153,8 @@ main { max-width:860px; margin:32px auto; padding:0 24px 60px; }
 }
 .filter-btn {
   padding:7px 16px; border-radius:20px; border:1.5px solid var(--border);
-  font-size:12px; font-weight:600; cursor:pointer; background:var(--white);
-  color:var(--muted); transition:all .15s; font-family:'Inter',sans-serif;
+  font-size:12px; font-weight:600; cursor:pointer; background:var(--bg-card);
+  color:var(--text-muted); transition:all .15s; font-family:'Inter',sans-serif;
 }
 .filter-btn.active, .filter-btn:hover {
   border-color:var(--navy); color:var(--navy); background:#eef0fb;
@@ -162,7 +165,29 @@ footer {
   background:var(--navy); color:rgba(255,255,255,.6);
   text-align:center; padding:16px; font-size:12px;
 }
-</style>
+
+    /* ═══ SHARED THEME SYSTEM ═══ */
+    :root {
+      --navy:       #094e58;
+      --navy-dark:  #072e37;
+      --navy-mid:   #0d6b79;
+      --bg:         #f5f0e8;
+      --bg-card:    #ffffff;
+      --text-dark:  #122830;
+      --text-mid:   #2d5a65;
+      --text-muted: #6b8e96;
+      --orange:     #e8821e;
+      --teal:       #14b8a6;
+      --border:     #dde8ea;
+      --pill:       999px;
+    }
+    [data-theme="emerald"] { --navy:#065f46; --navy-dark:#064e3b; --navy-mid:#047857; --bg:#f0fdf4; --text-dark:#022c22; --text-mid:#166534; --orange:#f59e0b; --teal:#10b981; --border:#bbf7d0; }
+    [data-theme="charcoal"] { --navy:#1c1c2e; --navy-dark:#0f0f1a; --navy-mid:#2d2d44; --bg:#f5f5f7; --text-dark:#1c1c2e; --text-mid:#44445a; --orange:#e85d04; --teal:#4cc9f0; --border:#dcdce4; }
+    [data-theme="violet"]   { --navy:#4c1d95; --navy-dark:#2e1065; --navy-mid:#6d28d9; --bg:#f5f3ff; --text-dark:#1e1b4b; --text-mid:#4338ca; --orange:#f59e0b; --teal:#06b6d4; --border:#ddd6fe; }
+    [data-theme="rose"]     { --navy:#881337; --navy-dark:#4c0519; --navy-mid:#be123c; --bg:#fff1f2; --text-dark:#1c0508; --text-mid:#9f1239; --orange:#f97316; --teal:#0891b2; --border:#fecdd3; }
+    [data-version="1"]      { --navy:#2e3192; --navy-dark:#1e2166; --bg:#e8e8f0; --orange:#f97316; --teal:#0891b2; --border:#d4d4e8; --text-dark:#1a1a3e; --text-mid:#4a4a6a; --text-muted:#8888aa; }
+
+  </style>
 </head>
 <body>
 
@@ -228,7 +253,7 @@ footer {
 
 </main>
 
-<footer>Hak cipta 2025 ©Perpustakaan Digital &nbsp;·&nbsp; DIGILAB Repository</footer>
+<footer>Hak cipta 2026 © Natasya Adelia R. &nbsp;·&nbsp; DIGILAB Repository</footer>
 
 <script>
 const phases = [

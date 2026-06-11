@@ -169,7 +169,7 @@ footer {
       <div class="logo-sub">FAKULTAS VOKASI – UNIVERSITAS NEGERI MALANG</div>
     </div>
   </div>
-  <div class="header-right">Checklist Pengembangan</div>
+  <div style="display:flex;align-items:center;gap:12px;"><a href="index.html" style="color:rgba(255,255,255,.7);font-size:12px;text-decoration:none;padding:5px 12px;border:1px solid rgba(255,255,255,.2);border-radius:20px;transition:all .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.7)'">← Beranda</a><a href="changelog.html" style="color:rgba(255,255,255,.7);font-size:12px;text-decoration:none;">Changelog</a></div>
 </header>
 
 <div class="page-head">
@@ -278,6 +278,11 @@ const phases = [
         { text:'Halaman Informasi Penulis' },
         { text:'Halaman Produk — galeri foto + video player' },
         { text:'Halaman Login — card terpusat' },
+        { text:'Dummy login (akun demo mahasiswa & admin)' },
+        { text:'Validasi login: pesan error inline' },
+        { text:'Tombol logout di header' },
+        { text:'Tombol Masuk/Daftar di Beranda + hint kredensial' },
+        { text:'Tombol Beranda di header' },
         { text:'Halaman Karya Ilmiah user — tabel + Unggah' },
         { text:'Unggah Step 1 — form metadata' },
         { text:'Unggah Step 2 — drag & drop PDF + foto/video' },
@@ -316,6 +321,9 @@ const phases = [
       { text:'Penulisan & submit artikel Jurnal Sinta 4' },
       { text:'Publikasi di media sosial' },
       { text:'Pembuatan poster penelitian' },
+      { text:'Redesign MindMap ke tema clean/terang' },
+      { text:'Integrasi MindMap di SPA (halaman Peta Pikiran)' },
+      { text:'Push ke GitHub (jiakbar.github.io/repositoryPD)' },
       { text:'README.md & dokumentasi API lengkap' },
       { text:'User manual sistem' }
     ]
@@ -323,7 +331,37 @@ const phases = [
 ];
 
 // State: simpan status tiap item
-const state = JSON.parse(localStorage.getItem('digilab-checklist') || '{}');
+// Items yang sudah selesai dikerjakan (pre-filled oleh Claude)
+const PRESET_DONE = [
+  'Migration: tabel users',
+  'Migration: tabel program_studi (11 prodi)',
+  'Migration: tabel karya_ilmiah',
+  'Migration: tabel media_files (dokumen, foto, video)',
+  'Migration: tabel log_verifikasi',
+  'Seed data 11 program studi',
+  'Setup project Node.js + Express',
+  'Setup project Vite',
+  'Komponen Navbar (logo DigiLab, ikon akun)',
+  'Halaman Beranda — search + dropdown Jenis',
+  'Halaman Hasil Pencarian — list + pagination',
+  'Halaman Detail Dokumen — metadata + abstrak',
+  'Popup proteksi login (PDF, Penulis, Produk)',
+  'Halaman Login — card terpusat',
+  'Halaman Karya Ilmiah user — tabel + Unggah',
+  'Responsif mobile & tablet',
+  'Dummy login (akun demo mahasiswa & admin)',
+  'Validasi login: pesan error inline',
+  'Tombol logout di header',
+  'Tombol Masuk/Daftar di Beranda + hint kredensial',
+  'Tombol Beranda di header',
+  'Redesign MindMap ke tema clean/terang',
+  'Integrasi MindMap di SPA (halaman Peta Pikiran)',
+  'Push ke GitHub (jiakbar.github.io/repositoryPD)',
+];
+
+const stored = JSON.parse(localStorage.getItem('digilab-checklist') || 'null');
+const state = stored !== null ? stored : Object.fromEntries(PRESET_DONE.map(k=>[k,true]));
+if (stored === null) { localStorage.setItem('digilab-checklist', JSON.stringify(state)); }
 
 function saveState() { localStorage.setItem('digilab-checklist', JSON.stringify(state)); }
 

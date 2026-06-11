@@ -43,6 +43,13 @@ header {
   letter-spacing:-.02em; margin-bottom:4px;
 }
 .page-head p { font-size:13px; color:var(--muted); }
+.version-badge {
+  background: #1e2070; color: #fff;
+  padding: 3px 10px; border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-weight: 600; letter-spacing: .04em;
+  margin-left: 8px; vertical-align: middle;
+}
 .entry-count {
   background:var(--navy); color:#fff;
   padding:6px 14px; border-radius:20px;
@@ -166,7 +173,7 @@ footer {
       <div class="logo-sub">FAKULTAS VOKASI – UNIVERSITAS NEGERI MALANG</div>
     </div>
   </div>
-  <div class="header-right">Changelog</div>
+  <div style="display:flex;align-items:center;gap:12px;"><a href="index.html" style="color:rgba(255,255,255,.7);font-size:12px;text-decoration:none;padding:5px 12px;border:1px solid rgba(255,255,255,.2);border-radius:20px;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.7)'">← Beranda</a><a href="checklist.html" style="color:rgba(255,255,255,.7);font-size:12px;text-decoration:none;">Checklist</a></div>
 </header>
 
 <div class="page-head">
@@ -198,50 +205,134 @@ footer {
 <script>
 const changelog = [
   {
-    date: '2026-06-09',
+    version: 'v0.1.0', date: '2026-06-09',
     title: 'Setup & Analisis Awal',
     sections: [
-      {
-        type: 'Init', color: '#1d4ed8', bg: '#dbeafe',
-        items: [
-          'Inisiasi project DIGILAB Repository dari Proposal Hibah Skripsi 2026',
-          'Baca & analisis dokumen proposal penelitian (38 halaman, metode RAD)'
-        ]
-      },
-      {
-        type: 'Design', color: '#6d28d9', bg: '#faf5ff',
-        items: [
-          'Baca 16 file mockup PNG dari folder "Desain Sistem Repositori Natasya"',
-          'Baca Mindmap Repositori (4 cabang: Metodologi RAD, Fitur Utama, Alur Sistem, Tujuan Strategis)',
-          'Dokumentasi design language: header navy/indigo, aksen oranye, logo DigiLab (buku + sirkuit)'
-        ]
-      },
-      {
-        type: 'Docs', color: '#854d0e', bg: '#fef9c3',
-        items: [
-          'Buat checklist.md — 5 fase, 60+ item berdasarkan mindmap & mockup',
-          'Buat changelog.md — template log perubahan project',
-          'Buat DIGILAB_MindMap.html — visualisasi interaktif peta penelitian (mindmap + jadwal)',
-          'Buat checklist.html — halaman web checklist interaktif (bisa centang, progress bar)',
-          'Buat changelog.html — halaman web changelog dengan tampilan timeline'
-        ]
-      },
-      {
-        type: 'Chore', color: '#475569', bg: '#f1f5f9',
-        items: [
-          'Setup struktur folder: frontend/, backend/, database/, design/, docs/, tests/',
-          'Setup backend/package.json (Node.js + Express + Sequelize + JWT + multer)',
-          'Setup backend/server.js — entry point dengan health check endpoint',
-          'Setup backend/.env.example — template konfigurasi environment',
-          'Setup frontend/package.json (Vite)',
-          'Setup docker-compose.yml — MySQL + backend + frontend untuk local dev',
-          'Buat database/migrations/001_create_tables.sql — skema + seed 11 prodi + 6 kategori',
-          'Buat frontend/public/index.html — halaman awal (template, belum sesuai desain Natasya)'
-        ]
-      }
+      { type:'Init', color:'#1d4ed8', bg:'#dbeafe', items:[
+        'Inisiasi project DIGILAB Repository dari Proposal Hibah Skripsi 2026',
+        'Baca & analisis dokumen proposal penelitian (38 halaman, metode RAD)'
+      ]},
+      { type:'Design', color:'#6d28d9', bg:'#faf5ff', items:[
+        'Baca 16 file mockup PNG dari "Desain Sistem Repositori Natasya"',
+        'Dokumentasi design language: header navy/indigo, aksen oranye, logo DigiLab'
+      ]},
+      { type:'Docs', color:'#854d0e', bg:'#fef9c3', items:[
+        'Buat checklist.md — 5 fase, 60+ item berdasarkan mindmap & mockup',
+        'Buat DIGILAB_MindMap.html — visualisasi interaktif peta penelitian',
+        'Buat checklist.html & changelog.html — halaman web interaktif'
+      ]},
+      { type:'Chore', color:'#475569', bg:'#f1f5f9', items:[
+        'Setup struktur folder: frontend/, backend/, database/, design/, docs/, tests/',
+        'Setup backend (Node.js + Express + JWT + multer) & Vite frontend',
+        'Buat database/migrations/001_create_tables.sql — skema + seed'
+      ]}
+    ]
+  },
+  {
+    version: 'v0.1.1', date: '2026-06-09',
+    title: 'Migrasi Database & Persiapan GitHub',
+    sections: [
+      { type:'Refactor', color:'#c2410c', bg:'#fff7ed', items:[
+        'Migrasi database dari MySQL ke Supabase (PostgreSQL cloud)',
+        'Hapus mysql2/sequelize, tambah @supabase/supabase-js',
+        'Konversi migrations ke PostgreSQL syntax + RLS policies',
+        'Update docker-compose.yml: hapus service MySQL'
+      ]},
+      { type:'Chore', color:'#475569', bg:'#f1f5f9', items:[
+        'Buat .gitignore (exclude node_modules, .env, dist, logs)',
+        'Buat test_server_lokal.bat — jalankan backend + frontend lokal tanpa Docker'
+      ]}
+    ]
+  },
+  {
+    version: 'v0.2.0', date: '2026-06-09',
+    title: 'Frontend Landing Page',
+    sections: [
+      { type:'Design', color:'#6d28d9', bg:'#faf5ff', items:[
+        'Rebuild index.html sesuai mockup Natasya — SPA multi-halaman',
+        'Halaman: Beranda, Hasil Pencarian, Detail, Login, Karya Ilmiah',
+        'Header sticky navy, popup login guard, responsive mobile'
+      ]},
+      { type:'Feat', color:'#15803d', bg:'#dcfce7', items:[
+        'SPA navigasi tanpa reload, data demo 6 karya ilmiah',
+        'Search + filter Jenis, klik kartu ke detail, popup login guard'
+      ]}
+    ]
+  },
+  {
+    version: 'v0.2.1', date: '2026-06-09',
+    title: 'Fix Local Server & Vite Path',
+    sections: [
+      { type:'Fix', color:'#b91c1c', bg:'#fee2e2', items:[
+        'Pindah index.html ke root Vite (frontend/ bukan frontend/public/)',
+        'Rewrite test_server_lokal.bat: hapus karakter Unicode, pakai pushd/popd'
+      ]}
+    ]
+  },
+  {
+    version: 'v0.3.0', date: '2026-06-09',
+    title: 'Redesign MindMap & Integrasi Homepage',
+    sections: [
+      { type:'Design', color:'#6d28d9', bg:'#faf5ff', items:[
+        'Redesign DIGILAB_MindMap.html dari tema gelap ke tema clean/terang',
+        'Header disamakan dengan DIGILAB site, node mindmap putih + stroke berwarna',
+        'Animasi: root-pulse, float-node, badge "Hibah Skripsi 2026"'
+      ]},
+      { type:'Feat', color:'#15803d', bg:'#dcfce7', items:[
+        'Salin ke docs/mindmap.html, tambah #page-mindmap di SPA (iframe full-page)',
+        'Tombol "Peta Pikiran" di header + "← Kembali" ke Beranda di iframe'
+      ]}
+    ]
+  },
+  {
+    version: 'v0.3.1', date: '2026-06-09',
+    title: 'Push ke GitHub & GitHub Pages',
+    sections: [
+      { type:'Chore', color:'#475569', bg:'#f1f5f9', items:[
+        'Push initial commit ke github.com/JIAkbar/repositoryPD (26 files)',
+        'Setup GitHub Pages dari folder /docs',
+        'Rename frontend/ → docs/ untuk kompatibilitas GitHub Pages'
+      ]}
+    ]
+  },
+  {
+    version: 'v0.4.0', date: '2026-06-09',
+    title: 'Autentikasi Dummy & Restrukturisasi',
+    sections: [
+      { type:'Feat', color:'#15803d', bg:'#dcfce7', items:[
+        'Dummy login: mahasiswa@vokasi.um.ac.id/digilab123 & admin@vokasi.um.ac.id/admin123',
+        'doLogin() + showLoginError() + doLogout() — validasi & state management',
+        'Tombol "↩ Keluar" di header (muncul setelah login), tombol "Masuk/Daftar" di Beranda',
+        'Tombol "⌂ Beranda" di header'
+      ]},
+      { type:'Refactor', color:'#c2410c', bg:'#fff7ed', items:[
+        'Hapus folder frontend/, docs/ jadi satu-satunya sumber frontend',
+        'Buat preview_frontend.bat — jalankan frontend tanpa backend'
+      ]},
+      { type:'Fix', color:'#b91c1c', bg:'#fee2e2', items:[
+        'Perbaiki truncasi index.html (39246 byte): migrasi ke Python write',
+        'Perbaiki mindmap blank: double requestAnimationFrame + dispatch resize ke iframe',
+        'Perbaiki "← Kembali" iframe: ganti history.back() dengan window.parent.nav()'
+      ]}
+    ]
+  },
+  {
+    version: 'v0.4.1', date: '2026-06-09',
+    title: 'Bugfix MindMap & Navigasi Header',
+    sections: [
+      { type:'Fix', color:'#b91c1c', bg:'#fee2e2', items:[
+        'Perbaiki docs/mindmap.html terpotong 25110 byte: switchTab(), DOMContentLoaded, renderJadwal() hilang',
+        'Tombol Jadwal sekarang berfungsi (switchTab + renderJadwal)',
+        'MindMap render saat halaman dimuat (DOMContentLoaded → double rAF)'
+      ]},
+      { type:'Feat', color:'#15803d', bg:'#dcfce7', items:[
+        'Tambah tombol Changelog & Checklist di header SPA',
+        'Salin changelog.html & checklist.html ke docs/ untuk akses via Vite & GitHub Pages'
+      ]}
     ]
   }
 ];
+
 
 const tagClass = {
   Init:'tag-init', Feat:'tag-feat', Fix:'tag-fix',
@@ -291,7 +382,7 @@ function render(data) {
           <div class="entry-header">
             <div>
               <div class="entry-date">${entry.date}</div>
-              <div class="entry-title">${entry.title}</div>
+              <div class="entry-title">${entry.title} <span class="version-badge">${entry.version}</span></div>
             </div>
             <div class="entry-tags">${tagsHTML}</div>
           </div>
@@ -301,7 +392,7 @@ function render(data) {
     `;
   });
 
-  document.getElementById('entry-count').textContent = `${data.length} entri`;
+  document.getElementById('entry-count').textContent = data.length ? data[0].version : '-';
 }
 
 function filterLog(type, btn) {
