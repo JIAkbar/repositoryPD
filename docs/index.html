@@ -228,9 +228,13 @@
 
     /* ═══════════════════════════ FOOTER ═══ */
     footer {
-      background: var(--navy); padding: 15px; text-align: center;
+      background: var(--navy); padding: 14px 20px; text-align: center;
       font-size: 12px; color: rgba(255,255,255,.75); flex-shrink: 0; letter-spacing: .2px;
     }
+    .footer-links { display:flex; align-items:center; justify-content:center; gap:6px; margin-top:8px; flex-wrap:wrap; }
+    .footer-link { color:rgba(255,255,255,.5); text-decoration:none; font-size:11px; font-weight:600; display:inline-flex; align-items:center; gap:4px; padding:4px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.15); transition:background .15s,color .15s; }
+    .footer-link:hover { background:rgba(255,255,255,.1); color:#fff; }
+    .footer-sep { color:rgba(255,255,255,.2); font-size:10px; }
 
     /* ═══════════════════════════ PAGE SYSTEM ═══ */
     main { flex: 1; display: flex; flex-direction: column; }
@@ -421,6 +425,103 @@
     /* beranda-search-card styles consolidated above */
 
 
+
+
+    /* ── REGISTER FORM ── */
+    .login-divider { display:flex; align-items:center; gap:10px; margin:14px 0 10px; }
+    .login-divider::before,.login-divider::after { content:''; flex:1; height:1px; background:rgba(255,255,255,.15); }
+    .login-divider span { font-size:11px; color:rgba(255,255,255,.4); letter-spacing:1px; }
+    .btn-register-link { background:none; border:1.5px solid rgba(255,255,255,.3); border-radius:var(--pill); color:rgba(255,255,255,.8); font-family:'Nunito',sans-serif; font-weight:700; font-size:13px; letter-spacing:.5px; padding:10px 28px; cursor:pointer; width:100%; transition:background .2s,border-color .2s; margin-top:2px; }
+    .btn-register-link:hover { background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.55); }
+    .login-switch { font-size:12px; color:rgba(255,255,255,.45); margin-top:14px; }
+    .login-switch a { color:rgba(255,255,255,.75); font-weight:700; cursor:pointer; text-decoration:underline; }
+    .login-switch a:hover { color:#fff; }
+    .reg-select { width:100%; height:44px; background:#fefce8; border:none; border-radius:var(--pill); color:var(--text-dark); font-size:14px; padding:0 20px; outline:none; font-family:'Lato',sans-serif; cursor:pointer; transition:box-shadow .2s; }
+    .reg-select:focus { box-shadow:0 0 0 3px rgba(249,115,22,.3); }
+    .reg-select option { background:#fff; color:#1a1a3e; }
+    .login-input-half { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .reg-label { font-size:11px; font-weight:700; color:rgba(255,255,255,.5); letter-spacing:.8px; text-transform:uppercase; display:block; margin-bottom:5px; text-align:left; }
+    .reg-field { margin-bottom:10px; }
+    .reg-title { font-family:'Nunito',sans-serif; font-weight:900; font-size:18px; color:#fff; margin-bottom:4px; }
+    .reg-subtitle { font-size:11px; color:rgba(255,255,255,.45); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:18px; }
+    /* Success overlay */
+    .reg-success { display:none; flex-direction:column; align-items:center; justify-content:center; padding:10px 0; }
+    .reg-success-icon { width:64px; height:64px; border-radius:50%; background:rgba(34,197,94,.2); display:flex; align-items:center; justify-content:center; margin-bottom:14px; }
+    .reg-success h3 { font-family:'Nunito',sans-serif; font-weight:900; font-size:20px; color:#fff; margin-bottom:8px; }
+    .reg-success p { font-size:13px; color:rgba(255,255,255,.6); line-height:1.6; text-align:center; }
+
+
+    /* ── SETTINGS DROPDOWN SWATCHES ── */
+    .sd-theme { width:28px; height:28px; border-radius:50%; background:var(--c); cursor:pointer; border:2px solid transparent; transition:transform .15s,border-color .15s,opacity .2s; }
+    .sd-theme:hover { transform:scale(1.15); }
+    .sd-theme.active { border-color:#fff; box-shadow:0 0 0 2px var(--c); }
+    .sd-themes-wrap { transition:opacity .2s; }
+    .sd-themes-wrap.disabled { opacity:.3; pointer-events:none; }
+    .sd-themes-label-note { font-size:10px; color:#aaa; margin-left:6px; font-style:italic; display:none; }
+    .sd-themes-label-note.show { display:inline; }
+
+
+    /* ── WELCOME POPUP ── */
+    .welcome-overlay {
+      position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;
+      display:flex;align-items:center;justify-content:center;
+      opacity:0;pointer-events:none;transition:opacity .25s;
+    }
+    .welcome-overlay.show { opacity:1;pointer-events:all; }
+    .welcome-popup {
+      background:#fff;border-radius:20px;padding:36px 32px 28px;
+      text-align:center;max-width:340px;width:90%;
+      transform:translateY(24px) scale(.95);transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+      box-shadow:0 24px 60px rgba(0,0,0,.18);position:relative;
+    }
+    .welcome-overlay.show .welcome-popup { transform:translateY(0) scale(1); }
+    .welcome-avatar-big {
+      width:72px;height:72px;border-radius:50%;background:var(--navy);
+      display:flex;align-items:center;justify-content:center;
+      font-family:'Nunito',sans-serif;font-weight:900;font-size:28px;color:#fff;
+      margin:0 auto 14px;border:3px solid var(--bg);
+      box-shadow:0 4px 16px rgba(46,49,146,.3);
+    }
+    .welcome-popup h2 { font-family:'Nunito',sans-serif;font-weight:900;font-size:20px;color:var(--text-dark);margin-bottom:6px; }
+    .welcome-popup p { font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:16px; }
+    .welcome-role-badge {
+      display:inline-block;padding:3px 14px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:18px;
+    }
+    .welcome-role-badge.mahasiswa { background:#e0f2fe;color:#0369a1; }
+    .welcome-role-badge.admin     { background:#fef3c7;color:#92400e; }
+    .welcome-progress {
+      height:3px;background:#f0f0f8;border-radius:999px;overflow:hidden;margin-bottom:14px;
+    }
+    .welcome-progress-bar {
+      height:100%;background:var(--navy);border-radius:999px;width:100%;
+      transform-origin:left;animation:progressShrink 3s linear forwards;
+    }
+    @keyframes progressShrink { from{transform:scaleX(1)} to{transform:scaleX(0)} }
+    .welcome-close {
+      background:none;border:none;font-size:12px;color:var(--text-muted);cursor:pointer;
+      font-weight:600;transition:color .15s;
+    }
+    .welcome-close:hover { color:var(--text-dark); }
+    .welcome-popup-wave {
+      position:absolute;top:0;left:0;right:0;height:6px;border-radius:20px 20px 0 0;
+      background:linear-gradient(90deg,var(--navy),var(--orange));
+    }
+
+
+    /* ── LOGOUT CONFIRM POPUP ── */
+    .logout-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s;}
+    .logout-overlay.show{opacity:1;pointer-events:all;}
+    .logout-box{background:#fff;border-radius:16px;padding:32px 28px 24px;text-align:center;max-width:300px;width:90%;transform:scale(.93);transition:transform .25s cubic-bezier(.34,1.56,.64,1);box-shadow:0 16px 48px rgba(0,0,0,.18);}
+    .logout-overlay.show .logout-box{transform:scale(1);}
+    .logout-icon{width:52px;height:52px;border-radius:50%;background:#fee2e2;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;}
+    .logout-box h3{font-family:'Nunito',sans-serif;font-weight:900;font-size:17px;color:var(--text-dark);margin-bottom:6px;}
+    .logout-box p{font-size:13px;color:var(--text-muted);margin-bottom:20px;}
+    .logout-actions{display:flex;gap:10px;justify-content:center;}
+    .logout-actions button{padding:9px 22px;border-radius:999px;border:none;font-weight:700;font-size:13px;cursor:pointer;transition:opacity .15s;}
+    .btn-cancel-logout{background:var(--bg);color:var(--text-mid);}
+    .btn-cancel-logout:hover{opacity:.75;}
+    .btn-confirm-logout{background:#ef4444;color:#fff;}
+    .btn-confirm-logout:hover{opacity:.85;}
 
     /* Mindmap full page */
     #page-mindmap { flex-direction: column; background: var(--bg); min-height: calc(100vh - 66px); }
@@ -1073,17 +1174,11 @@
     </div>
   </div>
   <div class="header-nav-desktop" style="display:flex;align-items:center;gap:6px;flex-wrap:nowrap;flex-shrink:0;">
-    <a class="btn-nav btn-nav-icon" href="changelog.html" title="Changelog" aria-label="Changelog">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
-    </a>
-    <a class="btn-nav btn-nav-icon" href="checklist.html" title="Checklist">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-    </a>
     <button class="btn-nav" onclick="nav('beranda')" title="Beranda">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
       Beranda
     </button>
-    <button class="btn-nav btn-nav-accent" onclick="nav('mindmap')" title="Peta Pengembangan">
+    <button class="btn-nav btn-nav-accent" onclick="nav('mindmap')" title="Peta Pikiran">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="22"/><line x1="2" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="22" y2="12"/><line x1="4.22" y1="4.22" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.78" y2="19.78"/><line x1="19.78" y1="4.22" x2="16.24" y2="7.76"/><line x1="7.76" y1="16.24" x2="4.22" y2="19.78"/></svg>
       Peta Pikiran
     </button>
@@ -1091,34 +1186,55 @@
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
       Karya Ilmiah
     </button>
-    <button class="btn-version-toggle" id="btn-version" onclick="toggleVersion()" title="Ganti template desain">
-      <span class="v-badge" id="version-badge">V2</span>
-      Template
-    </button>
-    <div id="theme-switcher">
-      <button class="btn-nav" id="btn-theme" onclick="toggleThemePanel()" title="Ganti Tema">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 0 20C6.5 22 2 17.5 2 12S6.5 2 12 2z" fill="currentColor" opacity=".2"/><circle cx="12" cy="12" r="4" fill="currentColor" opacity=".5"/></svg>
-        Tema
+
+    <!-- ⚙ Settings Dropdown -->
+    <div style="position:relative;" id="settings-wrap">
+      <button class="btn-nav" id="btn-settings" onclick="toggleSettings(event)" title="Pengaturan tampilan">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Tampilan
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6,9 12,15 18,9"/></svg>
       </button>
-      <div id="theme-panel">
-        <p>Pilih Tema</p>
-        <div class="theme-options">
-          <div class="theme-option-wrap"><div class="theme-swatch active" data-t="indigo"  onclick="setTheme('indigo')"></div><div class="theme-label">Indigo</div></div>
-          <div class="theme-option-wrap"><div class="theme-swatch" data-t="emerald"  onclick="setTheme('emerald')"></div><div class="theme-label">Emerald</div></div>
-          <div class="theme-option-wrap"><div class="theme-swatch" data-t="charcoal" onclick="setTheme('charcoal')"></div><div class="theme-label">Charcoal</div></div>
-          <div class="theme-option-wrap"><div class="theme-swatch" data-t="violet"   onclick="setTheme('violet')"></div><div class="theme-label">Violet</div></div>
-          <div class="theme-option-wrap"><div class="theme-swatch" data-t="rose"     onclick="setTheme('rose')"></div><div class="theme-label">Rose</div></div>
+      <div id="settings-dropdown" style="display:none;position:absolute;top:calc(100% + 10px);right:0;background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.15);min-width:240px;overflow:hidden;z-index:300;">
+        <!-- Template toggle -->
+        <div style="padding:14px 16px 10px;border-bottom:1px solid var(--border);">
+          <div style="font-size:11px;font-weight:700;color:#888;letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px;">Template</div>
+          <div style="display:flex;background:#f4f4f8;border-radius:8px;padding:3px;gap:3px;">
+            <button id="sd-v1" onclick="setVersionFromSettings('1')" style="flex:1;height:32px;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;background:transparent;color:#888;">
+              V1
+            </button>
+            <button id="sd-v2" onclick="setVersionFromSettings('2')" style="flex:1;height:32px;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;background:var(--navy);color:#fff;">
+              V2
+            </button>
+          </div>
+        </div>
+        <!-- Theme picker -->
+        <div style="padding:12px 16px 14px;">
+          <div style="font-size:11px;font-weight:700;color:#888;letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px;">Tema Warna</div>
+          <div class="sd-themes-wrap" id="sd-themes-wrap" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+            <div class="sd-theme" data-t="indigo"  onclick="setTheme('indigo')"  style="--c:#2e3192" title="Indigo"></div>
+            <div class="sd-theme" data-t="emerald" onclick="setTheme('emerald')" style="--c:#065f46" title="Emerald"></div>
+            <div class="sd-theme" data-t="charcoal" onclick="setTheme('charcoal')" style="--c:#1c1c2e" title="Charcoal"></div>
+            <div class="sd-theme" data-t="violet"  onclick="setTheme('violet')"  style="--c:#4c1d95" title="Violet"></div>
+            <div class="sd-theme" data-t="rose"    onclick="setTheme('rose')"    style="--c:#881337" title="Rose"></div>
+          </div>
+          <div style="font-size:10px;color:#bbb;font-style:italic;margin-top:6px;" id="sd-theme-note" style="display:none;"></div>
         </div>
       </div>
     </div>
+
+    <!-- User / Login -->
     <button class="btn-nav btn-nav-user" onclick="toggleUserMenu()" title="Akun / Login" id="btn-user-icon">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
     </button>
+    <a href="mahasiswa.html" class="btn-nav" id="btn-mahasiswa-portal" style="display:none;text-decoration:none;align-items:center;gap:5px;font-size:12px;font-weight:700;background:var(--teal);color:#fff;border-radius:var(--pill);padding:0 14px;height:32px;" title="Portal Mahasiswa">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+      <span class="portal-label">Portal Saya</span>
+    </a>
     <a href="admin.html" class="btn-nav" id="btn-admin-panel" style="display:none;text-decoration:none;align-items:center;gap:5px;font-size:12px;font-weight:700;background:var(--orange);color:#fff;border-radius:var(--pill);padding:0 14px;height:32px;" title="Admin Panel">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 2.18l7 3.12V11c0 4.52-3.07 8.74-7 9.93-3.93-1.19-7-5.41-7-9.93V6.3l7-3.12z"/></svg>
       Admin Panel
     </a>
-    <button class="btn-nav btn-nav-logout" id="btn-logout" onclick="doLogout()" style="display:none;" title="Keluar">
+    <button class="btn-nav btn-nav-logout" id="btn-logout" onclick="openLogoutConfirm()" style="display:none;" title="Keluar">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16,17 21,12 16,7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
       Keluar
     </button>
@@ -1337,13 +1453,82 @@
           <div class="login-logo-name">DigiLab</div>
           <div class="login-logo-repo">REPOSITORY</div>
         </div>
-        <input class="login-input" type="email" id="login-email" placeholder="Masukkan email"
-          onkeydown="if(event.key==='Enter') document.getElementById('login-pass').focus()" />
-        <input class="login-input" type="password" id="login-pass" placeholder="Masukkan kata sandi"
-          onkeydown="if(event.key==='Enter') doLogin()" />
-        <div id="login-error" class="login-error-box" style="display:none;"></div>
-        <button class="btn-login-submit" onclick="doLogin()">LOGIN</button>
-        <div class="login-back" onclick="nav('beranda')">← Kembali ke Beranda</div>
+        <!-- LOGIN FORM -->
+        <div id="login-form-view">
+          <input class="login-input" type="email" id="login-email" placeholder="Masukkan email"
+            onkeydown="if(event.key==='Enter') document.getElementById('login-pass').focus()" />
+          <input class="login-input" type="password" id="login-pass" placeholder="Masukkan kata sandi"
+            onkeydown="if(event.key==='Enter') doLogin()" />
+          <div id="login-error" class="login-error-box" style="display:none;"></div>
+          <button class="btn-login-submit" onclick="doLogin()">LOGIN</button>
+          <div class="login-divider"><span>ATAU</span></div>
+          <button class="btn-register-link" onclick="showRegister()">Daftar Akun Mahasiswa</button>
+          <div class="login-back" onclick="nav('beranda')" style="margin-top:14px;">← Kembali ke Beranda</div>
+        </div>
+
+        <!-- REGISTER FORM -->
+        <div id="register-form-view" style="display:none;">
+          <div class="reg-title">Buat Akun</div>
+          <div class="reg-subtitle">Registrasi Mahasiswa</div>
+          <div class="reg-field">
+            <label class="reg-label">Nama Lengkap</label>
+            <input class="login-input" type="text" id="reg-nama" placeholder="Nama lengkap sesuai KTP" style="margin-bottom:0;">
+          </div>
+          <div class="login-input-half">
+            <div class="reg-field">
+              <label class="reg-label">NIM</label>
+              <input class="login-input" type="text" id="reg-nim" placeholder="2202137XXXXX" style="margin-bottom:0;">
+            </div>
+            <div class="reg-field">
+              <label class="reg-label">Angkatan</label>
+              <input class="login-input" type="text" id="reg-angkatan" placeholder="2022" style="margin-bottom:0;">
+            </div>
+          </div>
+          <div class="reg-field">
+            <label class="reg-label">Program Studi</label>
+            <select class="reg-select" id="reg-prodi">
+              <option value="">Pilih program studi...</option>
+              <option>D4 Perpustakaan Digital</option>
+              <option>D3 Teknologi Informasi</option>
+              <option>D4 Manajemen Informatika</option>
+              <option>D3 Akuntansi</option>
+              <option>D4 Akuntansi Perpajakan</option>
+              <option>D3 Desain Komunikasi Visual</option>
+              <option>D4 Desain Grafis</option>
+              <option>D3 Teknik Mesin</option>
+              <option>D4 Teknologi Rekayasa Mekatronika</option>
+              <option>D3 Teknik Elektronika</option>
+              <option>D4 Teknik Elektronika</option>
+            </select>
+          </div>
+          <div class="reg-field">
+            <label class="reg-label">Email Kampus</label>
+            <input class="login-input" type="email" id="reg-email" placeholder="nim@students.um.ac.id" style="margin-bottom:0;">
+          </div>
+          <div class="login-input-half">
+            <div class="reg-field">
+              <label class="reg-label">Kata Sandi</label>
+              <input class="login-input" type="password" id="reg-pass" placeholder="Min. 8 karakter" style="margin-bottom:0;">
+            </div>
+            <div class="reg-field">
+              <label class="reg-label">Konfirmasi</label>
+              <input class="login-input" type="password" id="reg-pass2" placeholder="Ulangi sandi" style="margin-bottom:0;">
+            </div>
+          </div>
+          <div id="reg-error" class="login-error-box" style="display:none;margin-top:6px;"></div>
+          <button class="btn-login-submit" onclick="doRegister()" style="margin-top:14px;">DAFTAR</button>
+          <div class="login-switch">Sudah punya akun? <a onclick="showLogin()">Masuk di sini</a></div>
+        </div>
+
+        <!-- SUCCESS VIEW -->
+        <div id="register-success-view" class="reg-success">
+          <div class="reg-success-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+          </div>
+          <h3>Pendaftaran Terkirim!</h3>
+          <p>Akun Anda sedang diverifikasi oleh pustakawan.<br>Anda akan menerima notifikasi melalui email setelah akun diaktifkan.</p>
+          <button class="btn-login-submit" onclick="showLogin()" style="margin-top:20px;width:100%;">Kembali ke Login</button>
+        </div>
       </div>
     </div>
   </section>
@@ -1383,7 +1568,20 @@
 
 </main>
 
-<footer>© 2026 Natasya Adelia R. — DIGILAB Repository · Fakultas Vokasi, Universitas Negeri Malang</footer>
+<footer>
+  <div>© 2026 Natasya Adelia R. — DIGILAB Repository · Fakultas Vokasi, Universitas Negeri Malang</div>
+  <div class="footer-links">
+    <a class="footer-link" href="changelog.html" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      Changelog
+    </a>
+    <span class="footer-sep">·</span>
+    <a class="footer-link" href="checklist.html" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Checklist
+    </a>
+  </div>
+</footer>
 
 <!-- OVERLAY LOGIN POPUP -->
 <div class="overlay" id="overlay" onclick="closePopupOutside(event)">
@@ -1468,13 +1666,50 @@ function nav(page) {
   }, current ? 120 : 0);
 }
 function toggleUserMenu() {
-  nav(loggedIn ? 'karya' : 'login');
+  if (!loggedIn) { nav('login'); return; }
+  if (currentUser && currentUser.role === 'admin') {
+    window.location.href = 'admin.html';
+  } else if (currentUser && currentUser.role === 'mahasiswa') {
+    window.location.href = 'mahasiswa.html';
+  } else {
+    nav('login');
+  }
 }
 
 /* ─── SEARCH ─── */
+function showSearchToast(msg) {
+  var t = document.getElementById('search-toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'search-toast';
+    t.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a3e;color:#fff;padding:12px 22px;border-radius:999px;font-size:13px;font-weight:600;font-family:"Lato",sans-serif;box-shadow:0 6px 24px rgba(0,0,0,.25);z-index:99999;opacity:0;transition:opacity .22s,transform .22s;pointer-events:none;white-space:nowrap;display:flex;align-items:center;gap:8px;';
+    t.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span></span>';
+    document.body.appendChild(t);
+  }
+  t.querySelector('span').textContent = msg;
+  t.style.opacity = '1';
+  t.style.transform = 'translateX(-50%) translateY(0)';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(function() {
+    t.style.opacity = '0';
+    t.style.transform = 'translateX(-50%) translateY(10px)';
+  }, 2800);
+}
+
 function doSearch(from) {
   const kw    = (document.getElementById('kw-' + from)?.value || '').trim();
   const jenis = document.getElementById('jenis-' + from)?.value || '';
+
+  if (kw.length > 0 && kw.length < 3) {
+    showSearchToast('Ketik minimal 3 huruf untuk pencarian.');
+    document.getElementById('kw-' + from)?.focus();
+    return;
+  }
+  if (!kw && !jenis) {
+    showSearchToast('Silakan ketik judul, penulis, atau kata kunci terlebih dahulu.');
+    document.getElementById('kw-' + from)?.focus();
+    return;
+  }
 
   let hasil = KARYA_DATA;
   if (kw) {
@@ -1567,9 +1802,8 @@ function closePopupOutside(e) { if (e.target === document.getElementById('overla
 
 /* ─── LOGIN ─── */
 const DUMMY_USERS = [
-  { email: 'admin',                      pass: 'admin',      nama: 'Admin Pustakawan',  role: 'admin'     },
-  { email: 'admin@vokasi.um.ac.id',      pass: 'admin123',   nama: 'Admin Pustakawan',  role: 'admin'     },
-  { email: 'mahasiswa@vokasi.um.ac.id',  pass: 'digilab123', nama: 'Natasya Adelia R.', role: 'mahasiswa' },
+  { email: 'admin', pass: 'admin', nama: 'Admin Pustakawan',  role: 'admin'     },
+  { email: 'mhs',   pass: 'mhs',   nama: 'Natasya Adelia R.', role: 'mahasiswa' },
 ];
 
 /* ── THEME SWITCHER ── */
@@ -1621,11 +1855,16 @@ function doLogin() {
     var ab = document.getElementById('btn-admin-panel');
     if (ab) ab.style.display = 'inline-flex';
   }
+  if (user.role === 'mahasiswa') {
+    var mb = document.getElementById('btn-mahasiswa-portal');
+    if (mb) {
+      mb.style.display = 'inline-flex';
+      var span = mb.querySelector('.portal-label');
+      if (span) span.textContent = (user.nama || 'Mahasiswa').split(' ')[0];
+    }
+  }
   // Tampilkan nama user di header
-  const btnUser = document.getElementById('btn-user-icon');
-  const firstName = user.nama.split(' ')[0];
-  btnUser.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span style="max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${firstName}</span>`;
-  btnUser.title = user.nama;
+  if (document.getElementById('btn-user-icon')) document.getElementById('btn-user-icon').style.display = 'none';
   // Simpan user ke localStorage untuk sync admin.html
   localStorage.setItem('digilab-user', JSON.stringify({name: user.nama, email: user.email, role: user.role}));
   if (user.role === 'admin') {
@@ -1633,9 +1872,8 @@ function doLogin() {
     window.location.href = 'admin.html';
     return;
   }
-  renderKarya(MY_KARYA);
-  closePopup();
-  nav('karya');
+  // Mahasiswa → redirect ke portal mahasiswa
+  window.location.href = 'mahasiswa.html';
 }
 
 function showLoginError(msg) {
@@ -1650,145 +1888,14 @@ function doLogout() {
   loggedIn = false;
   currentUser = null;
   localStorage.removeItem('digilab-user');
+  sessionStorage.removeItem('digilab-welcome-shown');
   document.getElementById('btn-logout').style.display = 'none';
+  var ab = document.getElementById('btn-admin-panel'); if (ab) ab.style.display = 'none';
+  var mb = document.getElementById('btn-mahasiswa-portal'); if (mb) mb.style.display = 'none';
   // Reset header user button
-  const btnUser = document.getElementById('btn-user-icon');
-  btnUser.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
-  btnUser.title = 'Akun / Login';
-  const err = document.getElementById('login-error');
-  if (err) { err.textContent = ''; err.style.display = 'none'; }
-  document.getElementById('login-email').value = '';
-  document.getElementById('login-pass').value  = '';
+  var _bu = document.getElementById('btn-user-icon'); if(_bu){ _bu.style.display=''; _bu.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>'; }
+  closeLogoutConfirm();
   nav('beranda');
-}
-
-/* ─── RENDER KARYA ─── */
-function renderKarya(data) {
-  const stMap = {
-    disetujui: ['st-disetujui', '\u2713 Disetujui'],
-    pending:   ['st-pending',   '\u23f3 Menunggu'],
-    ditolak:   ['st-ditolak',   '\u2715 Ditolak'],
-    revisi:    ['st-revisi',    '\u21a9 Revisi'],
-  };
-  document.getElementById('karya-tbody').innerHTML = data.length
-    ? data.map(k => {
-        const [cls, label] = stMap[k.status] || ['st-pending', k.status];
-        return '<tr>'
-          + '<td>' + k.no + '</td>'
-          + '<td>' + k.judul + '</td>'
-          + '<td>' + k.jenis + '</td>'
-          + '<td><span class="status-badge ' + cls + '">' + label + '</span></td>'
-          + '<td><button style="background:none;border:none;color:var(--navy);cursor:pointer;font-weight:700;font-size:12px;">Lihat</button></td>'
-          + '</tr>';
-      }).join('')
-    : '<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--text-muted)">Belum ada karya yang diunggah.</td></tr>';
-}
-
-
-/* ─── pendingPage — redirect after login ─── */
-let pendingPage = null;
-
-/* ─── override showPopup to capture pendingPage ─── */
-const _origShowPopup = showPopup;
-function showPopup(type) {
-  const destMap = { PDF: 'pdf', Penulis: 'penulis', Produk: 'produk' };
-  pendingPage = destMap[type] || null;
-  _origShowPopup(type);
-}
-
-/* ─── patch popup LOGIN button ─── */
-function popupLogin() {
-  closePopup();
-  nav('login');
-}
-
-/* ─── patch doLogin: redirect to pendingPage if set ─── */
-(function() {
-  const _orig = doLogin;
-  window.doLogin = function() {
-    _orig();
-    if (loggedIn && pendingPage) {
-      const dest = pendingPage;
-      pendingPage = null;
-      openProtectedPage(dest);
-    }
-  };
-})();
-
-/* ─── open PDF/Penulis/Produk only when logged in ─── */
-function openProtectedPage(page) {
-  if (!loggedIn) { showPopup(page === 'pdf' ? 'PDF' : page === 'penulis' ? 'Penulis' : 'Produk'); return; }
-  if (page === 'pdf')     openPDF();
-  if (page === 'penulis') openPenulis();
-  if (page === 'produk')  openProduk();
-}
-
-/* ─── PDF ─── */
-function openPDF() {
-  const karya = window._currentKarya;
-  const title = karya ? karya.judul : 'Dokumen PDF';
-  document.getElementById('pdf-title').textContent = title;
-  document.getElementById('pdf-badge').textContent = 'PDF';
-  // Demo: use a sample PDF url (browser built-in viewer)
-  const demoUrl = 'https://www.w3.org/WAI/WCAG21/Techniques/pdf/pdf-sample.pdf';
-  document.getElementById('pdf-iframe').src = demoUrl;
-  nav('pdf');
-}
-
-/* ─── Penulis ─── */
-const DUMMY_PENULIS = {
-  nama:    'Natasya Adelia R.',
-  nim:     '220213704262',
-  prodi:   'D4 Teknologi Rekayasa Perangkat Lunak',
-  angkatan:'2022',
-  jk:      'Perempuan',
-  email:   'natasya.adelia@student.um.ac.id',
-};
-function openPenulis() {
-  const p = DUMMY_PENULIS;
-  document.getElementById('penulis-nama').textContent = p.nama;
-  document.getElementById('penulis-prodi').textContent = p.prodi;
-  const rows = [
-    ['NIM', p.nim],
-    ['Program Studi', p.prodi],
-    ['Angkatan', p.angkatan],
-    ['Jenis Kelamin', p.jk],
-    ['Email', p.email],
-  ];
-  document.getElementById('penulis-tbody').innerHTML = rows.map(([k,v]) =>
-    `<tr><td>${k}</td><td>${v}</td></tr>`).join('');
-  nav('penulis');
-}
-
-/* ─── Produk ─── */
-const DUMMY_FOTO = [
-  { emoji: '🖥️', label: 'Tampilan Beranda' },
-  { emoji: '📊', label: 'Dashboard Admin' },
-  { emoji: '📱', label: 'Tampilan Mobile' },
-  { emoji: '🔍', label: 'Fitur Pencarian' },
-];
-function openProduk() {
-  const karya = window._currentKarya;
-  document.getElementById('produk-judul').textContent = karya ? karya.judul : 'Produk Karya';
-
-  // foto grid
-  const grid = document.getElementById('produk-foto-grid');
-  grid.innerHTML = DUMMY_FOTO.map(f => `
-    <div class="foto-card" title="${f.label}">
-      <div class="foto-placeholder">${f.emoji}</div>
-    </div>`).join('');
-
-  // video
-  const vrow = document.getElementById('produk-video-row');
-  vrow.innerHTML = `
-    <div class="video-thumb" onclick="alert('Demo: video tidak tersedia dalam mode demo.')">
-      <div style="position:absolute;inset:0;background:linear-gradient(135deg,#1e2166,#3730a3);opacity:.85;"></div>
-      <div class="play-btn">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--navy)"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-      </div>
-      <div class="thumb-label">Demo Video Produk</div>
-    </div>`;
-  nav('produk');
 }
 
 /* ─── update detail buttons to use openProtectedPage ─── */
@@ -2039,6 +2146,160 @@ document.addEventListener('click', function(e) {
   if (!mn || !btn) return;
   if (!mn.contains(e.target) && !btn.contains(e.target)) { mn.classList.remove('open'); btn.classList.remove('open'); }
 });
+
+
+// ── REGISTER TOGGLE ──
+function showRegister() {
+  document.getElementById('login-form-view').style.display = 'none';
+  document.getElementById('register-form-view').style.display = 'block';
+  document.getElementById('register-success-view').style.display = 'none';
+  document.getElementById('reg-error').style.display = 'none';
+}
+function showLogin() {
+  document.getElementById('login-form-view').style.display = 'block';
+  document.getElementById('register-form-view').style.display = 'none';
+  document.getElementById('register-success-view').style.display = 'none';
+  document.getElementById('login-error').style.display = 'none';
+}
+
+// ── REGISTER SUBMIT ──
+function doRegister() {
+  var nama   = document.getElementById('reg-nama').value.trim();
+  var nim    = document.getElementById('reg-nim').value.trim();
+  var ang    = document.getElementById('reg-angkatan').value.trim();
+  var prodi  = document.getElementById('reg-prodi').value;
+  var email  = document.getElementById('reg-email').value.trim();
+  var pass   = document.getElementById('reg-pass').value;
+  var pass2  = document.getElementById('reg-pass2').value;
+  var errEl  = document.getElementById('reg-error');
+
+  function showErr(msg) { errEl.textContent = msg; errEl.style.display = 'block'; }
+
+  if (!nama || !nim || !ang || !prodi || !email || !pass || !pass2) {
+    showErr('⚠ Semua kolom wajib diisi.'); return;
+  }
+  if (!/^[0-9]{10,13}$/.test(nim)) {
+    showErr('⚠ NIM harus berupa angka 10–13 digit.'); return;
+  }
+  if (pass.length < 8) {
+    showErr('⚠ Kata sandi minimal 8 karakter.'); return;
+  }
+  if (pass !== pass2) {
+    showErr('⚠ Konfirmasi kata sandi tidak cocok.'); return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showErr('⚠ Format email tidak valid.'); return;
+  }
+
+  errEl.style.display = 'none';
+  // Simpan ke localStorage sementara (nanti connect ke backend)
+  var pending = JSON.parse(localStorage.getItem('digilab-pending-reg') || '[]');
+  pending.push({ nama, nim, angkatan: ang, prodi, email, role: 'mahasiswa', ts: Date.now() });
+  localStorage.setItem('digilab-pending-reg', JSON.stringify(pending));
+
+  // Show success
+  document.getElementById('register-form-view').style.display = 'none';
+  document.getElementById('register-success-view').style.display = 'flex';
+}
+
+
+// ── SETTINGS DROPDOWN ──
+function toggleSettings(e) {
+  e.stopPropagation();
+  var dd = document.getElementById('settings-dropdown');
+  dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
+  updateSettingsUI();
+}
+document.addEventListener('click', function() {
+  var dd = document.getElementById('settings-dropdown');
+  if (dd) dd.style.display = 'none';
+});
+function updateSettingsUI() {
+  var v = localStorage.getItem('digilab-version') || '2';
+  var t = localStorage.getItem('digilab-theme') || 'indigo';
+  var v1 = document.getElementById('sd-v1');
+  var v2 = document.getElementById('sd-v2');
+  if (v1 && v2) {
+    if (v === '1') {
+      v1.style.background = 'var(--navy)'; v1.style.color = '#fff';
+      v2.style.background = 'transparent'; v2.style.color = '#888';
+    } else {
+      v2.style.background = 'var(--navy)'; v2.style.color = '#fff';
+      v1.style.background = 'transparent'; v1.style.color = '#888';
+    }
+  }
+  // Disable tema saat V1 aktif
+  var wrap = document.getElementById('sd-themes-wrap');
+  var note = document.getElementById('sd-theme-note');
+  if (wrap) wrap.classList.toggle('disabled', v === '1');
+  if (note) { note.textContent = v === '1' ? 'Tema tidak berlaku pada V1' : ''; note.style.display = v === '1' ? 'block' : 'none'; }
+  document.querySelectorAll('.sd-theme').forEach(function(el) {
+    el.classList.toggle('active', el.dataset.t === t);
+  });
+}
+function setVersionFromSettings(v) {
+  localStorage.setItem('digilab-version', v);
+  document.documentElement.setAttribute('data-version', v);
+  var badge = document.getElementById('version-badge');
+  if (badge) badge.textContent = 'V' + v;
+  updateSettingsUI();
+}
+
+
+// ── WELCOME POPUP ──
+function showWelcome(user) {
+  if (sessionStorage.getItem('digilab-welcome-shown')) return;
+  sessionStorage.setItem('digilab-welcome-shown', '1');
+  var name = user.name || user.nama || 'Pengguna';
+  var role = user.role || 'mahasiswa';
+  var initials = name.split(' ').map(function(w){return w[0];}).join('').toUpperCase().slice(0,2);
+  document.getElementById('w-avatar').textContent = initials;
+  document.getElementById('w-name').textContent = 'Selamat datang, ' + name.split(' ')[0] + '!';
+  document.getElementById('w-msg').textContent = role === 'admin'
+    ? 'Anda masuk sebagai Administrator. Kelola karya ilmiah mahasiswa dari panel ini.'
+    : 'Anda masuk sebagai Mahasiswa. Unggah dan pantau karya ilmiah Anda di sini.';
+  var badge = document.getElementById('w-badge');
+  badge.textContent = role === 'admin' ? 'Admin Pustakawan' : 'Mahasiswa';
+  badge.className = 'welcome-role-badge ' + role;
+  // reset progress bar animation
+  var bar = document.getElementById('w-bar');
+  bar.style.animation = 'none';
+  bar.offsetHeight; // reflow
+  bar.style.animation = '';
+  document.getElementById('welcome-overlay').classList.add('show');
+  setTimeout(closeWelcome, 3200);
+}
+function closeWelcome() {
+  document.getElementById('welcome-overlay').classList.remove('show');
+}
+
+
+// ── SESSION RESTORE — dijalankan sinkron saat script selesai parse ──
+function restoreSession() {
+  var raw = localStorage.getItem('digilab-user');
+  if (!raw) return;
+  try {
+    var u = JSON.parse(raw);
+    if (!u || !u.role) return;
+    loggedIn = true;
+    currentUser = { nama: u.name, email: u.email, role: u.role, pass: '' };
+    var btnLogout = document.getElementById('btn-logout');
+    if (btnLogout) btnLogout.style.display = 'flex';
+    if (u.role === 'admin') {
+      var ab = document.getElementById('btn-admin-panel');
+      if (ab) ab.style.display = 'inline-flex';
+    } else if (u.role === 'mahasiswa') {
+      var mb = document.getElementById('btn-mahasiswa-portal');
+      if (mb) {
+        mb.style.display = 'inline-flex';
+        var span = mb.querySelector('.portal-label');
+        if (span) span.textContent = (u.name || 'Mahasiswa').split(' ')[0];
+      }
+    }
+    var btnUser = document.getElementById('btn-user-icon');
+    if (btnUser) btnUser.style.display = 'none';
+  } catch(e) {}
+}
 
 </script>
 
@@ -2377,5 +2638,45 @@ document.addEventListener('click', function(e) {
     </div>
   </section>
 
+
+
+<!-- ── LOGOUT CONFIRM ── -->
+<div class="logout-overlay" id="logout-overlay" onclick="closeLogoutConfirm()">
+  <div class="logout-box" onclick="event.stopPropagation()">
+    <div class="logout-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+    </div>
+    <h3>Keluar dari Akun?</h3>
+    <p>Anda akan keluar dari DIGILAB Repository. Pastikan sudah menyimpan pekerjaan Anda.</p>
+    <div class="logout-actions">
+      <button class="btn-cancel-logout" onclick="closeLogoutConfirm()">Batal</button>
+      <button class="btn-confirm-logout" onclick="doLogout()">Ya, Keluar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── WELCOME POPUP ── -->
+<div class="welcome-overlay" id="welcome-overlay" onclick="closeWelcome()">
+  <div class="welcome-popup" onclick="event.stopPropagation()">
+    <div class="welcome-popup-wave"></div>
+    <div class="welcome-avatar-big" id="w-avatar">U</div>
+    <h2 id="w-name">Selamat Datang!</h2>
+    <p id="w-msg">Anda berhasil masuk ke DIGILAB Repository.</p>
+    <span class="welcome-role-badge" id="w-badge">Mahasiswa</span>
+    <div class="welcome-progress"><div class="welcome-progress-bar" id="w-bar"></div></div>
+    <button class="welcome-close" onclick="closeWelcome()">Tutup sekarang</button>
+  </div>
+</div>
+
+<script>restoreSession();
+// ── LOGOUT CONFIRM ──
+function openLogoutConfirm() {
+  document.getElementById('logout-overlay').classList.add('show');
+}
+function closeLogoutConfirm() {
+  document.getElementById('logout-overlay').classList.remove('show');
+}
+
+</script>
 </body>
 </html>

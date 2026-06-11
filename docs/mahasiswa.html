@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="indigo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal Mahasiswa — DIGILAB Repository</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<script>
+(function(){
+  var t = localStorage.getItem('digilab-theme') || 'indigo';
+  var v = localStorage.getItem('digilab-version') || '2';
+  document.documentElement.setAttribute('data-theme', t);
+  document.documentElement.setAttribute('data-version', v);
+})();
+</script>
+<style>
+/* ══ CSS VARIABLES ══ */
+:root {
+  --navy:#2e3192; --navy-dark:#1e2166; --navy-mid:#3730a3;
+  --bg:#e8e8f0; --bg-card:#fff; --text-dark:#1a1a3e;
+  --text-mid:#4a4a6a; --text-muted:#8888aa;
+  --orange:#f97316; --teal:#0891b2; --border:#d4d4e8;
+  --red:#c0392b; --green:#16a34a; --pill:999px;
+  --sidebar-w:230px;
+}
+[data-theme="emerald"]{--navy:#065f46;--navy-dark:#064e3b;--navy-mid:#047857;--bg:#f0fdf4;--border:#bbf7d0;--orange:#d97706;--text-dark:#052e16;--text-mid:#14532d;--text-muted:#6b7280;}
+[data-theme="charcoal"]{--navy:#1c1c2e;--navy-dark:#0f0f1a;--navy-mid:#2d2d44;--bg:#f1f1f5;--border:#d4d4e8;--orange:#f59e0b;--text-dark:#111827;--text-mid:#374151;--text-muted:#9ca3af;}
+[data-theme="violet"]{--navy:#4c1d95;--navy-dark:#3b0764;--navy-mid:#6d28d9;--bg:#f5f3ff;--border:#ddd6fe;--orange:#f97316;--text-dark:#2e1065;--text-mid:#5b21b6;--text-muted:#8b5cf6;}
+[data-theme="rose"]{--navy:#881337;--navy-dark:#4c0519;--navy-mid:#9f1239;--bg:#fff1f2;--border:#fecdd3;--orange:#f97316;--text-dark:#4c0519;--text-mid:#9f1239;--text-muted:#fb7185;}
+
+/* ══ RESET ══ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text-dark);display:flex;min-height:100vh;}
+button{cursor:pointer;font-family:'Lato',sans-serif;}
+input,select,textarea{font-family:'Lato',sans-serif;}
+a{text-decoration:none;}
+
+/* ══ LOGIN PAGE ══ */
+#login-page{
+  display:flex;align-items:center;justify-content:center;
+  min-height:100vh;width:100%;background:var(--bg);
+}
+.login-wrap{background:var(--navy);border-radius:16px;padding:48px 40px 40px;width:360px;text-align:center;box-shadow:0 16px 48px rgba(0,0,0,.25);}
+.login-logo{margin-bottom:20px;}
+.login-logo svg{width:52px;height:52px;fill:#fff;opacity:.9;}
+.login-title{font-family:'Nunito',sans-serif;font-weight:800;font-size:22px;color:#fff;margin-bottom:4px;}
+.login-sub{font-size:11px;color:rgba(255,255,255,.5);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:28px;}
+.login-field{margin-bottom:14px;text-align:left;}
+.login-field label{font-size:12px;font-weight:700;color:rgba(255,255,255,.6);letter-spacing:.5px;display:block;margin-bottom:6px;}
+.login-field input{width:100%;height:42px;border-radius:8px;border:1.5px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:#fff;padding:0 14px;font-size:14px;outline:none;transition:border-color .2s;}
+.login-field input::placeholder{color:rgba(255,255,255,.4);}
+.login-field input:focus{border-color:var(--orange);}
+.login-btn{width:100%;height:44px;background:var(--orange);color:#fff;border:none;border-radius:8px;font-weight:800;font-size:15px;letter-spacing:.5px;margin-top:8px;transition:background .15s,transform .1s;}
+.login-btn:hover{background:#d96a10;transform:translateY(-1px);}
+.login-error{color:#ff8080;font-size:13px;margin-top:10px;min-height:18px;}
+.login-back{display:block;margin-top:16px;font-size:12px;color:rgba(255,255,255,.45);text-decoration:none;transition:color .15s;}
+.login-back:hover{color:rgba(255,255,255,.8);}
+
+/* ══ APP LAYOUT ══ */
+#app{display:none;flex:1;width:100%;min-height:100vh;}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:var(--sidebar-w);min-width:var(--sidebar-w);
+  background:var(--navy);min-height:100vh;
+  display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;
+}
+.sidebar-header{padding:26px 20px 18px;border-bottom:1px solid rgba(255,255,255,.1);}
+.sidebar-brand{font-family:'Nunito',sans-serif;font-weight:900;font-size:18px;color:#fff;line-height:1.2;}
+.sidebar-role{font-size:10px;color:rgba(255,255,255,.45);letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
+.sidebar-nav{flex:1;padding:16px 0;}
+.nav-section{font-size:10px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:1.5px;text-transform:uppercase;padding:12px 20px 4px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:11px 20px;font-size:13.5px;font-weight:600;color:rgba(255,255,255,.65);cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:color .15s,background .15s;border-left:3px solid transparent;}
+.nav-item:hover{color:#fff;background:rgba(255,255,255,.08);}
+.nav-item.active{color:#fff;border-left-color:var(--orange);background:rgba(255,255,255,.06);}
+.nav-item svg{width:16px;height:16px;flex-shrink:0;opacity:.7;}
+.nav-item.active svg{opacity:1;}
+.sidebar-footer{padding:18px 20px;border-top:1px solid rgba(255,255,255,.1);}
+.sidebar-user{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.sidebar-avatar{width:36px;height:36px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;flex-shrink:0;}
+.sidebar-user-info{min-width:0;}
+.sidebar-user-name{font-size:13px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sidebar-user-email{font-size:10px;color:rgba(255,255,255,.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.logout-btn{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.5);background:none;border:none;font-size:12px;font-weight:600;padding:6px 0;width:100%;transition:color .15s;}
+.logout-btn:hover{color:#fff;}
+
+/* ── MAIN CONTENT ── */
+.main{flex:1;overflow-y:auto;background:var(--bg);}
+.page-header{background:var(--bg-card);border-bottom:1px solid var(--border);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;}
+.page-title{font-family:'Nunito',sans-serif;font-weight:800;font-size:20px;color:var(--text-dark);}
+.page-subtitle{font-size:12px;color:var(--text-muted);margin-top:1px;}
+.header-right{display:flex;align-items:center;gap:12px;}
+.back-link{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted);transition:color .15s;}
+.back-link:hover{color:var(--navy);}
+.page-body{padding:24px 28px;}
+
+/* ── PAGES ── */
+.m-page{display:none;opacity:0;}
+.m-page.active{display:block;opacity:1;}
+@keyframes pageEnter{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:translateX(0)}}
+@keyframes pageExit{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(-14px)}}
+@keyframes popIn{from{opacity:0;transform:scale(.88) translateY(12px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes fadeInBg{from{opacity:0}to{opacity:1}}
+.m-page.entering{animation:pageEnter .22s cubic-bezier(.25,.46,.45,.94) forwards;}
+.m-page.exiting{display:block!important;animation:pageExit .15s ease forwards;}
+
+/* ── DASHBOARD STATS ── */
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:24px;}
+.stat-card{border-radius:12px;padding:22px 20px;color:#fff;position:relative;overflow:hidden;}
+.stat-card.blue{background:linear-gradient(135deg,#3b82f6,#2563eb);}
+.stat-card.amber{background:linear-gradient(135deg,#f59e0b,#d97706);}
+.stat-card.green{background:linear-gradient(135deg,#22c55e,#16a34a);}
+.stat-card::after{content:'';position:absolute;right:-20px;bottom:-20px;width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,.08);}
+.stat-num{font-family:'Nunito',sans-serif;font-weight:900;font-size:36px;line-height:1;}
+.stat-label{font-size:12px;opacity:.8;margin-top:4px;font-weight:600;}
+.stat-icon{position:absolute;right:20px;top:50%;transform:translateY(-50%);opacity:.2;font-size:40px;}
+
+/* ── WELCOME CARD ── */
+.welcome-card{background:var(--navy);border-radius:14px;padding:28px;color:#fff;margin-bottom:24px;display:flex;align-items:center;gap:24px;overflow:hidden;position:relative;}
+.welcome-card::after{content:'';position:absolute;right:-40px;top:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.05);}
+.welcome-avatar{width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:900;font-size:24px;color:#fff;flex-shrink:0;}
+.welcome-text h2{font-family:'Nunito',sans-serif;font-weight:900;font-size:22px;margin-bottom:4px;}
+.welcome-text p{font-size:13px;opacity:.7;}
+.welcome-badge{margin-left:auto;background:var(--orange);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;letter-spacing:.5px;z-index:1;}
+
+/* ── RECENT TABLE ── */
+.section-title{font-family:'Nunito',sans-serif;font-weight:800;font-size:16px;color:var(--text-dark);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.section-title span{width:3px;height:18px;background:var(--orange);border-radius:2px;display:inline-block;}
+.card{background:var(--bg-card);border-radius:12px;border:1px solid var(--border);overflow:hidden;}
+.card-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.card-header-title{font-weight:700;font-size:14px;color:var(--text-dark);}
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+thead th{background:#f8f8fc;padding:10px 16px;text-align:left;font-size:12px;font-weight:700;color:var(--text-muted);letter-spacing:.5px;text-transform:uppercase;border-bottom:1px solid var(--border);}
+tbody td{padding:12px 16px;font-size:13.5px;border-bottom:1px solid var(--border);vertical-align:middle;}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover{background:#f8f8fc;}
+
+/* ── STATUS BADGES ── */
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.3px;}
+.badge-pending{background:#fff3cd;color:#856404;}
+.badge-approved{background:#d1fae5;color:#065f46;}
+.badge-rejected{background:#fee2e2;color:#991b1b;}
+.badge-revision{background:#ede9fe;color:#5b21b6;}
+
+/* ── ACTION BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:999px;font-size:13px;font-weight:700;border:none;transition:background .15s,transform .1s;cursor:pointer;}
+.btn:hover{transform:translateY(-1px);}
+.btn-navy{background:var(--navy);color:#fff;}
+.btn-navy:hover{background:var(--navy-dark);}
+.btn-teal{background:var(--teal);color:#fff;}
+.btn-teal:hover{background:#0671a0;}
+.btn-orange{background:var(--orange);color:#fff;}
+.btn-orange:hover{background:#d96a10;}
+.btn-ghost{background:#f0f0f8;color:var(--text-mid);}
+.btn-ghost:hover{background:#e4e4f0;}
+.btn-red{background:var(--red);color:#fff;}
+.btn-red:hover{background:#a93226;}
+.btn-sm{padding:5px 12px;font-size:12px;}
+.btn-icon{padding:6px 8px;}
+
+/* ── KARYA TABLE PAGE ── */
+.table-toolbar{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;}
+.search-wrap{display:flex;align-items:center;background:var(--bg-card);border:1.5px solid var(--border);border-radius:999px;padding:0 14px;gap:8px;flex:1;min-width:200px;}
+.search-wrap input{border:none;outline:none;background:transparent;font-size:14px;color:var(--text-dark);height:38px;width:100%;}
+.search-wrap input::placeholder{color:var(--text-muted);}
+.filter-select{height:38px;border:1.5px solid var(--border);border-radius:999px;padding:0 14px;font-size:13px;color:var(--text-dark);background:var(--bg-card);outline:none;}
+.empty-state{text-align:center;padding:60px 20px;color:var(--text-muted);}
+.empty-state svg{width:52px;height:52px;opacity:.25;margin-bottom:12px;}
+.empty-state p{font-size:14px;}
+
+/* ── UPLOAD FORM — 3-STEP ── */
+.stepper-wrap{background:var(--navy);border-radius:14px;padding:28px 28px 20px;margin-bottom:28px;position:relative;overflow:hidden;}
+.stepper-wrap::after{content:'';position:absolute;right:-30px;bottom:-30px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.05);}
+.stepper-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:20px;color:#fff;text-align:center;margin-bottom:20px;}
+.stepper{display:flex;align-items:center;justify-content:center;gap:0;position:relative;z-index:1;}
+.step-dot{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);color:rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:900;font-size:16px;transition:background .3s,color .3s;flex-shrink:0;position:relative;z-index:2;}
+.step-dot.active{background:var(--orange);color:#fff;box-shadow:0 4px 16px rgba(249,115,22,.4);}
+.step-dot.done{background:rgba(255,255,255,.35);color:#fff;}
+.step-line{flex:1;height:2px;background:rgba(255,255,255,.2);max-width:120px;}
+.step-line.done{background:rgba(255,255,255,.5);}
+.step-labels{display:flex;justify-content:space-between;margin-top:10px;padding:0 4px;}
+.step-label{font-size:10px;color:rgba(255,255,255,.5);font-weight:600;letter-spacing:.5px;text-transform:uppercase;width:40px;text-align:center;position:relative;left:-50%;width:140px;}
+.step-label:first-child{left:0;text-align:left;width:auto;}
+.step-label:last-child{left:0;text-align:right;width:auto;margin-left:auto;}
+
+.form-card{background:var(--bg-card);border-radius:12px;border:1px solid var(--border);padding:28px;}
+.form-title{font-family:'Nunito',sans-serif;font-weight:800;font-size:17px;color:var(--text-dark);margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.form-group{margin-bottom:0;}
+.form-group.full{grid-column:1/-1;}
+.form-label{display:block;font-size:12px;font-weight:700;color:var(--text-mid);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px;}
+.form-label span{color:var(--red);}
+.form-input{width:100%;height:42px;border:1.5px solid var(--border);border-radius:8px;padding:0 14px;font-size:14px;color:var(--text-dark);background:var(--bg-card);outline:none;transition:border-color .2s;}
+.form-input:focus{border-color:var(--navy);}
+.form-input::placeholder{color:var(--text-muted);}
+.form-select{width:100%;height:42px;border:1.5px solid var(--border);border-radius:8px;padding:0 14px;font-size:14px;color:var(--text-dark);background:var(--bg-card);outline:none;appearance:none;cursor:pointer;}
+.form-select:focus{border-color:var(--navy);}
+.form-textarea{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:12px 14px;font-size:14px;color:var(--text-dark);background:var(--bg-card);outline:none;resize:vertical;min-height:120px;transition:border-color .2s;}
+.form-textarea:focus{border-color:var(--navy);}
+.form-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:24px;padding-top:20px;border-top:1px solid var(--border);}
+
+/* ── UPLOAD DROPZONE ── */
+.upload-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;}
+.dropzone-label{font-size:13px;font-weight:700;color:var(--text-mid);margin-bottom:8px;letter-spacing:.3px;}
+.dropzone-sub{font-size:11px;color:var(--text-muted);margin-bottom:10px;}
+.dropzone{border:2px dashed var(--border);border-radius:10px;padding:36px 20px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;background:var(--bg);}
+.dropzone:hover,.dropzone.drag-over{border-color:var(--navy);background:#f0f0fa;}
+.dropzone svg{width:36px;height:36px;color:var(--text-muted);margin-bottom:10px;opacity:.5;}
+.dropzone p{font-size:13px;color:var(--text-muted);}
+.dropzone p strong{color:var(--navy);}
+.dropzone-format{font-size:11px;color:var(--text-muted);margin-top:4px;}
+.file-preview{margin-top:10px;background:#f8f8fc;border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:10px;border:1px solid var(--border);}
+.file-preview-name{font-size:13px;color:var(--text-dark);font-weight:600;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.file-preview-size{font-size:11px;color:var(--text-muted);}
+.file-remove{background:none;border:none;color:var(--text-muted);font-size:18px;line-height:1;cursor:pointer;transition:color .15s;}
+.file-remove:hover{color:var(--red);}
+
+/* ── REVIEW STEP ── */
+.review-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.review-item{background:#f8f8fc;border-radius:8px;padding:12px 14px;}
+.review-key{font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:3px;}
+.review-val{font-size:14px;color:var(--text-dark);font-weight:600;}
+.review-item.full{grid-column:1/-1;}
+.review-files{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;}
+.review-file-chip{background:var(--navy);color:#fff;font-size:11px;padding:4px 12px;border-radius:999px;font-weight:600;}
+
+/* ── PROFIL PAGE ── */
+.profil-wrap{display:grid;grid-template-columns:280px 1fr;gap:24px;align-items:start;}
+.profil-card{background:var(--bg-card);border-radius:12px;border:1px solid var(--border);overflow:hidden;}
+.profil-card-top{background:var(--navy);padding:32px 24px;text-align:center;}
+.profil-pic-wrap{position:relative;display:inline-block;margin-bottom:12px;}
+.profil-pic{width:96px;height:96px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:900;font-size:36px;color:#fff;margin:0 auto;border:3px solid rgba(255,255,255,.3);}
+.profil-change-pic{position:absolute;bottom:0;right:0;width:28px;height:28px;border-radius:50%;background:var(--orange);border:2px solid white;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.profil-name{font-family:'Nunito',sans-serif;font-weight:800;font-size:18px;color:#fff;margin-bottom:4px;}
+.profil-nim{font-size:12px;color:rgba(255,255,255,.55);}
+.profil-card-body{padding:20px;}
+.profil-info-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.profil-info-row:last-child{border-bottom:none;}
+.profil-info-key{color:var(--text-muted);font-weight:600;}
+.profil-info-val{color:var(--text-dark);font-weight:700;}
+.profil-form-card{background:var(--bg-card);border-radius:12px;border:1px solid var(--border);padding:24px;}
+.profil-form-title{font-family:'Nunito',sans-serif;font-weight:800;font-size:16px;color:var(--text-dark);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+.profil-form-group{margin-bottom:16px;}
+.profil-form-label{display:block;font-size:12px;font-weight:700;color:var(--text-mid);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px;}
+.profil-form-input{width:100%;height:42px;border:1.5px solid var(--border);border-radius:8px;padding:0 14px;font-size:14px;color:var(--text-dark);background:var(--bg-card);outline:none;transition:border-color .2s;}
+.profil-form-input:focus{border-color:var(--navy);}
+.profil-form-input:disabled{background:#f8f8fc;color:var(--text-muted);}
+.profil-form-input::placeholder{color:var(--text-muted);}
+.password-section{margin-top:24px;padding-top:20px;border-top:1px solid var(--border);}
+.password-title{font-size:13px;font-weight:700;color:var(--text-mid);margin-bottom:14px;}
+.success-toast{position:fixed;bottom:28px;right:28px;background:#16a34a;color:#fff;font-size:13px;font-weight:700;padding:12px 20px;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.15);display:flex;align-items:center;gap:8px;z-index:9999;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s;}
+.success-toast.show{opacity:1;transform:translateY(0);}
+
+/* ══ MOBILE RESPONSIVE ══ */
+.mob-header{display:none;background:var(--navy);padding:0 16px;height:56px;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.mob-brand{font-family:'Nunito',sans-serif;font-weight:900;font-size:16px;color:#fff;}
+.mob-menu-btn{background:none;border:none;color:#fff;display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;}
+.mob-menu-btn:hover{background:rgba(255,255,255,.1);}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:150;}
+.overlay.show{display:block;}
+
+@media(max-width:768px){
+  body{flex-direction:column;}
+  #app{flex-direction:column;}
+  .mob-header{display:flex;}
+  .sidebar{position:fixed;left:-100%;top:0;height:100%;z-index:200;transition:left .3s ease;width:260px;}
+  .sidebar.open{left:0;}
+  .main{flex:1;}
+  .page-header{padding:14px 16px;position:relative;}
+  .page-body{padding:16px;}
+  .stats-grid{grid-template-columns:1fr;gap:12px;}
+  .welcome-card{flex-direction:column;text-align:center;padding:20px;}
+  .welcome-badge{margin-left:0;}
+  .form-grid{grid-template-columns:1fr;}
+  .upload-grid{grid-template-columns:1fr;}
+  .profil-wrap{grid-template-columns:1fr;}
+  .review-grid{grid-template-columns:1fr;}
+}
+@media(max-width:480px){
+  .stepper-wrap{padding:20px 16px 16px;}
+  .form-card{padding:16px;}
+  .btn{padding:7px 12px;font-size:12px;}
+  .form-actions{flex-direction:column-reverse;}
+  .form-actions .btn{width:100%;justify-content:center;}
+}
+
+    /* ── WELCOME POPUP ── */
+    .welcome-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;}
+    .welcome-overlay.show{opacity:1;pointer-events:all;}
+    .welcome-popup{background:#fff;border-radius:20px;padding:36px 32px 28px;text-align:center;max-width:340px;width:90%;transform:translateY(24px) scale(.95);transition:transform .3s cubic-bezier(.34,1.56,.64,1);box-shadow:0 24px 60px rgba(0,0,0,.18);position:relative;}
+    .welcome-overlay.show .welcome-popup{transform:translateY(0) scale(1);}
+    .welcome-avatar-big{width:72px;height:72px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:900;font-size:28px;color:#fff;margin:0 auto 14px;border:3px solid #e8e8f0;box-shadow:0 4px 16px rgba(46,49,146,.3);}
+    .welcome-popup h2{font-family:'Nunito',sans-serif;font-weight:900;font-size:20px;color:#1a1a3e;margin-bottom:6px;}
+    .welcome-popup p{font-size:13px;color:#8888aa;line-height:1.6;margin-bottom:16px;}
+    .welcome-role-badge{display:inline-block;padding:3px 14px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:18px;background:#e0f2fe;color:#0369a1;}
+    .welcome-progress{height:3px;background:#f0f0f8;border-radius:999px;overflow:hidden;margin-bottom:14px;}
+    .welcome-progress-bar{height:100%;background:var(--navy);border-radius:999px;width:100%;transform-origin:left;animation:progressShrink 3s linear forwards;}
+    @keyframes progressShrink{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+    .welcome-close{background:none;border:none;font-size:12px;color:#8888aa;cursor:pointer;font-weight:600;transition:color .15s;}
+    .welcome-close:hover{color:#1a1a3e;}
+    .welcome-popup-wave{position:absolute;top:0;left:0;right:0;height:6px;border-radius:20px 20px 0 0;background:linear-gradient(90deg,var(--navy),#f97316);}
+
+    
+    .sidebar-home-link{display:flex;align-items:center;gap:10px;padding:11px 20px;color:rgba(255,255,255,.7);text-decoration:none;font-size:14px;font-weight:600;border-radius:8px;margin:4px 12px;transition:background .15s,color .15s;}
+    .sidebar-home-link:hover{background:rgba(255,255,255,.12);color:#fff;}
+    .sidebar-home-link svg{flex-shrink:0;opacity:.8;}
+
+    </style>
+</head>
+<body>
+
+<!-- ══ LOGIN PAGE ══ -->
+<div id="login-page">
+  <div class="login-wrap">
+    <div class="login-logo">
+      <svg viewBox="0 0 24 24"><path d="M12 2l-5.5 9h11zm0 3.84L14.97 10h-5.94zM17.5 13c-2.49 0-4.5 2.01-4.5 4.5S15.01 22 17.5 22 22 19.99 22 17.5 19.99 13 17.5 13zm0 7a2.5 2.5 0 010-5 2.5 2.5 0 010 5zM3 21.5h8v-8H3v8zm2-6h4v4H5v-4z"/></svg>
+    </div>
+    <div class="login-title">DIGILAB Repository</div>
+    <div class="login-sub">Portal Mahasiswa</div>
+    <div class="login-field">
+      <label>Email / NIM</label>
+      <input type="email" id="login-email" placeholder="mhs" autocomplete="email">
+    </div>
+    <div class="login-field">
+      <label>Kata Sandi</label>
+      <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button class="login-btn" onclick="doLogin()">Masuk</button>
+    <div class="login-error" id="login-err"></div>
+    <a href="index.html" class="login-back">← Kembali ke beranda</a>
+  </div>
+</div>
+
+<!-- ══ MAIN APP ══ -->
+<div id="app">
+
+  <!-- Mobile header -->
+  <div class="mob-header">
+    <div class="mob-brand">DIGILAB Mahasiswa</div>
+    <button class="mob-menu-btn" onclick="toggleSidebar()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+    </button>
+  </div>
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-brand">DIGILAB</div>
+      <div class="sidebar-role">Portal Mahasiswa</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">Menu</div>
+      <button class="nav-item active" onclick="showPage('beranda')" id="nav-beranda">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        Beranda
+      </button>
+      <button class="nav-item" onclick="showPage('karya')" id="nav-karya">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+        Karya Saya
+      </button>
+      <button class="nav-item" onclick="showPage('unggah')" id="nav-unggah">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+        Unggah Karya
+      </button>
+      <div class="nav-section">Akun</div>
+      <button class="nav-item" onclick="showPage('profil')" id="nav-profil">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+        Profil Saya
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar" id="sidebar-avatar">M</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="sidebar-name">Mahasiswa</div>
+          <div class="sidebar-user-email" id="sidebar-email">mahasiswa@vokasi.um.ac.id</div>
+        </div>
+      </div>
+      <button class="logout-btn" onclick="openLogoutConfirm()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+        Keluar
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="main">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div>
+        <div class="page-title" id="main-title">Beranda</div>
+        <div class="page-subtitle" id="main-subtitle">Selamat datang di portal mahasiswa</div>
+      </div>
+      <div class="header-right">
+        <a href="index.html" class="back-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+          Ke Beranda Utama
+        </a>
+      </div>
+    </div>
+
+    <div class="page-body">
+
+      <!-- ── BERANDA PAGE ── -->
+      <div class="m-page active" id="page-beranda">
+        <div class="welcome-card">
+          <div class="welcome-avatar" id="welcome-avatar">M</div>
+          <div class="welcome-text">
+            <h2 id="welcome-name">Halo, Mahasiswa!</h2>
+            <p>Kelola dan pantau karya ilmiah Anda di DIGILAB Repository</p>
+          </div>
+          <div class="welcome-badge">Mahasiswa</div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card blue">
+            <div class="stat-num" id="stat-total">0</div>
+            <div class="stat-label">Total Karya</div>
+            <div class="stat-icon">📄</div>
+          </div>
+          <div class="stat-card amber">
+            <div class="stat-num" id="stat-pending">0</div>
+            <div class="stat-label">Menunggu Verifikasi</div>
+            <div class="stat-icon">⏳</div>
+          </div>
+          <div class="stat-card green">
+            <div class="stat-num" id="stat-approved">0</div>
+            <div class="stat-label">Disetujui</div>
+            <div class="stat-icon">✅</div>
+          </div>
+        </div>
+
+        <div class="section-title"><span></span>Karya Terbaru</div>
+        <div class="card">
+          <div class="table-wrap">
+            <table id="beranda-table">
+              <thead>
+                <tr>
+                  <th>Judul</th>
+                  <th>Jenis</th>
+                  <th>Tahun</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="beranda-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── KARYA SAYA PAGE ── -->
+      <div class="m-page" id="page-karya">
+        <div class="table-toolbar">
+          <div class="search-wrap">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="text" placeholder="Cari judul, jenis..." oninput="filterKarya(this.value)" id="karya-search">
+          </div>
+          <select class="filter-select" onchange="filterKarya()" id="karya-filter">
+            <option value="">Semua Status</option>
+            <option value="pending">Pending</option>
+            <option value="disetujui">Disetujui</option>
+            <option value="revisi">Revisi</option>
+            <option value="ditolak">Ditolak</option>
+          </select>
+          <button class="btn btn-teal" onclick="showPage('unggah')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+            Unggah Karya
+          </button>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width:40px">No.</th>
+                  <th>Judul</th>
+                  <th>Jenis</th>
+                  <th>Tahun</th>
+                  <th>Status</th>
+                  <th style="width:100px">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="karya-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── UNGGAH KARYA PAGE ── -->
+      <div class="m-page" id="page-unggah">
+        <div class="stepper-wrap">
+          <div class="stepper-title">Unggah Karya Ilmiah</div>
+          <div class="stepper">
+            <div class="step-dot active" id="dot-1">1</div>
+            <div class="step-line" id="line-1"></div>
+            <div class="step-dot" id="dot-2">2</div>
+            <div class="step-line" id="line-2"></div>
+            <div class="step-dot" id="dot-3">3</div>
+          </div>
+          <div class="step-labels">
+            <div style="font-size:10px;color:rgba(255,255,255,.6);font-weight:600;letter-spacing:.5px;text-transform:uppercase;">Detail Info</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.5);font-weight:600;letter-spacing:.5px;text-transform:uppercase;text-align:center;flex:1;">Produk</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.5);font-weight:600;letter-spacing:.5px;text-transform:uppercase;text-align:right;">Konfirmasi</div>
+          </div>
+        </div>
+
+        <!-- Step 1: Detail Informasi -->
+        <div id="step-1" class="form-card">
+          <div class="form-title">Detail Informasi Karya</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Judul <span>*</span></label>
+              <input type="text" class="form-input" id="f-judul" placeholder="Ketikkan judul karya">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Penulis <span>*</span></label>
+              <input type="text" class="form-input" id="f-penulis" placeholder="Nama penulis">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Bahasa</label>
+              <select class="form-select" id="f-bahasa">
+                <option value="id">Indonesia</option>
+                <option value="en">English</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Jenis Dokumen <span>*</span></label>
+              <select class="form-select" id="f-jenis">
+                <option value="">Pilih jenis...</option>
+                <option>Laporan Magang</option>
+                <option>Laporan PKL</option>
+                <option>Tugas Akhir</option>
+                <option>Skripsi</option>
+                <option>Artikel Jurnal</option>
+                <option>Proyek Mandiri</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Dosen Pembimbing</label>
+              <input type="text" class="form-input" id="f-pembimbing" placeholder="Nama dosen pembimbing">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tahun <span>*</span></label>
+              <select class="form-select" id="f-tahun">
+                <option value="">Pilih tahun...</option>
+                <option>2026</option><option>2025</option><option>2024</option>
+                <option>2023</option><option>2022</option><option>2021</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Bidang / Subjek</label>
+              <input type="text" class="form-input" id="f-bidang" placeholder="Contoh: Perpustakaan, IT, Akuntansi">
+            </div>
+            <div class="form-group">
+              <label class="form-label">No. Panggil</label>
+              <input type="text" class="form-input" id="f-nopanggil" placeholder="Contoh: 020122 ADE">
+            </div>
+            <div class="form-group full">
+              <label class="form-label">Abstrak</label>
+              <textarea class="form-textarea" id="f-abstrak" placeholder="Ketikkan abstrak karya ilmiah..."></textarea>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-ghost" onclick="showPage('karya')">Batal</button>
+            <button class="btn btn-navy" onclick="goStep(2)">Lanjut: Produk →</button>
+          </div>
+        </div>
+
+        <!-- Step 2: Produk/File Upload -->
+        <div id="step-2" style="display:none;">
+          <div class="form-card">
+            <div class="form-title">Unggah Produk</div>
+            <div class="upload-grid">
+              <div>
+                <div class="dropzone-label">📄 Dokumen</div>
+                <div class="dropzone-sub">Format: .pdf — maks. 50 MB</div>
+                <div class="dropzone" id="drop-pdf" onclick="document.getElementById('input-pdf').click()" ondragover="dragOver(event,'drop-pdf')" ondragleave="dragLeave('drop-pdf')" ondrop="handleDrop(event,'drop-pdf','input-pdf')">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/><path d="M13 3v6h6"/></svg>
+                  <p><strong>Klik</strong> atau seret file ke sini</p>
+                  <div class="dropzone-format">Format: .pdf</div>
+                </div>
+                <input type="file" id="input-pdf" accept=".pdf" style="display:none" onchange="showFile(this,'drop-pdf','preview-pdf')">
+                <div id="preview-pdf"></div>
+              </div>
+              <div>
+                <div class="dropzone-label">🖼️ Foto / Video</div>
+                <div class="dropzone-sub">Format: .png .jpg .jpeg .mp4 .mp3</div>
+                <div class="dropzone" id="drop-media" onclick="document.getElementById('input-media').click()" ondragover="dragOver(event,'drop-media')" ondragleave="dragLeave('drop-media')" ondrop="handleDrop(event,'drop-media','input-media')">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                  <p><strong>Klik</strong> atau seret file ke sini</p>
+                  <div class="dropzone-format">Format: .png .jpg .jpeg .mp4 .mp3</div>
+                </div>
+                <input type="file" id="input-media" accept=".png,.jpg,.jpeg,.mp4,.mp3" style="display:none" onchange="showFile(this,'drop-media','preview-media')">
+                <div id="preview-media"></div>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-ghost" onclick="goStep(1)">← Kembali</button>
+              <button class="btn btn-navy" onclick="goStep(3)">Lanjut: Konfirmasi →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Review & Submit -->
+        <div id="step-3" style="display:none;">
+          <div class="form-card">
+            <div class="form-title">Konfirmasi & Kirim</div>
+            <div class="review-grid" id="review-content"></div>
+            <div class="form-actions">
+              <button class="btn btn-ghost" onclick="goStep(2)">← Kembali</button>
+              <button class="btn btn-orange" onclick="submitKarya()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                Kirim Karya
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PROFIL PAGE ── -->
+      <div class="m-page" id="page-profil">
+        <div class="profil-wrap">
+          <!-- Left card: avatar + summary -->
+          <div class="profil-card">
+            <div class="profil-card-top">
+              <div class="profil-pic-wrap">
+                <div class="profil-pic" id="profil-avatar-big">M</div>
+                <div class="profil-change-pic" title="Ganti foto">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                </div>
+              </div>
+              <div class="profil-name" id="profil-name-big">Mahasiswa</div>
+              <div class="profil-nim" id="profil-nim-big">NIM: —</div>
+            </div>
+            <div class="profil-card-body">
+              <div class="profil-info-row">
+                <span class="profil-info-key">Prodi</span>
+                <span class="profil-info-val" id="info-prodi">—</span>
+              </div>
+              <div class="profil-info-row">
+                <span class="profil-info-key">Angkatan</span>
+                <span class="profil-info-val" id="info-angkatan">—</span>
+              </div>
+              <div class="profil-info-row">
+                <span class="profil-info-key">Total Karya</span>
+                <span class="profil-info-val" id="info-total-karya">0</span>
+              </div>
+              <div class="profil-info-row">
+                <span class="profil-info-key">Disetujui</span>
+                <span class="profil-info-val" id="info-approved-karya">0</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right card: edit form -->
+          <div class="profil-form-card">
+            <div class="profil-form-title">Informasi Penulis</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+              <div class="profil-form-group">
+                <label class="profil-form-label">Nama Lengkap</label>
+                <input type="text" class="profil-form-input" id="pf-nama" placeholder="Nama lengkap">
+              </div>
+              <div class="profil-form-group">
+                <label class="profil-form-label">NIM</label>
+                <input type="text" class="profil-form-input" id="pf-nim" placeholder="NIM" disabled>
+              </div>
+              <div class="profil-form-group">
+                <label class="profil-form-label">Program Studi</label>
+                <select class="profil-form-input" id="pf-prodi">
+                  <option>D4 Perpustakaan Digital</option>
+                  <option>D3 Teknologi Informasi</option>
+                  <option>D4 Manajemen Informatika</option>
+                  <option>D3 Akuntansi</option>
+                  <option>D4 Akuntansi Perpajakan</option>
+                  <option>D3 Desain Komunikasi Visual</option>
+                  <option>D4 Desain Grafis</option>
+                  <option>D3 Teknik Mesin</option>
+                  <option>D4 Teknologi Rekayasa Mekatronika</option>
+                  <option>D3 Teknik Elektronika</option>
+                  <option>D4 Teknik Elektronika</option>
+                </select>
+              </div>
+              <div class="profil-form-group">
+                <label class="profil-form-label">Angkatan</label>
+                <input type="text" class="profil-form-input" id="pf-angkatan" placeholder="Contoh: 2022">
+              </div>
+              <div class="profil-form-group">
+                <label class="profil-form-label">Jenis Kelamin</label>
+                <select class="profil-form-input" id="pf-gender">
+                  <option value="P">Perempuan</option>
+                  <option value="L">Laki-laki</option>
+                </select>
+              </div>
+              <div class="profil-form-group">
+                <label class="profil-form-label">E-mail</label>
+                <input type="email" class="profil-form-input" id="pf-email" placeholder="Email aktif">
+              </div>
+            </div>
+
+            <div class="password-section">
+              <div class="password-title">Ubah Kata Sandi</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                <div class="profil-form-group">
+                  <label class="profil-form-label">Kata Sandi Lama</label>
+                  <input type="password" class="profil-form-input" id="pf-pass-old" placeholder="••••••••">
+                </div>
+                <div class="profil-form-group">
+                  <label class="profil-form-label">Kata Sandi Baru</label>
+                  <input type="password" class="profil-form-input" id="pf-pass-new" placeholder="Min. 8 karakter">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-actions" style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
+              <button class="btn btn-ghost">Batal</button>
+              <button class="btn btn-navy" onclick="saveProfil()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z"/></svg>
+                Simpan Perubahan
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- .page-body -->
+  </main>
+</div>
+
+<!-- Toast notification -->
+<div class="success-toast" id="toast">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+  <span id="toast-msg">Berhasil disimpan!</span>
+</div>
+
+<script>
+// ── DUMMY DATA ──
+const DUMMY_KARYA = [
+  { id:1, judul:'Laporan Magang Perpustakaan Bung Karno', jenis:'Laporan Magang', tahun:'2024', status:'disetujui', pembimbing:'Hariyanto S.Pd., M.Pd' },
+  { id:2, judul:'Implementasi Sistem Temu Kembali Informasi Berbasis Metadata Dublin Core', jenis:'Tugas Akhir', tahun:'2025', status:'pending', pembimbing:'Achmad Hamdan, S.Pd., M.Pd' },
+  { id:3, judul:'Analisis Kebutuhan Layanan Perpustakaan Digital di Era Pasca-Pandemi', jenis:'Artikel Jurnal', tahun:'2024', status:'revisi', pembimbing:'Dr. Siti Rahayu, M.Lib' },
+];
+
+const PROFIL_DATA = {
+  nama: 'Natasya Adelia R.',
+  nim: '220213704262',
+  prodi: 'D4 Perpustakaan Digital',
+  angkatan: '2022',
+  gender: 'P',
+  email: 'mahasiswa@vokasi.um.ac.id',
+};
+
+// ── STATE ──
+let currentStep = 1;
+let formData = {};
+let filteredKarya = [...DUMMY_KARYA];
+
+// ── AUTH ──
+function checkAuth() {
+  const u = JSON.parse(localStorage.getItem('digilab-user') || 'null');
+  if (u && u.role === 'mahasiswa') {
+    loadApp(u);
+  } else if (u && u.role === 'admin') {
+    window.location.href = 'admin.html';
+  } else {
+    document.getElementById('login-page').style.display = 'flex';
+    document.getElementById('app').style.display = 'none';
+  }
+}
+
+function loadApp(u) {
+  document.getElementById('login-page').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  // fill sidebar
+  const initials = (u.name || 'M').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('sidebar-avatar').textContent = initials;
+  document.getElementById('sidebar-name').textContent = u.name || 'Mahasiswa';
+  document.getElementById('sidebar-email').textContent = u.email || '';
+  setTimeout(function(){ showWelcome(u); }, 80);
+  document.getElementById('welcome-name').textContent = 'Halo, ' + (u.name || 'Mahasiswa') + '!';
+  document.getElementById('welcome-avatar').textContent = initials;
+  // fill profil
+  document.getElementById('pf-nama').value = u.name || PROFIL_DATA.nama;
+  document.getElementById('pf-nim').value = PROFIL_DATA.nim;
+  document.getElementById('pf-angkatan').value = PROFIL_DATA.angkatan;
+  document.getElementById('pf-email').value = u.email || PROFIL_DATA.email;
+  document.getElementById('profil-avatar-big').textContent = initials;
+  document.getElementById('profil-name-big').textContent = u.name || PROFIL_DATA.nama;
+  document.getElementById('profil-nim-big').textContent = 'NIM: ' + PROFIL_DATA.nim;
+  document.getElementById('info-prodi').textContent = PROFIL_DATA.prodi;
+  document.getElementById('info-angkatan').textContent = PROFIL_DATA.angkatan;
+  // stats
+  const total = DUMMY_KARYA.length;
+  const pending = DUMMY_KARYA.filter(k=>k.status==='pending').length;
+  const approved = DUMMY_KARYA.filter(k=>k.status==='disetujui').length;
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-pending').textContent = pending;
+  document.getElementById('stat-approved').textContent = approved;
+  document.getElementById('info-total-karya').textContent = total;
+  document.getElementById('info-approved-karya').textContent = approved;
+  // fill penulis field with user name
+  document.getElementById('f-penulis').value = u.name || PROFIL_DATA.nama;
+  renderBerandaTable();
+  renderKaryaTable();
+}
+
+function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-pass').value;
+  const err = document.getElementById('login-err');
+  if (!email || !pass) { err.textContent = 'Email dan kata sandi wajib diisi.'; return; }
+  if (email === 'mhs' && pass === 'mhs') {
+    const u = { name: 'Natasya Adelia R.', email: 'mahasiswa@vokasi.um.ac.id', role: 'mahasiswa' };
+    localStorage.setItem('digilab-user', JSON.stringify(u));
+    loadApp(u);
+  } else if (email === 'admin@vokasi.um.ac.id' && pass === 'admin123') {
+    const u = { name: 'Admin Perpustakaan', email: 'admin@vokasi.um.ac.id', role: 'admin' };
+    localStorage.setItem('digilab-user', JSON.stringify(u));
+    window.location.href = 'admin.html';
+  } else {
+    err.textContent = 'Email atau kata sandi salah.';
+  }
+}
+document.getElementById('login-pass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+
+function openLogoutConfirm() {
+  var ov = document.getElementById('logout-confirm-overlay');
+  if (!ov) return;
+  ov.style.display = 'flex';
+  ov.style.animation = 'fadeInBg .2s ease';
+  var card = ov.querySelector('div');
+  if (card) card.style.animation = 'popIn .25s cubic-bezier(.34,1.56,.64,1)';
+}
+function closeLogoutConfirm() {
+  var ov = document.getElementById('logout-confirm-overlay');
+  if (!ov) return;
+  var card = ov.querySelector('div');
+  if (card) { card.style.animation = 'popIn .18s cubic-bezier(.34,1.56,.64,1) reverse'; }
+  ov.style.animation = 'fadeInBg .18s ease reverse';
+  setTimeout(function(){ ov.style.display = 'none'; }, 160);
+}
+function doLogout() {
+  localStorage.removeItem('digilab-user');
+  sessionStorage.removeItem('digilab-welcome-shown');
+  window.location.href = 'index.html';
+}
+
+// ── PAGES ──
+const PAGE_META = {
+  beranda:  { title:'Beranda', subtitle:'Ringkasan aktivitas karya ilmiah Anda' },
+  karya:    { title:'Karya Saya', subtitle:'Daftar semua karya ilmiah yang telah diunggah' },
+  unggah:   { title:'Unggah Karya', subtitle:'Tambahkan karya ilmiah baru ke repositori' },
+  profil:   { title:'Profil Saya', subtitle:'Informasi akun dan data penulis' },
+};
+
+function showPage(name) {
+  const meta = PAGE_META[name];
+  const current = document.querySelector('.m-page.active');
+  const next = document.getElementById('page-'+name);
+  if (!next || next === current) return;
+
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const navEl = document.getElementById('nav-'+name);
+  if (navEl) navEl.classList.add('active');
+  if (meta) {
+    document.getElementById('main-title').textContent = meta.title;
+    document.getElementById('main-subtitle').textContent = meta.subtitle;
+  }
+
+  if (current) {
+    current.classList.add('exiting');
+    setTimeout(() => {
+      current.classList.remove('active','exiting');
+      if (name === 'unggah') resetUploadForm();
+      next.classList.add('active','entering');
+      setTimeout(() => next.classList.remove('entering'), 240);
+    }, 150);
+  } else {
+    if (name === 'unggah') resetUploadForm();
+    next.classList.add('active','entering');
+    setTimeout(() => next.classList.remove('entering'), 240);
+  }
+
+  // close mobile sidebar
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+  window.scrollTo(0,0);
+}
+
+// ── MOBILE SIDEBAR ──
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+
+// ── TABLES ──
+function statusBadge(s) {
+  const map = {
+    pending:    '<span class="badge badge-pending">⏳ Menunggu</span>',
+    disetujui:  '<span class="badge badge-approved">✅ Disetujui</span>',
+    revisi:     '<span class="badge badge-revision">✏️ Revisi</span>',
+    ditolak:    '<span class="badge badge-rejected">❌ Ditolak</span>',
+  };
+  return map[s] || s;
+}
+
+function renderBerandaTable() {
+  const recent = DUMMY_KARYA.slice(0,3);
+  document.getElementById('beranda-tbody').innerHTML = recent.length ? recent.map(k => `
+    <tr>
+      <td style="font-weight:600;max-width:260px">${k.judul}</td>
+      <td><span style="font-size:12px;background:#eef;padding:2px 8px;border-radius:4px;color:#4a4a8a">${k.jenis}</span></td>
+      <td>${k.tahun}</td>
+      <td>${statusBadge(k.status)}</td>
+      <td><button class="btn btn-ghost btn-sm" onclick="showPage('karya')">Detail</button></td>
+    </tr>`).join('') : '<tr><td colspan="5" style="text-align:center;padding:32px;color:#aaa">Belum ada karya</td></tr>';
+}
+
+function renderKaryaTable(data) {
+  const rows = data || DUMMY_KARYA;
+  document.getElementById('karya-tbody').innerHTML = rows.length ? rows.map((k,i) => `
+    <tr>
+      <td style="color:var(--text-muted);font-weight:700">${i+1}</td>
+      <td style="font-weight:600;max-width:280px">${k.judul}</td>
+      <td><span style="font-size:12px;background:#eef;padding:2px 8px;border-radius:4px;color:#4a4a8a">${k.jenis}</span></td>
+      <td>${k.tahun}</td>
+      <td>${statusBadge(k.status)}</td>
+      <td style="white-space:nowrap">
+        <button class="btn btn-ghost btn-sm btn-icon" title="Lihat detail" onclick="alert('Detail: ${k.judul.replace(/'/g,"\\'")}')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+        ${k.status==='revisi'?`<button class="btn btn-orange btn-sm" onclick="showPage('unggah')">Edit</button>`:''}
+      </td>
+    </tr>`).join('') : '<tr><td colspan="6"><div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><p>Belum ada karya diunggah</p></div></td></tr>';
+}
+
+function filterKarya() {
+  const q = (document.getElementById('karya-search').value||'').toLowerCase();
+  const s = document.getElementById('karya-filter').value;
+  const filtered = DUMMY_KARYA.filter(k =>
+    (!q || k.judul.toLowerCase().includes(q) || k.jenis.toLowerCase().includes(q)) &&
+    (!s || k.status === s)
+  );
+  renderKaryaTable(filtered);
+}
+
+// ── UPLOAD STEPS ──
+function resetUploadForm() {
+  currentStep = 1;
+  updateStepUI();
+  document.getElementById('step-1').style.display = 'block';
+  document.getElementById('step-2').style.display = 'none';
+  document.getElementById('step-3').style.display = 'none';
+}
+
+function goStep(n) {
+  if (n === 2) {
+    const judul = document.getElementById('f-judul').value.trim();
+    const jenis = document.getElementById('f-jenis').value;
+    const tahun = document.getElementById('f-tahun').value;
+    if (!judul || !jenis || !tahun) { showToast('Lengkapi judul, jenis, dan tahun terlebih dahulu', true); return; }
+    formData.judul = judul;
+    formData.penulis = document.getElementById('f-penulis').value;
+    formData.bahasa = document.getElementById('f-bahasa').value === 'id' ? 'Indonesia' : 'English';
+    formData.jenis = jenis;
+    formData.pembimbing = document.getElementById('f-pembimbing').value;
+    formData.tahun = tahun;
+    formData.bidang = document.getElementById('f-bidang').value;
+    formData.nopanggil = document.getElementById('f-nopanggil').value;
+    formData.abstrak = document.getElementById('f-abstrak').value;
+  }
+  if (n === 3) {
+    buildReview();
+  }
+  currentStep = n;
+  updateStepUI();
+  ['step-1','step-2','step-3'].forEach((id,i) => {
+    document.getElementById(id).style.display = (i+1===n) ? 'block' : 'none';
+  });
+}
+
+function updateStepUI() {
+  [1,2,3].forEach(i => {
+    const dot = document.getElementById('dot-'+i);
+    dot.classList.remove('active','done');
+    if (i < currentStep) dot.classList.add('done');
+    else if (i === currentStep) dot.classList.add('active');
+  });
+  [1,2].forEach(i => {
+    const line = document.getElementById('line-'+i);
+    line.classList.toggle('done', i < currentStep);
+  });
+}
+
+function buildReview() {
+  const pdfInput = document.getElementById('input-pdf');
+  const mediaInput = document.getElementById('input-media');
+  const pdfName = pdfInput.files[0] ? pdfInput.files[0].name : '—';
+  const mediaName = mediaInput.files[0] ? mediaInput.files[0].name : '—';
+  const items = [
+    { k:'Judul', v:formData.judul||'—' },
+    { k:'Penulis', v:formData.penulis||'—' },
+    { k:'Bahasa', v:formData.bahasa||'Indonesia' },
+    { k:'Jenis', v:formData.jenis||'—' },
+    { k:'Pembimbing', v:formData.pembimbing||'—' },
+    { k:'Tahun', v:formData.tahun||'—' },
+    { k:'Bidang', v:formData.bidang||'—' },
+    { k:'No. Panggil', v:formData.nopanggil||'—' },
+    { k:'Dokumen PDF', v:pdfName, full:false },
+    { k:'Foto/Video', v:mediaName, full:false },
+  ];
+  if (formData.abstrak) items.push({ k:'Abstrak', v:formData.abstrak, full:true });
+  document.getElementById('review-content').innerHTML = items.map(item => `
+    <div class="review-item${item.full?' full':''}">
+      <div class="review-key">${item.k}</div>
+      <div class="review-val">${item.v}</div>
+    </div>`).join('');
+}
+
+function submitKarya() {
+  DUMMY_KARYA.unshift({
+    id: Date.now(),
+    judul: formData.judul || 'Karya Baru',
+    jenis: formData.jenis || 'Lainnya',
+    tahun: formData.tahun || '2026',
+    status: 'pending',
+    pembimbing: formData.pembimbing || '—',
+  });
+  // update stats
+  document.getElementById('stat-total').textContent = DUMMY_KARYA.length;
+  document.getElementById('stat-pending').textContent = DUMMY_KARYA.filter(k=>k.status==='pending').length;
+  document.getElementById('info-total-karya').textContent = DUMMY_KARYA.length;
+  renderBerandaTable();
+  renderKaryaTable();
+  showToast('Karya berhasil dikirim! Menunggu verifikasi pustakawan.');
+  setTimeout(() => showPage('karya'), 1200);
+}
+
+// ── DROPZONE ──
+function dragOver(e, id) { e.preventDefault(); document.getElementById(id).classList.add('drag-over'); }
+function dragLeave(id) { document.getElementById(id).classList.remove('drag-over'); }
+function handleDrop(e, dropId, inputId) {
+  e.preventDefault();
+  dragLeave(dropId);
+  const file = e.dataTransfer.files[0];
+  if (!file) return;
+  const input = document.getElementById(inputId);
+  const dt = new DataTransfer();
+  dt.items.add(file);
+  input.files = dt.files;
+  showFile(input, dropId, 'preview-'+dropId.replace('drop-',''));
+}
+function showFile(input, dropId, previewId) {
+  const file = input.files[0];
+  if (!file) return;
+  const preview = document.getElementById(previewId);
+  const size = file.size > 1048576 ? (file.size/1048576).toFixed(1)+' MB' : (file.size/1024).toFixed(0)+' KB';
+  preview.innerHTML = `<div class="file-preview">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+    <span class="file-preview-name">${file.name}</span>
+    <span class="file-preview-size">${size}</span>
+    <button class="file-remove" onclick="removeFile('${input.id}','${dropId}','${previewId}')">×</button>
+  </div>`;
+  document.getElementById(dropId).style.display = 'none';
+}
+function removeFile(inputId, dropId, previewId) {
+  document.getElementById(inputId).value = '';
+  document.getElementById(previewId).innerHTML = '';
+  document.getElementById(dropId).style.display = 'block';
+}
+
+// ── PROFIL SAVE ──
+function saveProfil() {
+  const u = JSON.parse(localStorage.getItem('digilab-user') || '{}');
+  u.name = document.getElementById('pf-nama').value.trim() || u.name;
+  localStorage.setItem('digilab-user', JSON.stringify(u));
+  const initials = u.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('sidebar-avatar').textContent = initials;
+  document.getElementById('sidebar-name').textContent = u.name;
+  document.getElementById('welcome-name').textContent = 'Halo, ' + u.name + '!';
+  document.getElementById('welcome-avatar').textContent = initials;
+  document.getElementById('profil-avatar-big').textContent = initials;
+  document.getElementById('profil-name-big').textContent = u.name;
+  document.getElementById('info-prodi').textContent = document.getElementById('pf-prodi').value;
+  document.getElementById('info-angkatan').textContent = document.getElementById('pf-angkatan').value;
+  showToast('Profil berhasil disimpan!');
+}
+
+// ── TOAST ──
+function showToast(msg, isError) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.style.background = isError ? '#dc2626' : '#16a34a';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── INIT ──
+checkAuth();
+
+// ── WELCOME POPUP ──
+function showWelcome(user) {
+  if (sessionStorage.getItem('digilab-welcome-shown')) return;
+  sessionStorage.setItem('digilab-welcome-shown', '1');
+  var name = user.name || 'Mahasiswa';
+  var initials = name.split(' ').map(function(w){return w[0];}).join('').toUpperCase().slice(0,2);
+  document.getElementById('w-avatar').textContent = initials;
+  document.getElementById('w-name').textContent = 'Selamat datang, ' + name.split(' ')[0] + '!';
+  var bar = document.getElementById('w-bar');
+  bar.style.animation = 'none'; bar.offsetHeight; bar.style.animation = '';
+  document.getElementById('welcome-overlay').classList.add('show');
+  setTimeout(closeWelcome, 3200);
+}
+function closeWelcome() {
+  var el = document.getElementById('welcome-overlay');
+  if (el) el.classList.remove('show');
+}
+
+</script>
+
+<!-- ── WELCOME POPUP ── -->
+<div class="welcome-overlay" id="welcome-overlay" onclick="closeWelcome()">
+  <div class="welcome-popup" onclick="event.stopPropagation()">
+    <div class="welcome-popup-wave"></div>
+    <div class="welcome-avatar-big" id="w-avatar">M</div>
+    <h2 id="w-name">Selamat Datang!</h2>
+    <p id="w-msg">Selamat datang di Portal Mahasiswa DIGILAB.</p>
+    <span class="welcome-role-badge">Mahasiswa</span>
+    <div class="welcome-progress"><div class="welcome-progress-bar" id="w-bar"></div></div>
+    <button class="welcome-close" onclick="closeWelcome()">Tutup sekarang</button>
+  </div>
+</div>
+
+<!-- ▓▓▓ LOGOUT CONFIRM POPUP ▓▓▓ -->
+<div id="logout-confirm-overlay" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.45);align-items:center;justify-content:center;animation:fadeInBg .2s ease;">
+  <div style="background:#fff;border-radius:14px;padding:32px 28px;max-width:340px;width:90%;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,.18);animation:popIn .25s cubic-bezier(.34,1.56,.64,1);">
+    <div style="width:52px;height:52px;border-radius:50%;background:#fff3f0;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c0392b" stroke-width="2.2" stroke-linecap="round"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+    </div>
+    <h3 style="margin:0 0 8px;font-family:'Nunito',sans-serif;font-size:18px;font-weight:800;color:var(--text-dark,#1a1a3e);">Keluar dari Portal?</h3>
+    <p style="margin:0 0 24px;font-size:13px;color:#666;line-height:1.5;">Sesi Anda akan diakhiri dan Anda akan diarahkan ke halaman utama.</p>
+    <div style="display:flex;gap:10px;justify-content:center;">
+      <button onclick="closeLogoutConfirm()" style="flex:1;padding:10px 0;border-radius:999px;border:1.5px solid #d4d4e8;background:#fff;font-size:13px;font-weight:700;cursor:pointer;color:#555;">Batal</button>
+      <button onclick="doLogout()" style="flex:1;padding:10px 0;border-radius:999px;border:none;background:#c0392b;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">Ya, Keluar</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
