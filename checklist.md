@@ -21,15 +21,15 @@
 - [ ] Wireframe Hasil Pencarian (list karya + info total)
 - [ ] Wireframe Detail Dokumen (info + PDF/Penulis/Produk)
 - [ ] Wireframe popup proteksi login (PDF, Penulis, Produk)
-- [ ] Wireframe PDF Viewer (embed browser)
-- [ ] Wireframe Halaman Produk (galeri foto + video)
-- [ ] Wireframe Informasi Penulis
+- [x] Wireframe PDF Viewer (embed browser)
+- [x] Wireframe Halaman Produk (galeri foto + video)
+- [x] Wireframe Informasi Penulis
 - [ ] Wireframe Halaman Login
 - [ ] Wireframe Karya Ilmiah (daftar milik user)
 - [ ] Wireframe Unggah Step 1 — Detail Informasi
-- [ ] Wireframe Unggah Step 2 — Upload Dokumen & Media
+- [x] Wireframe Unggah Step 2 — Upload Dokumen & Media
 - [ ] Wireframe Unggah Step 3 — Konfirmasi
-- [ ] Wireframe Akun Saya (edit profil)
+- [x] Wireframe Akun Saya (edit profil)
 - [ ] Review desain bersama pengguna & pustakawan
 - [ ] Finalisasi desain UI/UX
 
@@ -71,9 +71,9 @@
 - [x] Fitur proteksi: popup login untuk PDF
 - [x] Fitur proteksi: popup login untuk Informasi Penulis
 - [x] Fitur proteksi: popup login untuk Produk
-- [ ] Halaman PDF Viewer (embed, blokir download & screenshot)
-- [ ] Halaman Informasi Penulis
-- [ ] Halaman Produk — galeri foto + video player
+- [x] Halaman PDF Viewer (embed, blokir download & screenshot)
+- [x] Halaman Informasi Penulis
+- [x] Halaman Produk — galeri foto + video player
 - [x] Halaman Login — card terpusat (navy card, logo besar)
 - [x] Dummy login: akun demo `mahasiswa@vokasi.um.ac.id / digilab123` & `admin@vokasi.um.ac.id / admin123`
 - [x] Validasi login: pesan error inline jika email/password salah
@@ -81,10 +81,10 @@
 - [x] Tombol "Masuk / Daftar" di halaman Beranda + hint kredensial demo
 - [x] Tombol "⌂ Beranda" di header
 - [x] Halaman Karya Ilmiah user — tabel + tombol Unggah
-- [ ] Halaman Unggah Step 1 — form metadata
-- [ ] Halaman Unggah Step 2 — drag & drop PDF + foto/video
-- [ ] Halaman Unggah Step 3 — konfirmasi + tombol Unggah
-- [ ] Halaman Akun Saya — edit profil + ubah password
+- [x] Halaman Unggah Step 1 — form metadata
+- [x] Halaman Unggah Step 2 — drag & drop PDF + foto/video
+- [x] Halaman Unggah Step 3 — konfirmasi + tombol Unggah
+- [x] Halaman Akun Saya — edit profil + ubah password
 - [ ] Blokir klik kanan & tangkap layar (CSS + JS)
 - [x] Responsif mobile & tablet
 

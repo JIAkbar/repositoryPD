@@ -1,5 +1,21 @@
 # 📋 Changelog DIGILAB Repository
 
+## [0.7.0] - 2026-06-11
+
+### Added
+- Halaman **PDF Viewer** (`#page-pdf`) — embed iframe, topbar dengan tombol kembali dan judul dokumen
+- Halaman **Informasi Penulis** (`#page-penulis`) — avatar, tabel data (NIM, Prodi, Angkatan, JK, Email)
+- Halaman **Produk** (`#page-produk`) — galeri foto grid 4 kolom + thumbnail video dengan play button
+- Halaman **Unggah 3-Step** (`#page-upload`) — stepper: Step 1 Metadata → Step 2 Berkas → Step 3 Konfirmasi
+  - Step 1: Judul, Penulis (auto dari login), Bahasa, Jenis, Dosen, Tahun, Prodi, Subjek, Abstrak
+  - Step 2: Dropzone PDF + Foto/Video (drag & drop)
+  - Step 3: Review semua data + tombol Unggah hijau
+- Halaman **Akun Saya** (`#page-akun`) — edit profil + ubah kata sandi dengan validasi
+- `pendingPage` redirect: setelah login dari popup, langsung ke halaman yang diminta (PDF/Penulis/Produk)
+- Filter beranda diperluas: tambah dropdown Prodi, Tahun, Pembimbing
+- Tombol **Akun Saya** di header navigasi
+- Tombol Unggah di halaman Karya Ilmiah terhubung ke `navToUpload()`
+
 > Format: `[YYYY-MM-DD] Tipe — Deskripsi`  
 > Tipe: `Init` · `Feat` · `Fix` · `Refactor` · `Docs` · `Design` · `Chore`
 
