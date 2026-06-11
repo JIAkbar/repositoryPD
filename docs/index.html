@@ -1423,9 +1423,9 @@
         </div>
         <div>
           <div class="info-panel-title">Informasi</div>
-          <button class="btn-info-action" onclick="showPopup('PDF')">📄 PDF</button>
-          <button class="btn-info-action" onclick="showPopup('Penulis')">👤 Penulis</button>
-          <button class="btn-info-action" onclick="showPopup('Produk')">📦 Produk</button>
+          <button class="btn-info-action" onclick="openProtectedPage('pdf')">📄 PDF</button>
+          <button class="btn-info-action" onclick="openProtectedPage('penulis')">👤 Penulis</button>
+          <button class="btn-info-action" onclick="openProtectedPage('produk')">📦 Produk</button>
         </div>
       </div>
     </div>
@@ -1697,16 +1697,21 @@ function showSearchToast(msg) {
 }
 
 function doSearch(from) {
-  const kw    = (document.getElementById('kw-' + from)?.value || '').trim();
-  const jenis = document.getElementById('jenis-' + from)?.value || '';
+  const kw         = (document.getElementById('kw-' + from)?.value || '').trim();
+  const jenis      = document.getElementById('jenis-' + from)?.value || '';
+  const prodi      = document.getElementById('prodi-' + from)?.value || '';
+  const tahun      = document.getElementById('tahun-' + from)?.value || '';
+  const pembimbing = document.getElementById('pembimbing-' + from)?.value || '';
+
+  const adaFilter = jenis || prodi || tahun || pembimbing;
 
   if (kw.length > 0 && kw.length < 3) {
     showSearchToast('Ketik minimal 3 huruf untuk pencarian.');
     document.getElementById('kw-' + from)?.focus();
     return;
   }
-  if (!kw && !jenis) {
-    showSearchToast('Silakan ketik judul, penulis, atau kata kunci terlebih dahulu.');
+  if (!kw && !adaFilter) {
+    showSearchToast('Silakan ketik kata kunci atau pilih salah satu filter.');
     document.getElementById('kw-' + from)?.focus();
     return;
   }
@@ -1720,9 +1725,13 @@ function doSearch(from) {
       String(k.tahun).includes(q)
     );
   }
-  if (jenis) hasil = hasil.filter(k => k.jenis === jenis);
+  if (jenis)      hasil = hasil.filter(k => k.jenis === jenis);
+  if (prodi)      hasil = hasil.filter(k => k.prodi === prodi);
+  if (tahun)      hasil = hasil.filter(k => String(k.tahun) === tahun);
+  if (pembimbing) hasil = hasil.filter(k => k.pembimbing && k.pembimbing.toLowerCase().includes(pembimbing.toLowerCase()));
 
-  renderHasil(hasil, kw || '(semua)');
+  const labelFilter = [kw, jenis, prodi, tahun, pembimbing].filter(Boolean).join(', ');
+  renderHasil(hasil, labelFilter || '(semua)');
   nav('hasil');
   requestAnimationFrame(() => {
     const inp = document.getElementById('kw-hasil');
@@ -1908,18 +1917,6 @@ function openProtectedPage(type) {
   nav(type);
 }
 
-/* ─── update detail buttons to use openProtectedPage ─── */
-document.addEventListener('DOMContentLoaded', function() {
-  const panel = document.querySelector('#page-detail .detail-layout > div:last-child');
-  if (panel) {
-    panel.innerHTML = `
-      <div class="info-panel-title">Informasi</div>
-      <button class="btn-info-action" onclick="openProtectedPage('pdf')">📄 PDF</button>
-      <button class="btn-info-action" onclick="openProtectedPage('penulis')">👤 Penulis</button>
-      <button class="btn-info-action" onclick="openProtectedPage('produk')">📦 Produk</button>
-    `;
-  }
-});
 
 /* ─── UPLOAD 3-STEP ─── */
 let uploadStep = 1;
