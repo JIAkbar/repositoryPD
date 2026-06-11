@@ -219,6 +219,7 @@
       transition: background .15s, color .15s; line-height: 1;
     }
     .btn-nav:hover { background: rgba(255,255,255,.25); color: #fff; }
+    .btn-nav-icon { width: 34px; padding: 0; justify-content: center; }
     .btn-nav-accent { background: rgba(249,115,22,.3); border-color: rgba(249,115,22,.5); color: #fff; }
     .btn-nav-accent:hover { background: rgba(249,115,22,.45); }
     .btn-nav-user { padding: 0 11px; }
@@ -1072,13 +1073,11 @@
     </div>
   </div>
   <div class="header-nav-desktop" style="display:flex;align-items:center;gap:6px;flex-wrap:nowrap;flex-shrink:0;">
-    <a class="btn-nav" href="changelog.html" title="Changelog">
+    <a class="btn-nav btn-nav-icon" href="changelog.html" title="Changelog" aria-label="Changelog">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
-      Changelog
     </a>
-    <a class="btn-nav" href="checklist.html" title="Checklist">
+    <a class="btn-nav btn-nav-icon" href="checklist.html" title="Checklist">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-      Checklist
     </a>
     <button class="btn-nav" onclick="nav('beranda')" title="Beranda">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
@@ -1115,6 +1114,10 @@
     <button class="btn-nav btn-nav-user" onclick="toggleUserMenu()" title="Akun / Login" id="btn-user-icon">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
     </button>
+    <a href="admin.html" class="btn-nav" id="btn-admin-panel" style="display:none;text-decoration:none;align-items:center;gap:5px;font-size:12px;font-weight:700;background:var(--orange);color:#fff;border-radius:var(--pill);padding:0 14px;height:32px;" title="Admin Panel">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 2.18l7 3.12V11c0 4.52-3.07 8.74-7 9.93-3.93-1.19-7-5.41-7-9.93V6.3l7-3.12z"/></svg>
+      Admin Panel
+    </a>
     <button class="btn-nav btn-nav-logout" id="btn-logout" onclick="doLogout()" style="display:none;" title="Keluar">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16,17 21,12 16,7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
       Keluar
@@ -1614,11 +1617,22 @@ function doLogin() {
   loggedIn = true;
   currentUser = user;
   document.getElementById('btn-logout').style.display = 'flex';
+  if (user.role === 'admin') {
+    var ab = document.getElementById('btn-admin-panel');
+    if (ab) ab.style.display = 'inline-flex';
+  }
   // Tampilkan nama user di header
   const btnUser = document.getElementById('btn-user-icon');
   const firstName = user.nama.split(' ')[0];
   btnUser.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span style="max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${firstName}</span>`;
   btnUser.title = user.nama;
+  // Simpan user ke localStorage untuk sync admin.html
+  localStorage.setItem('digilab-user', JSON.stringify({name: user.nama, email: user.email, role: user.role}));
+  if (user.role === 'admin') {
+    // Admin → redirect ke admin panel
+    window.location.href = 'admin.html';
+    return;
+  }
   renderKarya(MY_KARYA);
   closePopup();
   nav('karya');
@@ -1635,6 +1649,7 @@ function showLoginError(msg) {
 function doLogout() {
   loggedIn = false;
   currentUser = null;
+  localStorage.removeItem('digilab-user');
   document.getElementById('btn-logout').style.display = 'none';
   // Reset header user button
   const btnUser = document.getElementById('btn-user-icon');
