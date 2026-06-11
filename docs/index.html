@@ -1898,6 +1898,16 @@ function doLogout() {
   nav('beranda');
 }
 
+/* ─── PROTECTED PAGE NAVIGATION ─── */
+function openProtectedPage(type) {
+  if (!loggedIn) {
+    const map = { pdf: 'PDF', penulis: 'Penulis', produk: 'Produk' };
+    showPopup(map[type] || 'PDF');
+    return;
+  }
+  nav(type);
+}
+
 /* ─── update detail buttons to use openProtectedPage ─── */
 document.addEventListener('DOMContentLoaded', function() {
   const panel = document.querySelector('#page-detail .detail-layout > div:last-child');
