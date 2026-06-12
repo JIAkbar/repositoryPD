@@ -1544,12 +1544,12 @@
   <!-- ▓▓▓ HASIL PENCARIAN ▓▓▓ -->
   <section class="page" id="page-hasil">
     <div class="hasil-top">
-      <div style="display:flex;align-items:center;gap:12px;justify-content:center;padding:18px 0 0;">
-        <button onclick="nav('beranda')" style="background:transparent;border:1.5px solid var(--border);color:var(--text-mid);border-radius:var(--pill);padding:6px 16px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:border-color .15s,color .15s;flex-shrink:0;" onmouseover="this.style.borderColor='var(--navy)';this.style.color='var(--navy)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-mid)'">
+      <div style="display:flex;align-items:center;padding:18px 24px 14px;position:relative;min-height:44px;">
+        <button onclick="goBack()" style="background:transparent;border:1.5px solid var(--border);color:var(--text-mid);border-radius:var(--pill);padding:6px 16px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:border-color .15s,color .15s;flex-shrink:0;" onmouseover="this.style.borderColor='var(--navy)';this.style.color='var(--navy)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-mid)'">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
           Kembali
         </button>
-        <div class="hasil-top-title" style="padding:0;margin:0;">DIGILAB Repository</div>
+        <div class="hasil-top-title" style="position:absolute;left:50%;transform:translateX(-50%);padding:0;margin:0;pointer-events:none;">DIGILAB Repository</div>
       </div>
       <div class="hasil-top-search">
         <div class="search-row">
@@ -1593,6 +1593,13 @@
   <!-- ▓▓▓ DETAIL DOKUMEN ▓▓▓ -->
   <section class="page" id="page-detail">
     <div class="detail-topbar">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+        <button onclick="goBack()" style="background:transparent;border:1.5px solid var(--border);color:var(--text-mid);border-radius:var(--pill);padding:6px 16px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;flex-shrink:0;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+          Kembali
+        </button>
+        <span style="font-family:'Nunito',sans-serif;font-weight:800;font-size:16px;color:var(--text-dark);">Detail Karya</span>
+      </div>
       <div class="search-row">
         <input class="s-input" id="kw-detail" type="text"
           placeholder="Masukkan kata kunci"
@@ -1777,7 +1784,7 @@
 
   <section class="page" id="page-pdf">
     <div class="pdf-topbar">
-      <button class="btn-back" onclick="nav('detail')">
+      <button class="btn-back" onclick="goBack()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
         Kembali
       </button>
@@ -1873,7 +1880,7 @@
   <section class="page" id="page-penulis">
     <div class="penulis-wrap">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:28px;">
-        <button class="btn-back" onclick="nav('detail')" style="background:var(--bg-card);border:1.5px solid var(--border);color:var(--text-mid);border-radius:var(--pill);padding:7px 18px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:border-color .15s,color .15s;" onmouseover="this.style.borderColor='var(--navy)';this.style.color='var(--navy)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-mid)'">
+        <button class="btn-back" onclick="goBack()" style="background:var(--bg-card);border:1.5px solid var(--border);color:var(--text-mid);border-radius:var(--pill);padding:7px 18px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:border-color .15s,color .15s;" onmouseover="this.style.borderColor='var(--navy)';this.style.color='var(--navy)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-mid)'">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
           Kembali
         </button>
@@ -1944,7 +1951,7 @@
       <!-- Header -->
       <div class="produk-header-bar">
         <div style="display:flex;align-items:center;gap:12px;">
-          <button class="btn-back" onclick="nav('detail')" style="background:var(--bg-card);border:1.5px solid var(--border);color:var(--text-mid);border-radius:var(--pill);padding:7px 18px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:border-color .15s,color .15s;" onmouseover="this.style.borderColor='var(--navy)';this.style.color='var(--navy)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-mid)'">
+          <button class="btn-back" onclick="goBack()" style="background:var(--bg-card);border:1.5px solid var(--border);color:var(--text-mid);border-radius:var(--pill);padding:7px 18px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:border-color .15s,color .15s;" onmouseover="this.style.borderColor='var(--navy)';this.style.color='var(--navy)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-mid)'">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
             Kembali
           </button>
@@ -2388,8 +2395,21 @@ let loggedIn = false;
 let currentUser = null;
 
 /* ─── NAVIGATION ─── */
-function nav(page) {
+/* ─── navigation history ─── */
+var _navStack = [];
+function goBack() {
+  if (_navStack.length > 0) {
+    nav(_navStack.pop(), true);
+  } else {
+    nav('beranda', true);
+  }
+}
+function nav(page, _fromBack) {
   var current = document.querySelector('.page.active');
+  if (current && !_fromBack) {
+    var _cur = current.id.replace('page-','');
+    if (_cur !== page) { _navStack.push(_cur); if (_navStack.length > 15) _navStack.shift(); }
+  }
   var next    = document.getElementById('page-' + page);
   if (!next) return;
   if (next === current) { window.scrollTo({top:0,behavior:'smooth'}); return; }
