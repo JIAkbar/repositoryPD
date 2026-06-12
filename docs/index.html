@@ -1774,6 +1774,546 @@
     </div>
   </section>
 
+
+  <section class="page" id="page-pdf">
+    <div class="pdf-topbar">
+      <button class="btn-back" onclick="nav('detail')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Kembali
+      </button>
+      <span class="pdf-title" id="pdf-title">Dokumen</span>
+      <span class="pdf-badge" id="pdf-badge">PDF</span>
+    </div>
+    <div class="pdf-reader-wrap" id="pdf-frame-wrap">
+      <!-- Reader toolbar -->
+      <div class="pdf-reader-toolbar">
+        <div class="pdf-reader-nav">
+          <button class="pdf-ctrl-btn" onclick="pdfPrevPage()" title="Halaman sebelumnya">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <span class="pdf-page-info"><span id="pdf-cur-page">1</span> / <span id="pdf-total-page">12</span></span>
+          <button class="pdf-ctrl-btn" onclick="pdfNextPage()" title="Halaman berikutnya">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+        <div class="pdf-reader-zoom">
+          <button class="pdf-ctrl-btn" onclick="pdfZoomOut()" title="Perkecil">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <span class="pdf-zoom-val" id="pdf-zoom-val">100%</span>
+          <button class="pdf-ctrl-btn" onclick="pdfZoomIn()" title="Perbesar">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:11px;color:#aaa;font-family:'Lato',sans-serif;">Pratinjau dokumen</span>
+          <div style="background:rgba(255,255,255,.12);border-radius:4px;padding:3px 8px;font-size:11px;color:#ccc;font-family:'Nunito',sans-serif;font-weight:700;">PDF</div>
+        </div>
+      </div>
+      <!-- Reader body -->
+      <div class="pdf-reader-body" id="pdf-reader-body">
+        <div class="pdf-page-container" id="pdf-page-container">
+          <!-- Page 1 (cover) -->
+          <div class="pdf-mock-page" id="pdf-page-1">
+            <div class="pdf-page-num-badge">1</div>
+            <div class="pdf-cover-header">
+              <div class="pdf-cover-logo">
+                <svg width="38" height="38" viewBox="0 0 46 46" fill="none"><rect x="7" y="20" width="32" height="20" rx="2.5" fill="#2e3192" opacity=".15"/><path d="M23 6 C23 6 9 10 9 18 L9 20 L37 20 L37 18 C37 10 23 6 23 6Z" fill="#2e3192" opacity=".12"/><line x1="23" y1="6" x2="23" y2="40" stroke="#2e3192" stroke-width="1" opacity=".3"/></svg>
+              </div>
+              <div style="font-size:9px;color:#666;font-family:'Lato',sans-serif;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;">Fakultas Vokasi — Universitas Negeri Malang</div>
+              <div style="font-size:9px;color:#888;font-family:'Lato',sans-serif;">DIGILAB Repository · Karya Ilmiah</div>
+            </div>
+            <div class="pdf-cover-title" id="pdf-cover-title">Judul Karya Ilmiah</div>
+            <div class="pdf-cover-meta" id="pdf-cover-meta">
+              <div class="pdf-cover-meta-row"><span>Penulis</span><span id="pdf-meta-penulis">—</span></div>
+              <div class="pdf-cover-meta-row"><span>Dosen Pembimbing</span><span id="pdf-meta-dosen">—</span></div>
+              <div class="pdf-cover-meta-row"><span>Program Studi</span><span id="pdf-meta-prodi">Teknologi Pendidikan</span></div>
+              <div class="pdf-cover-meta-row"><span>Tahun</span><span id="pdf-meta-tahun">2025</span></div>
+            </div>
+            <div class="pdf-cover-footer">
+              <div class="pdf-cover-footer-bar"></div>
+              <div style="font-size:8px;color:#aaa;font-family:'Lato',sans-serif;text-align:center;">Dokumen ini dilindungi. Dilarang memperbanyak tanpa izin.</div>
+            </div>
+          </div>
+          <!-- Page 2+ (content) -->
+          <div class="pdf-mock-page pdf-content-page" id="pdf-page-2" style="display:none;">
+            <div class="pdf-page-num-badge">2</div>
+            <div class="pdf-content-header">BAB I — PENDAHULUAN</div>
+            <div class="pdf-content-section-title">1.1 Latar Belakang</div>
+            <div class="pdf-text-block"></div><div class="pdf-text-block w90"></div>
+            <div class="pdf-text-block w95"></div><div class="pdf-text-block w85"></div>
+            <div class="pdf-text-block"></div><div class="pdf-text-block w80"></div>
+            <div class="pdf-content-section-title">1.2 Rumusan Masalah</div>
+            <div class="pdf-text-block w90"></div><div class="pdf-text-block w70"></div>
+            <div class="pdf-text-block w85"></div>
+            <div class="pdf-content-section-title">1.3 Tujuan Penelitian</div>
+            <div class="pdf-text-block"></div><div class="pdf-text-block w80"></div>
+            <div class="pdf-text-block w95"></div><div class="pdf-text-block w60"></div>
+          </div>
+          <div class="pdf-mock-page pdf-content-page" id="pdf-page-3" style="display:none;">
+            <div class="pdf-page-num-badge">3</div>
+            <div class="pdf-content-header">BAB II — TINJAUAN PUSTAKA</div>
+            <div class="pdf-content-section-title">2.1 Kajian Teori</div>
+            <div class="pdf-text-block"></div><div class="pdf-text-block w90"></div>
+            <div class="pdf-text-block w95"></div><div class="pdf-text-block w75"></div>
+            <div class="pdf-text-block"></div>
+            <div class="pdf-content-section-title">2.2 Penelitian Relevan</div>
+            <div class="pdf-text-block w80"></div><div class="pdf-text-block"></div>
+            <div class="pdf-text-block w90"></div><div class="pdf-text-block w65"></div>
+            <div class="pdf-content-section-title">2.3 Kerangka Berpikir</div>
+            <div class="pdf-text-block w95"></div><div class="pdf-text-block w70"></div>
+            <div class="pdf-text-block"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ▓▓▓ INFORMASI PENULIS ▓▓▓ -->
+  <section class="page" id="page-penulis">
+    <div class="penulis-wrap">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:28px;">
+        <button class="btn-back" onclick="nav('detail')" style="background:var(--bg-card);border:1.5px solid var(--border);color:var(--text-mid);border-radius:var(--pill);padding:7px 18px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:border-color .15s,color .15s;" onmouseover="this.style.borderColor='var(--navy)';this.style.color='var(--navy)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-mid)'">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+          Kembali
+        </button>
+        <h2 style="font-family:'Nunito',sans-serif;font-weight:900;font-size:20px;color:var(--text-dark);margin:0;">Informasi Penulis</h2>
+      </div>
+
+      <!-- Profile Card -->
+      <div class="penulis-profile-card">
+        <div class="penulis-profile-left">
+          <div class="penulis-avatar-new" id="penulis-avatar-initials">NA</div>
+          <div class="penulis-nama" id="penulis-nama">Natasya Adelia R.</div>
+          <div class="penulis-prodi" id="penulis-prodi">Teknologi Pendidikan · D4</div>
+          <div class="penulis-nim-badge">NIM: 220213704262</div>
+          <div class="penulis-angkatan-badge">Angkatan 2022</div>
+        </div>
+        <div class="penulis-profile-right">
+          <div class="penulis-section-label">Data Akademik</div>
+          <div class="penulis-data-grid">
+            <div class="penulis-data-item">
+              <div class="penulis-data-label">Program Studi</div>
+              <div class="penulis-data-value" id="penulis-prodi-detail">Teknologi Pendidikan (D4)</div>
+            </div>
+            <div class="penulis-data-item">
+              <div class="penulis-data-label">Fakultas</div>
+              <div class="penulis-data-value">Vokasi — Universitas Negeri Malang</div>
+            </div>
+            <div class="penulis-data-item">
+              <div class="penulis-data-label">NIM</div>
+              <div class="penulis-data-value">220213704262</div>
+            </div>
+            <div class="penulis-data-item">
+              <div class="penulis-data-label">Angkatan</div>
+              <div class="penulis-data-value">2022</div>
+            </div>
+            <div class="penulis-data-item">
+              <div class="penulis-data-label">Jenis Kelamin</div>
+              <div class="penulis-data-value">Perempuan</div>
+            </div>
+            <div class="penulis-data-item">
+              <div class="penulis-data-label">Email</div>
+              <div class="penulis-data-value">natasya.adelia.2226@student.um.ac.id</div>
+            </div>
+          </div>
+          <div class="penulis-section-label" style="margin-top:24px;">Karya yang Diupload</div>
+          <div class="penulis-karya-list" id="penulis-karya-list">
+            <div class="penulis-karya-item">
+              <div class="penulis-karya-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </div>
+              <div>
+                <div class="penulis-karya-judul" id="penulis-karya-judul">—</div>
+                <div class="penulis-karya-meta" id="penulis-karya-meta">—</div>
+              </div>
+            </div>
+          </div>
+          <div class="penulis-note">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Data akan diperbarui oleh admin melalui database
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ▓▓▓ PRODUK ▓▓▓ -->
+  <section class="page" id="page-produk">
+    <div class="produk-wrap">
+      <!-- Header -->
+      <div class="produk-header-bar">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button class="btn-back" onclick="nav('detail')" style="background:var(--bg-card);border:1.5px solid var(--border);color:var(--text-mid);border-radius:var(--pill);padding:7px 18px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:border-color .15s,color .15s;" onmouseover="this.style.borderColor='var(--navy)';this.style.color='var(--navy)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-mid)'">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+            Kembali
+          </button>
+          <div>
+            <div style="font-size:11px;color:var(--text-muted);font-family:'Nunito',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.8px;">Produk Karya</div>
+            <h2 class="produk-judul-text" id="produk-judul">—</h2>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2-col body -->
+      <div class="produk-body">
+        <!-- LEFT: Galeri -->
+        <div class="produk-col">
+          <!-- Galeri Foto -->
+                <div class="produk-block">
+                  <div class="produk-block-header">
+                    <div class="produk-block-icon" style="background:#fff3e0;">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    </div>
+                    <span class="produk-block-title">Galeri Foto</span>
+                    <span class="produk-block-count" id="produk-foto-count">6 foto</span>
+                  </div>
+                  <div class="foto-grid" id="produk-foto-grid">
+                    <div class="foto-card"><div class="foto-placeholder" style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);"></div></div>
+                    <div class="foto-card"><div class="foto-placeholder" style="background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);"></div></div>
+                    <div class="foto-card"><div class="foto-placeholder" style="background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);"></div></div>
+                    <div class="foto-card"><div class="foto-placeholder" style="background:linear-gradient(135deg,#43e97b 0%,#38f9d7 100%);"></div></div>
+                    <div class="foto-card"><div class="foto-placeholder" style="background:linear-gradient(135deg,#fa709a 0%,#fee140 100%);"></div></div>
+                    <div class="foto-card"><div class="foto-placeholder" style="background:linear-gradient(135deg,#a18cd1 0%,#fbc2eb 100%);"></div></div>
+                  </div>
+                </div>
+        </div>
+
+        <!-- RIGHT: Video + Tautan -->
+        <div class="produk-col">
+          <!-- Video -->
+                <div class="produk-block">
+                  <div class="produk-block-header">
+                    <div class="produk-block-icon" style="background:#fce4ec;">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e53935" stroke-width="2.2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </div>
+                    <span class="produk-block-title">Video Presentasi</span>
+                    <span class="produk-block-count" id="produk-video-count">1 video</span>
+                  </div>
+                  <div class="video-showcase" id="produk-video-row">
+                    <div class="video-showcase-card">
+                      <div class="video-showcase-thumb">
+                        <div style="width:100%;height:100%;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 60%,#0f3460 100%);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;">
+                          <div class="video-play-ring">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="#fff" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                          </div>
+                          <div style="font-size:11px;color:rgba(255,255,255,.5);font-family:'Lato',sans-serif;">Klik untuk memutar</div>
+                        </div>
+                      </div>
+                      <div class="video-showcase-info">
+                        <div class="video-showcase-title" id="produk-video-title">Video Presentasi Karya</div>
+                        <div class="video-showcase-meta">Durasi: 12:34 · MP4 · HD 1080p</div>
+                        <a class="video-showcase-link" id="produk-video-link" href="#" onclick="return false;">
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                          Tonton di YouTube
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+          <!-- Tautan Terkait -->
+                <div class="produk-block" id="produk-link-section" style="display:none;">
+                  <div class="produk-block-header">
+                    <div class="produk-block-icon" style="background:#e8f5e9;">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2e7d32" stroke-width="2.2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                    </div>
+                    <span class="produk-block-title">Tautan Terkait</span>
+                  </div>
+                  <div id="produk-link-list" style="display:flex;flex-wrap:wrap;gap:10px;padding:4px 0;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ▓▓▓ UNGGAH (3-STEP) ▓▓▓ -->
+  <section class="page" id="page-upload">
+    <div class="upload-wrap">
+      <div class="upload-header">Unggah Karya Ilmiah</div>
+      <div class="upload-sub">Lengkapi informasi karya secara bertahap.</div>
+
+      <!-- Stepper -->
+      <div class="stepper" id="upload-stepper">
+        <div class="step-item">
+          <div class="step-circle active" id="sc-1">1</div>
+          <span class="step-label active" id="sl-1">Metadata</span>
+        </div>
+        <div class="step-line" id="sline-1"></div>
+        <div class="step-item">
+          <div class="step-circle" id="sc-2">2</div>
+          <span class="step-label" id="sl-2">Berkas</span>
+        </div>
+        <div class="step-line" id="sline-2"></div>
+        <div class="step-item">
+          <div class="step-circle" id="sc-3">3</div>
+          <span class="step-label" id="sl-3">Konfirmasi</span>
+        </div>
+      </div>
+
+      <!-- Step 1: Metadata -->
+      <div class="step-content active" id="upload-step-1">
+        <div class="upload-card">
+          <div class="upload-form-group">
+            <label>Judul Karya <span>*</span></label>
+            <input class="upload-input" id="up-judul" type="text" placeholder="Masukkan judul karya ilmiah" />
+          </div>
+          <div class="upload-row">
+            <div class="upload-form-group">
+              <label>Penulis</label>
+              <input class="upload-input" id="up-penulis" type="text" disabled placeholder="Dari akun login" />
+            </div>
+            <div class="upload-form-group">
+              <label>Bahasa</label>
+              <select class="upload-select" id="up-bahasa">
+                <option value="Id" selected>Indonesia</option>
+                <option value="En">Inggris</option>
+              </select>
+            </div>
+          </div>
+          <div class="upload-row">
+            <div class="upload-form-group">
+              <label>Jenis Karya <span>*</span></label>
+              <select class="upload-select" id="up-jenis">
+                <option value="Tugas Akhir" selected>Tugas Akhir</option>
+                <option value="Artikel Jurnal">Artikel Jurnal</option>
+                <option value="Laporan Magang">Laporan Magang</option>
+                <option value="Proyek Inovasi">Proyek Inovasi</option>
+              </select>
+            </div>
+            <div class="upload-form-group">
+              <label>Tahun</label>
+              <select class="upload-select" id="up-tahun">
+                <option>2026</option>
+                <option>2025</option>
+                <option>2024</option>
+                <option>2023</option>
+              </select>
+            </div>
+          </div>
+          <div class="upload-form-group">
+            <label>Dosen Pembimbing <span>*</span></label>
+            <select class="upload-select" id="up-dosen">
+              <option value="">-- Pilih Dosen --</option>
+              <option>Achmad Hamdan, S.Pd., M.Pd.</option>
+              <option>Dr. Agus Wedi, M.Pd.</option>
+              <option>Drs. Sihkabuden, M.Pd.</option>
+              <option>Dr. Yerry Soepriyanto, S.T., M.T.</option>
+              <option>Dr. Dedi Kuswandi, M.Pd.</option>
+              <option>Dr. Sulton, M.Pd.</option>
+            </select>
+          </div>
+          <div class="upload-row">
+            <div class="upload-form-group">
+              <label>Program Studi</label>
+              <select class="upload-select" id="up-prodi">
+                <option>D3 Teknologi Informasi</option>
+                <option>D4 Teknologi Rekayasa Perangkat Lunak</option>
+                <option>D3 Administrasi Perkantoran</option>
+                <option>D4 Manajemen Informatika</option>
+                <option>D4 Akuntansi</option>
+                <option>D3 Teknik Mesin</option>
+                <option>D4 Teknologi Mesin</option>
+              </select>
+            </div>
+            <div class="upload-form-group">
+              <label>Subjek / Kata Kunci</label>
+              <input class="upload-input" id="up-subjek" type="text" placeholder="Pisahkan dengan koma" />
+            </div>
+          </div>
+          <div class="upload-form-group">
+            <label>Abstrak <span>*</span></label>
+            <textarea class="upload-textarea" id="up-abstrak" placeholder="Tuliskan abstrak karya di sini..."></textarea>
+          </div>
+        </div>
+        <div class="upload-nav">
+          <button class="btn-upload-prev" onclick="nav('karya')" style="display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+            Batal
+          </button>
+          <button class="btn-upload-next" onclick="uploadNextStep(1)">
+            Selanjutnya
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="margin-left:6px;"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 2: Berkas -->
+      <div class="step-content" id="upload-step-2">
+        <div class="upload-card">
+          <div class="upload-form-group">
+            <label>Dokumen Utama (PDF) <span>*</span></label>
+            <div class="dropzone" id="dz-pdf"
+              ondragover="dzDragOver(event,'dz-pdf')"
+              ondragleave="dzDragLeave('dz-pdf')"
+              ondrop="dzDrop(event,'dz-pdf','up-pdf-input')"
+              onclick="document.getElementById('up-pdf-input').click()">
+              <div class="dz-icon">📄</div>
+              <div class="dz-label">Klik atau drag & drop file PDF</div>
+              <div class="dz-hint">Format: .pdf · Maksimal 50 MB</div>
+              <div class="dz-filename" id="dz-pdf-name"></div>
+            </div>
+            <input type="file" id="up-pdf-input" accept=".pdf" style="display:none" onchange="dzFileChange('up-pdf-input','dz-pdf-name')" />
+          </div>
+          <div class="upload-form-group">
+            <label>Foto / Video Produk</label>
+            <div class="dropzone" id="dz-media"
+              ondragover="dzDragOver(event,'dz-media')"
+              ondragleave="dzDragLeave('dz-media')"
+              ondrop="dzDrop(event,'dz-media','up-media-input')"
+              onclick="document.getElementById('up-media-input').click()">
+              <div class="dz-icon">🖼️</div>
+              <div class="dz-label">Klik atau drag & drop foto / video</div>
+              <div class="dz-hint">Format: .jpg .png .mp4 · Maksimal 100 MB</div>
+              <div class="dz-filename" id="dz-media-name"></div>
+            </div>
+            <input type="file" id="up-media-input" accept=".jpg,.jpeg,.png,.mp4,.mov" multiple style="display:none" onchange="dzFileChange('up-media-input','dz-media-name')" />
+          </div>
+        </div>
+        <div class="upload-nav">
+          <button class="btn-upload-prev" onclick="uploadPrevStep(2)" style="display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+            Kembali
+          </button>
+          <button class="btn-upload-next" onclick="uploadNextStep(2)">
+            Selanjutnya
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="margin-left:6px;"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 3: Konfirmasi -->
+      <div class="step-content" id="upload-step-3">
+        <div class="upload-card">
+          <div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;color:var(--navy);margin-bottom:16px;">Periksa kembali data karya Anda</div>
+          <div id="upload-confirm-rows">
+            <!-- filled by JS -->
+          </div>
+        </div>
+        <div class="upload-nav">
+          <button class="btn-upload-prev" onclick="uploadPrevStep(3)" style="display:flex;align-items:center;gap:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+            Kembali
+          </button>
+          <button class="btn-upload-next green" onclick="doUploadSubmit()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="margin-right:6px;"><polyline points="20 6 9 17 4 12"/></svg>
+            Unggah Karya
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ▓▓▓ AKUN SAYA ▓▓▓ -->
+  <section class="page" id="page-akun">
+    <div class="akun-wrap">
+      <div class="akun-header">Akun Saya</div>
+      <div class="akun-sub">Kelola informasi profil dan keamanan akun Anda.</div>
+
+      <div class="akun-avatar-row">
+        <div class="akun-avatar">👤</div>
+        <div class="akun-avatar-info">
+          <div class="akun-name" id="akun-name-display">—</div>
+          <div class="akun-role" id="akun-role-display">—</div>
+        </div>
+      </div>
+
+      <!-- Profil -->
+      <div class="akun-card">
+        <div class="akun-card-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Informasi Profil
+        </div>
+        <div class="akun-success" id="akun-profil-ok">✅ Profil berhasil disimpan.</div>
+        <div class="akun-form-group">
+          <label>Nama Lengkap</label>
+          <input class="akun-input" id="akun-input-nama" type="text" disabled />
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div class="akun-form-group">
+            <label>NIM / NIDN</label>
+            <input class="akun-input" id="akun-input-nim" type="text" disabled />
+          </div>
+          <div class="akun-form-group">
+            <label>Program Studi</label>
+            <select class="akun-select" id="akun-input-prodi" disabled>
+              <option>D3 Teknologi Informasi</option>
+              <option>D4 Teknologi Rekayasa Perangkat Lunak</option>
+              <option>D3 Administrasi Perkantoran</option>
+              <option>D4 Manajemen Informatika</option>
+              <option>D4 Akuntansi</option>
+            </select>
+          </div>
+        </div>
+        <div class="akun-form-group">
+          <label>Alamat Email</label>
+          <input class="akun-input" id="akun-input-email" type="email" disabled />
+        </div>
+        <div class="akun-save-row">
+          <button class="btn-akun-edit" id="btn-akun-edit" onclick="toggleAkunEdit()">✏️ Edit</button>
+          <button class="btn-akun-save" id="btn-akun-save" style="display:none;" onclick="saveAkunProfil()">💾 Simpan</button>
+        </div>
+      </div>
+
+      <!-- Ubah Password -->
+      <div class="akun-card">
+        <div class="akun-card-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Ubah Kata Sandi
+        </div>
+        <div class="akun-success" id="akun-pass-ok">✅ Kata sandi berhasil diubah.</div>
+        <div class="akun-form-group">
+          <label>Kata Sandi Lama</label>
+          <input class="akun-input" id="akun-pass-old" type="password" placeholder="••••••••" />
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div class="akun-form-group">
+            <label>Kata Sandi Baru</label>
+            <input class="akun-input" id="akun-pass-new" type="password" placeholder="••••••••" />
+          </div>
+          <div class="akun-form-group">
+            <label>Konfirmasi Kata Sandi</label>
+            <input class="akun-input" id="akun-pass-confirm" type="password" placeholder="••••••••" />
+          </div>
+        </div>
+        <div class="akun-save-row">
+          <button class="btn-akun-save" onclick="saveAkunPass()">Ubah Kata Sandi</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+
+<!-- ── LOGOUT CONFIRM ── -->
+<div class="logout-overlay" id="logout-overlay" onclick="closeLogoutConfirm()">
+  <div class="logout-box" onclick="event.stopPropagation()">
+    <div class="logout-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+    </div>
+    <h3>Keluar dari Akun?</h3>
+    <p>Anda akan keluar dari DIGILAB Repository. Pastikan sudah menyimpan pekerjaan Anda.</p>
+    <div class="logout-actions">
+      <button class="btn-cancel-logout" onclick="closeLogoutConfirm()">Batal</button>
+      <button class="btn-confirm-logout" onclick="doLogout()">Ya, Keluar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── WELCOME POPUP ── -->
+<div class="welcome-overlay" id="welcome-overlay" onclick="closeWelcome()">
+  <div class="welcome-popup" onclick="event.stopPropagation()">
+    <div class="welcome-popup-wave"></div>
+    <div class="welcome-avatar-big" id="w-avatar">U</div>
+    <h2 id="w-name">Selamat Datang!</h2>
+    <p id="w-msg">Anda berhasil masuk ke DIGILAB Repository.</p>
+    <span class="welcome-role-badge" id="w-badge">Mahasiswa</span>
+    <div class="welcome-progress"><div class="welcome-progress-bar" id="w-bar"></div></div>
+    <button class="welcome-close" onclick="closeWelcome()">Tutup sekarang</button>
+  </div>
+</div>
+
 </main>
 
 <footer>
@@ -2667,545 +3207,6 @@ function restoreSession() {
 
 
   <!-- ▓▓▓ PDF VIEWER ▓▓▓ -->
-  <section class="page" id="page-pdf">
-    <div class="pdf-topbar">
-      <button class="btn-back" onclick="nav('detail')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
-        Kembali
-      </button>
-      <span class="pdf-title" id="pdf-title">Dokumen</span>
-      <span class="pdf-badge" id="pdf-badge">PDF</span>
-    </div>
-    <div class="pdf-reader-wrap" id="pdf-frame-wrap">
-      <!-- Reader toolbar -->
-      <div class="pdf-reader-toolbar">
-        <div class="pdf-reader-nav">
-          <button class="pdf-ctrl-btn" onclick="pdfPrevPage()" title="Halaman sebelumnya">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
-          </button>
-          <span class="pdf-page-info"><span id="pdf-cur-page">1</span> / <span id="pdf-total-page">12</span></span>
-          <button class="pdf-ctrl-btn" onclick="pdfNextPage()" title="Halaman berikutnya">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
-          </button>
-        </div>
-        <div class="pdf-reader-zoom">
-          <button class="pdf-ctrl-btn" onclick="pdfZoomOut()" title="Perkecil">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>
-          <span class="pdf-zoom-val" id="pdf-zoom-val">100%</span>
-          <button class="pdf-ctrl-btn" onclick="pdfZoomIn()" title="Perbesar">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </button>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;">
-          <span style="font-size:11px;color:#aaa;font-family:'Lato',sans-serif;">Pratinjau dokumen</span>
-          <div style="background:rgba(255,255,255,.12);border-radius:4px;padding:3px 8px;font-size:11px;color:#ccc;font-family:'Nunito',sans-serif;font-weight:700;">PDF</div>
-        </div>
-      </div>
-      <!-- Reader body -->
-      <div class="pdf-reader-body" id="pdf-reader-body">
-        <div class="pdf-page-container" id="pdf-page-container">
-          <!-- Page 1 (cover) -->
-          <div class="pdf-mock-page" id="pdf-page-1">
-            <div class="pdf-page-num-badge">1</div>
-            <div class="pdf-cover-header">
-              <div class="pdf-cover-logo">
-                <svg width="38" height="38" viewBox="0 0 46 46" fill="none"><rect x="7" y="20" width="32" height="20" rx="2.5" fill="#2e3192" opacity=".15"/><path d="M23 6 C23 6 9 10 9 18 L9 20 L37 20 L37 18 C37 10 23 6 23 6Z" fill="#2e3192" opacity=".12"/><line x1="23" y1="6" x2="23" y2="40" stroke="#2e3192" stroke-width="1" opacity=".3"/></svg>
-              </div>
-              <div style="font-size:9px;color:#666;font-family:'Lato',sans-serif;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;">Fakultas Vokasi — Universitas Negeri Malang</div>
-              <div style="font-size:9px;color:#888;font-family:'Lato',sans-serif;">DIGILAB Repository · Karya Ilmiah</div>
-            </div>
-            <div class="pdf-cover-title" id="pdf-cover-title">Judul Karya Ilmiah</div>
-            <div class="pdf-cover-meta" id="pdf-cover-meta">
-              <div class="pdf-cover-meta-row"><span>Penulis</span><span id="pdf-meta-penulis">—</span></div>
-              <div class="pdf-cover-meta-row"><span>Dosen Pembimbing</span><span id="pdf-meta-dosen">—</span></div>
-              <div class="pdf-cover-meta-row"><span>Program Studi</span><span id="pdf-meta-prodi">Teknologi Pendidikan</span></div>
-              <div class="pdf-cover-meta-row"><span>Tahun</span><span id="pdf-meta-tahun">2025</span></div>
-            </div>
-            <div class="pdf-cover-footer">
-              <div class="pdf-cover-footer-bar"></div>
-              <div style="font-size:8px;color:#aaa;font-family:'Lato',sans-serif;text-align:center;">Dokumen ini dilindungi. Dilarang memperbanyak tanpa izin.</div>
-            </div>
-          </div>
-          <!-- Page 2+ (content) -->
-          <div class="pdf-mock-page pdf-content-page" id="pdf-page-2" style="display:none;">
-            <div class="pdf-page-num-badge">2</div>
-            <div class="pdf-content-header">BAB I — PENDAHULUAN</div>
-            <div class="pdf-content-section-title">1.1 Latar Belakang</div>
-            <div class="pdf-text-block"></div><div class="pdf-text-block w90"></div>
-            <div class="pdf-text-block w95"></div><div class="pdf-text-block w85"></div>
-            <div class="pdf-text-block"></div><div class="pdf-text-block w80"></div>
-            <div class="pdf-content-section-title">1.2 Rumusan Masalah</div>
-            <div class="pdf-text-block w90"></div><div class="pdf-text-block w70"></div>
-            <div class="pdf-text-block w85"></div>
-            <div class="pdf-content-section-title">1.3 Tujuan Penelitian</div>
-            <div class="pdf-text-block"></div><div class="pdf-text-block w80"></div>
-            <div class="pdf-text-block w95"></div><div class="pdf-text-block w60"></div>
-          </div>
-          <div class="pdf-mock-page pdf-content-page" id="pdf-page-3" style="display:none;">
-            <div class="pdf-page-num-badge">3</div>
-            <div class="pdf-content-header">BAB II — TINJAUAN PUSTAKA</div>
-            <div class="pdf-content-section-title">2.1 Kajian Teori</div>
-            <div class="pdf-text-block"></div><div class="pdf-text-block w90"></div>
-            <div class="pdf-text-block w95"></div><div class="pdf-text-block w75"></div>
-            <div class="pdf-text-block"></div>
-            <div class="pdf-content-section-title">2.2 Penelitian Relevan</div>
-            <div class="pdf-text-block w80"></div><div class="pdf-text-block"></div>
-            <div class="pdf-text-block w90"></div><div class="pdf-text-block w65"></div>
-            <div class="pdf-content-section-title">2.3 Kerangka Berpikir</div>
-            <div class="pdf-text-block w95"></div><div class="pdf-text-block w70"></div>
-            <div class="pdf-text-block"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ▓▓▓ INFORMASI PENULIS ▓▓▓ -->
-  <section class="page" id="page-penulis">
-    <div class="penulis-wrap">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:28px;">
-        <button class="btn-back" onclick="nav('detail')" style="background:var(--bg-card);border:1.5px solid var(--border);color:var(--text-mid);border-radius:var(--pill);padding:7px 18px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:border-color .15s,color .15s;" onmouseover="this.style.borderColor='var(--navy)';this.style.color='var(--navy)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-mid)'">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
-          Kembali
-        </button>
-        <h2 style="font-family:'Nunito',sans-serif;font-weight:900;font-size:20px;color:var(--text-dark);margin:0;">Informasi Penulis</h2>
-      </div>
-
-      <!-- Profile Card -->
-      <div class="penulis-profile-card">
-        <div class="penulis-profile-left">
-          <div class="penulis-avatar-new" id="penulis-avatar-initials">NA</div>
-          <div class="penulis-nama" id="penulis-nama">Natasya Adelia R.</div>
-          <div class="penulis-prodi" id="penulis-prodi">Teknologi Pendidikan · D4</div>
-          <div class="penulis-nim-badge">NIM: 220213704262</div>
-          <div class="penulis-angkatan-badge">Angkatan 2022</div>
-        </div>
-        <div class="penulis-profile-right">
-          <div class="penulis-section-label">Data Akademik</div>
-          <div class="penulis-data-grid">
-            <div class="penulis-data-item">
-              <div class="penulis-data-label">Program Studi</div>
-              <div class="penulis-data-value" id="penulis-prodi-detail">Teknologi Pendidikan (D4)</div>
-            </div>
-            <div class="penulis-data-item">
-              <div class="penulis-data-label">Fakultas</div>
-              <div class="penulis-data-value">Vokasi — Universitas Negeri Malang</div>
-            </div>
-            <div class="penulis-data-item">
-              <div class="penulis-data-label">NIM</div>
-              <div class="penulis-data-value">220213704262</div>
-            </div>
-            <div class="penulis-data-item">
-              <div class="penulis-data-label">Angkatan</div>
-              <div class="penulis-data-value">2022</div>
-            </div>
-            <div class="penulis-data-item">
-              <div class="penulis-data-label">Jenis Kelamin</div>
-              <div class="penulis-data-value">Perempuan</div>
-            </div>
-            <div class="penulis-data-item">
-              <div class="penulis-data-label">Email</div>
-              <div class="penulis-data-value">natasya.adelia.2226@student.um.ac.id</div>
-            </div>
-          </div>
-          <div class="penulis-section-label" style="margin-top:24px;">Karya yang Diupload</div>
-          <div class="penulis-karya-list" id="penulis-karya-list">
-            <div class="penulis-karya-item">
-              <div class="penulis-karya-icon">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-              </div>
-              <div>
-                <div class="penulis-karya-judul" id="penulis-karya-judul">—</div>
-                <div class="penulis-karya-meta" id="penulis-karya-meta">—</div>
-              </div>
-            </div>
-          </div>
-          <div class="penulis-note">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            Data akan diperbarui oleh admin melalui database
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ▓▓▓ PRODUK ▓▓▓ -->
-  <section class="page" id="page-produk">
-    <div class="produk-wrap">
-      <!-- Header -->
-      <div class="produk-header-bar">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <button class="btn-back" onclick="nav('detail')" style="background:var(--bg-card);border:1.5px solid var(--border);color:var(--text-mid);border-radius:var(--pill);padding:7px 18px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:border-color .15s,color .15s;" onmouseover="this.style.borderColor='var(--navy)';this.style.color='var(--navy)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-mid)'">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
-            Kembali
-          </button>
-          <div>
-            <div style="font-size:11px;color:var(--text-muted);font-family:'Nunito',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.8px;">Produk Karya</div>
-            <h2 class="produk-judul-text" id="produk-judul">—</h2>
-          </div>
-        </div>
-      </div>
-
-      <!-- 2-col body -->
-      <div class="produk-body">
-        <!-- LEFT: Galeri -->
-        <div class="produk-col">
-          <!-- Galeri Foto -->
-                <div class="produk-block">
-                  <div class="produk-block-header">
-                    <div class="produk-block-icon" style="background:#fff3e0;">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                    </div>
-                    <span class="produk-block-title">Galeri Foto</span>
-                    <span class="produk-block-count" id="produk-foto-count">6 foto</span>
-                  </div>
-                  <div class="foto-grid" id="produk-foto-grid">
-                    <div class="foto-card"><div class="foto-placeholder" style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);"></div></div>
-                    <div class="foto-card"><div class="foto-placeholder" style="background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);"></div></div>
-                    <div class="foto-card"><div class="foto-placeholder" style="background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);"></div></div>
-                    <div class="foto-card"><div class="foto-placeholder" style="background:linear-gradient(135deg,#43e97b 0%,#38f9d7 100%);"></div></div>
-                    <div class="foto-card"><div class="foto-placeholder" style="background:linear-gradient(135deg,#fa709a 0%,#fee140 100%);"></div></div>
-                    <div class="foto-card"><div class="foto-placeholder" style="background:linear-gradient(135deg,#a18cd1 0%,#fbc2eb 100%);"></div></div>
-                  </div>
-                </div>
-        </div>
-
-        <!-- RIGHT: Video + Tautan -->
-        <div class="produk-col">
-          <!-- Video -->
-                <div class="produk-block">
-                  <div class="produk-block-header">
-                    <div class="produk-block-icon" style="background:#fce4ec;">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e53935" stroke-width="2.2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                    </div>
-                    <span class="produk-block-title">Video Presentasi</span>
-                    <span class="produk-block-count" id="produk-video-count">1 video</span>
-                  </div>
-                  <div class="video-showcase" id="produk-video-row">
-                    <div class="video-showcase-card">
-                      <div class="video-showcase-thumb">
-                        <div style="width:100%;height:100%;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 60%,#0f3460 100%);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;">
-                          <div class="video-play-ring">
-                            <svg width="26" height="26" viewBox="0 0 24 24" fill="#fff" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                          </div>
-                          <div style="font-size:11px;color:rgba(255,255,255,.5);font-family:'Lato',sans-serif;">Klik untuk memutar</div>
-                        </div>
-                      </div>
-                      <div class="video-showcase-info">
-                        <div class="video-showcase-title" id="produk-video-title">Video Presentasi Karya</div>
-                        <div class="video-showcase-meta">Durasi: 12:34 · MP4 · HD 1080p</div>
-                        <a class="video-showcase-link" id="produk-video-link" href="#" onclick="return false;">
-                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                          Tonton di YouTube
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-          <!-- Tautan Terkait -->
-                <div class="produk-block" id="produk-link-section" style="display:none;">
-                  <div class="produk-block-header">
-                    <div class="produk-block-icon" style="background:#e8f5e9;">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2e7d32" stroke-width="2.2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                    </div>
-                    <span class="produk-block-title">Tautan Terkait</span>
-                  </div>
-                  <div id="produk-link-list" style="display:flex;flex-wrap:wrap;gap:10px;padding:4px 0;"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ▓▓▓ UNGGAH (3-STEP) ▓▓▓ -->
-  <section class="page" id="page-upload">
-    <div class="upload-wrap">
-      <div class="upload-header">Unggah Karya Ilmiah</div>
-      <div class="upload-sub">Lengkapi informasi karya secara bertahap.</div>
-
-      <!-- Stepper -->
-      <div class="stepper" id="upload-stepper">
-        <div class="step-item">
-          <div class="step-circle active" id="sc-1">1</div>
-          <span class="step-label active" id="sl-1">Metadata</span>
-        </div>
-        <div class="step-line" id="sline-1"></div>
-        <div class="step-item">
-          <div class="step-circle" id="sc-2">2</div>
-          <span class="step-label" id="sl-2">Berkas</span>
-        </div>
-        <div class="step-line" id="sline-2"></div>
-        <div class="step-item">
-          <div class="step-circle" id="sc-3">3</div>
-          <span class="step-label" id="sl-3">Konfirmasi</span>
-        </div>
-      </div>
-
-      <!-- Step 1: Metadata -->
-      <div class="step-content active" id="upload-step-1">
-        <div class="upload-card">
-          <div class="upload-form-group">
-            <label>Judul Karya <span>*</span></label>
-            <input class="upload-input" id="up-judul" type="text" placeholder="Masukkan judul karya ilmiah" />
-          </div>
-          <div class="upload-row">
-            <div class="upload-form-group">
-              <label>Penulis</label>
-              <input class="upload-input" id="up-penulis" type="text" disabled placeholder="Dari akun login" />
-            </div>
-            <div class="upload-form-group">
-              <label>Bahasa</label>
-              <select class="upload-select" id="up-bahasa">
-                <option value="Id" selected>Indonesia</option>
-                <option value="En">Inggris</option>
-              </select>
-            </div>
-          </div>
-          <div class="upload-row">
-            <div class="upload-form-group">
-              <label>Jenis Karya <span>*</span></label>
-              <select class="upload-select" id="up-jenis">
-                <option value="Tugas Akhir" selected>Tugas Akhir</option>
-                <option value="Artikel Jurnal">Artikel Jurnal</option>
-                <option value="Laporan Magang">Laporan Magang</option>
-                <option value="Proyek Inovasi">Proyek Inovasi</option>
-              </select>
-            </div>
-            <div class="upload-form-group">
-              <label>Tahun</label>
-              <select class="upload-select" id="up-tahun">
-                <option>2026</option>
-                <option>2025</option>
-                <option>2024</option>
-                <option>2023</option>
-              </select>
-            </div>
-          </div>
-          <div class="upload-form-group">
-            <label>Dosen Pembimbing <span>*</span></label>
-            <select class="upload-select" id="up-dosen">
-              <option value="">-- Pilih Dosen --</option>
-              <option>Achmad Hamdan, S.Pd., M.Pd.</option>
-              <option>Dr. Agus Wedi, M.Pd.</option>
-              <option>Drs. Sihkabuden, M.Pd.</option>
-              <option>Dr. Yerry Soepriyanto, S.T., M.T.</option>
-              <option>Dr. Dedi Kuswandi, M.Pd.</option>
-              <option>Dr. Sulton, M.Pd.</option>
-            </select>
-          </div>
-          <div class="upload-row">
-            <div class="upload-form-group">
-              <label>Program Studi</label>
-              <select class="upload-select" id="up-prodi">
-                <option>D3 Teknologi Informasi</option>
-                <option>D4 Teknologi Rekayasa Perangkat Lunak</option>
-                <option>D3 Administrasi Perkantoran</option>
-                <option>D4 Manajemen Informatika</option>
-                <option>D4 Akuntansi</option>
-                <option>D3 Teknik Mesin</option>
-                <option>D4 Teknologi Mesin</option>
-              </select>
-            </div>
-            <div class="upload-form-group">
-              <label>Subjek / Kata Kunci</label>
-              <input class="upload-input" id="up-subjek" type="text" placeholder="Pisahkan dengan koma" />
-            </div>
-          </div>
-          <div class="upload-form-group">
-            <label>Abstrak <span>*</span></label>
-            <textarea class="upload-textarea" id="up-abstrak" placeholder="Tuliskan abstrak karya di sini..."></textarea>
-          </div>
-        </div>
-        <div class="upload-nav">
-          <button class="btn-upload-prev" onclick="nav('karya')" style="display:flex;align-items:center;gap:6px;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
-            Batal
-          </button>
-          <button class="btn-upload-next" onclick="uploadNextStep(1)">
-            Selanjutnya
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="margin-left:6px;"><polyline points="9 18 15 12 9 6"/></svg>
-          </button>
-        </div>
-      </div>
-
-      <!-- Step 2: Berkas -->
-      <div class="step-content" id="upload-step-2">
-        <div class="upload-card">
-          <div class="upload-form-group">
-            <label>Dokumen Utama (PDF) <span>*</span></label>
-            <div class="dropzone" id="dz-pdf"
-              ondragover="dzDragOver(event,'dz-pdf')"
-              ondragleave="dzDragLeave('dz-pdf')"
-              ondrop="dzDrop(event,'dz-pdf','up-pdf-input')"
-              onclick="document.getElementById('up-pdf-input').click()">
-              <div class="dz-icon">📄</div>
-              <div class="dz-label">Klik atau drag & drop file PDF</div>
-              <div class="dz-hint">Format: .pdf · Maksimal 50 MB</div>
-              <div class="dz-filename" id="dz-pdf-name"></div>
-            </div>
-            <input type="file" id="up-pdf-input" accept=".pdf" style="display:none" onchange="dzFileChange('up-pdf-input','dz-pdf-name')" />
-          </div>
-          <div class="upload-form-group">
-            <label>Foto / Video Produk</label>
-            <div class="dropzone" id="dz-media"
-              ondragover="dzDragOver(event,'dz-media')"
-              ondragleave="dzDragLeave('dz-media')"
-              ondrop="dzDrop(event,'dz-media','up-media-input')"
-              onclick="document.getElementById('up-media-input').click()">
-              <div class="dz-icon">🖼️</div>
-              <div class="dz-label">Klik atau drag & drop foto / video</div>
-              <div class="dz-hint">Format: .jpg .png .mp4 · Maksimal 100 MB</div>
-              <div class="dz-filename" id="dz-media-name"></div>
-            </div>
-            <input type="file" id="up-media-input" accept=".jpg,.jpeg,.png,.mp4,.mov" multiple style="display:none" onchange="dzFileChange('up-media-input','dz-media-name')" />
-          </div>
-        </div>
-        <div class="upload-nav">
-          <button class="btn-upload-prev" onclick="uploadPrevStep(2)" style="display:flex;align-items:center;gap:6px;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
-            Kembali
-          </button>
-          <button class="btn-upload-next" onclick="uploadNextStep(2)">
-            Selanjutnya
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="margin-left:6px;"><polyline points="9 18 15 12 9 6"/></svg>
-          </button>
-        </div>
-      </div>
-
-      <!-- Step 3: Konfirmasi -->
-      <div class="step-content" id="upload-step-3">
-        <div class="upload-card">
-          <div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;color:var(--navy);margin-bottom:16px;">Periksa kembali data karya Anda</div>
-          <div id="upload-confirm-rows">
-            <!-- filled by JS -->
-          </div>
-        </div>
-        <div class="upload-nav">
-          <button class="btn-upload-prev" onclick="uploadPrevStep(3)" style="display:flex;align-items:center;gap:6px;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
-            Kembali
-          </button>
-          <button class="btn-upload-next green" onclick="doUploadSubmit()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="margin-right:6px;"><polyline points="20 6 9 17 4 12"/></svg>
-            Unggah Karya
-          </button>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ▓▓▓ AKUN SAYA ▓▓▓ -->
-  <section class="page" id="page-akun">
-    <div class="akun-wrap">
-      <div class="akun-header">Akun Saya</div>
-      <div class="akun-sub">Kelola informasi profil dan keamanan akun Anda.</div>
-
-      <div class="akun-avatar-row">
-        <div class="akun-avatar">👤</div>
-        <div class="akun-avatar-info">
-          <div class="akun-name" id="akun-name-display">—</div>
-          <div class="akun-role" id="akun-role-display">—</div>
-        </div>
-      </div>
-
-      <!-- Profil -->
-      <div class="akun-card">
-        <div class="akun-card-title">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          Informasi Profil
-        </div>
-        <div class="akun-success" id="akun-profil-ok">✅ Profil berhasil disimpan.</div>
-        <div class="akun-form-group">
-          <label>Nama Lengkap</label>
-          <input class="akun-input" id="akun-input-nama" type="text" disabled />
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-          <div class="akun-form-group">
-            <label>NIM / NIDN</label>
-            <input class="akun-input" id="akun-input-nim" type="text" disabled />
-          </div>
-          <div class="akun-form-group">
-            <label>Program Studi</label>
-            <select class="akun-select" id="akun-input-prodi" disabled>
-              <option>D3 Teknologi Informasi</option>
-              <option>D4 Teknologi Rekayasa Perangkat Lunak</option>
-              <option>D3 Administrasi Perkantoran</option>
-              <option>D4 Manajemen Informatika</option>
-              <option>D4 Akuntansi</option>
-            </select>
-          </div>
-        </div>
-        <div class="akun-form-group">
-          <label>Alamat Email</label>
-          <input class="akun-input" id="akun-input-email" type="email" disabled />
-        </div>
-        <div class="akun-save-row">
-          <button class="btn-akun-edit" id="btn-akun-edit" onclick="toggleAkunEdit()">✏️ Edit</button>
-          <button class="btn-akun-save" id="btn-akun-save" style="display:none;" onclick="saveAkunProfil()">💾 Simpan</button>
-        </div>
-      </div>
-
-      <!-- Ubah Password -->
-      <div class="akun-card">
-        <div class="akun-card-title">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          Ubah Kata Sandi
-        </div>
-        <div class="akun-success" id="akun-pass-ok">✅ Kata sandi berhasil diubah.</div>
-        <div class="akun-form-group">
-          <label>Kata Sandi Lama</label>
-          <input class="akun-input" id="akun-pass-old" type="password" placeholder="••••••••" />
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-          <div class="akun-form-group">
-            <label>Kata Sandi Baru</label>
-            <input class="akun-input" id="akun-pass-new" type="password" placeholder="••••••••" />
-          </div>
-          <div class="akun-form-group">
-            <label>Konfirmasi Kata Sandi</label>
-            <input class="akun-input" id="akun-pass-confirm" type="password" placeholder="••••••••" />
-          </div>
-        </div>
-        <div class="akun-save-row">
-          <button class="btn-akun-save" onclick="saveAkunPass()">Ubah Kata Sandi</button>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-
-
-<!-- ── LOGOUT CONFIRM ── -->
-<div class="logout-overlay" id="logout-overlay" onclick="closeLogoutConfirm()">
-  <div class="logout-box" onclick="event.stopPropagation()">
-    <div class="logout-icon">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-    </div>
-    <h3>Keluar dari Akun?</h3>
-    <p>Anda akan keluar dari DIGILAB Repository. Pastikan sudah menyimpan pekerjaan Anda.</p>
-    <div class="logout-actions">
-      <button class="btn-cancel-logout" onclick="closeLogoutConfirm()">Batal</button>
-      <button class="btn-confirm-logout" onclick="doLogout()">Ya, Keluar</button>
-    </div>
-  </div>
-</div>
-
-<!-- ── WELCOME POPUP ── -->
-<div class="welcome-overlay" id="welcome-overlay" onclick="closeWelcome()">
-  <div class="welcome-popup" onclick="event.stopPropagation()">
-    <div class="welcome-popup-wave"></div>
-    <div class="welcome-avatar-big" id="w-avatar">U</div>
-    <h2 id="w-name">Selamat Datang!</h2>
-    <p id="w-msg">Anda berhasil masuk ke DIGILAB Repository.</p>
-    <span class="welcome-role-badge" id="w-badge">Mahasiswa</span>
-    <div class="welcome-progress"><div class="welcome-progress-bar" id="w-bar"></div></div>
-    <button class="welcome-close" onclick="closeWelcome()">Tutup sekarang</button>
-  </div>
-</div>
-
 <script>restoreSession();
 // ── LOGOUT CONFIRM ──
 function openLogoutConfirm() {
