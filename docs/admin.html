@@ -280,7 +280,105 @@ tr:hover td{background:#fafbff;}
     .sidebar-home-link:hover{background:rgba(255,255,255,.12);color:#fff;}
     .sidebar-home-link svg{flex-shrink:0;opacity:.8;}
 
-    </style>
+    
+    /* ── VERIFIKASI AKUN REDESIGN ── */
+    .va-subheader {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 20px; flex-wrap: wrap; gap: 12px;
+    }
+    .va-title {
+      font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 18px;
+      color: var(--text-dark); margin-bottom: 3px;
+    }
+    .va-subtitle { font-size: 13px; color: var(--text-muted); }
+    .va-stats { display: flex; gap: 8px; align-items: center; }
+    .va-stat-chip {
+      display: flex; align-items: center; gap: 5px;
+      padding: 5px 12px; border-radius: 99px;
+      font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 12px;
+    }
+    .va-stat-chip span { font-size: 14px; font-weight: 900; }
+    .va-stat-pending  { background: #fef9c3; color: #854d0e; }
+    .va-stat-approved { background: #dcfce7; color: #166534; }
+    .va-stat-rejected { background: #fee2e2; color: #991b1b; }
+
+    .va-toolbar {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; margin-bottom: 16px; flex-wrap: wrap;
+    }
+    .va-search-group { display: flex; gap: 8px; align-items: center; flex: 1; min-width: 0; }
+    .va-search-wrap {
+      position: relative; flex: 1; min-width: 200px; max-width: 380px;
+    }
+    .va-search-icon {
+      position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+      color: var(--text-muted); pointer-events: none;
+    }
+    .va-search-input {
+      width: 100%; height: 38px; padding: 0 14px 0 36px;
+      border: 1.5px solid var(--border); border-radius: 8px;
+      font-size: 13px; color: var(--text-dark); outline: none; background: #fff;
+      transition: border-color .15s;
+    }
+    .va-search-input:focus { border-color: var(--navy); }
+    .va-filter-select {
+      height: 38px; padding: 0 12px; border: 1.5px solid var(--border);
+      border-radius: 8px; background: #fff; color: var(--text-dark);
+      font-size: 13px; cursor: pointer; outline: none;
+    }
+    .va-btn-cari {
+      height: 38px; padding: 0 18px; background: var(--navy); color: #fff;
+      border: none; border-radius: 8px; font-weight: 700; font-size: 13px;
+      font-family: 'Nunito', sans-serif; cursor: pointer; white-space: nowrap;
+      transition: background .15s;
+    }
+    .va-btn-cari:hover { background: var(--navy-dark); }
+    .va-btn-export {
+      height: 38px; padding: 0 16px; background: #fff;
+      border: 1.5px solid var(--border); border-radius: 8px;
+      color: var(--text-mid); font-size: 13px; font-weight: 700;
+      font-family: 'Nunito', sans-serif; cursor: pointer;
+      display: flex; align-items: center; gap: 6px; white-space: nowrap;
+      transition: all .15s;
+    }
+    .va-btn-export:hover { background: var(--bg); border-color: var(--navy); color: var(--navy); }
+
+    .va-table-wrap {
+      background: #fff; border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.06); overflow: hidden;
+    }
+    .va-table { width: 100%; border-collapse: collapse; }
+    .va-table thead tr { background: var(--navy); }
+    .va-table th {
+      padding: 12px 16px; font-family: 'Nunito', sans-serif;
+      font-weight: 700; font-size: 12px; color: rgba(255,255,255,.9);
+      text-align: left; letter-spacing: .3px; text-transform: uppercase;
+    }
+    .va-table td {
+      padding: 13px 16px; font-size: 13px; color: var(--text-dark);
+      border-bottom: 1px solid #f0f0f5; vertical-align: middle;
+    }
+    .va-table tr:last-child td { border-bottom: none; }
+    .va-table tbody tr:hover td { background: #fafbff; }
+    .va-nim { font-family: 'Nunito', sans-serif; font-weight: 800; letter-spacing: .3px; color: var(--navy); }
+    .va-nama { font-weight: 600; }
+    .va-prodi { font-size: 12px; color: var(--text-muted); }
+    .va-actions { display: flex; gap: 6px; }
+    .va-btn-approve {
+      display: flex; align-items: center; gap: 4px;
+      background: #d1fae5; color: #065f46; border: none; border-radius: 6px;
+      padding: 5px 12px; font-size: 12px; font-weight: 700;
+      font-family: 'Nunito', sans-serif; cursor: pointer; transition: all .15s;
+    }
+    .va-btn-approve:hover { background: #a7f3d0; }
+    .va-btn-reject {
+      display: flex; align-items: center; gap: 4px;
+      background: #fee2e2; color: #991b1b; border: none; border-radius: 6px;
+      padding: 5px 12px; font-size: 12px; font-weight: 700;
+      font-family: 'Nunito', sans-serif; cursor: pointer; transition: all .15s;
+    }
+    .va-btn-reject:hover { background: #fecaca; }
+</style>
 </head>
 <body>
 
@@ -318,6 +416,7 @@ tr:hover td{background:#fafbff;}
       <button class="nav-item active" onclick="navAdmin('beranda')" id="nav-beranda">Beranda</button>
       <button class="nav-item" onclick="navAdmin('unggah')" id="nav-unggah">Unggah Karya</button>
       <button class="nav-item" onclick="navAdmin('verifikasi')" id="nav-verifikasi">Verifikasi Karya</button>
+      <button class="nav-item" onclick="navAdmin('verif-akun')" id="nav-verif-akun">Verifikasi Akun</button>
     </nav>
     <a href="index.html" class="sidebar-home-link">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -397,15 +496,31 @@ tr:hover td{background:#fafbff;}
               <select class="form-select"><option value="">Pilih Bahasa</option><option>Indonesia</option><option>Inggris</option></select>
             </div>
             <div class="form-group"><label class="form-label">Jenis</label>
-              <select class="form-select"><option value="">Pilih Jenis</option><option>Skripsi</option><option>Tugas Akhir</option><option>Laporan PKL</option><option>Laporan Magang</option><option>Proyek Inovasi</option></select>
+              <select class="form-select"><option value="">Pilih Jenis</option><option value="Artikel Jurnal">Artikel Jurnal</option><option value="Tugas Akhir">Tugas Akhir</option><option value="Laporan Magang">Laporan Magang</option><option value="Proyek Inovasi">Proyek Inovasi</option></select>
             </div>
             <div class="form-group"><label class="form-label">Program Studi</label>
               <select class="form-select"><option value="">Pilih Prodi</option><option>D3 Teknologi Informasi</option><option>D4 Teknologi Rekayasa Perangkat Lunak</option><option>D3 Administrasi Perkantoran</option><option>D4 Manajemen Informatika</option><option>D4 Akuntansi</option><option>D3 Teknik Mesin</option><option>D4 Teknologi Mesin</option></select>
             </div>
-            <div class="form-group"><label class="form-label">Dosen Pembimbing</label><input class="form-input" type="text" placeholder="Nama dosen pembimbing"></div>
+            <div class="form-group"><label class="form-label">Dosen Pembimbing</label>
+              <select class="form-select" id="adm-pembimbing">
+                <option value="">-- Pilih Dosen --</option>
+                <option>Achmad Hamdan, S.Pd., M.Pd.</option>
+                <option>Dr. Agus Wedi, M.Pd.</option>
+                <option>Drs. Sihkabuden, M.Pd.</option>
+                <option>Dr. Yerry Soepriyanto, S.T., M.T.</option>
+                <option>Hariyanto, S.Pd., M.Pd.</option>
+                <option>Dr. Siti Rahayu, M.Lib.</option>
+                <option>Prof. Ir. Ahmad Syukur, M.T.</option>
+                <option>Dr. Budi Santoso, M.T.</option>
+                <option>Dr. Wahyu Pratama, M.Kom.</option>
+                <option>Candra Ariawan, S.Kom., M.Kom.</option>
+                <option>Dr. Endang Wahyu, M.Ak.</option>
+                <option>Ir. Sinta Dewi, M.Ds.</option>
+              </select>
+            </div>
             <div class="form-group"><label class="form-label">Tahun</label><input class="form-input" type="number" placeholder="2026" min="2000" max="2030"></div>
             <div class="form-group"><label class="form-label">Subjek / Bidang</label><input class="form-input" type="text" placeholder="Bidang keilmuan"></div>
-            <div class="form-group"><label class="form-label">No. Panggil</label><input class="form-input" type="text" placeholder="020122 ADE"></div>
+            <div class="form-group"><label class="form-label">No. Panggil</label><input class="form-input" type="text" placeholder="Contoh: KAR/PD/TA/RAN/2020"></div>
             <div class="form-group full"><label class="form-label">Abstrak</label><textarea class="form-textarea" placeholder="Tuliskan abstrak karya..."></textarea></div>
             <div class="form-group full">
               <div class="upload-grid">
@@ -428,6 +543,15 @@ tr:hover td{background:#fafbff;}
                   <div class="upload-note" id="media-name">Format file: .png / .jpg / .jpeg / .mp4 / .mp3</div>
                 </div>
               </div>
+            </div>
+          </div>
+          <!-- Tautan Terkait -->
+          <div class="form-group full" style="margin-top:4px;">
+            <label class="form-label">🔗 Tautan Terkait <span style="font-weight:400;color:var(--text-muted);font-size:11px;">(opsional — YouTube, GitHub, dll)</span></label>
+            <div id="adm-link-list" style="display:flex;flex-direction:column;gap:7px;margin-bottom:8px;"></div>
+            <div style="display:flex;gap:8px;">
+              <input type="url" id="adm-link-input" class="form-input" placeholder="https://youtu.be/... atau https://github.com/..." style="flex:1;font-size:13px;" />
+              <button type="button" class="btn-secondary" onclick="admAddLink()" style="white-space:nowrap;flex-shrink:0;padding:8px 16px;">+ Tambah</button>
             </div>
           </div>
           <div class="form-actions">
@@ -458,9 +582,8 @@ tr:hover td{background:#fafbff;}
           </select>
           <select class="filter-select" onchange="filterTable()" id="filt-jenis">
             <option value="">Semua Jenis</option>
-            <option value="Skripsi">Skripsi</option>
+            <option value="Artikel Jurnal">Artikel Jurnal</option>
             <option value="Tugas Akhir">Tugas Akhir</option>
-            <option value="Laporan PKL">Laporan PKL</option>
             <option value="Laporan Magang">Laporan Magang</option>
             <option value="Proyek Inovasi">Proyek Inovasi</option>
           </select>
@@ -519,8 +642,70 @@ tr:hover td{background:#fafbff;}
         </div>
       </div>
 
+      <!-- ── VERIFIKASI AKUN ── -->
+      <div class="a-page" id="page-verif-akun">
+
+        <!-- Sub-header -->
+        <div class="va-subheader">
+          <div>
+            <div class="va-title">Verifikasi Akun Mahasiswa</div>
+            <div class="va-subtitle">Tinjau dan setujui pendaftaran akun mahasiswa baru</div>
+          </div>
+          <div class="va-stats">
+            <div class="va-stat-chip va-stat-pending">
+              <span id="va-count-pending">0</span> Menunggu
+            </div>
+            <div class="va-stat-chip va-stat-approved">
+              <span id="va-count-approved">0</span> Disetujui
+            </div>
+            <div class="va-stat-chip va-stat-rejected">
+              <span id="va-count-rejected">0</span> Ditolak
+            </div>
+          </div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="va-toolbar">
+          <div class="va-search-group">
+            <div class="va-search-wrap">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" class="va-search-icon"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input class="va-search-input" id="akun-search" type="text" placeholder="Cari NIM atau nama mahasiswa..." oninput="filterAkunTable()">
+            </div>
+            <select class="va-filter-select" onchange="filterAkunTable()" id="akun-filter-status">
+              <option value="">Semua Status</option>
+              <option value="pending">Menunggu</option>
+              <option value="approved">Disetujui</option>
+              <option value="rejected">Ditolak</option>
+            </select>
+            <button class="va-btn-cari" onclick="filterAkunTable()">Cari</button>
+          </div>
+          <button class="va-btn-export" onclick="showToast('Data diunduh','green')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Unduh Rekapan
+          </button>
+        </div>
+
+        <!-- Table -->
+        <div class="va-table-wrap">
+          <table class="va-table">
+            <thead>
+              <tr>
+                <th style="width:48px">No.</th>
+                <th style="width:140px">NIM</th>
+                <th>Nama</th>
+                <th>Program Studi</th>
+                <th style="width:130px">Tanggal Daftar</th>
+                <th style="width:110px">Status</th>
+                <th style="width:160px">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="akun-table-body"></tbody>
+          </table>
+        </div>
+      </div>
     </div><!-- /page-body -->
-  </main>
+
+</main>
 </div>
 
 <!-- Toast -->
@@ -531,8 +716,8 @@ tr:hover td{background:#fafbff;}
 var karya = [
   {id:1, nama:'Natasya Adelia R.', nim:'220213704262', jenis:'Laporan Magang', judul:'Laporan Magang Perpustakaan Bung Karno — Implementasi Sistem Digitalisasi', dosen:'Achmad Hamdan, S.Pd., M.Pd.', tahun:'2025', bidang:'Literasi Informasi, Perpustakaan', panggil:'025ADE', bahasa:'Indonesia', tgl:'19-12-2025', status:'pending', abstrak:'Laporan ini membahas implementasi sistem digitalisasi koleksi perpustakaan di Perpustakaan Bung Karno. Digitalisasi dilakukan untuk meningkatkan aksesibilitas dan pelestarian koleksi.'},
   {id:2, nama:'Riska Nur Amalia', nim:'220213704301', jenis:'Tugas Akhir', judul:'Rancang Bangun Website Manajemen Arsip Digital Berbasis Web', dosen:'Dr. Agus Wedi, M.Pd.', tahun:'2025', bidang:'Teknologi Informasi, Arsip', panggil:'025RIS', bahasa:'Indonesia', tgl:'18-12-2025', status:'verified', abstrak:'Penelitian ini merancang dan membangun sistem manajemen arsip digital berbasis web untuk meningkatkan efisiensi pengelolaan dokumen organisasi.'},
-  {id:3, nama:'Bagas Pratama', nim:'210213704189', jenis:'Skripsi', judul:'Analisis Kinerja Algoritma Machine Learning untuk Prediksi Kelulusan Mahasiswa', dosen:'Dr. Yerry Soepriyanto, S.T., M.T.', tahun:'2025', bidang:'Machine Learning, Pendidikan', panggil:'025BAG', bahasa:'Indonesia', tgl:'17-12-2025', status:'revision', abstrak:'Penelitian ini menganalisis perbandingan kinerja berbagai algoritma machine learning dalam memprediksi kelulusan mahasiswa berdasarkan data akademik.'},
-  {id:4, nama:'Devi Rahayu', nim:'210213704205', jenis:'Laporan PKL', judul:'Implementasi Sistem Informasi Manajemen SDM di PT. Teknologi Nusantara', dosen:'Drs. Sihkabuden, M.Pd.', tahun:'2025', bidang:'Sistem Informasi, SDM', panggil:'025DEV', bahasa:'Indonesia', tgl:'15-12-2025', status:'pending', abstrak:'Laporan PKL ini mendokumentasikan proses implementasi modul penggajian dan absensi pada sistem informasi manajemen SDM perusahaan.'},
+  {id:3, nama:'Bagas Pratama', nim:'210213704189', jenis:'Artikel Jurnal', judul:'Analisis Kinerja Algoritma Machine Learning untuk Prediksi Kelulusan Mahasiswa', dosen:'Dr. Yerry Soepriyanto, S.T., M.T.', tahun:'2025', bidang:'Machine Learning, Pendidikan', panggil:'025BAG', bahasa:'Indonesia', tgl:'17-12-2025', status:'revision', abstrak:'Penelitian ini menganalisis perbandingan kinerja berbagai algoritma machine learning dalam memprediksi kelulusan mahasiswa berdasarkan data akademik.'},
+  {id:4, nama:'Devi Rahayu', nim:'210213704205', jenis:'Laporan Magang', judul:'Implementasi Sistem Informasi Manajemen SDM di PT. Teknologi Nusantara', dosen:'Drs. Sihkabuden, M.Pd.', tahun:'2025', bidang:'Sistem Informasi, SDM', panggil:'025DEV', bahasa:'Indonesia', tgl:'15-12-2025', status:'pending', abstrak:'Laporan Magang ini mendokumentasikan proses implementasi modul penggajian dan absensi pada sistem informasi manajemen SDM perusahaan.'},
   {id:5, nama:'Ahmad Fauzi', nim:'220213704318', jenis:'Proyek Inovasi', judul:'Prototipe Alat Monitoring Kualitas Udara Berbasis IoT', dosen:'Dr. Yerry Soepriyanto, S.T., M.T.', tahun:'2026', bidang:'IoT, Lingkungan', panggil:'026FAU', bahasa:'Indonesia', tgl:'10-12-2025', status:'verified', abstrak:'Proyek ini mengembangkan prototipe alat monitoring kualitas udara berbasis IoT menggunakan sensor MQ-135 dan NodeMCU yang terkoneksi ke dashboard web real-time.'},
   {id:6, nama:'Siti Rahmawati', nim:'210213704224', jenis:'Tugas Akhir', judul:'Perancangan UI/UX Aplikasi Mobile Perpustakaan Digital', dosen:'Achmad Hamdan, S.Pd., M.Pd.', tahun:'2025', bidang:'UI/UX, Mobile', panggil:'025SIT', bahasa:'Indonesia', tgl:'08-12-2025', status:'pending', abstrak:'Penelitian ini merancang antarmuka pengguna aplikasi mobile perpustakaan digital menggunakan metodologi User-Centered Design dengan pendekatan design thinking.'},
 ];
@@ -583,8 +768,17 @@ function doLogout(){
 }
 
 // ══ NAVIGATION ══
+
+const DUMMY_AKUN = [
+  { id:1, nim:'230213704301', nama:'Bima Saputra',     prodi:'D4 Teknologi Rekayasa Perangkat Lunak', tanggal:'10 Jun 2026', status:'pending' },
+  { id:2, nim:'230213704302', nama:'Laila Fitriani',   prodi:'D3 Teknologi Informasi',                tanggal:'11 Jun 2026', status:'pending' },
+  { id:3, nim:'230213704303', nama:'Rizal Hidayatullah', prodi:'D4 Akuntansi',                        tanggal:'11 Jun 2026', status:'pending' },
+  { id:4, nim:'220213704280', nama:'Dwi Kurniawati',   prodi:'D3 Administrasi Perkantoran',           tanggal:'09 Jun 2026', status:'approved' },
+  { id:5, nim:'220213704281', nama:'Fajar Nugroho',    prodi:'D4 Manajemen Informatika',              tanggal:'08 Jun 2026', status:'rejected' },
+];
+
 function navAdmin(page){
-  var titles={beranda:'Beranda',unggah:'Unggah Karya',verifikasi:'Verifikasi Karya',detail:'Detail Verifikasi'};
+  var titles={beranda:'Beranda',unggah:'Unggah Karya',verifikasi:'Verifikasi Karya',detail:'Detail Verifikasi','verif-akun':'Verifikasi Akun'};
   var current = document.querySelector('.a-page.active');
   var next = document.getElementById('page-'+page);
   if (!next || next === current) return;
@@ -601,10 +795,12 @@ function navAdmin(page){
     setTimeout(function(){
       current.classList.remove('active','exiting');
       next.classList.add('active','entering');
+      if (page === 'verif-akun') renderAkunTable();
       setTimeout(function(){ next.classList.remove('entering'); }, 240);
     }, 150);
   } else {
     next.classList.add('active','entering');
+    if (page === 'verif-akun') renderAkunTable();
     setTimeout(function(){ next.classList.remove('entering'); }, 240);
   }
 }
@@ -690,6 +886,90 @@ function setStatus(status){
 }
 
 // ══ UPLOAD FORM ══
+function admAddLink() {
+  const inp = document.getElementById('adm-link-input');
+  const url = (inp.value || '').trim();
+  if (!url) return;
+  try { new URL(url); } catch(e) { showToast('Format URL tidak valid','red'); return; }
+  const list = document.getElementById('adm-link-list');
+  const id   = 'alx-' + Date.now();
+  list.insertAdjacentHTML('beforeend', `
+    <div id="${id}" style="display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:7px 12px;">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2.2" stroke-linecap="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      <span style="font-size:12px;color:var(--text-mid);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${url}">${url}</span>
+      <button onclick="document.getElementById('${id}').remove()" style="background:none;border:none;cursor:pointer;color:var(--text-muted);padding:2px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>`);
+  inp.value = '';
+}
+
+/* ─── VERIFIKASI AKUN ─── */
+function akunStatusBadge(s) {
+  const map = {
+    pending:  ['#fef3c7','#92400e','Menunggu'],
+    approved: ['#d1fae5','#065f46','Disetujui'],
+    rejected: ['#fee2e2','#991b1b','Ditolak'],
+  };
+  const [bg, col, label] = map[s] || ['#f3f4f6','#374151', s];
+  return `<span style="background:${bg};color:${col};padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;">${label}</span>`;
+}
+
+function renderAkunTable(data) {
+  var rows = data || DUMMY_AKUN;
+
+  // Update stat chips
+  var all = DUMMY_AKUN;
+  document.getElementById('va-count-pending').textContent  = all.filter(function(r){ return r.status==='pending'; }).length;
+  document.getElementById('va-count-approved').textContent = all.filter(function(r){ return r.status==='approved'; }).length;
+  document.getElementById('va-count-rejected').textContent = all.filter(function(r){ return r.status==='rejected'; }).length;
+
+  document.getElementById('akun-table-body').innerHTML = rows.length
+    ? rows.map(function(r, i) {
+        return '<tr>' +
+          '<td style="color:var(--text-muted);font-weight:700;text-align:center">'+(i+1)+'</td>' +
+          '<td><span class="va-nim">'+r.nim+'</span></td>' +
+          '<td><span class="va-nama">'+r.nama+'</span></td>' +
+          '<td><span class="va-prodi">'+r.prodi+'</span></td>' +
+          '<td style="font-size:12px;color:var(--text-mid);">'+r.tanggal+'</td>' +
+          '<td>'+akunStatusBadge(r.status)+'</td>' +
+          '<td>' +
+            (r.status === 'pending'
+              ? '<div class="va-actions">' +
+                  '<button class="va-btn-approve" onclick="akunAction('+r.id+',\'approved\')">' +
+                    '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Setujui' +
+                  '</button>' +
+                  '<button class="va-btn-reject" onclick="akunAction('+r.id+',\'rejected\')">' +
+                    '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Tolak' +
+                  '</button>' +
+                '</div>'
+              : '<span style="font-size:12px;color:var(--text-muted);">—</span>') +
+          '</td>' +
+        '</tr>';
+      }).join('')
+    : '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-muted);">Tidak ada data pendaftar</td></tr>';
+}
+
+function filterAkunTable() {
+  const q = (document.getElementById('akun-search')?.value || '').toLowerCase();
+  const s = document.getElementById('akun-filter-status')?.value || '';
+  const filtered = DUMMY_AKUN.filter(a =>
+    (!q || a.nim.includes(q) || a.nama.toLowerCase().includes(q)) &&
+    (!s || a.status === s)
+  );
+  renderAkunTable(filtered);
+}
+
+function akunAction(id, action) {
+  const a = DUMMY_AKUN.find(x => x.id === id);
+  if (!a) return;
+  a.status = action;
+  renderAkunTable();
+  const label = action === 'approved' ? 'disetujui' : 'ditolak';
+  showToast('Akun ' + a.nama + ' berhasil ' + label, action === 'approved' ? 'green' : 'red');
+}
+
+
 function showFileName(input, targetId){
   var el = document.getElementById(targetId);
   if(input.files && input.files[0]) el.textContent=input.files[0].name;

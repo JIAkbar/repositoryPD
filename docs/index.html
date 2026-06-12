@@ -231,6 +231,7 @@
       background: var(--navy); padding: 14px 20px; text-align: center;
       font-size: 12px; color: rgba(255,255,255,.75); flex-shrink: 0; letter-spacing: .2px;
     }
+    body.no-footer footer { display: none; }
     .footer-links { display:flex; align-items:center; justify-content:center; gap:6px; margin-top:8px; flex-wrap:wrap; }
     .footer-link { color:rgba(255,255,255,.5); text-decoration:none; font-size:11px; font-weight:600; display:inline-flex; align-items:center; gap:4px; padding:4px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.15); transition:background .15s,color .15s; }
     .footer-link:hover { background:rgba(255,255,255,.1); color:#fff; }
@@ -601,12 +602,18 @@
     .abstrak-text { font-size: 13.5px; color: var(--text-mid); line-height: 1.75; }
     .info-panel-title { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 17px; color: var(--text-dark); margin-bottom: 14px; }
     .btn-info-action {
-      display: block; width: 100%; padding: 13px; margin-bottom: 10px;
-      border: none; border-radius: var(--r); background: var(--red); color: #fff;
-      font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 15px; cursor: pointer;
-      text-align: center; letter-spacing: .3px; transition: filter .15s, transform .12s;
+      display: flex; align-items: center; justify-content: center; gap: 9px;
+      width: 100%; padding: 13px 16px; margin-bottom: 10px;
+      border: none; border-radius: 10px; color: #fff;
+      font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14px; cursor: pointer;
+      letter-spacing: .2px; transition: filter .15s, transform .12s, box-shadow .15s;
+      box-shadow: 0 3px 10px rgba(0,0,0,.15);
     }
-    .btn-info-action:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .btn-info-action:hover { filter: brightness(1.08); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,.2); }
+    .btn-info-action:active { transform: translateY(0); }
+    .btn-info-pdf    { background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%); }
+    .btn-info-penulis{ background: linear-gradient(135deg, #1e5799 0%, var(--navy) 100%); }
+    .btn-info-produk { background: linear-gradient(135deg, #d35400 0%, #e67e22 100%); }
     .btn-info-action:active { transform: none; }
 
     /* ═══════════════════════════ LOGIN ═══ */
@@ -734,6 +741,7 @@
   
     /* ─── PDF VIEWER ─── */
     #page-pdf { flex-direction: column; background: #2b2b2b; min-height: calc(100vh - 66px); }
+    #page-produk, #page-penulis { flex-direction: column; min-height: calc(100vh - 66px); }
     .pdf-topbar {
       background: var(--navy); height: 52px; display: flex; align-items: center;
       padding: 0 20px; gap: 14px; flex-shrink: 0;
@@ -744,69 +752,248 @@
       padding: 6px 16px; cursor: pointer; display: flex; align-items: center; gap: 6px;
       transition: background .15s;
     }
-    .pdf-topbar .btn-back:hover { background: rgba(255,255,255,.28); }
-    .pdf-topbar .pdf-title {
-      color: #fff; font-family: 'Nunito',sans-serif; font-weight: 800; font-size: 14px;
-      flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    .pdf-topbar .btn-back:hover { background: rgba(255,255,255,.25); }
+    .pdf-title { flex: 1; color: #fff; font-family: 'Nunito',sans-serif; font-weight: 700; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .pdf-badge { background: rgba(255,255,255,.18); color: #fff; font-family: 'Nunito',sans-serif; font-weight: 800; font-size: 11px; padding: 3px 10px; border-radius: 4px; letter-spacing: .5px; }
+    /* ── PDF READER ── */
+    .pdf-reader-wrap {
+      flex: 1; display: flex; flex-direction: column; min-height: 0; background: #525659;
     }
-    .pdf-topbar .pdf-badge {
-      background: rgba(255,255,255,.15); color: #fff; font-size: 12px;
-      padding: 4px 12px; border-radius: var(--pill); font-family: 'Lato',sans-serif;
+    .pdf-reader-toolbar {
+      background: #3c3f41; height: 46px; display: flex; align-items: center;
+      padding: 0 16px; gap: 16px; flex-shrink: 0; border-bottom: 1px solid #2a2a2a;
     }
-    .pdf-frame-wrap { flex: 1; position: relative; overflow: hidden; }
-    .pdf-frame-wrap iframe {
-      width: 100%; height: 100%; border: none; position: absolute; inset: 0;
-    }
-    .pdf-no-access {
-      flex: 1; display: flex; flex-direction: column; align-items: center;
-      justify-content: center; color: #ccc; font-family: 'Nunito',sans-serif; gap: 12px;
-    }
-
-    /* ─── PENULIS ─── */
-    #page-penulis { flex-direction: column; background: var(--bg); min-height: calc(100vh - 66px); }
-    .penulis-wrap {
-      max-width: 760px; margin: 0 auto; padding: 40px 24px;
-    }
-    .penulis-card {
-      background: var(--bg-card); border-radius: 12px; padding: 32px;
-      box-shadow: var(--shadow);
-      display: flex; gap: 32px; align-items: flex-start; flex-wrap: wrap;
-    }
-    .penulis-avatar {
-      width: 110px; height: 110px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--navy) 0%, #4a4dc0 100%);
+    .pdf-reader-nav, .pdf-reader-zoom { display: flex; align-items: center; gap: 6px; }
+    .pdf-ctrl-btn {
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15);
+      border-radius: 4px; color: #ddd; width: 26px; height: 26px;
       display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; font-size: 42px;
+      cursor: pointer; transition: background .12s;
     }
-    .penulis-info { flex: 1; min-width: 220px; }
+    .pdf-ctrl-btn:hover { background: rgba(255,255,255,.2); }
+    .pdf-page-info, .pdf-zoom-val {
+      color: #ccc; font-family: 'Lato',sans-serif; font-size: 13px;
+      background: rgba(255,255,255,.08); padding: 2px 10px; border-radius: 4px;
+      min-width: 54px; text-align: center;
+    }
+    .pdf-reader-body {
+      flex: 1; overflow-y: auto; padding: 28px 0; display: flex;
+      flex-direction: column; align-items: center; gap: 20px;
+    }
+    .pdf-page-container { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+    .pdf-mock-page {
+      background: #fff; width: 520px; min-height: 700px; border-radius: 2px;
+      box-shadow: 0 4px 20px rgba(0,0,0,.4); padding: 56px 60px; position: relative;
+      font-family: 'Lato', sans-serif;
+      display: flex; flex-direction: column;
+    }
+    .pdf-page-num-badge {
+      position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+      font-size: 11px; color: #aaa; font-family: 'Lato',sans-serif;
+    }
+    /* Cover page */
+    .pdf-cover-header {
+      text-align: center; margin-bottom: 40px; padding-bottom: 20px;
+      border-bottom: 2px solid var(--navy);
+    }
+    .pdf-cover-logo { margin-bottom: 10px; }
+    .pdf-cover-title {
+      font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 17px;
+      color: var(--navy); text-align: center; line-height: 1.5;
+      margin: 32px 0 40px; padding: 20px; background: #f4f5fb; border-radius: 8px;
+      border-left: 4px solid var(--navy);
+    }
+    .pdf-cover-meta {
+      border: 1px solid #e0e0e0; border-radius: 6px; overflow: hidden; margin-bottom: 40px;
+    }
+    .pdf-cover-meta-row {
+      display: flex; justify-content: space-between; padding: 10px 16px;
+      font-size: 12px; border-bottom: 1px solid #f0f0f0;
+      color: #444;
+    }
+    .pdf-cover-meta-row:last-child { border-bottom: none; }
+    .pdf-cover-meta-row span:first-child { font-weight: 700; color: #555; min-width: 130px; }
+    .pdf-cover-footer { margin-top: auto; }
+    .pdf-cover-footer-bar { height: 4px; background: linear-gradient(90deg, var(--navy) 0%, var(--orange) 100%); border-radius: 2px; margin-bottom: 12px; }
+    /* Content pages */
+    .pdf-content-header {
+      font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 15px;
+      color: var(--navy); margin-bottom: 20px; padding-bottom: 10px;
+      border-bottom: 1.5px solid #e8e8f0;
+    }
+    .pdf-content-section-title {
+      font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 12px;
+      color: #333; margin: 18px 0 10px;
+    }
+    .pdf-text-block {
+      height: 9px; background: #e8e8ec; border-radius: 3px; margin-bottom: 8px; width: 100%;
+    }
+    .pdf-text-block.w90 { width: 90%; }
+    .pdf-text-block.w85 { width: 85%; }
+    .pdf-text-block.w80 { width: 80%; }
+    .pdf-text-block.w75 { width: 75%; }
+    .pdf-text-block.w70 { width: 70%; }
+    .pdf-text-block.w65 { width: 65%; }
+    .pdf-text-block.w60 { width: 60%; }
+    .pdf-text-block.w95 { width: 95%; }
+    
+    .penulis-wrap { max-width: 900px; margin: 0 auto; padding: 32px 24px; }
+    .penulis-profile-card {
+      background: var(--bg-card); border-radius: 16px; box-shadow: var(--shadow);
+      display: flex; gap: 0; overflow: hidden;
+    }
+    .penulis-profile-left {
+      background: linear-gradient(160deg, var(--navy) 0%, #1e2166 100%);
+      padding: 40px 32px; display: flex; flex-direction: column; align-items: center;
+      gap: 10px; min-width: 220px; text-align: center;
+    }
+    .penulis-avatar-new {
+      width: 90px; height: 90px; border-radius: 50%;
+      background: rgba(255,255,255,.15); border: 3px solid rgba(255,255,255,.3);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Nunito',sans-serif; font-weight: 900; font-size: 28px;
+      color: #fff; letter-spacing: 1px; margin-bottom: 8px;
+    }
     .penulis-nama {
-      font-family: 'Nunito',sans-serif; font-weight: 900;
-      font-size: 22px; color: var(--text-dark); margin-bottom: 4px;
+      font-family: 'Nunito',sans-serif; font-weight: 900; font-size: 16px;
+      color: #fff; margin-bottom: 2px;
     }
-    .penulis-prodi {
-      font-size: 13px; color: var(--text-muted); margin-bottom: 20px;
+    .penulis-prodi { font-size: 12px; color: rgba(255,255,255,.7); }
+    .penulis-nim-badge {
+      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+      border-radius: 20px; padding: 4px 12px; font-size: 11px;
+      font-family: 'Nunito',sans-serif; font-weight: 700; color: rgba(255,255,255,.85);
+      margin-top: 4px;
     }
-    .penulis-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    .penulis-table tr { border-bottom: 1px solid var(--border); }
-    .penulis-table tr:last-child { border-bottom: none; }
-    .penulis-table td { padding: 10px 8px; }
-    .penulis-table td:first-child {
-      color: var(--text-muted); font-weight: 600; width: 160px;
-      font-family: 'Lato',sans-serif;
+    .penulis-angkatan-badge {
+      background: var(--orange); border-radius: 20px; padding: 3px 12px;
+      font-size: 11px; font-family: 'Nunito',sans-serif; font-weight: 700; color: #fff;
     }
-    .penulis-table td:last-child { color: var(--text-dark); font-weight: 700; }
-
-    /* ─── PRODUK ─── */
-    #page-produk { flex-direction: column; background: var(--bg); min-height: calc(100vh - 66px); }
-    .produk-wrap { max-width: 960px; margin: 0 auto; padding: 40px 24px; }
-    .produk-section-title {
-      font-family: 'Nunito',sans-serif; font-weight: 900;
-      font-size: 18px; color: var(--text-dark); margin-bottom: 18px;
-      display: flex; align-items: center; gap: 8px;
+    .penulis-profile-right { flex: 1; padding: 32px 36px; }
+    .penulis-section-label {
+      font-family: 'Nunito',sans-serif; font-weight: 900; font-size: 11px;
+      text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-muted);
+      margin-bottom: 14px;
     }
+    .penulis-data-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 8px;
+    }
+    .penulis-data-item {
+      background: var(--bg); border-radius: 8px; padding: 12px 16px;
+    }
+    .penulis-data-label {
+      font-size: 10px; color: var(--text-muted); font-family: 'Nunito',sans-serif;
+      font-weight: 700; text-transform: uppercase; letter-spacing: .8px; margin-bottom: 4px;
+    }
+    .penulis-data-value {
+      font-size: 13px; color: var(--text-dark); font-family: 'Lato',sans-serif; font-weight: 600;
+    }
+    .penulis-karya-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+    .penulis-karya-item {
+      background: var(--bg); border-radius: 8px; padding: 12px 16px;
+      display: flex; gap: 12px; align-items: flex-start;
+    }
+    .penulis-karya-icon {
+      width: 30px; height: 30px; background: var(--navy); border-radius: 6px;
+      display: flex; align-items: center; justify-content: center; color: #fff; flex-shrink: 0;
+    }
+    .penulis-karya-judul {
+      font-size: 13px; font-family: 'Nunito',sans-serif; font-weight: 700;
+      color: var(--text-dark); margin-bottom: 3px;
+    }
+    .penulis-karya-meta { font-size: 11px; color: var(--text-muted); }
+    .penulis-note {
+      display: flex; align-items: center; gap: 6px; font-size: 11px;
+      color: var(--text-muted); font-family: 'Lato',sans-serif;
+      background: #fff9e6; border: 1px solid #ffe08a; border-radius: 6px; padding: 8px 12px;
+    }
+    @media (max-width: 640px) {
+      .penulis-profile-card { flex-direction: column; }
+      .penulis-data-grid { grid-template-columns: 1fr; }
+    }
+    .produk-wrap {
+      display: flex; flex-direction: column;
+      height: calc(100vh - 66px); overflow: hidden;
+    }
+    .produk-header-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 28px; background: var(--bg-card);
+      border-bottom: 1px solid var(--border); flex-shrink: 0;
+    }
+    .produk-judul-text {
+      font-family: 'Nunito',sans-serif; font-weight: 900; font-size: 16px;
+      color: var(--text-dark); margin: 2px 0 0;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 520px;
+    }
+    .produk-body {
+      display: grid; grid-template-columns: 1fr 380px;
+      flex: 1; overflow: hidden; gap: 0;
+    }
+    .produk-col {
+      overflow-y: auto; padding: 24px 28px;
+    }
+    .produk-col:first-child { border-right: 1px solid var(--border); background: var(--bg); }
+    .produk-col:last-child { background: var(--bg-card); }
+    .produk-block {
+      background: var(--bg-card); border-radius: 14px; box-shadow: var(--shadow);
+      padding: 20px 22px; margin-bottom: 16px;
+    }
+    .produk-col:last-child .produk-block {
+      background: var(--bg); box-shadow: none; border: 1px solid var(--border);
+    }
+    .produk-block-header {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+    }
+    .produk-block-icon {
+      width: 34px; height: 34px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .produk-block-title {
+      font-family: 'Nunito',sans-serif; font-weight: 900; font-size: 14px;
+      color: var(--text-dark); flex: 1;
+    }
+    .produk-block-count {
+      font-size: 11px; color: var(--text-muted); font-family: 'Lato',sans-serif;
+      background: var(--bg); padding: 3px 10px; border-radius: 20px;
+    }
+    /* Video showcase */
+    .video-showcase { display: flex; gap: 0; }
+    .video-showcase-card {
+      display: flex; gap: 0; background: #0f0f1a; border-radius: 12px;
+      overflow: hidden; width: 100%;
+    }
+    .video-showcase-thumb {
+      width: 260px; min-height: 150px; flex-shrink: 0; cursor: pointer;
+      position: relative;
+    }
+    .video-play-ring {
+      width: 60px; height: 60px; border-radius: 50%;
+      background: rgba(255,255,255,.15); border: 2px solid rgba(255,255,255,.3);
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s, transform .2s;
+    }
+    .video-showcase-thumb:hover .video-play-ring {
+      background: rgba(249,115,22,.8); transform: scale(1.1);
+    }
+    .video-showcase-info {
+      padding: 20px 22px; display: flex; flex-direction: column; gap: 8px; background: #1a1a2e;
+    }
+    .video-showcase-title {
+      font-family: 'Nunito',sans-serif; font-weight: 800; font-size: 14px;
+      color: #fff; line-height: 1.4;
+    }
+    .video-showcase-meta { font-size: 11px; color: rgba(255,255,255,.4); font-family: 'Lato',sans-serif; }
+    .video-showcase-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #ff0000; color: #fff; border-radius: 6px;
+      padding: 6px 14px; font-size: 12px; font-family: 'Nunito',sans-serif;
+      font-weight: 700; text-decoration: none; margin-top: auto;
+      width: fit-content; transition: filter .15s;
+    }
+    .video-showcase-link:hover { filter: brightness(1.15); }
     .foto-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 14px; margin-bottom: 40px;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px;
     }
     .foto-card {
       border-radius: 10px; overflow: hidden; background: var(--bg-card);
@@ -1147,6 +1334,8 @@
       .login-card { padding: 24px 14px !important; }
     }
 
+  
+
   </style>
 </head>
 <body>
@@ -1185,6 +1374,10 @@
     <button class="btn-nav btn-nav-karya" onclick="nav('karya')" title="Karya Ilmiah">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
       Karya Ilmiah
+    </button>
+    <button class="btn-nav btn-nav-statistik" onclick="window.open('statistik.html','_blank')" title="Statistik Data">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Statistik
     </button>
 
     <!-- ⚙ Settings Dropdown -->
@@ -1264,7 +1457,7 @@
     <div class="beranda-center">
       <div class="beranda-badge">Repositori Digital Vokasi UM</div>
       <h1 class="beranda-title">Karya Ilmiah,<br><em>Mudah Dicari</em></h1>
-      <p class="beranda-sub">Sistem repositori karya ilmiah mahasiswa Fakultas Vokasi Universitas Negeri Malang &#8212; tersimpan, terorganisir, dan dapat diakses kapan saja.</p>
+      <p class="beranda-sub">Sistem repositori karya ilmiah mahasiswa Fakultas Vokasi Universitas Negeri Malang &#8212; <em>Empowering Knowledge Through Digital Innovation.</em></p>
       <div class="beranda-search-card">
         <div class="search-row">
           <input class="s-input" id="kw-beranda" type="text"
@@ -1273,9 +1466,9 @@
           <div class="s-select-wrap">
             <select class="s-select" id="jenis-beranda">
               <option value="">Semua Jenis</option>
-              <option value="Skripsi">Skripsi</option>
+              <option value="Artikel Jurnal">Artikel Jurnal</option>
               <option value="Tugas Akhir">Tugas Akhir</option>
-              <option value="Laporan PKL">Laporan PKL</option>
+              <option value="Laporan Magang">Laporan Magang</option>
               <option value="Proyek Inovasi">Proyek Inovasi</option>
             </select>
           </div>
@@ -1314,7 +1507,7 @@
           </div>
         </div>
       </div>
-      <div class="beranda-stats">
+            <div class="beranda-stats">
         <div class="beranda-stat">
           <span class="beranda-stat-num" style="color:#fff;">11</span>
           <span class="beranda-stat-label">PROGRAM STUDI</span>
@@ -1351,7 +1544,13 @@
   <!-- ▓▓▓ HASIL PENCARIAN ▓▓▓ -->
   <section class="page" id="page-hasil">
     <div class="hasil-top">
-      <div class="hasil-top-title">DIGILAB Repository</div>
+      <div style="display:flex;align-items:center;gap:12px;justify-content:center;padding:18px 0 0;">
+        <button onclick="nav('beranda')" style="background:transparent;border:1.5px solid var(--border);color:var(--text-mid);border-radius:var(--pill);padding:6px 16px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:border-color .15s,color .15s;flex-shrink:0;" onmouseover="this.style.borderColor='var(--navy)';this.style.color='var(--navy)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-mid)'">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+          Kembali
+        </button>
+        <div class="hasil-top-title" style="padding:0;margin:0;">DIGILAB Repository</div>
+      </div>
       <div class="hasil-top-search">
         <div class="search-row">
           <input class="s-input" id="kw-hasil" type="text"
@@ -1360,9 +1559,9 @@
           <div class="s-select-wrap">
             <select class="s-select" id="jenis-hasil">
               <option value="">Semua Jenis</option>
-              <option value="Skripsi">Skripsi</option>
+              <option value="Artikel Jurnal">Artikel Jurnal</option>
               <option value="Tugas Akhir">Tugas Akhir</option>
-              <option value="Laporan PKL">Laporan PKL</option>
+              <option value="Laporan Magang">Laporan Magang</option>
               <option value="Proyek Inovasi">Proyek Inovasi</option>
             </select>
           </div>
@@ -1401,7 +1600,7 @@
         <div class="s-select-wrap">
           <select class="s-select">
             <option value="">Jenis</option>
-            <option>Skripsi</option>
+            <option>Artikel Jurnal</option>
             <option>Tugas Akhir</option>
           </select>
         </div>
@@ -1423,9 +1622,18 @@
         </div>
         <div>
           <div class="info-panel-title">Informasi</div>
-          <button class="btn-info-action" onclick="openProtectedPage('pdf')">📄 PDF</button>
-          <button class="btn-info-action" onclick="openProtectedPage('penulis')">👤 Penulis</button>
-          <button class="btn-info-action" onclick="openProtectedPage('produk')">📦 Produk</button>
+          <button class="btn-info-action btn-info-pdf" onclick="openProtectedPage('pdf')">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            Baca PDF
+          </button>
+          <button class="btn-info-action btn-info-penulis" onclick="openProtectedPage('penulis')">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Informasi Penulis
+          </button>
+          <button class="btn-info-action btn-info-produk" onclick="openProtectedPage('produk')">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            Lihat Produk
+          </button>
         </div>
       </div>
     </div>
@@ -1601,7 +1809,7 @@
 const KARYA_DATA = [
   { id:1, judul:'Rancang Bangun Website Perpustakaan Keliling', penulis:'Karina, Aliya',
     dosen:'Candra Ariawan, S.Kom., M.Kom.', tahun:2020, jenis:'Tugas Akhir',
-    noPanggil:'KAR/PD/TA/RAN/2020', bidang:'WEBSITE — PERPUSTAKAAN',
+    noPanggil:'KAR/PD/TA/RAN/2020', bidang:'WEBSITE — PERPUSTAKAAN', links:['https://youtu.be/demo1','https://github.com/demo/perpustakaan-keliling'],
     pembaca:20, warna:'#2e7d32',
     abstrak:'Penelitian ini membahas perancangan dan pengembangan website perpustakaan keliling yang bertujuan memudahkan akses informasi bagi masyarakat. Sistem ini dikembangkan dengan pendekatan RAD dan mengintegrasikan fitur katalog digital, peminjaman online, serta notifikasi koleksi baru. Pengujian melalui validasi ahli dan uji pengguna menunjukkan tingkat kelayakan tinggi.' },
   { id:2, judul:'Rancang Bangun Website Laundry Berbasis Lokasi', penulis:'Hartono',
@@ -1616,12 +1824,12 @@ const KARYA_DATA = [
     abstrak:'Penelitian ini mengembangkan prototipe mesin pengolah limbah tekstil menggunakan prinsip daur ulang mekanik. Mesin mampu mengolah 50 kg limbah kain per jam menjadi serat daur ulang. Uji kinerja menunjukkan efisiensi konversi sebesar 78% dengan konsumsi energi lebih rendah dari metode konvensional.' },
   { id:4, judul:'Sistem Informasi Akademik Terintegrasi Berbasis Cloud', penulis:'Dewi Rahayu, Siti Nurhaliza',
     dosen:'Dr. Wahyu Pratama, M.Kom.', tahun:2023, jenis:'Tugas Akhir',
-    noPanggil:'DEW/TI/TA/SIS/2023', bidang:'SISTEM INFORMASI — AKADEMIK',
+    noPanggil:'DEW/TI/TA/SIS/2023', bidang:'SISTEM INFORMASI — AKADEMIK', links:['https://youtu.be/demo4'],
     pembaca:87, warna:'#00695c',
     abstrak:'Platform akademik berbasis cloud yang mengintegrasikan manajemen mahasiswa, jadwal, nilai, dan komunikasi dalam satu ekosistem terpadu. Dibangun dengan arsitektur microservices menggunakan Node.js dan PostgreSQL. Load testing menunjukkan sistem mampu menangani 500 pengguna konkuren tanpa degradasi performa.' },
   { id:5, judul:'Perancangan Identitas Visual Brand Produk UMKM Kota Malang', penulis:'Ahmad Fauzi',
     dosen:'Ir. Sinta Dewi, M.Ds.', tahun:2023, jenis:'Tugas Akhir',
-    noPanggil:'FAU/DKV/TA/DES/2023', bidang:'DESAIN KOMUNIKASI VISUAL',
+    noPanggil:'FAU/DKV/TA/DES/2023', bidang:'DESAIN KOMUNIKASI VISUAL', links:['https://www.figma.com/demo-brand'],
     pembaca:43, warna:'#6a1b9a',
     abstrak:'Perancangan identitas visual komprehensif untuk lima produk UMKM unggulan Kota Malang mencakup logo, panduan merek, kemasan, dan materi pemasaran digital. Metodologi human-centered design digunakan untuk memastikan identitas visual autentik. Evaluasi menunjukkan peningkatan persepsi kualitas produk sebesar 65%.' },
   { id:6, judul:'Analisis Efektivitas Pengelolaan Anggaran Daerah Kota Malang', penulis:'Rizki Amalia',
@@ -1655,7 +1863,19 @@ function nav(page) {
       p.classList.remove('active'); p.removeAttribute('style');
     });
     next.classList.add('active');
+    // Toggle footer visibility for full-screen pages
+    var fullscreenPages = ['pdf','penulis','produk'];
+    if (fullscreenPages.indexOf(page) !== -1) {
+      document.body.classList.add('no-footer');
+    } else {
+      document.body.classList.remove('no-footer');
+    }
     window.scrollTo({top:0,behavior:'smooth'});
+    if (page === 'karya') {
+      renderKaryaTbl(KARYA_DATA);
+      var kwEl = document.getElementById('kw-karya');
+      if (kwEl) kwEl.value = '';
+    }
     if (page === 'mindmap') {
       var iframe = document.getElementById('mindmap-iframe');
       if (iframe) {
@@ -1694,6 +1914,39 @@ function showSearchToast(msg) {
     t.style.opacity = '0';
     t.style.transform = 'translateX(-50%) translateY(10px)';
   }, 2800);
+}
+
+
+/* ─── KARYA ILMIAH TABLE ─── */
+function renderKaryaTbl(data) {
+  var tbody = document.getElementById('karya-tbody');
+  if (!tbody) return;
+  if (!data || !data.length) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:32px 16px;color:var(--text-muted);font-style:italic;">Tidak ada karya ditemukan.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = data.map(function(k, i) {
+    return '<tr>' +
+      '<td style="color:var(--text-muted);font-size:13px">' + (i+1) + '</td>' +
+      '<td><span style="font-weight:700;color:var(--text-dark);font-size:13.5px;display:block;margin-bottom:2px">' + k.judul + '</span>' +
+         '<span style="font-size:12px;color:var(--text-muted)">' + k.penulis + ' &nbsp;·&nbsp; ' + k.tahun + '</span></td>' +
+      '<td><span style="background:#e8e8f0;color:var(--text-mid);border-radius:99px;padding:3px 10px;font-size:12px;font-weight:600;white-space:nowrap">' + k.jenis + '</span></td>' +
+      '<td><span style="background:#dcfce7;color:#166534;border-radius:99px;padding:3px 10px;font-size:12px;font-weight:700;white-space:nowrap">&#10003; Terverifikasi</span></td>' +
+      '<td><button onclick="openDetail(' + k.id + ')" style="background:var(--navy);color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--navy-dark)'" onmouseout="this.style.background='var(--navy)'">Detail</button></td>' +
+    '</tr>';
+  }).join('');
+}
+function filterKarya() {
+  var kw = (document.getElementById('kw-karya') ? document.getElementById('kw-karya').value : '').trim().toLowerCase();
+  if (!kw) { renderKaryaTbl(KARYA_DATA); return; }
+  var filtered = KARYA_DATA.filter(function(k) {
+    return k.judul.toLowerCase().includes(kw) ||
+           k.penulis.toLowerCase().includes(kw) ||
+           k.jenis.toLowerCase().includes(kw) ||
+           String(k.tahun).includes(kw) ||
+           (k.bidang || '').toLowerCase().includes(kw);
+  });
+  renderKaryaTbl(filtered);
 }
 
 function doSearch(from) {
@@ -1780,6 +2033,46 @@ function bookSVG(c) {
 }
 
 /* ─── OPEN DETAIL ─── */
+
+/* ─── PDF READER ─── */
+var _pdfPage = 1; var _pdfZoom = 100; var _pdfTotalPages = 3;
+function pdfNextPage() {
+  if (_pdfPage < _pdfTotalPages) { _pdfPage++; _pdfShowPage(); }
+}
+function pdfPrevPage() {
+  if (_pdfPage > 1) { _pdfPage--; _pdfShowPage(); }
+}
+function pdfZoomIn() {
+  if (_pdfZoom < 150) { _pdfZoom += 25; _pdfApplyZoom(); }
+}
+function pdfZoomOut() {
+  if (_pdfZoom > 75) { _pdfZoom -= 25; _pdfApplyZoom(); }
+}
+function _pdfApplyZoom() {
+  document.getElementById('pdf-zoom-val').textContent = _pdfZoom + '%';
+  const c = document.getElementById('pdf-page-container');
+  if (c) c.style.transform = 'scale(' + (_pdfZoom/100) + ')';
+  c.style.transformOrigin = 'top center';
+}
+function _pdfShowPage() {
+  document.getElementById('pdf-cur-page').textContent = _pdfPage;
+  for (var i = 1; i <= _pdfTotalPages; i++) {
+    const p = document.getElementById('pdf-page-' + i);
+    if (p) p.style.display = (i === _pdfPage) ? 'block' : 'none';
+  }
+}
+function _pdfInitCover(k) {
+  if (!k) return;
+  const t = document.getElementById('pdf-cover-title');
+  const p = document.getElementById('pdf-meta-penulis');
+  const d = document.getElementById('pdf-meta-dosen');
+  const y = document.getElementById('pdf-meta-tahun');
+  if (t) t.textContent = k.judul;
+  if (p) p.textContent = k.penulis;
+  if (d) d.textContent = k.dosen;
+  if (y) y.textContent = k.tahun;
+}
+
 function openDetail(id) {
   const k = KARYA_DATA.find(x => x.id === id);
   if (!k) return;
@@ -1791,6 +2084,7 @@ function openDetail(id) {
   document.getElementById('detail-meta').innerHTML =
     rows.map(([l,v]) => `<tr><td>${l}</td><td>:</td><td>${v}</td></tr>`).join('');
   document.getElementById('detail-abstrak').textContent = k.abstrak;
+  window._currentKaryaId = id;
   nav('detail');
 }
 
@@ -1914,7 +2208,66 @@ function openProtectedPage(type) {
     showPopup(map[type] || 'PDF');
     return;
   }
+  if (type === 'produk') { navToProduk(); return; }
+  if (type === 'pdf') {
+    const k = window._currentKaryaId ? KARYA_DATA.find(x => x.id === window._currentKaryaId) : null;
+    _pdfInitCover(k);
+    _pdfPage = 1; _pdfShowPage();
+    document.getElementById('pdf-title').textContent = k ? k.judul : 'Dokumen';
+  }
+  if (type === 'penulis') {
+    const k = window._currentKaryaId ? KARYA_DATA.find(x => x.id === window._currentKaryaId) : null;
+    if (k) {
+      const judul = document.getElementById('penulis-karya-judul');
+      const meta  = document.getElementById('penulis-karya-meta');
+      if (judul) judul.textContent = k.judul;
+      if (meta)  meta.textContent  = k.jenis + ' · ' + k.tahun + ' · ' + (k.dosen || '—');
+      // initials
+      const init = document.getElementById('penulis-avatar-initials');
+      if (init) init.textContent = 'NA';
+    }
+  }
   nav(type);
+}
+
+function navToProduk() {
+  // Ambil karya saat ini
+  const currentId = window._currentKaryaId;
+  const k = currentId ? KARYA_DATA.find(x => x.id === currentId) : null;
+  // Set judul
+  const detailJudul = document.getElementById('kw-detail')?.value || 'Produk Karya';
+  const judul = k ? k.judul : detailJudul;
+  document.getElementById('produk-judul').textContent = judul;
+  // Update video title
+  const vidTitle = document.getElementById('produk-video-title');
+  if (vidTitle) vidTitle.textContent = 'Video Presentasi — ' + (k ? k.judul : 'Karya');
+  // Update video link from karya links
+  if (k && k.links) {
+    const ytLink = k.links.find(u => u.includes('youtu'));
+    const vidLink = document.getElementById('produk-video-link');
+    if (vidLink && ytLink) { vidLink.href = ytLink; vidLink.onclick = null; }
+  }
+  // Render link section
+  const linkSection = document.getElementById('produk-link-section');
+  const linkList    = document.getElementById('produk-link-list');
+  const links = (k && k.links && k.links.length) ? k.links : [];
+  if (links.length) {
+    linkList.innerHTML = links.map(url => {
+      let label = url;
+      try { label = new URL(url).hostname.replace('www.',''); } catch(e) {}
+      const icon = url.includes('youtu') ?
+        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>' :
+        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+      return `<a href="${url}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:var(--bg-card);border:1.5px solid var(--border);border-radius:10px;padding:10px 18px;font-family:'Lato',sans-serif;font-size:14px;color:var(--navy);text-decoration:none;transition:border-color .15s,box-shadow .15s;margin:0 8px 8px 0;" onmouseover="this.style.borderColor='var(--navy)';this.style.boxShadow='0 2px 8px rgba(46,49,146,.12)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow=''">${icon}<span>${label}</span></a>`;
+    }).join('');
+    linkSection.style.display = '';
+    linkList.style.display = '';
+    linkList.style.cssText += 'padding:4px 0 24px;';
+  } else {
+    linkSection.style.display = 'none';
+    linkList.style.display = 'none';
+  }
+  nav('produk');
 }
 
 
@@ -2282,6 +2635,8 @@ function closeWelcome() {
 
 
 // ── SESSION RESTORE — dijalankan sinkron saat script selesai parse ──
+
+
 function restoreSession() {
   var raw = localStorage.getItem('digilab-user');
   if (!raw) return;
@@ -2321,38 +2676,155 @@ function restoreSession() {
       <span class="pdf-title" id="pdf-title">Dokumen</span>
       <span class="pdf-badge" id="pdf-badge">PDF</span>
     </div>
-    <div class="pdf-frame-wrap" id="pdf-frame-wrap">
-      <div class="pdf-no-access" id="pdf-no-access" style="display:none;">
-        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        <p>Dokumen tidak tersedia</p>
+    <div class="pdf-reader-wrap" id="pdf-frame-wrap">
+      <!-- Reader toolbar -->
+      <div class="pdf-reader-toolbar">
+        <div class="pdf-reader-nav">
+          <button class="pdf-ctrl-btn" onclick="pdfPrevPage()" title="Halaman sebelumnya">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <span class="pdf-page-info"><span id="pdf-cur-page">1</span> / <span id="pdf-total-page">12</span></span>
+          <button class="pdf-ctrl-btn" onclick="pdfNextPage()" title="Halaman berikutnya">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+        <div class="pdf-reader-zoom">
+          <button class="pdf-ctrl-btn" onclick="pdfZoomOut()" title="Perkecil">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <span class="pdf-zoom-val" id="pdf-zoom-val">100%</span>
+          <button class="pdf-ctrl-btn" onclick="pdfZoomIn()" title="Perbesar">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:11px;color:#aaa;font-family:'Lato',sans-serif;">Pratinjau dokumen</span>
+          <div style="background:rgba(255,255,255,.12);border-radius:4px;padding:3px 8px;font-size:11px;color:#ccc;font-family:'Nunito',sans-serif;font-weight:700;">PDF</div>
+        </div>
       </div>
-      <iframe id="pdf-iframe"
-        sandbox="allow-same-origin allow-scripts allow-popups"
-        style="width:100%;height:100%;border:none;"
-        src="about:blank">
-      </iframe>
+      <!-- Reader body -->
+      <div class="pdf-reader-body" id="pdf-reader-body">
+        <div class="pdf-page-container" id="pdf-page-container">
+          <!-- Page 1 (cover) -->
+          <div class="pdf-mock-page" id="pdf-page-1">
+            <div class="pdf-page-num-badge">1</div>
+            <div class="pdf-cover-header">
+              <div class="pdf-cover-logo">
+                <svg width="38" height="38" viewBox="0 0 46 46" fill="none"><rect x="7" y="20" width="32" height="20" rx="2.5" fill="#2e3192" opacity=".15"/><path d="M23 6 C23 6 9 10 9 18 L9 20 L37 20 L37 18 C37 10 23 6 23 6Z" fill="#2e3192" opacity=".12"/><line x1="23" y1="6" x2="23" y2="40" stroke="#2e3192" stroke-width="1" opacity=".3"/></svg>
+              </div>
+              <div style="font-size:9px;color:#666;font-family:'Lato',sans-serif;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;">Fakultas Vokasi — Universitas Negeri Malang</div>
+              <div style="font-size:9px;color:#888;font-family:'Lato',sans-serif;">DIGILAB Repository · Karya Ilmiah</div>
+            </div>
+            <div class="pdf-cover-title" id="pdf-cover-title">Judul Karya Ilmiah</div>
+            <div class="pdf-cover-meta" id="pdf-cover-meta">
+              <div class="pdf-cover-meta-row"><span>Penulis</span><span id="pdf-meta-penulis">—</span></div>
+              <div class="pdf-cover-meta-row"><span>Dosen Pembimbing</span><span id="pdf-meta-dosen">—</span></div>
+              <div class="pdf-cover-meta-row"><span>Program Studi</span><span id="pdf-meta-prodi">Teknologi Pendidikan</span></div>
+              <div class="pdf-cover-meta-row"><span>Tahun</span><span id="pdf-meta-tahun">2025</span></div>
+            </div>
+            <div class="pdf-cover-footer">
+              <div class="pdf-cover-footer-bar"></div>
+              <div style="font-size:8px;color:#aaa;font-family:'Lato',sans-serif;text-align:center;">Dokumen ini dilindungi. Dilarang memperbanyak tanpa izin.</div>
+            </div>
+          </div>
+          <!-- Page 2+ (content) -->
+          <div class="pdf-mock-page pdf-content-page" id="pdf-page-2" style="display:none;">
+            <div class="pdf-page-num-badge">2</div>
+            <div class="pdf-content-header">BAB I — PENDAHULUAN</div>
+            <div class="pdf-content-section-title">1.1 Latar Belakang</div>
+            <div class="pdf-text-block"></div><div class="pdf-text-block w90"></div>
+            <div class="pdf-text-block w95"></div><div class="pdf-text-block w85"></div>
+            <div class="pdf-text-block"></div><div class="pdf-text-block w80"></div>
+            <div class="pdf-content-section-title">1.2 Rumusan Masalah</div>
+            <div class="pdf-text-block w90"></div><div class="pdf-text-block w70"></div>
+            <div class="pdf-text-block w85"></div>
+            <div class="pdf-content-section-title">1.3 Tujuan Penelitian</div>
+            <div class="pdf-text-block"></div><div class="pdf-text-block w80"></div>
+            <div class="pdf-text-block w95"></div><div class="pdf-text-block w60"></div>
+          </div>
+          <div class="pdf-mock-page pdf-content-page" id="pdf-page-3" style="display:none;">
+            <div class="pdf-page-num-badge">3</div>
+            <div class="pdf-content-header">BAB II — TINJAUAN PUSTAKA</div>
+            <div class="pdf-content-section-title">2.1 Kajian Teori</div>
+            <div class="pdf-text-block"></div><div class="pdf-text-block w90"></div>
+            <div class="pdf-text-block w95"></div><div class="pdf-text-block w75"></div>
+            <div class="pdf-text-block"></div>
+            <div class="pdf-content-section-title">2.2 Penelitian Relevan</div>
+            <div class="pdf-text-block w80"></div><div class="pdf-text-block"></div>
+            <div class="pdf-text-block w90"></div><div class="pdf-text-block w65"></div>
+            <div class="pdf-content-section-title">2.3 Kerangka Berpikir</div>
+            <div class="pdf-text-block w95"></div><div class="pdf-text-block w70"></div>
+            <div class="pdf-text-block"></div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- ▓▓▓ INFORMASI PENULIS ▓▓▓ -->
   <section class="page" id="page-penulis">
     <div class="penulis-wrap">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:28px;">
         <button class="btn-back" onclick="nav('detail')" style="background:var(--bg-card);border:1.5px solid var(--border);color:var(--text-mid);border-radius:var(--pill);padding:7px 18px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:border-color .15s,color .15s;" onmouseover="this.style.borderColor='var(--navy)';this.style.color='var(--navy)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-mid)'">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
           Kembali
         </button>
         <h2 style="font-family:'Nunito',sans-serif;font-weight:900;font-size:20px;color:var(--text-dark);margin:0;">Informasi Penulis</h2>
       </div>
-      <div class="penulis-card">
-        <div class="penulis-avatar">👤</div>
-        <div class="penulis-info">
-          <div class="penulis-nama" id="penulis-nama">—</div>
-          <div class="penulis-prodi" id="penulis-prodi">—</div>
-          <table class="penulis-table">
-            <tbody id="penulis-tbody">
-            </tbody>
-          </table>
+
+      <!-- Profile Card -->
+      <div class="penulis-profile-card">
+        <div class="penulis-profile-left">
+          <div class="penulis-avatar-new" id="penulis-avatar-initials">NA</div>
+          <div class="penulis-nama" id="penulis-nama">Natasya Adelia R.</div>
+          <div class="penulis-prodi" id="penulis-prodi">Teknologi Pendidikan · D4</div>
+          <div class="penulis-nim-badge">NIM: 220213704262</div>
+          <div class="penulis-angkatan-badge">Angkatan 2022</div>
+        </div>
+        <div class="penulis-profile-right">
+          <div class="penulis-section-label">Data Akademik</div>
+          <div class="penulis-data-grid">
+            <div class="penulis-data-item">
+              <div class="penulis-data-label">Program Studi</div>
+              <div class="penulis-data-value" id="penulis-prodi-detail">Teknologi Pendidikan (D4)</div>
+            </div>
+            <div class="penulis-data-item">
+              <div class="penulis-data-label">Fakultas</div>
+              <div class="penulis-data-value">Vokasi — Universitas Negeri Malang</div>
+            </div>
+            <div class="penulis-data-item">
+              <div class="penulis-data-label">NIM</div>
+              <div class="penulis-data-value">220213704262</div>
+            </div>
+            <div class="penulis-data-item">
+              <div class="penulis-data-label">Angkatan</div>
+              <div class="penulis-data-value">2022</div>
+            </div>
+            <div class="penulis-data-item">
+              <div class="penulis-data-label">Jenis Kelamin</div>
+              <div class="penulis-data-value">Perempuan</div>
+            </div>
+            <div class="penulis-data-item">
+              <div class="penulis-data-label">Email</div>
+              <div class="penulis-data-value">natasya.adelia.2226@student.um.ac.id</div>
+            </div>
+          </div>
+          <div class="penulis-section-label" style="margin-top:24px;">Karya yang Diupload</div>
+          <div class="penulis-karya-list" id="penulis-karya-list">
+            <div class="penulis-karya-item">
+              <div class="penulis-karya-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </div>
+              <div>
+                <div class="penulis-karya-judul" id="penulis-karya-judul">—</div>
+                <div class="penulis-karya-meta" id="penulis-karya-meta">—</div>
+              </div>
+            </div>
+          </div>
+          <div class="penulis-note">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Data akan diperbarui oleh admin melalui database
+          </div>
         </div>
       </div>
     </div>
@@ -2361,28 +2833,87 @@ function restoreSession() {
   <!-- ▓▓▓ PRODUK ▓▓▓ -->
   <section class="page" id="page-produk">
     <div class="produk-wrap">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:28px;">
-        <button class="btn-back" onclick="nav('detail')" style="background:var(--bg-card);border:1.5px solid var(--border);color:var(--text-mid);border-radius:var(--pill);padding:7px 18px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:border-color .15s,color .15s;" onmouseover="this.style.borderColor='var(--navy)';this.style.color='var(--navy)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-mid)'">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
-          Kembali
-        </button>
-        <h2 style="font-family:'Nunito',sans-serif;font-weight:900;font-size:20px;color:var(--text-dark);margin:0;" id="produk-judul">Produk Karya</h2>
+      <!-- Header -->
+      <div class="produk-header-bar">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button class="btn-back" onclick="nav('detail')" style="background:var(--bg-card);border:1.5px solid var(--border);color:var(--text-mid);border-radius:var(--pill);padding:7px 18px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:border-color .15s,color .15s;" onmouseover="this.style.borderColor='var(--navy)';this.style.color='var(--navy)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-mid)'">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+            Kembali
+          </button>
+          <div>
+            <div style="font-size:11px;color:var(--text-muted);font-family:'Nunito',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.8px;">Produk Karya</div>
+            <h2 class="produk-judul-text" id="produk-judul">—</h2>
+          </div>
+        </div>
       </div>
 
-      <div class="produk-section-title">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2.2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
-        Galeri Foto
-      </div>
-      <div class="foto-grid" id="produk-foto-grid">
-        <!-- filled by JS -->
-      </div>
+      <!-- 2-col body -->
+      <div class="produk-body">
+        <!-- LEFT: Galeri -->
+        <div class="produk-col">
+          <!-- Galeri Foto -->
+                <div class="produk-block">
+                  <div class="produk-block-header">
+                    <div class="produk-block-icon" style="background:#fff3e0;">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    </div>
+                    <span class="produk-block-title">Galeri Foto</span>
+                    <span class="produk-block-count" id="produk-foto-count">6 foto</span>
+                  </div>
+                  <div class="foto-grid" id="produk-foto-grid">
+                    <div class="foto-card"><div class="foto-placeholder" style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);"></div></div>
+                    <div class="foto-card"><div class="foto-placeholder" style="background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);"></div></div>
+                    <div class="foto-card"><div class="foto-placeholder" style="background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);"></div></div>
+                    <div class="foto-card"><div class="foto-placeholder" style="background:linear-gradient(135deg,#43e97b 0%,#38f9d7 100%);"></div></div>
+                    <div class="foto-card"><div class="foto-placeholder" style="background:linear-gradient(135deg,#fa709a 0%,#fee140 100%);"></div></div>
+                    <div class="foto-card"><div class="foto-placeholder" style="background:linear-gradient(135deg,#a18cd1 0%,#fbc2eb 100%);"></div></div>
+                  </div>
+                </div>
+        </div>
 
-      <div class="produk-section-title">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2.2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
-        Video
-      </div>
-      <div class="video-row" id="produk-video-row">
-        <!-- filled by JS -->
+        <!-- RIGHT: Video + Tautan -->
+        <div class="produk-col">
+          <!-- Video -->
+                <div class="produk-block">
+                  <div class="produk-block-header">
+                    <div class="produk-block-icon" style="background:#fce4ec;">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e53935" stroke-width="2.2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </div>
+                    <span class="produk-block-title">Video Presentasi</span>
+                    <span class="produk-block-count" id="produk-video-count">1 video</span>
+                  </div>
+                  <div class="video-showcase" id="produk-video-row">
+                    <div class="video-showcase-card">
+                      <div class="video-showcase-thumb">
+                        <div style="width:100%;height:100%;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 60%,#0f3460 100%);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;">
+                          <div class="video-play-ring">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="#fff" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                          </div>
+                          <div style="font-size:11px;color:rgba(255,255,255,.5);font-family:'Lato',sans-serif;">Klik untuk memutar</div>
+                        </div>
+                      </div>
+                      <div class="video-showcase-info">
+                        <div class="video-showcase-title" id="produk-video-title">Video Presentasi Karya</div>
+                        <div class="video-showcase-meta">Durasi: 12:34 · MP4 · HD 1080p</div>
+                        <a class="video-showcase-link" id="produk-video-link" href="#" onclick="return false;">
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                          Tonton di YouTube
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+          <!-- Tautan Terkait -->
+                <div class="produk-block" id="produk-link-section" style="display:none;">
+                  <div class="produk-block-header">
+                    <div class="produk-block-icon" style="background:#e8f5e9;">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2e7d32" stroke-width="2.2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                    </div>
+                    <span class="produk-block-title">Tautan Terkait</span>
+                  </div>
+                  <div id="produk-link-list" style="display:flex;flex-wrap:wrap;gap:10px;padding:4px 0;"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -2436,8 +2967,8 @@ function restoreSession() {
               <label>Jenis Karya <span>*</span></label>
               <select class="upload-select" id="up-jenis">
                 <option value="Tugas Akhir" selected>Tugas Akhir</option>
-                <option value="Skripsi">Skripsi</option>
-                <option value="Laporan PKL">Laporan PKL</option>
+                <option value="Artikel Jurnal">Artikel Jurnal</option>
+                <option value="Laporan Magang">Laporan Magang</option>
                 <option value="Proyek Inovasi">Proyek Inovasi</option>
               </select>
             </div>
@@ -2685,5 +3216,6 @@ function closeLogoutConfirm() {
 }
 
 </script>
+
 </body>
 </html>
