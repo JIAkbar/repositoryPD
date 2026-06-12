@@ -21,10 +21,10 @@ metadata:
 ```
 DIGILAB-Repository/
 ├── docs/           ← UI Vanilla HTML/CSS/JS — GitHub Pages (SATU-SATUNYA frontend)
-│   ├── index.html      (~160KB) — SPA utama
+│   ├── index.html      (~163KB) — SPA utama
 │   ├── admin.html      — Panel admin
-│   ├── mahasiswa.html  — Portal mahasiswa
-│   ├── statistik.html  — Dashboard statistik standalone
+│   ├── mahasiswa.html  — Portal mahasiswa (form upload + validasi + auto no-panggil)
+│   ├── statistik.html  — Dashboard statistik standalone (Chart.js, sesuai mockup)
 │   └── mindmap.html    — Peta penelitian D3.js
 ├── backend/        ← Node.js + Express (hanya health check aktif)
 ├── database/       ← Supabase PostgreSQL schema
@@ -33,7 +33,7 @@ DIGILAB-Repository/
 └── changelog.md
 ```
 
-**⚠️ PENTING:** `docs/index.html` ~160KB — SELALU pakai Python untuk edit, TIDAK PERNAH Edit tool.
+**⚠️ PENTING:** `docs/index.html` ~163KB — SELALU pakai Python untuk edit, TIDAK PERNAH Edit tool.
 
 ## Stack
 - Frontend: Vanilla JS/HTML/CSS, dev server `Python -m http.server 3000`
@@ -46,6 +46,7 @@ DIGILAB-Repository/
 - Navy: #2e3192 | Orange: #f97316 | BG: #e8e8f0 | Red: #c0392b
 - Font: Nunito (heading) + Lato (body) — Google Fonts
 - Wajib: inline SVG, CSS custom properties, mobile responsive ≤768px
+- **ATURAN BARU:** Setiap halaman baru WAJIB copy CSS custom properties dari index.html — tidak boleh buat palet warna sendiri
 
 ## Akun Demo
 | User | Pass | Role | Redirect |
@@ -53,30 +54,34 @@ DIGILAB-Repository/
 | admin | admin | Admin Pustakawan | → admin.html |
 | mhs | mhs | Mahasiswa | → mahasiswa.html |
 
-## Status Terakhir (2026-06-12, Update 4) — BELUM DI-PUSH
+## Status Terakhir (2026-06-12, Update 5) — BELUM DI-PUSH
 
-### ✅ Selesai Sesi Ini
-- Tombol Statistik di navbar header (setelah Karya Ilmiah)
-- statistik.html: dashboard standalone (5 card, 3 chart, tabel, unduh CSV)
-- Halaman PDF: mock reader — topbar nav+zoom + 3 halaman simulasi dokumen
-- Halaman Penulis: profil card — data Natasya (NIM 220213704262, Teknologi Pendidikan D4)
-- Halaman Produk: galeri foto gradient (6 item) + video showcase card + tautan
-- Tombol PDF/Penulis/Produk: gradient warna berbeda + SVG icon
-- Verifikasi Akun admin: layout filter inline dengan search
-- Jenis karya: Artikel Jurnal, Tugas Akhir, Laporan Magang, Proyek Inovasi
-- Dosen dropdown (12 dosen) + No. Panggil placeholder semua form
-- Catatan revisi per kolom mahasiswa.html + halaman Verifikasi Akun admin
+### ✅ Selesai Sesi Ini (Update 5)
+- statistik.html redesign sesuai mockup: 3 stat cards (sparkline/mini-donut), bar chart horizontal, donut, line chart, tabel top 5
+- Header statistik.html = identik index.html (logo SVG + DIGILAB REPOSITORY + FAKULTAS VOKASI)
+- Auto No. Panggil: `NamaBelakang/Prodi/Jenis/3HurufJudul/Tahun`, skip kata umum, field readonly+badge AUTO
+- Field Program Studi ditambahkan di upload form Step 1
+- Inline validation: border merah + pesan error per field, semua tampil serentak
+- Fix footer muncul di atas halaman PDF/Penulis/Produk (CSS no-footer + JS nav toggle)
+- Halaman Produk: full-page 2 kolom (galeri kiri, video+tautan kanan)
+- Verifikasi Akun admin: sub-header+chip statistik, toolbar full-width, tabel CSS class baru
+- Fix JS syntax error admin.html (onclick button approve/reject)
+
+### ✅ Selesai Update 4 (sama sesi)
+- Tombol Statistik di navbar header
+- Mock PDF reader + Penulis profil card (Natasya) + Produk galeri+video
+- Tombol PDF/Penulis/Produk: gradient + SVG icon
 
 ### 🚀 Cara Push (jalankan di terminal lokal)
 ```
-del .git\HEAD.lock
-git add docs/ CLAUDE.md changelog.md
-git commit -m "feat: redesign PDF/Penulis/Produk, mock reader, navbar statistik"
+del .git\index.lock
+git add docs/ CLAUDE.md changelog.md _context/
+git commit -m "feat: statistik dashboard, auto no-panggil, validasi form, redesign verif-akun, fix footer fullscreen, produk 2-col layout"
 git push origin main
 git push natasya main
 ```
 
-### ⬜ Next Session (Pro Max 5x)
+### ⬜ Next Session
 1. **V3 Redesign** — palet kandidat: Sage Green+Gold · Violet+Rose · Slate+Sky Blue+Amber
 2. **Backend Auth API** — /api/auth/login, /api/auth/register, middleware JWT
 3. **Backend Karya API** — list, detail, search, upload handler
