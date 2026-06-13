@@ -1324,7 +1324,12 @@
       .akun-wrap { padding: 20px 14px; }
       .penulis-wrap { padding: 18px 14px; }
       .penulis-card { flex-direction: column; padding: 20px 14px; }
-      .produk-wrap { padding: 18px 14px; }
+      .produk-wrap { padding: 18px 14px; height: auto !important; }
+      .produk-body { grid-template-columns: 1fr !important; height: auto !important; overflow: visible !important; }
+      .produk-col { overflow-y: visible !important; }
+      .produk-col:first-child { border-right: none; border-bottom: 1px solid var(--border); }
+      .produk-header-bar { padding: 12px 14px; }
+      .produk-judul-text { max-width: 100%; font-size: 14px; }
       .foto-grid { grid-template-columns: repeat(2,1fr) !important; }
       .btn-info-action { display: inline-block; width: auto; margin-right: 8px; }
     }
@@ -2353,6 +2358,7 @@
 <!-- ══════════════ SCRIPT ══════════════ -->
 <script>
 /* ─── DATA DEMO ─── */
+// TODO: Replace with GET /api/karya — hapus saat backend aktif
 const KARYA_DATA = [
   { id:1, judul:'Rancang Bangun Website Perpustakaan Keliling', penulis:'Karina, Aliya',
     dosen:'Candra Ariawan, S.Kom., M.Kom.', tahun:2020, jenis:'Tugas Akhir',
@@ -2664,7 +2670,8 @@ function closePopup() { document.getElementById('overlay').classList.remove('sho
 function closePopupOutside(e) { if (e.target === document.getElementById('overlay')) closePopup(); }
 
 /* ─── LOGIN ─── */
-const DUMMY_USERS = [
+const // TODO: Replace with GET /api/auth/login — hapus saat backend aktif
+DUMMY_USERS = [
   { email: 'admin', pass: 'admin', nama: 'Admin Pustakawan',  role: 'admin'     },
   { email: 'mhs',   pass: 'mhs',   nama: 'Natasya Adelia R.', role: 'mahasiswa' },
 ];
@@ -2676,18 +2683,21 @@ function setTheme(t) {
   document.querySelectorAll('.theme-swatch').forEach(s => {
     s.classList.toggle('active', s.dataset.t === t);
   });
-  document.getElementById('theme-panel').classList.remove('open');
+  var _tp = document.getElementById('theme-panel');
+  if (_tp) _tp.classList.remove('open');
 }
 
 function toggleThemePanel() {
-  document.getElementById('theme-panel').classList.toggle('open');
+  var _tp = document.getElementById('theme-panel');
+  if (_tp) _tp.classList.toggle('open');
 }
 
 // Tutup panel saat klik luar
 document.addEventListener('click', e => {
   const sw = document.getElementById('theme-switcher');
-  if (sw && !sw.contains(e.target)) {
-    document.getElementById('theme-panel').classList.remove('open');
+  const tp = document.getElementById('theme-panel');
+  if (sw && tp && !sw.contains(e.target)) {
+    tp.classList.remove('open');
   }
 });
 

@@ -277,6 +277,9 @@ tbody tr:hover{background:#f8f8fc;}
   .upload-grid{grid-template-columns:1fr;}
   .profil-wrap{grid-template-columns:1fr;}
   .review-grid{grid-template-columns:1fr;}
+  .stepper{display:flex;overflow-x:auto;padding-bottom:4px;}
+  .karya-table-box{overflow-x:auto;}
+  .notif-banner{margin:0 0 12px;}
 }
 @media(max-width:480px){
   .stepper-wrap{padding:20px 16px 16px;}
@@ -806,6 +809,7 @@ tbody tr:hover{background:#f8f8fc;}
 
 <script>
 // ── DUMMY DATA ──
+// TODO: Replace with GET /api/karya?mahasiswa=me — hapus saat backend aktif
 const DUMMY_KARYA = [
   { id:1, judul:'Laporan Magang Perpustakaan Bung Karno', jenis:'Laporan Magang', tahun:'2024', status:'disetujui', pembimbing:'Hariyanto S.Pd., M.Pd' },
   { id:2, judul:'Implementasi Sistem Temu Kembali Informasi Berbasis Metadata Dublin Core', jenis:'Tugas Akhir', tahun:'2025', status:'pending', pembimbing:'Achmad Hamdan, S.Pd., M.Pd' },

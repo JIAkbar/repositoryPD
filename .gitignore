@@ -63,3 +63,19 @@ data/
 # ─── Internal Tracking (tidak perlu di repo publik) ───
 changelog.md
 checklist.md
+updatelist.md
+
+# ─── File duplikat / sisa lama ───
+DIGILAB_MindMap.html
+changelog.html
+checklist.html
+docs/public/
+docs/node_modules/
+docs/package.json
+docs/package-lock.json
+design/
+tests/
+database/seeds/
+
+# ─── Cleanup script (jalankan lokal, tidak perlu di repo) ───
+cleanup_files.bat
