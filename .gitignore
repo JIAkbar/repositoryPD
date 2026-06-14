@@ -79,3 +79,6 @@ database/seeds/
 
 # ─── Cleanup script (jalankan lokal, tidak perlu di repo) ───
 cleanup_files.bat
+changelog.md
+updatelist.md
+prompt-next-session.md
