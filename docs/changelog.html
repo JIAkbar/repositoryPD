@@ -1,24 +1,42 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+<script src="theme.js"></script>
 <script>
+  // tema dihandle oleh theme.js
   (function(){
     var v = localStorage.getItem('digilab-version') || '2';
-    var t = localStorage.getItem('digilab-theme') || 'indigo';
-    var html = document.documentElement;
-    if (v === '1') html.setAttribute('data-version', '1');
-    if (t && t !== 'indigo') html.setAttribute('data-theme', t);
+    document.documentElement.setAttribute('data-version', v);
   })();
 </script>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Changelog — DIGILAB Repository</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Lato:wght@300;400;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 :root {
-  --bg-card: #ffffff;
-}
+
+      --navy:       #094e58;
+      --navy-dark:  #072e37;
+      --navy-mid:   #0d6b79;
+      --bg:         #f5f0e8;
+      --bg-card:    #ffffff;
+      --text-dark:  #122830;
+      --text-mid:   #2d5a65;
+      --text-muted: #6b8e96;
+      --red:        #c0392b;
+      --red-dark:   #8b0000;
+      --orange:     #e8821e;
+      --teal:       #14b8a6;
+      --border:     #dde8ea;
+      --shadow-sm:  0 1px 4px rgba(9,78,88,.08);
+      --shadow:     0 2px 10px rgba(9,78,88,.12);
+      --shadow-lg:  0 6px 24px rgba(9,78,88,.18);
+      --pill:       999px;
+      --r:          8px;
+      --bg-card: #ffffff;
+    }
 body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text-dark); min-height:100vh; }
 
 /* Header */
@@ -220,10 +238,6 @@ footer {
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
       Beranda
     </a>
-    <a class="btn-nav btn-nav-accent" href="checklist.html">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-      Checklist
-    </a>
   </div>
 </header>
 
@@ -257,200 +271,311 @@ footer {
 const changelog = [
   {
     version: 'v0.1.0', date: '2026-06-09',
-    title: 'Setup & Analisis Awal',
+    title: 'Inisiasi & Analisis Desain',
     sections: [
       { type:'Init', color:'#1d4ed8', bg:'#dbeafe', items:[
-        'Inisiasi project DIGILAB Repository dari Proposal Hibah Skripsi 2026',
-        'Baca & analisis dokumen proposal penelitian (38 halaman, metode RAD)'
+        'Inisiasi project DIGILAB Repository berdasarkan Proposal Hibah Skripsi 2026',
+        'Analisis metode pengembangan: RAD (Rapid Application Development)'
       ]},
       { type:'Design', color:'#6d28d9', bg:'#faf5ff', items:[
-        'Baca 16 file mockup PNG dari "Desain Sistem Repositori Natasya"',
-        'Dokumentasi design language: header navy/indigo, aksen oranye, logo DigiLab'
-      ]},
-      { type:'Docs', color:'#854d0e', bg:'#fef9c3', items:[
-        'Buat checklist.md — 5 fase, 60+ item berdasarkan mindmap & mockup',
-        'Buat DIGILAB_MindMap.html — visualisasi interaktif peta penelitian',
-        'Buat checklist.html & changelog.html — halaman web interaktif'
+        'Analisis 16 desain mockup sistem repositori',
+        'Dokumentasi design language: header navy, aksen oranye, logo DIGILAB',
+        'Buat halaman Peta Pikiran — visualisasi interaktif struktur penelitian'
       ]},
       { type:'Chore', color:'#475569', bg:'#f1f5f9', items:[
-        'Setup struktur folder: frontend/, backend/, database/, design/, docs/, tests/',
-        'Setup backend (Node.js + Express + JWT + multer) & Vite frontend',
-        'Buat database/migrations/001_create_tables.sql — skema + seed'
+        'Persiapan struktur project: tampilan, layanan, dan basis data',
+        'Konfigurasi awal sistem'
       ]}
     ]
   },
   {
     version: 'v0.1.1', date: '2026-06-09',
-    title: 'Migrasi Database & Persiapan GitHub',
+    title: 'Peningkatan Infrastruktur',
     sections: [
       { type:'Refactor', color:'#c2410c', bg:'#fff7ed', items:[
-        'Migrasi database dari MySQL ke Supabase (PostgreSQL cloud)',
-        'Hapus mysql2/sequelize, tambah @supabase/supabase-js',
-        'Konversi migrations ke PostgreSQL syntax + RLS policies',
-        'Update docker-compose.yml: hapus service MySQL'
-      ]},
-      { type:'Chore', color:'#475569', bg:'#f1f5f9', items:[
-        'Buat .gitignore (exclude node_modules, .env, dist, logs)',
-        'Buat test_server_lokal.bat — jalankan backend + frontend lokal tanpa Docker'
+        'Basis data dipindahkan ke cloud untuk performa dan skalabilitas lebih baik',
+        'Konfigurasi sistem diperbarui sesuai infrastruktur baru'
       ]}
     ]
   },
   {
     version: 'v0.2.0', date: '2026-06-09',
-    title: 'Frontend Landing Page',
+    title: 'Halaman Utama',
     sections: [
       { type:'Design', color:'#6d28d9', bg:'#faf5ff', items:[
-        'Rebuild index.html sesuai mockup Natasya — SPA multi-halaman',
-        'Halaman: Beranda, Hasil Pencarian, Detail, Login, Karya Ilmiah',
-        'Header sticky navy, popup login guard, responsive mobile'
+        'Buat halaman utama DIGILAB — multi-halaman sesuai mockup',
+        'Halaman: Beranda, Hasil Pencarian, Detail Karya, Login',
+        'Header sticky navy, responsif mobile, proteksi halaman dengan login'
       ]},
       { type:'Feat', color:'#15803d', bg:'#dcfce7', items:[
-        'SPA navigasi tanpa reload, data demo 6 karya ilmiah',
-        'Search + filter Jenis, klik kartu ke detail, popup login guard'
-      ]}
-    ]
-  },
-  {
-    version: 'v0.2.1', date: '2026-06-09',
-    title: 'Fix Local Server & Vite Path',
-    sections: [
-      { type:'Fix', color:'#b91c1c', bg:'#fee2e2', items:[
-        'Pindah index.html ke root Vite (frontend/ bukan frontend/public/)',
-        'Rewrite test_server_lokal.bat: hapus karakter Unicode, pakai pushd/popd'
+        'Navigasi antar halaman tanpa reload, data demo 6 karya ilmiah',
+        'Pencarian + filter Jenis, klik kartu ke halaman Detail, proteksi akses login'
       ]}
     ]
   },
   {
     version: 'v0.3.0', date: '2026-06-09',
-    title: 'Redesign MindMap & Integrasi Homepage',
+    title: 'Peta Pikiran & Navigasi',
     sections: [
       { type:'Design', color:'#6d28d9', bg:'#faf5ff', items:[
-        'Redesign DIGILAB_MindMap.html dari tema gelap ke tema clean/terang',
-        'Header disamakan dengan DIGILAB site, node mindmap putih + stroke berwarna',
-        'Animasi: root-pulse, float-node, badge "Hibah Skripsi 2026"'
+        'Redesign halaman Peta Pikiran — tema terang, node putih dengan warna berbeda',
+        'Header disamakan dengan halaman utama DIGILAB, animasi node mengambang',
+        'Badge "Hibah Skripsi 2026" pada node utama'
       ]},
       { type:'Feat', color:'#15803d', bg:'#dcfce7', items:[
-        'Salin ke docs/mindmap.html, tambah #page-mindmap di SPA (iframe full-page)',
-        'Tombol "Peta Pikiran" di header + "← Kembali" ke Beranda di iframe'
-      ]}
-    ]
-  },
-  {
-    version: 'v0.3.1', date: '2026-06-09',
-    title: 'Push ke GitHub & GitHub Pages',
-    sections: [
-      { type:'Chore', color:'#475569', bg:'#f1f5f9', items:[
-        'Push initial commit ke github.com/JIAkbar/repositoryPD (26 files)',
-        'Setup GitHub Pages dari folder /docs',
-        'Rename frontend/ → docs/ untuk kompatibilitas GitHub Pages'
+        'Halaman Peta Pikiran dapat dibuka sebagai halaman penuh dari navigasi',
+        'Tombol "Peta Pikiran" tersedia di navigasi header'
       ]}
     ]
   },
   {
     version: 'v0.4.0', date: '2026-06-09',
-    title: 'Autentikasi Dummy & Restrukturisasi',
+    title: 'Autentikasi & Login',
     sections: [
       { type:'Feat', color:'#15803d', bg:'#dcfce7', items:[
-        'Dummy login: mahasiswa@vokasi.um.ac.id/digilab123 & admin@vokasi.um.ac.id/admin123',
-        'doLogin() + showLoginError() + doLogout() — validasi & state management',
-        'Tombol "↩ Keluar" di header (muncul setelah login), tombol "Masuk/Daftar" di Beranda',
-        'Tombol "⌂ Beranda" di header'
-      ]},
-      { type:'Refactor', color:'#c2410c', bg:'#fff7ed', items:[
-        'Hapus folder frontend/, docs/ jadi satu-satunya sumber frontend',
-        'Buat preview_frontend.bat — jalankan frontend tanpa backend'
+        'Akun demo tersedia: mahasiswa (mhs/mhs) dan admin (admin/admin)',
+        'Login, validasi, dan logout berfungsi penuh',
+        'Tombol "↩ Keluar" di header (muncul setelah login)',
+        'Tombol "Masuk/Daftar" di beranda'
       ]},
       { type:'Fix', color:'#b91c1c', bg:'#fee2e2', items:[
-        'Perbaiki truncasi index.html (39246 byte): migrasi ke Python write',
-        'Perbaiki mindmap blank: double requestAnimationFrame + dispatch resize ke iframe',
-        'Perbaiki "← Kembali" iframe: ganti history.back() dengan window.parent.nav()'
+        'Perbaiki tampilan Peta Pikiran yang kosong saat pertama dibuka',
+        'Perbaiki navigasi "← Kembali" dari halaman Peta Pikiran'
       ]}
     ]
   },
   {
-    version: 'v0.4.1', date: '2026-06-09',
-    title: 'Bugfix MindMap & Navigasi Header',
-    sections: [
-      { type:'Fix', color:'#b91c1c', bg:'#fee2e2', items:[
-        'Perbaiki docs/mindmap.html terpotong 25110 byte: switchTab(), DOMContentLoaded, renderJadwal() hilang',
-        'Tombol Jadwal sekarang berfungsi (switchTab + renderJadwal)',
-        'MindMap render saat halaman dimuat (DOMContentLoaded → double rAF)'
-      ]},
-      { type:'Feat', color:'#15803d', bg:'#dcfce7', items:[
-        'Tambah tombol Changelog & Checklist di header SPA',
-        'Salin changelog.html & checklist.html ke docs/ untuk akses via Vite & GitHub Pages'
-      ]}
-    ]
-  }
-,
-  {
     version: 'v0.5.0', date: '2026-06-09',
-    title: 'Tema Switcher & OG Meta Tags',
+    title: 'Tema Warna & Pratinjau Sosial',
     sections: [
       { type:'Feat', color:'#15803d', bg:'#dcfce7', items:[
-        'Tambah 5 pilihan tema warna: Indigo (default), Emerald, Charcoal, Violet, Rose',
-        'Theme switcher via CSS data-theme attribute + localStorage persistence',
-        'OG meta tags untuk preview link WhatsApp/Telegram',
-        'Fix display nama user di header setelah login'
+        '5 pilihan tema warna: Indigo (default), Emerald, Charcoal, Violet, Rose',
+        'Pilihan tema tersimpan otomatis untuk kunjungan berikutnya',
+        'Pratinjau link media sosial menampilkan judul dan deskripsi repositori'
       ]},
       { type:'Fix', color:'#b45309', bg:'#fef3c7', items:[
-        'Login error feedback inline (balloon merah dalam card)',
-        'Tombol Karya Ilmiah tampil setelah login'
+        'Perbaiki nama pengguna tidak muncul di header setelah login',
+        'Pesan error login tampil langsung di dalam kartu login',
+        'Tombol Karya Ilmiah muncul setelah login berhasil'
       ]}
     ]
   },
   {
     version: 'v0.6.0', date: '2026-06-11',
-    title: '5 Halaman Baru SPA',
+    title: '5 Halaman Baru',
     sections: [
       { type:'Feat', color:'#15803d', bg:'#dcfce7', items:[
-        'Halaman PDF Viewer (#page-pdf) — embed iframe + blokir download',
-        'Halaman Informasi Penulis (#page-penulis) — profil + tabel data',
-        'Halaman Produk (#page-produk) — galeri foto + video player demo',
-        'Halaman Unggah 3-Step (#page-upload) — stepper Metadata > Berkas > Konfirmasi',
-        'Halaman Akun Saya (#page-akun) — edit profil + ubah kata sandi',
-        'pendingPage redirect: login > redirect ke halaman yang diminta',
-        'Filter Beranda diperluas: Prodi + Tahun + Pembimbing'
+        'Halaman Baca PDF — tampilkan dokumen langsung, hanya untuk anggota terdaftar',
+        'Halaman Profil Penulis — informasi dan karya terkait',
+        'Halaman Produk Kreatif — galeri foto + pemutar video demo',
+        'Formulir Unggah 3 langkah: Informasi → Berkas → Konfirmasi',
+        'Halaman Akun Saya — edit profil + ubah kata sandi',
+        'Filter Beranda diperluas: Program Studi + Tahun + Pembimbing'
       ]}
     ]
   },
   {
     version: 'v0.7.0', date: '2026-06-11',
-    title: 'Redesign V2 Meruno + Template Toggle',
+    title: 'Varian Desain V2 & Template Berganti',
     sections: [
       { type:'Design', color:'#7c3aed', bg:'#ede9fe', items:[
-        'Redesign total ke V2 Meruno: hero teal gelap, Playfair Display serif, italic orange',
-        'Login card glassmorphism: backdrop-filter blur + rgba border',
-        'Tombol V1/V2 Template di header: toggle antar desain Natasya navy vs Meruno teal',
-        'V1 CSS override block: desain Natasya asli tetap tersimpan via data-version=1'
+        'Varian desain V2: hero teal gelap, tipografi serif elegan',
+        'Kartu login dengan efek kaca buram dan latar transparan',
+        'Tombol beralih antara desain klasik (navy) dan desain teal'
       ]},
       { type:'Feat', color:'#15803d', bg:'#dcfce7', items:[
-        'Kredensial demo tambahan: admin / admin (tanpa domain)',
-        'Login flexible match: email atau username saja',
-        'Beranda stats: 11 Prodi, 500+ Karya, 6 Jenis, demo akun'
+        'Login fleksibel: bisa pakai email lengkap atau username saja',
+        'Statistik beranda: 11 Prodi, 500+ Karya, 6 Jenis'
       ]}
     ]
   },
   {
     version: 'v0.8.0', date: '2026-06-11',
-    title: 'Animasi iOS + Mobile Responsive',
+    title: 'Animasi & Responsif Mobile',
     sections: [
       { type:'Feat', color:'#15803d', bg:'#dcfce7', items:[
-        'Animasi transisi halaman mirip iOS: fade + slide-up dengan spring easing',
-        'Button press: scale(0.93) + spring bounce cubic-bezier(.34,1.56,.64,1)',
-        'Popup overlay: slide-up animation dari bawah',
-        'Hamburger menu responsif di header (max 768px)',
-        'Mobile nav drawer: slide-down dengan semua menu',
-        'Full mobile responsive: stacking layout, 768px + 480px breakpoint',
-        'Tap targets minimum 44px untuk touch'
+        'Transisi halaman mulus mirip iOS: animasi fade dan geser',
+        'Tombol terasa responsif dengan efek tekan dan pantul',
+        'Popup muncul dari bawah dengan animasi geser ke atas',
+        'Menu hamburger responsif di header untuk layar kecil',
+        'Panel navigasi mobile: semua menu tersedia dalam laci tarik',
+        'Tampilan penuh responsif: semua elemen menyesuaikan ukuran layar',
+        'Semua tombol memenuhi standar ukuran nyaman untuk sentuhan'
       ]},
       { type:'Fix', color:'#b45309', bg:'#fef3c7', items:[
         'Hak cipta diperbarui: Natasya Adelia R. 2026',
-        'Select dropdown arrow encoding fix',
-        'Sinkronisasi tema V1/V2 + 5 warna ke changelog.html dan checklist.html'
+        'Perbaiki tampilan dropdown pilihan',
+        'Sinkronisasi 5 tema warna ke seluruh halaman'
       ]}
     ]
-  }
+  },
+  {
+    version: 'v0.9.0', date: '2026-06-12',
+    title: 'Fitur Baru Portal Mahasiswa & Admin',
+    sections: [
+      { type:'Feat', color:'#15803d', bg:'#dcfce7', items:[
+        'Popup sambutan saat login: avatar inisial, badge peran, bar progres 3 detik, tutup otomatis',
+        'Mahasiswa login dari beranda langsung diarahkan ke portal mahasiswa',
+        'Konfirmasi logout dengan animasi pantul di portal mahasiswa',
+        'Pesan validasi pencarian muncul dari bawah jika input kosong atau terlalu pendek',
+        'Menu Statistik Data dipindah ke header navigasi — bisa diakses dari semua halaman',
+        'Jenis karya baru: Artikel Jurnal, Tugas Akhir, Laporan Magang, Proyek Inovasi',
+        'Nomor panggil karya terisi otomatis berdasarkan data yang diinput',
+        'Tambah field Program Studi di formulir unggah',
+        'Validasi formulir: semua field diperiksa serentak dengan panduan per field',
+        'Halaman Produk menampilkan tautan karya yang sedang aktif'
+      ]},
+      { type:'Design', color:'#6d28d9', bg:'#faf5ff', items:[
+        'Halaman Produk redesign: 2 kolom — galeri foto kiri, video + tautan kanan',
+        'Panel admin Verifikasi Akun: chip statistik, toolbar, tabel kustom',
+        'Header halaman Statistik disamakan dengan beranda',
+        'Footer disembunyikan di halaman PDF / Penulis / Produk'
+      ]},
+      { type:'Fix', color:'#b91c1c', bg:'#fee2e2', items:[
+        'Fix navigasi ke Produk setelah logout — kembali ke beranda otomatis',
+        'Fix nama ganda tampil di header setelah login'
+      ]}
+    ]
+  },
+  {
+    version: 'v0.10.0', date: '2026-06-12',
+    title: 'Redesign Statistik & Perbaikan Kritis',
+    sections: [
+      { type:'Design', color:'#6d28d9', bg:'#faf5ff', items:[
+        'Halaman Statistik redesign total: 3 kartu ringkasan, grafik batang Sebaran Per Prodi, grafik donat Komposisi Jenis, grafik garis Tren Pembaca, tabel 5 Karya Teratas',
+        'Tombol REKAPAN DATA + unduh CSV di halaman Statistik',
+        'Dosen pembimbing menggunakan dropdown (bukan input bebas) di formulir mahasiswa & admin'
+      ]},
+      { type:'Fix', color:'#b91c1c', bg:'#fee2e2', items:[
+        'Fix halaman tidak bisa dimuat — masalah yang menghentikan seluruh fungsi',
+        'Fix 5 halaman (PDF, Penulis, Produk, Upload, Akun) tidak dapat dibuka dari navigasi',
+        'Fix daftar karya mahasiswa kosong — data tidak pernah dimuat',
+        'Fix beberapa tautan yang membuka tab baru — seharusnya navigasi dalam halaman',
+        'Fix tombol Setujui/Tolak di panel admin tidak berfungsi'
+      ]}
+    ]
+  },
+  {
+    version: 'v0.11.0', date: '2026-06-13',
+    title: 'Responsif iPhone & Dukungan Notch',
+    sections: [
+      { type:'Feat', color:'#15803d', bg:'#dcfce7', items:[
+        'Dukungan tampilan penuh di iPhone terbaru termasuk area Dynamic Island dan notch',
+        'Header tidak tertimpa notch/Dynamic Island di iPhone',
+        'Footer tidak tertimpa tombol home di iPhone',
+        'Pencegahan zoom otomatis saat mengetuk kolom isian di iOS',
+        'Semua tombol memenuhi standar ukuran sentuh yang nyaman'
+      ]},
+      { type:'Design', color:'#6d28d9', bg:'#faf5ff', items:[
+        'Beranda: tata letak lebih kompak dan nyaman di layar kecil',
+        'Admin: menu hamburger dan overlay sidebar di tampilan mobile',
+        'Portal mahasiswa: formulir unggah dan notifikasi disesuaikan untuk layar kecil',
+        'Statistik: layout satu kolom dan tabel dapat digeser horizontal di layar kecil'
+      ]},
+      { type:'Fix', color:'#b91c1c', bg:'#fee2e2', items:[
+        'Fix tata letak beberapa halaman yang rusak',
+        'Fix panel tema yang crash sebelum halaman selesai dimuat'
+      ]}
+    ]
+  },
+  {
+    version: 'v0.12.0', date: '2026-06-13',
+    title: 'Sistem Tema Terpusat & Perbaikan Menyeluruh',
+    sections: [
+      { type:'Feat', color:'#15803d', bg:'#dcfce7', items:[
+        'Sistem tema terpusat — ganti tema satu kali, semua halaman ikut berubah',
+        '5 pilihan tema lengkap tersedia di seluruh halaman',
+        'Tema diterapkan sebelum konten tampil — tidak ada kilasan warna yang salah'
+      ]},
+      { type:'Fix', color:'#b91c1c', bg:'#fee2e2', items:[
+        'Fix warna tidak sinkron antar halaman — beberapa halaman masih menggunakan warna lama',
+        'Fix halaman Statistik tidak mengikuti preferensi tema pengguna',
+        'Fix beberapa halaman tampil dengan warna salah saat pertama dibuka'
+      ]},
+      { type:'Chore', color:'#475569', bg:'#f1f5f9', items:[
+        'Perbaikan mendalam: tata letak, navigasi, dan tampilan di semua halaman'
+      ]}
+    ]
+  },
+  {
+    version: 'v0.13.0', date: '2026-06-14',
+    title: 'Sinkronisasi & Konsistensi Data',
+    sections: [
+      { type:'Chore', color:'#475569', bg:'#f1f5f9', items:[
+        'Semua data demo kini identik dengan yang akan tampil setelah sistem aktif penuh'
+      ]},
+      { type:'Fix', color:'#b91c1c', bg:'#fee2e2', items:[
+        'Fix 2 karya menggunakan kategori yang tidak valid — diganti ke kategori yang benar',
+        'Fix 3 akun demo menggunakan nama program studi yang tidak terdaftar',
+        'Fix label grafik statistik tidak sesuai dengan data aktual',
+        'Fix pilihan jenis karya tidak konsisten dengan data yang tersedia'
+      ]}
+    ]
+  },
+  {
+    version: 'v0.14.0', date: '2026-06-14',
+    title: 'V.Evolution Portal Mahasiswa',
+    sections: [
+      { type:'Design', color:'#6d28d9', bg:'#faf5ff', items:[
+        'Tampilan V.Evolution portal mahasiswa — sidebar gelap kiri + area konten utama',
+        'Palet warna baru: teal gelap, oranye, dan krem',
+        'Sidebar vertikal dengan ikon + label, tetap terlihat saat scroll',
+        'Tombol switch ⚡ V.Evolution (di tampilan klasik) dan ← Classic (di V.Evolution)'
+      ]},
+      { type:'Feat', color:'#15803d', bg:'#dcfce7', items:[
+        'Tampilan Classic dan V.Evolution berbagi logika yang sama — pembaruan berlaku di keduanya sekaligus',
+        'Pilihan tampilan tersimpan dan diingat untuk kunjungan berikutnya'
+      ]},
+      { type:'Fix', color:'#b91c1c', bg:'#fee2e2', items:[
+        'Fix tombol switch tampilan tidak muncul saat halaman dimuat',
+        'Fix halaman tidak bisa dibuka di kondisi tertentu',
+        'Redesign kartu notifikasi status karya: warna gradient, garis aksen di atas'
+      ]}
+    ]
+  },
+  {
+    version: 'v0.15.0', date: '2026-06-14',
+    title: 'V.Evolution Beranda Publik & Admin',
+    sections: [
+      { type:'Design', color:'#6d28d9', bg:'#faf5ff', items:[
+        'V.Evolution Beranda: hero lebar penuh, bilah pencarian menonjol, filter cepat per jenis',
+        'Halaman: Beranda, Hasil Pencarian, Detail Karya, Baca PDF, Profil Penulis, Produk',
+        'V.Evolution Admin: sidebar teal gelap + topbar tetap + area konten',
+        'Dashboard admin: kartu ringkasan, grafik batang, grafik donat, aktivitas terbaru'
+      ]},
+      { type:'Feat', color:'#15803d', bg:'#dcfce7', items:[
+        'Pencarian dengan sorotan kata kunci di hasil',
+        'Filter cepat per jenis karya langsung dari beranda',
+        'Admin: jumlah karya/akun yang perlu ditinjau diperbarui langsung tanpa refresh',
+        'Admin: halaman Dashboard, Verifikasi Karya, Verifikasi Akun, Kelola Karya, Statistik'
+      ]}
+    ]
+  },
+  {
+    version: 'v0.16.0', date: '2026-06-14',
+    title: 'Arahan Cerdas Setelah Login',
+    sections: [
+      { type:'Feat', color:'#15803d', bg:'#dcfce7', items:[
+        'Klik "Baca PDF" / "Profil Penulis" / "Lihat Produk" saat belum login → jendela login muncul',
+        'Setelah login berhasil → langsung diarahkan ke halaman yang dituju',
+        'Login dari tombol header tanpa konteks → tetap diarahkan ke portal mahasiswa',
+        'Keterangan tujuan muncul di jendela login sehingga pengguna tahu akan diarahkan ke mana',
+        'Berlaku di kedua tampilan: Classic dan V.Evolution'
+      ]}
+    ]
+  },
+  {
+    version: 'v0.17.0', date: '2026-06-14',
+    title: 'Persiapan Integrasi Backend',
+    sections: [
+      { type:'Feat', color:'#15803d', bg:'#dcfce7', items:[
+        'Semua halaman siap terhubung ke database nyata tanpa mengubah tampilan',
+        'Login, register, dan logout siap terhubung ke sistem autentikasi nyata',
+        'Unggah file (PDF, foto, video) siap terhubung ke penyimpanan cloud',
+        'Data demo tetap tersedia sebagai cadangan saat koneksi belum aktif'
+      ]}
+    ]
+  },
 ];
 
 

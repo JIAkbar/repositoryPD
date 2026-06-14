@@ -1,27 +1,45 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+<script src="theme.js"></script>
 <script>
+  // tema dihandle oleh theme.js
   (function(){
     var v = localStorage.getItem('digilab-version') || '2';
-    var t = localStorage.getItem('digilab-theme') || 'indigo';
-    var html = document.documentElement;
-    if (v === '1') html.setAttribute('data-version', '1');
-    if (t && t !== 'indigo') html.setAttribute('data-theme', t);
+    document.documentElement.setAttribute('data-version', v);
   })();
 </script>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Checklist — DIGILAB Repository</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Lato:wght@300;400;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 :root {
-  /* Static colors not in shared theme system */
+
+      --navy:       #094e58;
+      --navy-dark:  #072e37;
+      --navy-mid:   #0d6b79;
+      --bg:         #f5f0e8;
+      --bg-card:    #ffffff;
+      --text-dark:  #122830;
+      --text-mid:   #2d5a65;
+      --text-muted: #6b8e96;
+      --red:        #c0392b;
+      --red-dark:   #8b0000;
+      --orange:     #e8821e;
+      --teal:       #14b8a6;
+      --border:     #dde8ea;
+      --shadow-sm:  0 1px 4px rgba(9,78,88,.08);
+      --shadow:     0 2px 10px rgba(9,78,88,.12);
+      --shadow-lg:  0 6px 24px rgba(9,78,88,.18);
+      --pill:       999px;
+      --r:          8px;
+      /* Static colors not in shared theme system */
   --green:    #16a34a;
   --red:      #dc2626;
   --bg-card:  #ffffff;
-}
+    }
 body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text-dark); min-height:100vh; }
 
 /* Header */
@@ -375,7 +393,7 @@ const phases = [
       { text:'Pembuatan poster penelitian' },
       { text:'Redesign MindMap ke tema clean/terang' },
       { text:'Integrasi MindMap di SPA (halaman Peta Pikiran)' },
-      { text:'Push ke GitHub (jiakbar.github.io/repositoryPD)' },
+      { text:'Push ke GitHub (natasyaadel.github.io/RPD)' },
       { text:'README.md & dokumentasi API lengkap' },
       { text:'User manual sistem' }
     ]
@@ -408,7 +426,7 @@ const PRESET_DONE = [
   'Tombol Beranda di header',
   'Redesign MindMap ke tema clean/terang',
   'Integrasi MindMap di SPA (halaman Peta Pikiran)',
-  'Push ke GitHub (jiakbar.github.io/repositoryPD)',
+  'Push ke GitHub (natasyaadel.github.io/RPD)',
 ];
 
 const stored = JSON.parse(localStorage.getItem('digilab-checklist') || 'null');

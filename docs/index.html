@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+<script src="theme.js"></script>
+<script src="layout-router.js"></script>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>DIGILAB Repository — Sistem Repositori Perpustakaan Digital Fakultas Vokasi UM</title>
   <meta name="description" content="Sistem Repository Perpustakaan Digital Fakultas Vokasi Universitas Negeri Malang — tempat penyimpanan dan pencarian karya ilmiah mahasiswa." />
 
   <!-- Open Graph (WhatsApp, Telegram, Facebook) -->
   <meta property="og:type"        content="website" />
-  <meta property="og:url"         content="https://jiakbar.github.io/repositoryPD/" />
+  <meta property="og:url"         content="https://natasyaadel.github.io/RPD/" />
   <meta property="og:title"       content="DIGILAB — Sistem Repository Perpustakaan Digital" />
   <meta property="og:description" content="Sistem Repository Perpustakaan Digital Fakultas Vokasi Universitas Negeri Malang — tempat penyimpanan dan pencarian karya ilmiah mahasiswa." />
-  <meta property="og:image"       content="https://jiakbar.github.io/repositoryPD/og-image.png" />
+  <meta property="og:image"       content="https://natasyaadel.github.io/RPD/og-image.png" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card"        content="summary_large_image" />
   <meta name="twitter:title"       content="DIGILAB — Sistem Repository Perpustakaan Digital" />
   <meta name="twitter:description" content="Sistem Repository Perpustakaan Digital Fakultas Vokasi Universitas Negeri Malang." />
-  <meta name="twitter:image"       content="https://jiakbar.github.io/repositoryPD/og-image.png" />
+  <meta name="twitter:image"       content="https://natasyaadel.github.io/RPD/og-image.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&family=Nunito+Sans:wght@400;600;700;800;900&family=Nunito:wght@400;600;700;800;900&family=Lato:ital,wght@0,300;0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
@@ -671,11 +673,20 @@
       font-size: 14px; font-family: 'Lato', sans-serif; background: transparent; color: var(--text-dark);
     }
     .karya-search-box input::placeholder { color: var(--text-muted); }
+    .karya-filter-select {
+      padding: 10px 14px; border-radius: var(--pill); border: 1.5px solid var(--border);
+      font-family: 'Lato', sans-serif; font-size: 13px; color: var(--text-dark);
+      background: #fff; cursor: pointer; outline: none; transition: border-color .2s;
+      white-space: nowrap;
+    }
+    .karya-filter-select:focus { border-color: var(--navy); }
+    .karya-filter-active { border-color: var(--navy) !important; background: var(--bg) !important; font-weight: 700; }
+    .karya-result-info { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
     .btn-unggah {
       display: flex; align-items: center; gap: 8px; padding: 10px 22px;
       border-radius: var(--pill); background: var(--teal); color: #fff; border: none;
       font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14px; cursor: pointer;
-      transition: filter .15s, transform .12s;
+      transition: filter .15s, transform .12s; white-space: nowrap;
     }
     .btn-unggah:hover { filter: brightness(1.1); transform: translateY(-1px); }
     .karya-table-box { background: #fff; border-radius: var(--r); box-shadow: var(--shadow-sm); overflow: hidden; border: 1.5px solid var(--border); }
@@ -1315,6 +1326,10 @@
       .detail-topbar, .detail-body { padding: 14px 16px; }
       .login-card { padding: 32px 18px !important; margin: 0 8px; }
       .karya-body { padding: 16px; }
+      .karya-toolbar { flex-wrap: wrap; }
+      .karya-search-box { flex: 1 1 100%; }
+      .karya-filter-select { flex: 1 1 calc(50% - 6px); font-size: 12px; padding: 8px 10px; }
+      .btn-unggah { width: 100%; justify-content: center; }
       .karya-table-box { overflow-x: auto; }
       .upload-wrap { padding: 20px 14px; }
       .upload-row { grid-template-columns: 1fr !important; }
@@ -1336,7 +1351,48 @@
     @media (max-width: 480px) {
       .beranda-title { font-size: 26px !important; }
       .foto-grid { grid-template-columns: 1fr !important; }
-      .login-card { padding: 24px 14px !important; }
+      .login-card { padding: 24px 14px !important; margin: 0 12px; }
+      /* beranda spacing kompak */
+      .beranda-center { padding: 24px 14px 44px !important; }
+      .beranda-search-card { padding: 16px 12px !important; border-radius: 14px; }
+      .beranda-stats { gap: 8px; }
+      .beranda-stat-num { font-size: 20px !important; }
+      .beranda-stat-label { font-size: 10px; }
+      .beranda-cta-wrap { flex-direction: column !important; gap: 10px; }
+      .beranda-cta-wrap .beranda-btn-masuk { width: 100%; justify-content: center; }
+      .beranda-sub { font-size: 13px !important; margin-bottom: 16px !important; }
+      /* Search inputs compact */
+      .search-row { gap: 8px; }
+      .s-input, .s-select { height: 44px; }
+      .btn-cari { height: 44px !important; font-size: 14px; }
+      /* Hasil & detail padding */
+      .hasil-content { padding: 12px !important; }
+      .detail-topbar, .detail-body { padding: 12px !important; }
+      .detail-meta-grid { grid-template-columns: 1fr !important; }
+      /* Karya */
+      .karya-body { padding: 12px !important; }
+    }
+
+    /* ─── iOS Safari / iPhone Fixes ─── */
+    @media (max-width: 768px) {
+      /* iOS auto-zoom prevention — semua input/select min 16px */
+      input, select, textarea,
+      .s-input, .s-select {
+        font-size: 16px !important;
+      }
+      /* Tap targets ≥44px untuk jari */
+      .btn-nav { height: 44px !important; min-width: 44px; }
+      .hamburger { width: 44px !important; height: 44px !important; padding: 10px !important; }
+      .btn-user { height: 44px !important; min-width: 44px; }
+      .btn-cari { height: 44px !important; }
+      /* Safe area — Dynamic Island / notch */
+      header {
+        padding-top: env(safe-area-inset-top, 0px);
+        height: calc(66px + env(safe-area-inset-top, 0px));
+      }
+      footer {
+        padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+      }
     }
 
   
@@ -1380,7 +1436,7 @@
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
       Karya Ilmiah
     </button>
-    <button class="btn-nav btn-nav-statistik" onclick="location.href='statistik.html'" title="Statistik Data">
+    <button class="btn-nav btn-nav-statistik" onclick="navigateTo('statistik')" title="Statistik Data">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
       Statistik
     </button>
@@ -1449,7 +1505,6 @@
   <button class="btn-nav" onclick="openAkun();toggleMobileNav()">👤 Akun Saya</button>
   <button class="btn-nav" onclick="toggleVersion();toggleMobileNav()">🔄 Ganti Template</button>
   <a class="btn-nav" href="changelog.html">📄 Changelog</a>
-  <a class="btn-nav" href="checklist.html">✅ Checklist</a>
   <div class="mobile-nav-divider"></div>
   <button class="btn-nav" id="mobile-btn-logout" style="display:none;" onclick="doLogout();toggleMobileNav()">🚪 Keluar</button>
 </nav>
@@ -1759,16 +1814,35 @@
       <div class="karya-page-title"><h2>Karya Ilmiah</h2></div>
       <div class="karya-toolbar">
         <div class="karya-search-box">
-          <input type="text" placeholder="Search" id="kw-karya"
+          <input type="text" placeholder="Cari judul, penulis..." id="kw-karya"
             onkeydown="if(event.key==='Enter') filterKarya()"
             oninput="filterKarya()" />
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         </div>
+        <select id="filter-jenis-karya" onchange="filterKarya()" class="karya-filter-select">
+          <option value="">Semua Jenis</option>
+          <option value="Tugas Akhir">Tugas Akhir</option>
+          <option value="Artikel Jurnal">Artikel Jurnal</option>
+          <option value="Laporan Magang">Laporan Magang</option>
+          <option value="Proyek Inovasi">Proyek Inovasi</option>
+          <option value="Produk Kreatif">Produk Kreatif</option>
+          <option value="Lainnya">Lainnya</option>
+        </select>
+        <select id="filter-tahun-karya" onchange="filterKarya()" class="karya-filter-select">
+          <option value="">Semua Tahun</option>
+          <option value="2025">2025</option>
+          <option value="2024">2024</option>
+          <option value="2023">2023</option>
+          <option value="2022">2022</option>
+          <option value="2021">2021</option>
+          <option value="2020">2020</option>
+        </select>
         <button class="btn-unggah" onclick="navToUpload()">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
           Unggah
         </button>
       </div>
+      <div id="karya-result-info" class="karya-result-info"></div>
       <div class="karya-table-box">
         <table class="karya-tbl">
           <thead>
@@ -2336,11 +2410,6 @@
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
       Changelog
     </a>
-    <span class="footer-sep">·</span>
-    <a class="footer-link" href="checklist.html">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-      Checklist
-    </a>
   </div>
 </footer>
 
@@ -2372,7 +2441,7 @@ const KARYA_DATA = [
     pembaca:34, warna:'#1565c0',
     abstrak:'Sistem ini dirancang untuk memudahkan pengguna menemukan jasa laundry terdekat menggunakan teknologi GPS dan Google Maps API. Fitur utama meliputi pencarian berbasis jarak, pemesanan online, notifikasi status cucian, dan sistem pembayaran digital. Hasil pengujian blackbox menunjukkan seluruh fungsi berjalan sesuai spesifikasi.' },
   { id:3, judul:'Rancang Bangun Mesin Pengolah Limbah Tekstil Ramah Lingkungan', penulis:'Suherman',
-    dosen:'Prof. Ir. Ahmad Syukur, M.T.', tahun:2022, jenis:'Skripsi',
+    dosen:'Prof. Ir. Ahmad Syukur, M.T.', tahun:2022, jenis:'Artikel Jurnal',
     noPanggil:'SUH/TM/SKR/RAN/2022', bidang:'TEKNIK MESIN — LINGKUNGAN',
     pembaca:5, warna:'#bf360c',
     abstrak:'Penelitian ini mengembangkan prototipe mesin pengolah limbah tekstil menggunakan prinsip daur ulang mekanik. Mesin mampu mengolah 50 kg limbah kain per jam menjadi serat daur ulang. Uji kinerja menunjukkan efisiensi konversi sebesar 78% dengan konsumsi energi lebih rendah dari metode konvensional.' },
@@ -2387,7 +2456,7 @@ const KARYA_DATA = [
     pembaca:43, warna:'#6a1b9a',
     abstrak:'Perancangan identitas visual komprehensif untuk lima produk UMKM unggulan Kota Malang mencakup logo, panduan merek, kemasan, dan materi pemasaran digital. Metodologi human-centered design digunakan untuk memastikan identitas visual autentik. Evaluasi menunjukkan peningkatan persepsi kualitas produk sebesar 65%.' },
   { id:6, judul:'Analisis Efektivitas Pengelolaan Anggaran Daerah Kota Malang', penulis:'Rizki Amalia',
-    dosen:'Dr. Endang Wahyu, M.Ak.', tahun:2023, jenis:'Skripsi',
+    dosen:'Dr. Endang Wahyu, M.Ak.', tahun:2023, jenis:'Artikel Jurnal',
     noPanggil:'RIZ/AK/SKR/ANA/2023', bidang:'AKUNTANSI — KEUANGAN DAERAH',
     pembaca:62, warna:'#1565c0',
     abstrak:'Penelitian menganalisis efektivitas pengelolaan anggaran daerah Kota Malang periode 2019–2023 menggunakan metode analisis rasio keuangan dan value for money. Temuan menunjukkan tingkat efektivitas rata-rata 89% dengan peningkatan konsistensi tiap tahun. Rekomendasi kebijakan dirumuskan untuk meningkatkan transparansi dan akuntabilitas.' }
@@ -2395,11 +2464,12 @@ const KARYA_DATA = [
 
 const MY_KARYA = [
   { no:1, judul:'Rancang Bangun Sistem Informasi Perpustakaan Digital Berbasis Web', jenis:'Tugas Akhir', status:'disetujui' },
-  { no:2, judul:'Implementasi Machine Learning untuk Klasifikasi Data Akademik', jenis:'Skripsi', status:'pending' },
+  { no:2, judul:'Implementasi Machine Learning untuk Klasifikasi Data Akademik', jenis:'Artikel Jurnal', status:'pending' },
 ];
 
 let loggedIn = false;
 let currentUser = null;
+let pendingNav = null; // 'pdf' | 'penulis' | 'produk' — tujuan setelah login
 
 /* ─── NAVIGATION ─── */
 /* ─── navigation history ─── */
@@ -2455,9 +2525,9 @@ function nav(page, _fromBack) {
 function toggleUserMenu() {
   if (!loggedIn) { nav('login'); return; }
   if (currentUser && currentUser.role === 'admin') {
-    window.location.href = 'admin.html';
+    navigateTo('admin');
   } else if (currentUser && currentUser.role === 'mahasiswa') {
-    window.location.href = 'mahasiswa.html';
+    navigateTo('mahasiswa');
   } else {
     nav('login');
   }
@@ -2504,16 +2574,35 @@ function renderKaryaTbl(data) {
   }).join('');
 }
 function filterKarya() {
-  var kw = (document.getElementById('kw-karya') ? document.getElementById('kw-karya').value : '').trim().toLowerCase();
-  if (!kw) { renderKaryaTbl(KARYA_DATA); return; }
+  var kw    = ((document.getElementById('kw-karya') || {}).value || '').trim().toLowerCase();
+  var jenis = ((document.getElementById('filter-jenis-karya') || {}).value || '');
+  var tahun = ((document.getElementById('filter-tahun-karya') || {}).value || '');
+
+  // Update visual state filter aktif
+  var selJenis = document.getElementById('filter-jenis-karya');
+  var selTahun = document.getElementById('filter-tahun-karya');
+  if (selJenis) selJenis.classList.toggle('karya-filter-active', !!jenis);
+  if (selTahun) selTahun.classList.toggle('karya-filter-active', !!tahun);
+
   var filtered = KARYA_DATA.filter(function(k) {
-    return k.judul.toLowerCase().includes(kw) ||
-           k.penulis.toLowerCase().includes(kw) ||
-           k.jenis.toLowerCase().includes(kw) ||
-           String(k.tahun).includes(kw) ||
-           (k.bidang || '').toLowerCase().includes(kw);
+    var matchKw = !kw || k.judul.toLowerCase().includes(kw) ||
+                  k.penulis.toLowerCase().includes(kw) ||
+                  (k.bidang || '').toLowerCase().includes(kw);
+    var matchJenis = !jenis || k.jenis === jenis;
+    var matchTahun = !tahun || String(k.tahun) === tahun;
+    return matchKw && matchJenis && matchTahun;
   });
+
   renderKaryaTbl(filtered);
+
+  // Tampilkan info hasil filter
+  var infoEl = document.getElementById('karya-result-info');
+  if (infoEl) {
+    var adaFilter = kw || jenis || tahun;
+    infoEl.textContent = adaFilter
+      ? 'Menampilkan ' + filtered.length + ' dari ' + KARYA_DATA.length + ' karya'
+      : '';
+  }
 }
 
 function doSearch(from) {
@@ -2665,6 +2754,8 @@ function showPopup(type) {
   const [icon, msg] = msgs[type] || ['🔒','SILAHKAN LOGIN TERLEBIH DAHULU!'];
   document.getElementById('popup-icon').textContent = icon;
   document.getElementById('popup-msg').textContent  = msg;
+  // Simpan tujuan agar setelah login langsung diarahkan ke sana
+  pendingNav = type.toLowerCase(); // 'pdf' | 'penulis' | 'produk'
   document.getElementById('overlay').classList.add('show');
 }
 function closePopup() { document.getElementById('overlay').classList.remove('show'); }
@@ -2679,11 +2770,7 @@ DUMMY_USERS = [
 
 /* ── THEME SWITCHER ── */
 function setTheme(t) {
-  document.documentElement.setAttribute('data-theme', t === 'indigo' ? '' : t);
-  localStorage.setItem('digilab-theme', t);
-  document.querySelectorAll('.theme-swatch').forEach(s => {
-    s.classList.toggle('active', s.dataset.t === t);
-  });
+  DigilabTheme.apply(t); // ← single source of truth di theme.js
   var _tp = document.getElementById('theme-panel');
   if (_tp) _tp.classList.remove('open');
 }
@@ -2742,12 +2829,18 @@ function doLogin() {
   // Simpan user ke localStorage untuk sync admin.html
   localStorage.setItem('digilab-user', JSON.stringify({name: user.nama, email: user.email, role: user.role}));
   if (user.role === 'admin') {
-    // Admin → redirect ke admin panel
-    window.location.href = 'admin.html';
+    navigateTo('admin');
     return;
   }
-  // Mahasiswa → redirect ke portal mahasiswa
-  window.location.href = 'mahasiswa.html';
+  // Mahasiswa — cek apakah ada halaman yang dituju sebelum login
+  if (pendingNav) {
+    const dest = pendingNav;
+    pendingNav = null;
+    closePopup();
+    openProtectedPage(dest); // langsung ke pdf / penulis / produk
+  } else {
+    navigateTo('mahasiswa');
+  }
 }
 
 function showLoginError(msg) {
@@ -3251,3 +3344,4 @@ function closeLogoutConfirm() {
 
 </body>
 </html>
+                                        

@@ -113,6 +113,6 @@ ON CONFLICT (kode) DO NOTHING;
 
 -- ─── Seed: Kategori ───
 INSERT INTO kategori (nama) VALUES
-  ('Tugas Akhir'), ('Laporan PKL'), ('Proyek Inovasi'),
-  ('Produk Kreatif'), ('Penelitian'), ('Lainnya')
+  ('Tugas Akhir'), ('Artikel Jurnal'), ('Laporan Magang'),
+  ('Proyek Inovasi'), ('Produk Kreatif'), ('Lainnya')
 ON CONFLICT (nama) DO NOTHING;

@@ -26,10 +26,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ─── Routes ───
-// app.use('/api/auth',  require('./routes/auth'));
-// app.use('/api/karya', require('./routes/karya'));
-// app.use('/api/admin', require('./routes/admin'));
-// app.use('/api/prodi', require('./routes/prodi'));
+app.use('/api/auth',  require('./routes/auth'));
+app.use('/api/karya', require('./routes/karya'));
+app.use('/api/admin', require('./routes/admin'));
+app.use('/api/prodi', require('./routes/prodi'));
 
 // Health check
 app.get('/api/health', async (req, res) => {
