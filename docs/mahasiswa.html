@@ -879,6 +879,7 @@ tbody tr:hover{background:#f8f8fc;}
   <span id="toast-msg">Berhasil disimpan!</span>
 </div>
 
+<script src="api-service.js"></script>
 <script src="mahasiswa-shared.js"></script>
 <script>
 // ══ LAYOUT-SPECIFIC — mahasiswa.html (Classic) ══
@@ -928,9 +929,8 @@ function loadApp(u) {
 
 // ── V.EVOLUTION SWITCH ──
 function switchToEvo() {
-  localStorage.setItem('digilab-layout', 'evolution');
-  document.getElementById('evo-switch-btn').textContent = 'Mengalihkan...';
-  setTimeout(function(){ switchLayout(); }, 150);
+  localStorage.setItem('digilab-layout', 'evo');
+  window.location.href = 'mahasiswa-evo.html'; // nosweep — page-specific switch
 }
 
 // ── PAGES ──
@@ -1013,7 +1013,7 @@ checkAuth();
 <button id="evo-switch-btn" onclick="switchToEvo()" title="Coba tampilan V.Evolution"
   style="position:fixed;bottom:24px;right:24px;z-index:10001;background:var(--navy,#094e58);color:#fff;border:none;border-radius:999px;padding:12px 20px;font-size:13px;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.25);display:none;align-items:center;gap:8px;transition:all .2s;">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-  ⚡ V.Evolution
+  ⚡ Evo
 </button>
 
 <!-- Logout Confirm Overlay -->

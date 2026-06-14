@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="indigo">
+<head>
+<script src="theme.js"></script>
+<script src="layout-router.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Portal Mahasiswa — DIGILAB Evo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+/* ══ V.EVOLUTION — MAHASISWA PORTAL ══ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#094e58;--navy-dark:#072e37;--navy-mid:#0d6b79;
+  --bg:#f5f0e8;--bg-card:#ffffff;
+  --text-dark:#122830;--text-mid:#2d5a65;--text-muted:#6b8e96;
+  --red:#c0392b;--orange:#e8821e;--teal:#14b8a6;
+  --border:#dde8ea;--sidebar-w:240px;
+  --shadow-sm:0 1px 4px rgba(9,78,88,.08);
+  --shadow:0 2px 10px rgba(9,78,88,.12);
+  --shadow-lg:0 6px 24px rgba(9,78,88,.18);
+}
+[data-theme="emerald"]{--navy:#065f46;--navy-dark:#064e3b;--navy-mid:#047857;--bg:#f0fdf4;--border:#bbf7d0;--orange:#d97706;}
+[data-theme="charcoal"]{--navy:#1c1c2e;--navy-dark:#0f0f1a;--navy-mid:#2d2d44;--bg:#f1f1f5;--border:#d4d4e8;--orange:#f59e0b;}
+[data-theme="violet"]{--navy:#4c1d95;--navy-dark:#3b0764;--navy-mid:#6d28d9;--bg:#f5f3ff;--border:#ddd6fe;--orange:#f97316;}
+[data-theme="rose"]{--navy:#881337;--navy-dark:#4c0519;--navy-mid:#9f1239;--bg:#fff1f2;--border:#fecdd3;--orange:#f97316;}
+
+@keyframes pageLoad{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text-dark);display:flex;min-height:100vh;transition:background .3s;animation:pageLoad .28s cubic-bezier(.25,.46,.45,.94) both;}
+button{cursor:pointer;font-family:'Lato',sans-serif;}
+input,select,textarea{font-family:'Lato',sans-serif;}
+a{text-decoration:none;color:inherit;}
+
+/* ══ LOGIN PAGE ══ */
+#login-page{display:flex;align-items:center;justify-content:center;min-height:100vh;width:100%;background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);}
+.login-card{background:#fff;border-radius:20px;padding:44px 40px 36px;width:380px;box-shadow:0 20px 60px rgba(0,0,0,.2);}
+.login-logo-wrap{text-align:center;margin-bottom:28px;}
+.login-logo-icon{width:56px;height:56px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:12px;}
+.login-logo-icon svg{width:56px;height:56px;}
+.login-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:20px;color:var(--text-dark);}
+.login-sub{font-size:12px;color:var(--text-muted);margin-top:2px;letter-spacing:.5px;}
+.login-field{margin-bottom:16px;}
+.login-field label{display:block;font-size:12px;font-weight:700;color:var(--text-mid);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px;}
+.login-field input{width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:14px;color:var(--text-dark);outline:none;transition:border-color .2s,box-shadow .2s;background:#fafafa;}
+.login-field input:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(9,78,88,.1);background:#fff;}
+.login-btn{width:100%;height:46px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-weight:800;font-size:15px;margin-top:4px;transition:background .15s,transform .1s,box-shadow .15s;}
+.login-btn:hover{background:var(--navy-dark);transform:translateY(-1px);box-shadow:0 4px 16px rgba(9,78,88,.3);}
+.login-error{color:#c0392b;font-size:13px;margin-top:10px;min-height:18px;font-weight:600;}
+.login-back{display:block;margin-top:18px;font-size:12px;color:var(--text-muted);text-align:center;transition:color .15s;}
+.login-back:hover{color:var(--navy);}
+
+/* ══ APP SHELL ══ */
+#app{display:none;flex:1;width:100%;min-height:100vh;}
+
+/* ── SIDEBAR EVO ── */
+.evo-sidebar{
+  width:var(--sidebar-w);min-width:var(--sidebar-w);
+  background:var(--navy);min-height:100vh;
+  display:flex;flex-direction:column;
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+}
+/* Sidebar brand */
+.evo-sidebar-brand{padding:14px 16px 12px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.1);}
+.evo-brand-icon{width:36px;height:36px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.evo-brand-icon svg{width:36px;height:36px;}
+.evo-brand-name{font-family:'Nunito',sans-serif;font-weight:900;font-size:.85rem;color:#fff;line-height:1.2;letter-spacing:.04em;}
+.evo-brand-sub{font-size:.7rem;color:rgba(255,255,255,.55);letter-spacing:.02em;text-transform:uppercase;}
+
+/* Sidebar profile */
+.evo-sidebar-profile{padding:20px;border-bottom:1px solid rgba(255,255,255,.1);}
+.evo-profile-avatar{width:52px;height:52px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:900;font-size:20px;color:#fff;margin-bottom:10px;border:3px solid rgba(255,255,255,.2);}
+.evo-profile-name{font-size:14px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.evo-profile-nim{font-size:11px;color:rgba(255,255,255,.45);margin-top:2px;}
+.evo-profile-badge{display:inline-block;margin-top:8px;background:rgba(232,130,30,.25);color:var(--orange);font-size:10px;font-weight:700;padding:3px 10px;border-radius:99px;letter-spacing:.5px;border:1px solid rgba(232,130,30,.3);}
+
+/* Sidebar nav */
+.evo-sidebar-nav{flex:1;padding:14px 10px;}
+.evo-nav-section{font-size:10px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:1.5px;text-transform:uppercase;padding:10px 10px 6px;}
+.evo-nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:600;color:rgba(255,255,255,.65);cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:all .15s;margin-bottom:2px;}
+.evo-nav-item:hover{color:#fff;background:rgba(255,255,255,.1);}
+.evo-nav-item.active{color:#fff;background:rgba(255,255,255,.13);border-left:3px solid var(--orange);padding-left:9px;}
+.evo-nav-item svg{width:16px;height:16px;flex-shrink:0;opacity:.7;}
+.evo-nav-item.active svg{opacity:1;}
+
+/* Sidebar footer */
+.evo-sidebar-footer{padding:14px 10px;border-top:1px solid rgba(255,255,255,.1);}
+.evo-home-btn{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:600;color:rgba(255,255,255,.6);background:none;border:none;width:100%;cursor:pointer;transition:all .15s;margin-bottom:6px;}
+.evo-home-btn:hover{color:#fff;background:rgba(255,255,255,.1);}
+.evo-logout-btn{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;font-size:12px;font-weight:600;color:rgba(255,120,120,.9);background:rgba(255,255,255,.1);border:none;width:100%;cursor:pointer;transition:all .15s;}
+.evo-logout-btn:hover{color:#ffaaaa;background:rgba(255,255,255,.2);}
+
+/* ── MAIN AREA ── */
+.evo-main{flex:1;display:flex;flex-direction:column;min-width:0;overflow-y:auto;}
+
+/* Topbar */
+.evo-topbar{background:var(--navy);padding:0 28px;height:58px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;position:sticky;top:0;z-index:20;}
+.evo-topbar-title{font-family:'Nunito',sans-serif;font-weight:800;font-size:17px;color:#fff;display:flex;align-items:center;gap:8px;}
+.evo-topbar-title span{font-size:11px;color:rgba(255,255,255,.45);font-weight:400;font-family:'Lato',sans-serif;}
+.evo-topbar-right{display:flex;align-items:center;gap:12px;}
+.evo-topbar-user{display:flex;align-items:center;gap:8px;}
+.evo-topbar-avatar{width:32px;height:32px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:800;font-size:12px;color:#fff;}
+.evo-topbar-name{font-size:13px;color:rgba(255,255,255,.9);font-weight:600;}
+
+/* ── SWITCH BUTTON ── */
+.evo-switch-btn{position:fixed;bottom:24px;right:24px;z-index:9990;background:#fff;color:var(--navy);border:1.5px solid var(--border);border-radius:99px;padding:9px 18px;font-size:12px;font-weight:700;box-shadow:0 4px 20px rgba(9,78,88,.18);cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .2s;}
+.evo-switch-btn:hover{background:var(--navy);color:#fff;border-color:var(--navy);transform:translateY(-2px);box-shadow:0 8px 24px rgba(9,78,88,.28);}
+.evo-switch-btn svg{width:14px;height:14px;}
+
+/* ── BODY ── */
+.evo-body{padding:24px 28px;flex:1;}
+
+/* Pages */
+.evo-page{display:none;opacity:0;}
+.evo-page.active{display:block;opacity:1;}
+@keyframes evoEnter{from{opacity:0;transform:translateY(14px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes evoExit{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-8px)}}
+.evo-page.entering{animation:evoEnter .22s cubic-bezier(.25,.46,.45,.94) forwards;}
+.evo-page.exiting{display:block!important;animation:evoExit .15s ease forwards;}
+
+/* ── NOTIFICATION BANNERS ── */
+#notif-container{margin-bottom:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;}
+.status-banner{display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:14px;border:1.5px solid transparent;width:100%;text-align:left;cursor:pointer;transition:transform .18s,box-shadow .18s;position:relative;overflow:hidden;background:var(--evo-card,#fff);}
+.status-banner:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,.1);}
+.status-banner::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:14px 14px 0 0;}
+.sb-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.status-banner .sb-body{flex:1;min-width:0;}
+.status-banner .sb-label{font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;margin-bottom:3px;opacity:.6;}
+.status-banner .sb-title{font-size:14px;font-weight:800;font-family:'Nunito',sans-serif;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.status-banner .sb-sub{font-size:11.5px;font-weight:400;opacity:.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sb-action{font-size:11px;font-weight:700;padding:6px 14px;border-radius:999px;border:none;cursor:pointer;flex-shrink:0;white-space:nowrap;letter-spacing:.2px;}
+.status-banner.sb-green{border-color:#bbf7d0;background:linear-gradient(135deg,#f0fdf4,#ecfdf5);color:#065f46;}
+.status-banner.sb-green::after{background:linear-gradient(90deg,#10b981,#34d399);}
+.status-banner.sb-green .sb-icon{background:#dcfce7;color:#059669;}
+.status-banner.sb-green .sb-action{background:#10b981;color:#fff;box-shadow:0 2px 8px rgba(16,185,129,.3);}
+.status-banner.sb-red{border-color:#fecaca;background:linear-gradient(135deg,#fff5f5,#fef2f2);color:#991b1b;}
+.status-banner.sb-red::after{background:linear-gradient(90deg,#ef4444,#f87171);}
+.status-banner.sb-red .sb-icon{background:#fee2e2;color:#dc2626;}
+.status-banner.sb-red .sb-action{background:#ef4444;color:#fff;box-shadow:0 2px 8px rgba(239,68,68,.3);}
+.status-banner.sb-orange{border-color:#fde68a;background:linear-gradient(135deg,#fffdf0,#fffbeb);color:#92400e;}
+.status-banner.sb-orange::after{background:linear-gradient(90deg,#f59e0b,#fbbf24);}
+.status-banner.sb-orange .sb-icon{background:#fef3c7;color:#d97706;}
+.status-banner.sb-orange .sb-action{background:#f59e0b;color:#fff;box-shadow:0 2px 8px rgba(245,158,11,.3);}
+
+/* ── WELCOME CARD ── */
+.evo-welcome{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);border-radius:16px;padding:28px 32px;color:#fff;margin-bottom:24px;display:flex;align-items:center;gap:20px;position:relative;overflow:hidden;}
+.evo-welcome::before{content:'';position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.05);}
+.evo-welcome::after{content:'';position:absolute;right:80px;bottom:-80px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.04);}
+.evo-welcome-avatar{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:900;font-size:22px;color:#fff;flex-shrink:0;border:2px solid rgba(255,255,255,.3);z-index:1;}
+.evo-welcome-text{z-index:1;}
+.evo-welcome-text h2{font-family:'Nunito',sans-serif;font-weight:900;font-size:20px;margin-bottom:4px;}
+.evo-welcome-text p{font-size:13px;opacity:.7;}
+.evo-welcome-badge{margin-left:auto;background:var(--orange);color:#fff;font-size:11px;font-weight:700;padding:5px 14px;border-radius:99px;letter-spacing:.5px;z-index:1;white-space:nowrap;}
+
+/* ── STAT CARDS ── */
+.evo-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;}
+.evo-stat{background:var(--bg-card);border-radius:14px;padding:20px 22px;border:1px solid var(--border);box-shadow:var(--shadow-sm);position:relative;overflow:hidden;transition:transform .15s,box-shadow .15s;}
+.evo-stat:hover{transform:translateY(-2px);box-shadow:var(--shadow);}
+.evo-stat::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.evo-stat-label{font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:.6px;text-transform:uppercase;margin-bottom:8px;}
+.evo-stat-num{font-family:'Nunito',sans-serif;font-weight:900;font-size:40px;color:var(--text-dark);line-height:1;}
+.evo-stat-sub{font-size:11px;color:var(--text-muted);margin-top:6px;}
+.evo-stat-icon{position:absolute;right:16px;bottom:16px;opacity:.06;}
+.evo-stat-icon svg{width:44px;height:44px;}
+.evo-stat.evo-c-blue::before{background:#2563eb;}
+.evo-stat.evo-c-blue .evo-stat-num{color:#1d4ed8;}
+.evo-stat.evo-c-blue .evo-stat-icon{color:#1d4ed8;}
+.evo-stat.evo-c-amber::before{background:#d97706;}
+.evo-stat.evo-c-amber .evo-stat-num{color:#b45309;}
+.evo-stat.evo-c-amber .evo-stat-icon{color:#b45309;}
+.evo-stat.evo-c-green::before{background:#16a34a;}
+.evo-stat.evo-c-green .evo-stat-num{color:#15803d;}
+.evo-stat.evo-c-green .evo-stat-icon{color:#15803d;}
+
+/* ── SECTION HEADER ── */
+.evo-section-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.evo-section-title{font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;color:var(--text-dark);display:flex;align-items:center;gap:8px;}
+.evo-section-title::before{content:'';display:block;width:3px;height:18px;background:var(--orange);border-radius:2px;}
+
+/* ── CARDS ── */
+.evo-card{background:var(--bg-card);border-radius:14px;border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow-sm);}
+.evo-card-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.evo-card-title{font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;color:var(--text-dark);}
+
+/* ── TABLES ── */
+.evo-table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+thead th{padding:11px 16px;text-align:left;font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:.5px;text-transform:uppercase;background:#fafaf8;border-bottom:1px solid var(--border);}
+tbody td{padding:13px 16px;font-size:13.5px;border-bottom:1px solid var(--border);vertical-align:middle;}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover{background:#faf9f6;}
+
+/* ── STATUS BADGES ── */
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.3px;}
+.badge-pending{background:#fff3cd;color:#856404;}
+.badge-approved{background:#d1fae5;color:#065f46;}
+.badge-rejected{background:#fee2e2;color:#991b1b;}
+.badge-revision{background:#ede9fe;color:#5b21b6;}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;font-size:13px;font-weight:700;border:none;transition:all .15s;cursor:pointer;}
+.btn:hover{transform:translateY(-1px);}
+.btn-navy{background:var(--navy);color:#fff;}
+.btn-navy:hover{background:var(--navy-dark);}
+.btn-teal{background:var(--teal);color:#fff;}
+.btn-teal:hover{background:#0f9d8d;}
+.btn-orange{background:var(--orange);color:#fff;}
+.btn-orange:hover{background:#d06910;}
+.btn-ghost{background:#f0ede8;color:var(--text-mid);border:1px solid var(--border);}
+.btn-ghost:hover{background:#e8e4dd;}
+.btn-red{background:var(--red);color:#fff;}
+.btn-sm{padding:5px 12px;font-size:12px;}
+.btn-icon{padding:6px 8px;}
+
+/* ── TOOLBAR ── */
+.evo-toolbar{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+.evo-search{display:flex;align-items:center;background:var(--bg-card);border:1.5px solid var(--border);border-radius:999px;padding:0 16px;gap:8px;flex:1;min-width:180px;}
+.evo-search input{border:none;outline:none;background:transparent;font-size:14px;color:var(--text-dark);height:40px;width:100%;}
+.evo-search input::placeholder{color:var(--text-muted);}
+.evo-filter-sel{height:40px;border:1.5px solid var(--border);border-radius:999px;padding:0 16px;font-size:13px;color:var(--text-dark);background:var(--bg-card);outline:none;cursor:pointer;}
+
+/* ── KARYA PAGE ── */
+.evo-empty{text-align:center;padding:60px 20px;color:var(--text-muted);}
+.evo-empty svg{width:48px;height:48px;opacity:.2;display:block;margin:0 auto 12px;}
+.evo-empty p{font-size:14px;}
+
+/* ── UPLOAD FORM ── */
+.evo-stepper-wrap{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);border-radius:16px;padding:28px;margin-bottom:24px;}
+.evo-stepper-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:18px;color:#fff;text-align:center;margin-bottom:20px;}
+.evo-stepper{display:flex;align-items:center;justify-content:center;gap:0;}
+.evo-step-dot{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);color:rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:900;font-size:16px;transition:all .3s;flex-shrink:0;z-index:2;}
+.evo-step-dot.active{background:var(--orange);color:#fff;box-shadow:0 4px 16px rgba(232,130,30,.4);}
+.evo-step-dot.done{background:rgba(255,255,255,.35);color:#fff;}
+.evo-step-line{flex:1;height:2px;background:rgba(255,255,255,.2);max-width:120px;}
+.evo-step-line.done{background:rgba(255,255,255,.5);}
+.evo-step-labels{display:flex;justify-content:space-between;margin-top:10px;}
+.evo-step-lbl{font-size:10px;color:rgba(255,255,255,.5);font-weight:700;letter-spacing:.5px;text-transform:uppercase;}
+
+.evo-form-card{background:var(--bg-card);border-radius:14px;border:1px solid var(--border);padding:28px;box-shadow:var(--shadow-sm);}
+.evo-form-title{font-family:'Nunito',sans-serif;font-weight:800;font-size:16px;color:var(--text-dark);margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.evo-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.form-group{margin-bottom:0;}
+.form-group.full{grid-column:1/-1;}
+.form-label{display:block;font-size:12px;font-weight:700;color:var(--text-mid);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px;}
+.form-label span{color:var(--red);}
+.form-input{width:100%;height:42px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:14px;color:var(--text-dark);background:var(--bg-card);outline:none;transition:border-color .2s,box-shadow .2s;}
+.form-input:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(9,78,88,.1);}
+.form-input::placeholder{color:var(--text-muted);}
+.form-select{width:100%;height:42px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:14px;color:var(--text-dark);background:var(--bg-card);outline:none;appearance:none;cursor:pointer;}
+.form-select:focus{border-color:var(--navy);}
+.form-textarea{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;font-size:14px;color:var(--text-dark);background:var(--bg-card);outline:none;resize:vertical;min-height:120px;transition:border-color .2s;}
+.form-textarea:focus{border-color:var(--navy);}
+.evo-form-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:24px;padding-top:20px;border-top:1px solid var(--border);}
+.field-error-msg{display:none;font-size:11.5px;color:#c0392b;font-weight:600;margin-top:4px;align-items:center;gap:4px;}
+.field-error-msg.show{display:flex;}
+.form-input.has-error,.form-select.has-error{border-color:#c0392b!important;background:#fff5f5!important;}
+
+/* Upload dropzone */
+.evo-upload-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;}
+.dropzone-label{font-size:13px;font-weight:700;color:var(--text-mid);margin-bottom:6px;}
+.dropzone-sub{font-size:11px;color:var(--text-muted);margin-bottom:10px;}
+.dropzone{border:2px dashed var(--border);border-radius:12px;padding:36px 20px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg);}
+.dropzone:hover,.dropzone.drag-over{border-color:var(--navy);background:#f0ede8;}
+.dropzone svg{width:32px;height:32px;color:var(--text-muted);margin-bottom:8px;opacity:.4;}
+.dropzone p{font-size:13px;color:var(--text-muted);}
+.dropzone p strong{color:var(--navy);}
+.file-preview{margin-top:10px;background:#f8f6f2;border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px;border:1px solid var(--border);}
+.file-preview-name{font-size:13px;color:var(--text-dark);font-weight:600;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.file-preview-size{font-size:11px;color:var(--text-muted);}
+.file-remove{background:none;border:none;color:var(--text-muted);font-size:18px;cursor:pointer;}
+.file-remove:hover{color:var(--red);}
+
+/* Review */
+.evo-review-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.review-item{background:#f8f6f2;border-radius:10px;padding:12px 14px;}
+.review-key{font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:3px;}
+.review-val{font-size:14px;color:var(--text-dark);font-weight:600;}
+.review-item.full{grid-column:1/-1;}
+
+/* Profil */
+.evo-profil-wrap{display:grid;grid-template-columns:260px 1fr;gap:20px;align-items:start;}
+.evo-profil-card{background:var(--bg-card);border-radius:14px;border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow-sm);}
+.evo-profil-top{background:linear-gradient(135deg,var(--navy),var(--navy-mid));padding:32px 24px;text-align:center;}
+.evo-profil-pic{width:88px;height:88px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:900;font-size:34px;color:#fff;margin:0 auto 12px;border:3px solid rgba(255,255,255,.3);}
+.evo-profil-name{font-family:'Nunito',sans-serif;font-weight:800;font-size:17px;color:#fff;margin-bottom:3px;}
+.evo-profil-nim{font-size:12px;color:rgba(255,255,255,.5);}
+.evo-profil-body{padding:18px 20px;}
+.evo-profil-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.evo-profil-row:last-child{border-bottom:none;}
+.evo-profil-key{color:var(--text-muted);font-weight:600;}
+.evo-profil-val{color:var(--text-dark);font-weight:700;}
+.evo-profil-form{background:var(--bg-card);border-radius:14px;border:1px solid var(--border);padding:24px;box-shadow:var(--shadow-sm);}
+.evo-profil-form-title{font-family:'Nunito',sans-serif;font-weight:800;font-size:16px;color:var(--text-dark);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+.profil-form-group{margin-bottom:16px;}
+.profil-form-label{display:block;font-size:12px;font-weight:700;color:var(--text-mid);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px;}
+.profil-form-input{width:100%;height:42px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:14px;color:var(--text-dark);background:var(--bg-card);outline:none;transition:border-color .2s;}
+.profil-form-input:focus{border-color:var(--navy);}
+.profil-form-input:disabled{background:#f8f6f2;color:var(--text-muted);}
+
+/* Toast */
+.success-toast{position:fixed;bottom:80px;right:24px;background:#16a34a;color:#fff;font-size:13px;font-weight:700;padding:12px 20px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.15);display:flex;align-items:center;gap:8px;z-index:9999;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s;}
+.success-toast.show{opacity:1;transform:translateY(0);}
+
+/* Mobile */
+.evo-mob-header{display:none;background:var(--navy);padding:0 16px;height:56px;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.evo-mob-brand{font-family:'Nunito',sans-serif;font-weight:900;font-size:15px;color:#fff;}
+.evo-mob-menu{background:none;border:none;color:#fff;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;}
+.evo-mob-menu:hover{background:rgba(255,255,255,.1);}
+.evo-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:150;}
+.evo-overlay.show{display:block;}
+
+@media(max-width:768px){
+  body{flex-direction:column;}
+  #app{flex-direction:column;}
+  .evo-mob-header{display:flex;}
+  .evo-topbar{display:none;}
+  .evo-sidebar{position:fixed;left:-100%;top:0;height:100%;z-index:200;transition:left .3s;width:260px;}
+  .evo-sidebar.open{left:0;}
+  .evo-main{flex:1;}
+  .evo-body{padding:16px;}
+  .evo-stats{grid-template-columns:1fr;gap:10px;}
+  .evo-welcome{flex-direction:column;text-align:center;padding:20px;}
+  .evo-welcome-badge{margin-left:0;margin-top:8px;}
+  .evo-form-grid{grid-template-columns:1fr;}
+  .evo-upload-grid{grid-template-columns:1fr;}
+  .evo-profil-wrap{grid-template-columns:1fr;}
+  .evo-review-grid{grid-template-columns:1fr;}
+  .evo-switch-btn{bottom:16px;right:16px;}
+  .evo-table-wrap{overflow-x:auto;}
+}
+@media(max-width:480px){
+  .evo-stepper-wrap{padding:20px 16px;}
+  .evo-form-card{padding:16px;}
+  .btn{padding:7px 12px;font-size:12px;}
+  .evo-form-actions{flex-direction:column-reverse;}
+  .evo-form-actions .btn{width:100%;justify-content:center;}
+}
+
+/* Welcome popup */
+.welcome-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;}
+.welcome-overlay.show{opacity:1;pointer-events:all;}
+.welcome-popup{background:#fff;border-radius:20px;padding:36px 32px 28px;text-align:center;max-width:340px;width:90%;transform:translateY(24px) scale(.95);transition:transform .3s cubic-bezier(.34,1.56,.64,1);box-shadow:0 24px 60px rgba(0,0,0,.18);position:relative;}
+.welcome-overlay.show .welcome-popup{transform:translateY(0) scale(1);}
+.welcome-avatar-big{width:72px;height:72px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:900;font-size:28px;color:#fff;margin:0 auto 14px;box-shadow:0 4px 16px rgba(9,78,88,.3);}
+.welcome-popup h2{font-family:'Nunito',sans-serif;font-weight:900;font-size:20px;color:var(--text-dark);margin-bottom:6px;}
+.welcome-popup p{font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:16px;}
+.welcome-role-badge{display:inline-block;padding:3px 14px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:18px;background:#e0f2fe;color:#0369a1;}
+.welcome-progress{height:3px;background:#f0f0f8;border-radius:999px;overflow:hidden;margin-bottom:14px;}
+.welcome-progress-bar{height:100%;background:var(--navy);border-radius:999px;animation:progressShrink 3s linear forwards;}
+@keyframes progressShrink{from{transform:scaleX(1);transform-origin:left}to{transform:scaleX(0);transform-origin:left}}
+.welcome-close{background:none;border:none;font-size:12px;color:var(--text-muted);cursor:pointer;font-weight:600;}
+.welcome-popup-wave{position:absolute;top:0;left:0;right:0;height:5px;border-radius:20px 20px 0 0;background:linear-gradient(90deg,var(--navy),var(--orange));}
+@keyframes popIn{from{opacity:0;transform:scale(.88) translateY(12px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes fadeInBg{from{opacity:0}to{opacity:1}}
+</style>
+</head>
+<body>
+
+<!-- ══ LOGIN PAGE ══ -->
+<div id="login-page">
+  <div class="login-card">
+    <div class="login-logo-wrap">
+      <div class="login-logo-icon">
+        <svg viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="7" y="20" width="32" height="20" rx="2.5" fill="var(--navy)" opacity=".9"/>
+          <rect x="7" y="20" width="4.5" height="20" rx="1.5" fill="rgba(9,78,88,.5)"/>
+          <path d="M23 20 C23 20 9 18 9 12 L9 20 Z" fill="rgba(9,78,88,.55)"/>
+          <path d="M23 20 C23 20 37 18 37 12 L37 20 Z" fill="rgba(9,78,88,.55)"/>
+          <line x1="23" y1="12" x2="23" y2="40" stroke="rgba(9,78,88,.2)" stroke-width="1"/>
+          <circle cx="16" cy="8" r="2.2" fill="var(--navy)"/>
+          <circle cx="23" cy="5" r="2.2" fill="var(--navy)"/>
+          <circle cx="30" cy="8" r="2.2" fill="var(--navy)"/>
+          <line x1="16" y1="10.2" x2="16" y2="14" stroke="var(--navy)" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="23" y1="7.2" x2="23" y2="12" stroke="var(--navy)" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="30" y1="10.2" x2="30" y2="14" stroke="var(--navy)" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M16 14 Q19.5 16.5 23 15.5 Q26.5 16.5 30 14" stroke="var(--navy)" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="login-title">DIGILAB Repository</div>
+      <div class="login-sub">Portal Mahasiswa</div>
+    </div>
+    <div class="login-field">
+      <label>Email / NIM</label>
+      <input type="email" id="login-email" placeholder="mhs" autocomplete="email">
+    </div>
+    <div class="login-field">
+      <label>Kata Sandi</label>
+      <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button class="login-btn" onclick="doLogin()">Masuk</button>
+    <div class="login-error" id="login-err"></div>
+    <a href="index.html" class="login-back">← Kembali ke beranda</a>
+  </div>
+</div>
+
+<!-- ══ MAIN APP ══ -->
+<div id="app">
+
+  <!-- Mobile header -->
+  <div class="evo-mob-header">
+    <div class="evo-mob-brand">DIGILAB Mahasiswa</div>
+    <button class="evo-mob-menu" onclick="toggleSidebar()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+    </button>
+  </div>
+  <div class="evo-overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+  <!-- ── SIDEBAR EVO ── -->
+  <aside class="evo-sidebar" id="sidebar">
+    <!-- Brand -->
+    <div class="evo-sidebar-brand">
+      <div class="evo-brand-icon" style="flex-shrink:0;">
+        <svg viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="7" y="20" width="32" height="20" rx="2.5" fill="white" opacity=".92"/>
+          <rect x="7" y="20" width="4.5" height="20" rx="1.5" fill="rgba(255,255,255,.5)"/>
+          <path d="M23 20 C23 20 9 18 9 12 L9 20 Z" fill="rgba(255,255,255,.6)"/>
+          <path d="M23 20 C23 20 37 18 37 12 L37 20 Z" fill="rgba(255,255,255,.6)"/>
+          <line x1="23" y1="12" x2="23" y2="40" stroke="rgba(46,49,146,.3)" stroke-width="1"/>
+          <circle cx="16" cy="8" r="2.2" fill="white"/>
+          <circle cx="23" cy="5" r="2.2" fill="white"/>
+          <circle cx="30" cy="8" r="2.2" fill="white"/>
+          <line x1="16" y1="10.2" x2="16" y2="14" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="23" y1="7.2" x2="23" y2="12" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="30" y1="10.2" x2="30" y2="14" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M16 14 Q19.5 16.5 23 15.5 Q26.5 16.5 30 14" stroke="white" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="evo-brand-name">DIGILAB</div>
+        <div class="evo-brand-sub">REPOSITORY</div>
+      </div>
+    </div>
+
+    <!-- Profile -->
+    <div class="evo-sidebar-profile">
+      <div class="evo-profile-avatar" id="evo-profile-avatar">N</div>
+      <div class="evo-profile-name" id="evo-profile-name">Mahasiswa</div>
+      <div class="evo-profile-nim" id="evo-profile-nim">NIM: —</div>
+      <div class="evo-profile-badge">Mahasiswa</div>
+    </div>
+
+    <!-- Nav -->
+    <nav class="evo-sidebar-nav">
+      <div class="evo-nav-section">Menu</div>
+      <button class="evo-nav-item active" onclick="showPage('beranda')" id="nav-beranda">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        Beranda
+      </button>
+      <button class="evo-nav-item" onclick="showPage('karya')" id="nav-karya">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+        Karya Saya
+      </button>
+      <button class="evo-nav-item" onclick="showPage('statistik')" data-page="statistik" id="nav-statistik">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Statistik
+      </button>
+      <button class="evo-nav-item" onclick="showPage('unggah')" id="nav-unggah">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+        Unggah Karya
+      </button>
+      <div class="evo-nav-section">Akun</div>
+      <button class="evo-nav-item" onclick="showPage('profil')" id="nav-profil">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+        Profil Saya
+      </button>
+    </nav>
+
+    <!-- Footer -->
+    <div class="evo-sidebar-footer">
+      <button class="evo-home-btn" onclick="navigateTo('public')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        Ke Beranda Utama
+      </button>
+      <button class="evo-logout-btn" onclick="openLogoutConfirm()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+        Keluar
+      </button>
+    </div>
+  </aside>
+
+  <!-- ── MAIN CONTENT ── -->
+  <div class="evo-main">
+
+    <!-- Topbar -->
+    <div class="evo-topbar">
+      <div class="evo-topbar-title" id="topbar-title">
+        Beranda
+        <span id="topbar-sub">Ringkasan aktivitas karya ilmiah Anda</span>
+      </div>
+      <div class="evo-topbar-right">
+        <div class="evo-topbar-user">
+          <div class="evo-topbar-avatar" id="topbar-avatar">N</div>
+          <div class="evo-topbar-name" id="topbar-name">Mahasiswa</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="evo-body">
+
+      <!-- ── BERANDA ── -->
+      <div class="evo-page active" id="page-beranda">
+        <!-- Welcome card -->
+        <div class="evo-welcome">
+          <div class="evo-welcome-avatar" id="welcome-avatar">N</div>
+          <div class="evo-welcome-text">
+            <h2 id="welcome-name">Halo, Mahasiswa!</h2>
+            <p>Kelola dan pantau karya ilmiah Anda di DIGILAB Repository</p>
+          </div>
+          <div class="evo-welcome-badge">Mahasiswa</div>
+        </div>
+
+        <!-- Notif banners -->
+        <div id="notif-container"></div>
+
+        <!-- Stats -->
+        <div class="evo-stats">
+          <div class="evo-stat evo-c-blue">
+            <div class="evo-stat-label">Total Karya</div>
+            <div class="evo-stat-num" id="stat-total">0</div>
+            <div class="evo-stat-sub">semua yang diunggah</div>
+            <div class="evo-stat-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div>
+          </div>
+          <div class="evo-stat evo-c-amber">
+            <div class="evo-stat-label">Menunggu</div>
+            <div class="evo-stat-num" id="stat-pending">0</div>
+            <div class="evo-stat-sub">dalam antrian verifikasi</div>
+            <div class="evo-stat-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div>
+          </div>
+          <div class="evo-stat evo-c-green">
+            <div class="evo-stat-label">Disetujui</div>
+            <div class="evo-stat-num" id="stat-approved">0</div>
+            <div class="evo-stat-sub">karya telah terbit</div>
+            <div class="evo-stat-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div>
+          </div>
+        </div>
+
+        <!-- Recent karya -->
+        <div class="evo-section-hd">
+          <div class="evo-section-title">Karya Terbaru</div>
+          <button class="btn btn-ghost btn-sm" onclick="showPage('karya')">Lihat Semua →</button>
+        </div>
+        <div class="evo-card">
+          <div class="evo-table-wrap">
+            <table id="beranda-table">
+              <thead>
+                <tr>
+                  <th>Judul</th><th>Jenis</th><th>Tahun</th><th>Status</th><th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="beranda-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── KARYA SAYA ── -->
+      <div class="evo-page" id="page-karya">
+        <div class="evo-toolbar">
+          <div class="evo-search">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="text" placeholder="Cari judul, jenis..." oninput="filterKarya(this.value)" id="karya-search">
+          </div>
+          <select class="evo-filter-sel" onchange="filterKarya()" id="karya-filter">
+            <option value="">Semua Status</option>
+            <option value="pending">Pending</option>
+            <option value="disetujui">Disetujui</option>
+            <option value="revisi">Revisi</option>
+            <option value="ditolak">Ditolak</option>
+          </select>
+          <button class="btn btn-teal" onclick="showPage('unggah')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+            Unggah Karya
+          </button>
+        </div>
+        <div class="evo-card">
+          <div class="evo-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width:40px">No.</th>
+                  <th>Judul</th><th>Jenis</th><th>Tahun</th><th>Status</th>
+                  <th style="width:110px">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="karya-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── UNGGAH KARYA ── -->
+      <div class="evo-page" id="page-unggah">
+        <div class="evo-stepper-wrap">
+          <div class="evo-stepper-title">Unggah Karya Ilmiah</div>
+          <div class="evo-stepper">
+            <div class="evo-step-dot active" id="dot-1">1</div>
+            <div class="evo-step-line" id="line-1"></div>
+            <div class="evo-step-dot" id="dot-2">2</div>
+            <div class="evo-step-line" id="line-2"></div>
+            <div class="evo-step-dot" id="dot-3">3</div>
+          </div>
+          <div class="evo-step-labels">
+            <div class="evo-step-lbl">Detail Info</div>
+            <div class="evo-step-lbl" style="text-align:center">Produk</div>
+            <div class="evo-step-lbl" style="text-align:right">Konfirmasi</div>
+          </div>
+        </div>
+
+        <!-- Step 1 -->
+        <div id="step-1" class="evo-form-card">
+          <div class="evo-form-title">Detail Informasi Karya</div>
+          <div class="evo-form-grid">
+            <div class="form-group">
+              <label class="form-label">Judul <span>*</span></label>
+              <input type="text" class="form-input" id="f-judul" placeholder="Ketikkan judul karya" oninput="generateNoPanggil();clearFieldError('f-judul')">
+              <span class="field-error-msg" id="err-judul">★ Judul terlalu pendek (min. 10 karakter).</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Penulis <span>*</span></label>
+              <input type="text" class="form-input" id="f-penulis" placeholder="Nama penulis" oninput="generateNoPanggil()">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Bahasa</label>
+              <select class="form-select" id="f-bahasa">
+                <option value="id">Indonesia</option>
+                <option value="en">English</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Program Studi <span>*</span></label>
+              <select class="form-select" id="f-prodi-upload" onchange="generateNoPanggil();clearFieldError('f-prodi-upload')">
+                <option value="">Pilih prodi...</option>
+                <option value="D4 Perpustakaan Digital">D4 Perpustakaan Digital</option>
+                <option value="D3 Teknologi Informasi">D3 Teknologi Informasi</option>
+                <option value="D4 Teknologi Rekayasa Elektro">D4 Teknologi Rekayasa Elektro</option>
+                <option value="D4 Teknologi Mesin">D4 Teknologi Mesin</option>
+                <option value="D4 Manajemen Informatika">D4 Manajemen Informatika</option>
+                <option value="D4 Akuntansi">D4 Akuntansi</option>
+                <option value="D3 Administrasi Perkantoran">D3 Administrasi Perkantoran</option>
+                <option value="D3 Teknik Mesin">D3 Teknik Mesin</option>
+                <option value="D4 Teknologi Industri">D4 Teknologi Industri</option>
+                <option value="D3 Kimia Industri">D3 Kimia Industri</option>
+                <option value="D4 Teknologi Pendidikan">D4 Teknologi Pendidikan</option>
+              </select>
+              <span class="field-error-msg" id="err-prodi">⚠ Wajib memilih Program Studi.</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Jenis Dokumen <span>*</span></label>
+              <select class="form-select" id="f-jenis" onchange="generateNoPanggil();clearFieldError('f-jenis')">
+                <option value="">Pilih jenis...</option>
+                <option value="Artikel Jurnal">Artikel Jurnal</option>
+                <option value="Tugas Akhir">Tugas Akhir</option>
+                <option value="Laporan Magang">Laporan Magang</option>
+                <option value="Proyek Inovasi">Proyek Inovasi</option>
+                <option value="Produk Kreatif">Produk Kreatif</option>
+                <option value="Lainnya">Lainnya</option>
+              </select>
+              <span class="field-error-msg" id="err-jenis">⚠ Wajib memilih Jenis Dokumen.</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Dosen Pembimbing <span>*</span></label>
+              <select class="form-select" id="f-pembimbing" onchange="clearFieldError('f-pembimbing')">
+                <option value="">-- Pilih Dosen --</option>
+                <option>Achmad Hamdan, S.Pd., M.Pd.</option>
+                <option>Dr. Agus Wedi, M.Pd.</option>
+                <option>Drs. Sihkabuden, M.Pd.</option>
+                <option>Dr. Yerry Soepriyanto, S.T., M.T.</option>
+                <option>Hariyanto, S.Pd., M.Pd.</option>
+                <option>Dr. Siti Rahayu, M.Lib.</option>
+                <option>Prof. Ir. Ahmad Syukur, M.T.</option>
+                <option>Dr. Budi Santoso, M.T.</option>
+                <option>Dr. Wahyu Pratama, M.Kom.</option>
+                <option>Candra Ariawan, S.Kom., M.Kom.</option>
+                <option>Dr. Endang Wahyu, M.Ak.</option>
+                <option>Ir. Sinta Dewi, M.Ds.</option>
+              </select>
+              <span class="field-error-msg" id="err-pembimbing">⚠ Wajib mencantumkan Dosen Pembimbing.</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tahun <span>*</span></label>
+              <select class="form-select" id="f-tahun" onchange="generateNoPanggil();clearFieldError('f-tahun')">
+                <option value="">Pilih tahun...</option>
+                <option>2026</option><option>2025</option><option>2024</option>
+                <option>2023</option><option>2022</option><option>2021</option>
+              </select>
+              <span class="field-error-msg" id="err-tahun">⚠ Harus tahun berjalan atau sebelumnya.</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Bidang / Subjek</label>
+              <input type="text" class="form-input" id="f-bidang" placeholder="Contoh: Perpustakaan, IT, Akuntansi">
+            </div>
+            <div class="form-group">
+              <label class="form-label" style="display:flex;align-items:center;gap:6px;">
+                No. Panggil
+                <span style="font-size:10px;background:#e0f2fe;color:#0369a1;padding:1px 7px;border-radius:99px;font-weight:700;">AUTO</span>
+              </label>
+              <input type="text" class="form-input" id="f-nopanggil" placeholder="Otomatis terisi" readonly style="background:#f8f6f2;color:var(--navy);font-family:'Nunito',sans-serif;font-weight:700;letter-spacing:.5px;cursor:default;">
+            </div>
+            <div class="form-group full">
+              <label class="form-label">Abstrak</label>
+              <textarea class="form-textarea" id="f-abstrak" placeholder="Ketikkan abstrak karya ilmiah..."></textarea>
+            </div>
+          </div>
+          <div class="evo-form-actions">
+            <button class="btn btn-ghost" onclick="showPage('karya')">Batal</button>
+            <button class="btn btn-navy" onclick="goStep(2)">Lanjut: Produk →</button>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div id="step-2" style="display:none;">
+          <div class="evo-form-card">
+            <div class="evo-form-title">Unggah Produk</div>
+            <div class="evo-upload-grid">
+              <div>
+                <div class="dropzone-label">📄 Dokumen</div>
+                <div class="dropzone-sub">Format: .pdf — maks. 50 MB</div>
+                <div class="dropzone" id="drop-pdf" onclick="document.getElementById('input-pdf').click()" ondragover="dragOver(event,'drop-pdf')" ondragleave="dragLeave('drop-pdf')" ondrop="handleDrop(event,'drop-pdf','input-pdf')">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/><path d="M13 3v6h6"/></svg>
+                  <p><strong>Klik</strong> atau seret file ke sini</p>
+                  <div class="dropzone-format" style="font-size:11px;color:var(--text-muted);margin-top:4px;">Format: .pdf</div>
+                </div>
+                <input type="file" id="input-pdf" accept=".pdf" style="display:none" onchange="showFile(this,'drop-pdf','preview-pdf')">
+                <div id="preview-pdf"></div>
+              </div>
+              <div>
+                <div class="dropzone-label">🖼️ Foto / Video</div>
+                <div class="dropzone-sub">Format: .png .jpg .jpeg .mp4 .mp3</div>
+                <div class="dropzone" id="drop-media" onclick="document.getElementById('input-media').click()" ondragover="dragOver(event,'drop-media')" ondragleave="dragLeave('drop-media')" ondrop="handleDrop(event,'drop-media','input-media')">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                  <p><strong>Klik</strong> atau seret file ke sini</p>
+                  <div class="dropzone-format" style="font-size:11px;color:var(--text-muted);margin-top:4px;">Format: .png .jpg .mp4</div>
+                </div>
+                <input type="file" id="input-media" accept=".png,.jpg,.jpeg,.mp4,.mp3" style="display:none" onchange="showFile(this,'drop-media','preview-media')">
+                <div id="preview-media"></div>
+              </div>
+            </div>
+            <div style="margin-top:4px;">
+              <div class="dropzone-label" style="margin-bottom:6px;">🔗 Tautan Terkait <span style="font-weight:400;color:var(--text-muted);font-size:11px;">(opsional)</span></div>
+              <div class="dropzone-sub" style="margin-bottom:10px;">Tambahkan link YouTube, GitHub, atau tautan relevan lainnya</div>
+              <div id="link-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px;"></div>
+              <div style="display:flex;gap:8px;">
+                <input type="url" id="link-input" class="form-input" placeholder="https://youtu.be/... atau https://github.com/..." style="flex:1;">
+                <button type="button" class="btn btn-ghost btn-sm" onclick="addLink()" style="white-space:nowrap;">+ Tambah</button>
+              </div>
+            </div>
+            <div class="evo-form-actions">
+              <button class="btn btn-ghost" onclick="goStep(1)">← Kembali</button>
+              <button class="btn btn-navy" onclick="goStep(3)">Lanjut: Konfirmasi →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div id="step-3" style="display:none;">
+          <div class="evo-form-card">
+            <div class="evo-form-title">Konfirmasi & Kirim</div>
+            <div class="evo-review-grid" id="review-content"></div>
+            <div class="evo-form-actions">
+              <button class="btn btn-ghost" onclick="goStep(2)">← Kembali</button>
+              <button class="btn btn-orange" onclick="submitKarya()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                Kirim Karya
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PROFIL ── -->
+      <div class="evo-page" id="page-profil">
+        <div class="evo-profil-wrap">
+          <div class="evo-profil-card">
+            <div class="evo-profil-top">
+              <div class="evo-profil-pic" id="profil-avatar-big">N</div>
+              <div class="evo-profil-name" id="profil-name-big">Mahasiswa</div>
+              <div class="evo-profil-nim" id="profil-nim-big">NIM: —</div>
+            </div>
+            <div class="evo-profil-body">
+              <div class="evo-profil-row"><span class="evo-profil-key">Prodi</span><span class="evo-profil-val" id="info-prodi">—</span></div>
+              <div class="evo-profil-row"><span class="evo-profil-key">Angkatan</span><span class="evo-profil-val" id="info-angkatan">—</span></div>
+              <div class="evo-profil-row"><span class="evo-profil-key">Total Karya</span><span class="evo-profil-val" id="info-total-karya">0</span></div>
+              <div class="evo-profil-row"><span class="evo-profil-key">Disetujui</span><span class="evo-profil-val" id="info-approved-karya">0</span></div>
+            </div>
+          </div>
+          <div class="evo-profil-form">
+            <div class="evo-profil-form-title">Informasi Penulis</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+              <div class="profil-form-group"><label class="profil-form-label">Nama Lengkap</label><input type="text" class="profil-form-input" id="pf-nama" placeholder="Nama lengkap"></div>
+              <div class="profil-form-group"><label class="profil-form-label">NIM</label><input type="text" class="profil-form-input" id="pf-nim" placeholder="NIM" disabled></div>
+              <div class="profil-form-group"><label class="profil-form-label">Program Studi</label>
+                <select class="profil-form-input" id="pf-prodi">
+                  <option>D4 Perpustakaan Digital</option>
+                  <option>D3 Teknologi Informasi</option>
+                  <option>D4 Teknologi Rekayasa Elektro</option>
+                  <option>D4 Teknologi Mesin</option>
+                  <option>D4 Manajemen Informatika</option>
+                  <option>D4 Akuntansi</option>
+                  <option>D3 Administrasi Perkantoran</option>
+                  <option>D3 Teknik Mesin</option>
+                  <option>D4 Teknologi Industri</option>
+                  <option>D3 Kimia Industri</option>
+                  <option>D4 Teknologi Pendidikan</option>
+                </select>
+              </div>
+              <div class="profil-form-group"><label class="profil-form-label">Angkatan</label><input type="text" class="profil-form-input" id="pf-angkatan" placeholder="Contoh: 2022"></div>
+              <div class="profil-form-group"><label class="profil-form-label">Jenis Kelamin</label>
+                <select class="profil-form-input" id="pf-gender"><option value="P">Perempuan</option><option value="L">Laki-laki</option></select>
+              </div>
+              <div class="profil-form-group"><label class="profil-form-label">E-mail</label><input type="email" class="profil-form-input" id="pf-email" placeholder="Email aktif"></div>
+            </div>
+            <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
+              <div style="font-size:13px;font-weight:700;color:var(--text-mid);margin-bottom:14px;">Ubah Kata Sandi</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                <div class="profil-form-group"><label class="profil-form-label">Kata Sandi Lama</label><input type="password" class="profil-form-input" id="pf-pass-old" placeholder="••••••••"></div>
+                <div class="profil-form-group"><label class="profil-form-label">Kata Sandi Baru</label><input type="password" class="profil-form-input" id="pf-pass-new" placeholder="Min. 8 karakter"></div>
+              </div>
+            </div>
+            <div class="evo-form-actions" style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
+              <button class="btn btn-ghost">Batal</button>
+              <button class="btn btn-navy" onclick="saveProfil()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z"/></svg>
+                Simpan Perubahan
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── STATISTIK ── -->
+      <div class="evo-page" id="page-statistik" style="flex-direction:column;padding:32px;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;gap:16px;">
+          <div>
+            <h2 style="margin:0 0 4px;font-family:Nunito,sans-serif;font-size:1.4rem;color:var(--text-dark);">Statistik Karya Saya</h2>
+            <p style="margin:0;color:var(--text-muted);font-size:.9rem;">Ringkasan aktivitas dan pencapaian karya Anda</p>
+          </div>
+          <button onclick="navigateTo('statistik')" style="flex-shrink:0;display:inline-flex;align-items:center;gap:7px;background:var(--navy);color:#fff;border:none;border-radius:999px;padding:9px 18px;font-size:13px;font-family:inherit;font-weight:600;cursor:pointer;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Buka Halaman Statistik
+          </button>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:28px;">
+          <div style="background:#fff;border-radius:12px;padding:20px;box-shadow:var(--shadow);">
+            <div style="font-size:.8rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Total Unggahan</div>
+            <div id="stk-total" style="font-size:2rem;font-weight:900;font-family:Nunito,sans-serif;color:var(--navy);">0</div>
+            <div style="font-size:.8rem;color:var(--text-muted);">karya ilmiah</div>
+          </div>
+          <div style="background:#fff;border-radius:12px;padding:20px;box-shadow:var(--shadow);">
+            <div style="font-size:.8rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Disetujui</div>
+            <div id="stk-approved" style="font-size:2rem;font-weight:900;font-family:Nunito,sans-serif;color:#16a34a;">0</div>
+            <div style="font-size:.8rem;color:var(--text-muted);">karya diterbitkan</div>
+          </div>
+          <div style="background:#fff;border-radius:12px;padding:20px;box-shadow:var(--shadow);">
+            <div style="font-size:.8rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Total Pembaca</div>
+            <div id="stk-readers" style="font-size:2rem;font-weight:900;font-family:Nunito,sans-serif;color:var(--orange);">87</div>
+            <div style="font-size:.8rem;color:var(--text-muted);">akses ke karya Anda</div>
+          </div>
+        </div>
+
+        <div style="background:#fff;border-radius:12px;padding:24px;box-shadow:var(--shadow);">
+          <h3 style="margin:0 0 16px;font-family:Nunito,sans-serif;font-size:1rem;color:var(--text-dark);">Status Karya</h3>
+          <div id="stk-list" style="display:flex;flex-direction:column;gap:12px;">
+            <!-- filled by renderStatistikList() -->
+          </div>
+        </div>
+      </div>
+
+    </div><!-- evo-body -->
+  </div><!-- evo-main -->
+</div><!-- #app -->
+
+<!-- Toast -->
+<div class="success-toast" id="toast">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+  <span id="toast-msg">Berhasil!</span>
+</div>
+
+<!-- Switch button -->
+<button class="evo-switch-btn" onclick="switchToClassic()" title="Beralih ke tampilan Classic">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+  Tampilan Classic
+</button>
+
+<!-- Welcome popup -->
+<div class="welcome-overlay" id="welcome-overlay" onclick="closeWelcome()">
+  <div class="welcome-popup" onclick="event.stopPropagation()">
+    <div class="welcome-popup-wave"></div>
+    <div class="welcome-avatar-big" id="w-avatar">N</div>
+    <h2 id="w-name">Selamat Datang!</h2>
+    <p id="w-msg">Selamat datang di Portal Mahasiswa DIGILAB.</p>
+    <span class="welcome-role-badge">Mahasiswa</span>
+    <div class="welcome-progress"><div class="welcome-progress-bar" id="w-bar"></div></div>
+    <button class="welcome-close" onclick="closeWelcome()">Tutup sekarang</button>
+  </div>
+</div>
+
+<!-- Logout confirm -->
+<div id="logout-confirm-overlay" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.45);align-items:center;justify-content:center;animation:fadeInBg .2s ease;">
+  <div style="background:#fff;border-radius:16px;padding:32px 28px;max-width:340px;width:90%;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,.18);animation:popIn .25s cubic-bezier(.34,1.56,.64,1);">
+    <div style="width:52px;height:52px;border-radius:50%;background:#fff3f0;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c0392b" stroke-width="2.2" stroke-linecap="round"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+    </div>
+    <h3 style="font-family:'Nunito',sans-serif;font-size:18px;font-weight:800;color:var(--text-dark);margin:0 0 8px;">Keluar dari Portal?</h3>
+    <p style="margin:0 0 24px;font-size:13px;color:#666;line-height:1.5;">Sesi Anda akan diakhiri dan diarahkan ke halaman utama.</p>
+    <div style="display:flex;gap:10px;">
+      <button onclick="closeLogoutConfirm()" style="flex:1;padding:10px 0;border-radius:999px;border:1.5px solid var(--border);background:#fff;font-size:13px;font-weight:700;cursor:pointer;color:#555;">Batal</button>
+      <button onclick="doLogout()" style="flex:1;padding:10px 0;border-radius:999px;border:none;background:#c0392b;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">Ya, Keluar</button>
+    </div>
+  </div>
+</div>
+
+<script src="api-service.js"></script>
+<script src="mahasiswa-shared.js"></script>
+<script>
+// ══ LAYOUT-SPECIFIC — mahasiswa-evo.html (V.Evolution) ══
+// Data, auth, upload, tabel, notifikasi → mahasiswa-shared.js
+
+// ══ LAYOUT SWITCH ══
+function switchToClassic() {
+  window.location.href = 'mahasiswa.html'; // nosweep — page-specific switch
+}
+
+
+function loadApp(u) {
+  document.getElementById('login-page').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  const initials = (u.name||'M').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  // Sidebar profile
+  document.getElementById('evo-profile-avatar').textContent = initials;
+  document.getElementById('evo-profile-name').textContent = u.name || 'Mahasiswa';
+  document.getElementById('evo-profile-nim').textContent = 'NIM: ' + PROFIL_DATA.nim;
+  // Topbar
+  document.getElementById('topbar-avatar').textContent = initials;
+  document.getElementById('topbar-name').textContent = u.name || 'Mahasiswa';
+  // Welcome card
+  document.getElementById('welcome-avatar').textContent = initials;
+  document.getElementById('welcome-name').textContent = 'Halo, ' + (u.name||'Mahasiswa') + '!';
+  // Profil page
+  document.getElementById('pf-nama').value = u.name || PROFIL_DATA.nama;
+  document.getElementById('pf-nim').value = PROFIL_DATA.nim;
+  document.getElementById('pf-angkatan').value = PROFIL_DATA.angkatan;
+  document.getElementById('pf-email').value = u.email || PROFIL_DATA.email;
+  document.getElementById('profil-avatar-big').textContent = initials;
+  document.getElementById('profil-name-big').textContent = u.name || PROFIL_DATA.nama;
+  document.getElementById('profil-nim-big').textContent = 'NIM: ' + PROFIL_DATA.nim;
+  document.getElementById('info-prodi').textContent = PROFIL_DATA.prodi;
+  document.getElementById('info-angkatan').textContent = PROFIL_DATA.angkatan;
+  // Stats
+  const total = DUMMY_KARYA.length;
+  const pending = DUMMY_KARYA.filter(k=>k.status==='pending').length;
+  const approved = DUMMY_KARYA.filter(k=>k.status==='disetujui').length;
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-pending').textContent = pending;
+  document.getElementById('stat-approved').textContent = approved;
+  document.getElementById('info-total-karya').textContent = total;
+  document.getElementById('info-approved-karya').textContent = approved;
+  document.getElementById('f-penulis').value = u.name || PROFIL_DATA.nama;
+  renderBerandaTable();
+  renderKaryaTable();
+  renderNotifBanners();
+  setTimeout(function(){ showWelcome(u); }, 80);
+}
+
+
+const PAGE_META = {
+  beranda:{title:'Beranda',subtitle:'Ringkasan aktivitas karya ilmiah Anda'},
+  karya:{title:'Karya Saya',subtitle:'Daftar semua karya ilmiah yang diunggah'},
+  unggah:{title:'Unggah Karya',subtitle:'Tambahkan karya ilmiah baru ke repositori'},
+  profil:{title:'Profil Saya',subtitle:'Informasi akun dan data penulis'},
+};
+
+function renderStatistikList() {
+  const total = DUMMY_KARYA.length;
+  const approved = DUMMY_KARYA.filter(k=>k.status==='disetujui').length;
+  const elTotal = document.getElementById('stk-total');
+  const elApproved = document.getElementById('stk-approved');
+  if (elTotal) elTotal.textContent = total;
+  if (elApproved) elApproved.textContent = approved;
+  const list = document.getElementById('stk-list');
+  if (!list) return;
+  const statusMap = {
+    disetujui:{label:'Disetujui',icon:'✅',bg:'#dcfce7',color:'#16a34a'},
+    pending:{label:'Menunggu',icon:'⏳',bg:'#fef9c3',color:'#854d0e'},
+    revisi:{label:'Revisi',icon:'✏️',bg:'#fff7ed',color:'#c2410c'},
+    ditolak:{label:'Ditolak',icon:'❌',bg:'#fee2e2',color:'#991b1b'},
+  };
+  list.innerHTML = DUMMY_KARYA.map(k=>{
+    const st = statusMap[k.status] || {label:k.status,icon:'•',bg:'#f1f5f9',color:'#475569'};
+    const judul = k.judul.length>55 ? k.judul.slice(0,55)+'…' : k.judul;
+    return `<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
+      <span style="font-size:.9rem;color:var(--text-mid);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${judul}</span>
+      <span style="background:${st.bg};color:${st.color};border-radius:999px;padding:3px 12px;font-size:.8rem;font-weight:700;white-space:nowrap;flex-shrink:0;">${st.icon} ${st.label}</span>
+    </div>`;
+  }).join('') || '<p style="color:var(--text-muted);font-size:.9rem;">Belum ada karya yang diunggah.</p>';
+}
+
+function showPage(name) {
+  const meta = PAGE_META[name];
+  const current = document.querySelector('.evo-page.active');
+  const next = document.getElementById('page-'+name);
+  if (!next || next===current) return;
+  document.querySelectorAll('.evo-nav-item').forEach(n=>n.classList.remove('active'));
+  const navEl = document.getElementById('nav-'+name);
+  if (navEl) navEl.classList.add('active');
+  if (meta) {
+    document.getElementById('topbar-title').childNodes[0].textContent = meta.title + ' ';
+    document.getElementById('topbar-sub').textContent = meta.subtitle;
+  }
+  const doSwitch = () => {
+    if (current) current.classList.remove('active', 'exiting');
+    if (name==='unggah') resetUploadForm();
+    if (name==='statistik') renderStatistikList();
+    next.classList.add('active', 'entering');
+    setTimeout(()=>next.classList.remove('entering'), 240);
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('show');
+    window.scrollTo(0, 0);
+  };
+  if (current) {
+    current.classList.add('exiting');
+    setTimeout(doSwitch, 150);
+  } else {
+    doSwitch();
+  }
+}
+
+
+// ══ PROFIL ══
+function saveProfil(){
+  const u=JSON.parse(localStorage.getItem('digilab-user')||'{}');
+  u.name=document.getElementById('pf-nama').value.trim()||u.name;
+  localStorage.setItem('digilab-user',JSON.stringify(u));
+  const initials=u.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('evo-profile-avatar').textContent=initials;
+  document.getElementById('evo-profile-name').textContent=u.name;
+  document.getElementById('topbar-avatar').textContent=initials;
+  document.getElementById('topbar-name').textContent=u.name;
+  document.getElementById('welcome-avatar').textContent=initials;
+  document.getElementById('welcome-name').textContent='Halo, '+u.name+'!';
+  document.getElementById('profil-avatar-big').textContent=initials;
+  document.getElementById('profil-name-big').textContent=u.name;
+  document.getElementById('info-prodi').textContent=document.getElementById('pf-prodi').value;
+  document.getElementById('info-angkatan').textContent=document.getElementById('pf-angkatan').value;
+  showToast('Profil berhasil disimpan!');
+}
+
+
+// ── INIT ──
+checkAuth();
+</script>
+</body>
+</html>

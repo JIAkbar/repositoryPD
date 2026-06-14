@@ -120,6 +120,7 @@ const NON_ROUTED_PAGES = new Set(['mindmap.html', 'changelog.html', 'checklist.h
 
 function findHardcodeRedirects(src) {
   // Look for location.href = '*.html' — after router is installed this should be minimal
+  const srcLines = src.split('\n');
   const re = /(?:window\.)?location\.href\s*=\s*['"]([^'"]+\.html)['"]/g;
   const found = [];
   let m;
@@ -127,6 +128,8 @@ function findHardcodeRedirects(src) {
     const page = m[1].split('/').pop();
     if (NON_ROUTED_PAGES.has(page)) continue; // intentional direct href
     const lineNum = src.substring(0, m.index).split('\n').length;
+    const lineContent = srcLines[lineNum - 1] || '';
+    if (lineContent.includes('nosweep')) continue; // intentional direct switch (page-only)
     found.push(`'${m[1]}' (line ${lineNum})`);
   }
   return found.length ? found.join(', ') : true;

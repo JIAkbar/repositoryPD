@@ -294,6 +294,10 @@
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
       Statistik Data
     </div>
+    <button onclick="switchLayout()" style="background:var(--navy);color:#fff;border:none;border-radius:999px;padding:8px 18px;font-size:13px;font-family:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      Evo
+    </button>
     <a href="javascript:history.back()" class="btn-back">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Kembali
@@ -405,7 +409,7 @@
           <div class="legend-item"><span class="legend-dot" style="background:#0891b2"></span>Laporan Magang<span class="legend-pct">9%</span></div>
           <div class="legend-item"><span class="legend-dot" style="background:#f97316"></span>Artikel Jurnal<span class="legend-pct">7%</span></div>
           <div class="legend-item"><span class="legend-dot" style="background:#a855f7"></span>Proyek Inovasi<span class="legend-pct">5%</span></div>
-          <div class="legend-item"><span class="legend-dot" style="background:#ec4899"></span>Skripsi<span class="legend-pct">3%</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background:#ec4899"></span>Lainnya<span class="legend-pct">3%</span></div>
         </div>
       </div>
       <button class="btn-rekapan" onclick="eksporCSV()">
@@ -541,7 +545,7 @@ function drawDonutJenis() {
   new Chart(ctx, {
     type:'doughnut',
     data:{
-      labels:['Tugas Akhir','Artikel Jurnal','Laporan Magang','Proyek Inovasi','Lainnya'],
+      labels:['Tugas Akhir','Laporan Magang','Artikel Jurnal','Proyek Inovasi','Lainnya'],
       datasets:[{ data:JENIS_DATA, backgroundColor:JENIS_COLORS, borderWidth:2, borderColor:'#fff', hoverOffset:6 }]
     },
     options:{
@@ -609,9 +613,34 @@ function eksporLineChart() {
   var blob = new Blob(['﻿'+csv], {type:'text/csv;charset=utf-8;'});
   var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'tren_pembaca.csv'; a.click();
 }
-function filterBarChart() { alert('Filter Prodi — coming soon (koneksi database)'); }
-function filterLineChart() { alert('Filter Tahun — coming soon (koneksi database)'); }
+function filterBarChart() { showToast('Filter Prodi — segera tersedia setelah koneksi database'); }
+function filterLineChart() { showToast('Filter Tahun — segera tersedia setelah koneksi database'); }
+
+// ── TOAST ──
+function showToast(msg) {
+  var t = document.getElementById('stat-toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'stat-toast';
+    t.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#2e3192;color:#fff;border-radius:99px;padding:10px 22px;font-size:13px;font-weight:600;font-family:"Nunito",sans-serif;z-index:9999;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap;box-shadow:0 4px 16px rgba(46,49,146,.25);';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(t._tid);
+  t._tid = setTimeout(function(){ t.style.opacity = '0'; }, 2800);
+}
 
 // ── INIT ──
 window.addEventListener('DOMContentLoaded', function() {
-  drawSparkline('spark1', SPARK1, '#
+  drawSparkline('spark1', SPARK1, '#0891b2');
+  drawSparkline('spark2', SPARK2, '#f97316');
+  drawMiniDonut();
+  drawBarChart();
+  drawDonutJenis();
+  drawLineChart();
+  renderTop5();
+});
+</script>
+</body>
+</html>
