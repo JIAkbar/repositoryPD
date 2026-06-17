@@ -148,6 +148,15 @@ body {
 .sidebar-bottom { margin-top:auto; padding:12px; }
 .nav-item.danger { color:rgba(255,120,120,.9); background:rgba(255,255,255,.1); border-radius:8px; margin:4px 8px; padding:10px 12px; }
 .nav-item.danger:hover { background:rgba(255,255,255,.2); color:#ffaaaa; }
+      /* ── accordion sub-nav ── */
+      .nav-arrow { margin-left:auto; font-size:.7rem; transition:transform .2s; opacity:.6; }
+      .nav-arrow.open { transform:rotate(180deg); }
+      .sub-nav { list-style:none; margin:0; padding:0; max-height:0; overflow:hidden; transition:max-height .25s ease; }
+      .sub-nav.open { max-height:200px; }
+      .sub-nav-item { display:flex; align-items:center; gap:8px; padding:7px 14px 7px 40px; font-size:.82rem; color:rgba(255,255,255,.65); cursor:pointer; border-radius:6px; margin:1px 6px; transition:background .15s, color .15s; }
+      .sub-nav-item:hover { background:rgba(255,255,255,.1); color:#fff; }
+      .sub-nav-item.active { background:rgba(255,255,255,.15); color:#fff; font-weight:700; }
+      .sub-nav-item::before { content:'\2022 '; font-size:1rem; opacity:.5; }
 
 /* ── SIDEBAR OVERLAY (mobile) ── */
 .sidebar-overlay {
@@ -650,11 +659,17 @@ tbody td { padding:10px 14px; color:var(--text-mid); vertical-align:middle; }
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
         Dashboard
       </div>
-      <div class="nav-item" id="nav-verif-karya" onclick="navAdmin('verif-karya')">
+      <div class="nav-item" id="nav-verif-karya" onclick="toggleVerifMenu()" style="cursor:pointer;user-select:none;">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         Verifikasi Karya
         <span class="badge-count" id="badge-karya">3</span>
+        <span class="nav-arrow" id="arrow-verif">&#9660;</span>
       </div>
+      <ul class="sub-nav" id="sub-verif">
+        <li class="sub-nav-item active" id="sub-pending" onclick="navVerifSub('pending')">Menunggu Verifikasi</li>
+        <li class="sub-nav-item" id="sub-revisi" onclick="navVerifSub('revisi')">Catatan Revisi</li>
+        <li class="sub-nav-item" id="sub-verified" onclick="navVerifSub('verified')">Sudah Diverifikasi</li>
+      </ul>
       <div class="nav-item" id="nav-verif-akun" onclick="navAdmin('verif-akun')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         Verifikasi Akun
@@ -983,6 +998,7 @@ var DUMMY_AKUN = [
 function navAdmin(page) {
   document.querySelectorAll('.admin-page').forEach(function(p){ p.classList.remove('active'); });
   document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
+  document.querySelectorAll('.sub-nav-item').forEach(function(n){ n.classList.remove('active'); });
   var el = document.getElementById('page-' + page);
   if (el) {
     el.style.animation = 'none';
@@ -992,6 +1008,18 @@ function navAdmin(page) {
   }
   var ni = document.getElementById('nav-' + page);
   if (ni) ni.classList.add('active');
+  // auto-expand verif-karya accordion when navigating to it
+  if (page === 'verif-karya') {
+    var sub = document.getElementById('sub-verif');
+    var arrow = document.getElementById('arrow-verif');
+    if (sub) sub.classList.add('open');
+    ['pending','revisi','verified'].forEach(function(f) {
+      var el = document.getElementById('sub-' + f);
+      if (el) el.classList.toggle('active', f === currentVerifFilter);
+    });
+    if (arrow) arrow.classList.add('open');
+    filterKarya();
+  }
   // auto-close sidebar on mobile
   if (window.innerWidth <= 900) {
     document.getElementById('sidebar').classList.remove('open');
@@ -1007,6 +1035,24 @@ function toggleSidebar() {
 }
 
 /* ── VERIFIKASI KARYA ── */
+var currentVerifFilter = 'pending'; // default sub-filter
+
+function toggleVerifMenu() {
+  // Reset filter ke pending saat klik parent nav
+  currentVerifFilter = 'pending';
+  navAdmin('verif-karya');
+}
+
+function navVerifSub(filter) {
+  currentVerifFilter = filter;
+  // update active state on sub-items
+  ['pending','revisi','verified'].forEach(function(f) {
+    var el = document.getElementById('sub-' + f);
+    if (el) el.classList.toggle('active', f === filter);
+  });
+  navAdmin('verif-karya');
+}
+
 function renderKarya(data) {
   var tbody = document.getElementById('vk-tbody');
   if (!data.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text-muted)">Tidak ada data</td></tr>'; return; }
@@ -1025,12 +1071,17 @@ function renderKarya(data) {
 
 function filterKarya() {
   var q = (document.getElementById('vk-search').value || '').toLowerCase();
-  var st = document.getElementById('vk-filter').value;
-  var data = DUMMY_KARYA.filter(function(k){
-    return (!q || k.judul.toLowerCase().includes(q) || k.mhs.toLowerCase().includes(q)) &&
-           (!st || k.status === st);
+  var st = document.getElementById('vk-filter') ? document.getElementById('vk-filter').value : '';
+  var filtered = DUMMY_KARYA.filter(function(k){
+    var matchSearch = !q || k.judul.toLowerCase().includes(q) || k.mhs.toLowerCase().includes(q);
+    var matchDropdown = !st || k.status === st;
+    var matchSub = true;
+    if (currentVerifFilter === 'pending') matchSub = k.status === 'pending';
+    else if (currentVerifFilter === 'revisi') matchSub = k.status === 'revisi';
+    else if (currentVerifFilter === 'verified') matchSub = k.status === 'disetujui' || k.status === 'ditolak';
+    return matchSearch && matchDropdown && matchSub;
   });
-  renderKarya(data);
+  renderKarya(filtered);
 }
 
 function aksiKarya(id, action) {
@@ -1329,7 +1380,7 @@ function saveEditProfil() {
 }
 
 /* ── INIT ── */
-renderKarya(DUMMY_KARYA);
+filterKarya();
 renderAkun(DUMMY_AKUN);
 renderKelola();
 checkAuth();
@@ -1398,9 +1449,6 @@ checkAuth();
       <button onclick="exitRevisiMode()" style="padding:9px 20px;border:1.5px solid #d1d5db;background:#fff;border-radius:8px;cursor:pointer;font-weight:600;font-size:.9rem;">Batal</button>
       <button onclick="submitRevisiModal()" style="padding:9px 20px;background:#f97316;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:.9rem;display:inline-flex;align-items:center;gap:6px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Kirim Revisi
-      </button>
-      <button onclick="aksiKaryaModal('disetujui')" style="padding:9px 20px;background:var(--navy);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:.9rem;display:inline-flex;align-items:center;gap:6px;">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Terverifikasi
       </button>
     </div>
   </div>

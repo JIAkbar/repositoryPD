@@ -75,6 +75,15 @@ input,select,textarea{font-family:'Lato',sans-serif;}
 .nav-item{display:block;padding:11px 20px;font-size:14px;font-weight:600;color:rgba(255,255,255,.65);text-decoration:none;cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:color .15s,background .15s;border-left:3px solid transparent;position:relative;}
 .nav-item:hover{color:#fff;background:rgba(255,255,255,.08);}
 .nav-item.active{color:#fff;border-left-color:var(--orange);}
+.sub-nav{list-style:none;margin:0;padding:0;max-height:0;overflow:hidden;transition:max-height .25s ease;}
+.sub-nav.open{max-height:200px;}
+.sub-nav-item{padding:7px 16px 7px 36px;font-size:.82rem;color:rgba(255,255,255,.55);cursor:pointer;border-radius:4px;transition:background .15s,color .15s;display:flex;align-items:center;gap:8px;}
+.sub-nav-item::before{content:'›';font-size:1.1rem;}
+.sub-nav-item:hover{background:rgba(255,255,255,.08);color:rgba(255,255,255,.9);}
+.sub-nav-item.active{color:#fff;font-weight:700;background:rgba(255,255,255,.12);}
+.nav-arrow{margin-left:auto;font-size:.65rem;transition:transform .2s;opacity:.5;}
+.nav-arrow.open{transform:rotate(180deg);}
+.nav-item-parent{display:flex;align-items:center;justify-content:space-between;}
 .sidebar-footer{padding:20px;border-top:1px solid rgba(255,255,255,.1);}
 .logout-btn{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.5);background:none;border:none;font-size:13px;font-weight:600;padding:8px 0;transition:color .15s;}
 .logout-btn:hover{color:#fff;}
@@ -458,7 +467,15 @@ tr:hover td{background:#fafbff;}
     <nav class="sidebar-nav">
       <button class="nav-item active" onclick="navAdmin('beranda')" id="nav-beranda">Beranda</button>
       <button class="nav-item" onclick="navAdmin('unggah')" id="nav-unggah">Unggah Karya</button>
-      <button class="nav-item" onclick="navAdmin('verifikasi')" id="nav-verifikasi">Verifikasi Karya</button>
+      <button class="nav-item nav-item-parent" id="nav-verifikasi" onclick="toggleVerifMenu()">
+        <span>Verifikasi Karya</span>
+        <span class="nav-arrow" id="arrow-verif">▼</span>
+      </button>
+      <ul class="sub-nav" id="sub-verif">
+        <li class="sub-nav-item" id="sub-pending" onclick="event.stopPropagation(); navVerifSub('pending')">Menunggu Verifikasi</li>
+        <li class="sub-nav-item" id="sub-revisi" onclick="event.stopPropagation(); navVerifSub('revisi')">Catatan Revisi</li>
+        <li class="sub-nav-item" id="sub-verified" onclick="event.stopPropagation(); navVerifSub('verified')">Sudah Diverifikasi</li>
+      </ul>
       <button class="nav-item" onclick="navAdmin('verif-akun')" id="nav-verif-akun">Verifikasi Akun</button>
     </nav>
     <a href="index.html" class="sidebar-home-link">
@@ -624,7 +641,7 @@ tr:hover td{background:#fafbff;}
             <option value="">Semua Status</option>
             <option value="pending">Pengajuan</option>
             <option value="verified">Terverifikasi</option>
-            <option value="revision">Revisi</option>
+            <option value="revisi">Revisi</option>
           </select>
           <select class="filter-select" onchange="filterTable()" id="filt-jenis">
             <option value="">Semua Jenis</option>
@@ -813,7 +830,7 @@ tr:hover td{background:#fafbff;}
 var karya = [
   {id:1, nama:'Natasya Adelia R.', nim:'220213704262', jenis:'Laporan Magang', judul:'Laporan Magang Perpustakaan Bung Karno — Implementasi Sistem Digitalisasi', dosen:'Achmad Hamdan, S.Pd., M.Pd.', tahun:'2025', bidang:'Literasi Informasi, Perpustakaan', panggil:'025ADE', bahasa:'Indonesia', tgl:'19-12-2025', status:'pending', abstrak:'Laporan ini membahas implementasi sistem digitalisasi koleksi perpustakaan di Perpustakaan Bung Karno. Digitalisasi dilakukan untuk meningkatkan aksesibilitas dan pelestarian koleksi.', catatan_revisi: {}},
   {id:2, nama:'Riska Nur Amalia', nim:'220213704301', jenis:'Tugas Akhir', judul:'Rancang Bangun Website Manajemen Arsip Digital Berbasis Web', dosen:'Dr. Agus Wedi, M.Pd.', tahun:'2025', bidang:'Teknologi Informasi, Arsip', panggil:'025RIS', bahasa:'Indonesia', tgl:'18-12-2025', status:'verified', abstrak:'Penelitian ini merancang dan membangun sistem manajemen arsip digital berbasis web untuk meningkatkan efisiensi pengelolaan dokumen organisasi.', catatan_revisi: {}},
-  {id:3, nama:'Bagas Pratama', nim:'210213704189', jenis:'Artikel Jurnal', judul:'Analisis Kinerja Algoritma Machine Learning untuk Prediksi Kelulusan Mahasiswa', dosen:'Dr. Yerry Soepriyanto, S.T., M.T.', tahun:'2025', bidang:'Machine Learning, Pendidikan', panggil:'025BAG', bahasa:'Indonesia', tgl:'17-12-2025', status:'revision', abstrak:'Penelitian ini menganalisis perbandingan kinerja berbagai algoritma machine learning dalam memprediksi kelulusan mahasiswa berdasarkan data akademik.', catatan_revisi: {}},
+  {id:3, nama:'Bagas Pratama', nim:'210213704189', jenis:'Artikel Jurnal', judul:'Analisis Kinerja Algoritma Machine Learning untuk Prediksi Kelulusan Mahasiswa', dosen:'Dr. Yerry Soepriyanto, S.T., M.T.', tahun:'2025', bidang:'Machine Learning, Pendidikan', panggil:'025BAG', bahasa:'Indonesia', tgl:'17-12-2025', status:'revisi', abstrak:'Penelitian ini menganalisis perbandingan kinerja berbagai algoritma machine learning dalam memprediksi kelulusan mahasiswa berdasarkan data akademik.', catatan_revisi: {}},
   {id:4, nama:'Devi Rahayu', nim:'210213704205', jenis:'Laporan Magang', judul:'Implementasi Sistem Informasi Manajemen SDM di PT. Teknologi Nusantara', dosen:'Drs. Sihkabuden, M.Pd.', tahun:'2025', bidang:'Sistem Informasi, SDM', panggil:'025DEV', bahasa:'Indonesia', tgl:'15-12-2025', status:'pending', abstrak:'Laporan Magang ini mendokumentasikan proses implementasi modul penggajian dan absensi pada sistem informasi manajemen SDM perusahaan.', catatan_revisi: {}},
   {id:5, nama:'Ahmad Fauzi', nim:'220213704318', jenis:'Proyek Inovasi', judul:'Prototipe Alat Monitoring Kualitas Udara Berbasis IoT', dosen:'Dr. Yerry Soepriyanto, S.T., M.T.', tahun:'2026', bidang:'IoT, Lingkungan', panggil:'026FAU', bahasa:'Indonesia', tgl:'10-12-2025', status:'verified', abstrak:'Proyek ini mengembangkan prototipe alat monitoring kualitas udara berbasis IoT menggunakan sensor MQ-135 dan NodeMCU yang terkoneksi ke dashboard web real-time.', catatan_revisi: {}},
   {id:6, nama:'Siti Rahmawati', nim:'210213704224', jenis:'Tugas Akhir', judul:'Perancangan UI/UX Aplikasi Mobile Perpustakaan Digital', dosen:'Achmad Hamdan, S.Pd., M.Pd.', tahun:'2025', bidang:'UI/UX, Mobile', panggil:'025SIT', bahasa:'Indonesia', tgl:'08-12-2025', status:'pending', abstrak:'Penelitian ini merancang antarmuka pengguna aplikasi mobile perpustakaan digital menggunakan metodologi User-Centered Design dengan pendekatan design thinking.', catatan_revisi: {}},
@@ -821,6 +838,28 @@ var karya = [
 
 var currentDetailId = null;
 var revisiMode = false;
+var currentVerifFilter = 'pending';
+
+function toggleVerifMenu() {
+  var sub = document.getElementById('sub-verif');
+  var arrow = document.getElementById('arrow-verif');
+  var isOpen = sub.classList.contains('open');
+  sub.classList.toggle('open');
+  arrow.classList.toggle('open');
+  if (!isOpen) {
+    navVerifSub(currentVerifFilter);
+  }
+}
+
+function navVerifSub(filter) {
+  currentVerifFilter = filter;
+  ['pending','revisi','verified'].forEach(function(f) {
+    var el = document.getElementById('sub-' + f);
+    if (el) el.classList.toggle('active', f === filter);
+  });
+  navAdmin('verifikasi');
+  filterTable();
+}
 
 // ══ AUTH ══
 function checkAuth(){
@@ -887,8 +926,22 @@ function navAdmin(page){
   if (!next || next === current) return;
 
   document.querySelectorAll('.nav-item').forEach(function(el){el.classList.remove('active');});
+  document.querySelectorAll('.sub-nav-item').forEach(function(n){ n.classList.remove('active'); });
   var navEl = document.getElementById('nav-'+page);
   if (navEl) navEl.classList.add('active');
+  // Auto-expand sub-menu verifikasi
+  if (page === 'verifikasi') {
+    var sub = document.getElementById('sub-verif');
+    var arrow = document.getElementById('arrow-verif');
+    if (sub && !sub.classList.contains('open')) {
+      sub.classList.add('open');
+      if (arrow) arrow.classList.add('open');
+    }
+    ['pending','revisi','verified'].forEach(function(f) {
+      var el = document.getElementById('sub-' + f);
+      if (el) el.classList.toggle('active', f === currentVerifFilter);
+    });
+  }
 
   var titleEl = document.getElementById('main-title');
   if (titleEl && titles[page]) titleEl.textContent = titles[page];
@@ -931,8 +984,8 @@ function initChart(){
 function renderTable(data){
   data = data || karya;
   var tbody = document.getElementById('veri-table-body');
-  var statusLabel={pending:'Pengajuan',verified:'Terverifikasi',revision:'Revisi'};
-  var statusClass={pending:'status-pending',verified:'status-verified',revision:'status-revision'};
+  var statusLabel={pending:'Pengajuan',verified:'Terverifikasi',revisi:'Revisi'};
+  var statusClass={pending:'status-pending',verified:'status-verified',revisi:'status-revision'};
   tbody.innerHTML = data.map(function(k,i){
     return '<tr>' +
       '<td>'+(i+1)+'</td>'+
@@ -951,9 +1004,14 @@ function filterTable(){
   var fs=document.getElementById('filt-status').value;
   var fj=document.getElementById('filt-jenis').value;
   var filtered = karya.filter(function(k){
-    return (!q || k.nama.toLowerCase().includes(q) || k.judul.toLowerCase().includes(q)) &&
-           (!fs || k.status===fs) &&
-           (!fj || k.jenis===fj);
+    var matchSearch = !q || k.nama.toLowerCase().includes(q) || k.judul.toLowerCase().includes(q);
+    var matchDropdown = !fs || k.status===fs;
+    var matchJenis = !fj || k.jenis===fj;
+    var matchSub = true;
+    if (currentVerifFilter === 'pending') matchSub = k.status === 'pending';
+    else if (currentVerifFilter === 'revisi') matchSub = k.status === 'revisi';
+    else if (currentVerifFilter === 'verified') matchSub = k.status === 'verified' || k.status === 'rejected';
+    return matchSearch && matchDropdown && matchJenis && matchSub;
   });
   renderTable(filtered);
 }
@@ -988,7 +1046,7 @@ function setStatus(status){
   var color = status==='verified'?'green':'red';
   showToast('Status diperbarui: '+label, color);
   navAdmin('verifikasi');
-  renderTable();
+  filterTable();
 }
 function enterRevisiMode() {
   revisiMode = true;
@@ -1030,10 +1088,10 @@ function submitRevisi() {
     panggil: document.getElementById('cr-panggil').value.trim(),
     abstrak: document.getElementById('cr-abstrak').value.trim()
   };
-  k.status = 'revision';
+  k.status = 'revisi';
   showToast('Catatan revisi dikirim ke mahasiswa');
   navAdmin('verifikasi');
-  renderTable();
+  filterTable();
 }
 
 // ══ UPLOAD FORM ══
