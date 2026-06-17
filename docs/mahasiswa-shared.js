@@ -18,9 +18,33 @@
 // DATA — TODO: Replace with GET /api/karya?mahasiswa=me
 // ══════════════════════════════════════════
 const DUMMY_KARYA = [
-  { id:1, judul:'Laporan Magang Perpustakaan Bung Karno', jenis:'Laporan Magang', tahun:'2024', status:'disetujui', pembimbing:'Hariyanto S.Pd., M.Pd' },
-  { id:2, judul:'Implementasi Sistem Temu Kembali Informasi Berbasis Metadata Dublin Core', jenis:'Tugas Akhir', tahun:'2025', status:'pending', pembimbing:'Achmad Hamdan, S.Pd., M.Pd' },
-  { id:3, judul:'Analisis Kebutuhan Layanan Perpustakaan Digital di Era Pasca-Pandemi', jenis:'Artikel Jurnal', tahun:'2024', status:'revisi', pembimbing:'Dr. Siti Rahayu, M.Lib', catatanRevisi:[{kolom:'Abstrak',catatan:'Perlu diperjelas tujuan penelitian dan metodologi yang digunakan. Tambahkan kata kunci yang relevan.'},{kolom:'Judul',catatan:'Judul terlalu panjang, persingkat maksimal 15 kata.'}] },
+  {
+    id:1, judul:'Laporan Magang Perpustakaan Bung Karno',
+    jenis:'Laporan Magang', tahun:'2024', status:'disetujui',
+    pembimbing:'Hariyanto S.Pd., M.Pd',
+    catatan_revisi:{}
+  },
+  {
+    id:2, judul:'Implementasi Sistem Temu Kembali Informasi Berbasis Metadata Dublin Core',
+    jenis:'Tugas Akhir', tahun:'2025', status:'pending',
+    pembimbing:'Achmad Hamdan, S.Pd., M.Pd',
+    catatan_revisi:{}
+  },
+  {
+    id:3, judul:'Analisis Kebutuhan Layanan Perpustakaan Digital di Era Pasca-Pandemi',
+    jenis:'Artikel Jurnal', tahun:'2024', status:'revisi',
+    pembimbing:'Dr. Siti Rahayu, M.Lib',
+    catatan_revisi:{
+      judul:'Judul perlu diperjelas, tambahkan scope penelitian',
+      bahasa:'',
+      jenis:'',
+      dosen:'Nama dosen pembimbing tidak lengkap (tambah gelar)',
+      tahun:'',
+      bidang:'Bidang/subjek kurang spesifik',
+      panggil:'',
+      abstrak:'Abstrak perlu diperjelas di bagian metode penelitian'
+    }
+  },
 ];
 
 // TODO: Replace with GET /api/users/me
@@ -128,7 +152,7 @@ function closeLogoutConfirm() {
 }
 async function doLogout() {
   await ApiService.auth.logout();
-  sessionStorage.removeItem('digilab-welcome-shown');
+  localStorage.removeItem('digilab-welcome-shown');
   navigateTo('public');
 }
 
@@ -146,8 +170,8 @@ function toggleSidebar() {
 // WELCOME POPUP
 // ══════════════════════════════════════════
 function showWelcome(user) {
-  if (sessionStorage.getItem('digilab-welcome-shown')) return;
-  sessionStorage.setItem('digilab-welcome-shown', '1');
+  if (localStorage.getItem('digilab-welcome-shown')) return;
+  localStorage.setItem('digilab-welcome-shown', '1');
   var name = user.name || 'Mahasiswa';
   var initials = name.split(' ').map(function(w) { return w[0]; }).join('').toUpperCase().slice(0,2);
   document.getElementById('w-avatar').textContent = initials;
@@ -198,11 +222,21 @@ function renderNotifBanners() {
         '<div class="sb-body"><div class="sb-label">Pemberitahuan</div><div class="sb-title">Karya ditolak</div><div class="sb-sub">' + judul + '</div></div>' +
         '<button class="sb-action" onclick="event.stopPropagation();showPage(\'karya\')">Detail</button></div>';
     } else if (k.status === 'revisi') {
-      var jml = (k.catatanRevisi || []).length;
-      return '<div class="status-banner sb-orange" onclick="showPage(\'karya\')">' +
-        '<div class="sb-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>' +
-        '<div class="sb-body"><div class="sb-label">' + (jml ? jml + ' catatan revisi' : 'Perlu perbaikan') + '</div><div class="sb-title">Karya perlu direvisi</div><div class="sb-sub">' + judul + '</div></div>' +
-        '<button class="sb-action" onclick="event.stopPropagation();showPage(\'karya\')">Revisi</button></div>';
+      var catatanObj = k.catatan_revisi || {};
+      var jml = Object.keys(catatanObj).filter(function(key){ return catatanObj[key] && catatanObj[key].trim(); }).length;
+      var hasCatatan = jml > 0;
+      var escapedJudul = k.judul.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+      var actionBtn;
+      if (hasCatatan) {
+        var encodedCatatan = encodeURIComponent(JSON.stringify(catatanObj));
+        actionBtn = '<button class="sb-action" onclick="event.stopPropagation();openCatatanModal(&quot;' + escapedJudul + '&quot;, JSON.parse(decodeURIComponent(&quot;' + encodedCatatan + '&quot;)))">Lihat Catatan</button>';
+      } else {
+        actionBtn = '<button class="sb-action" onclick="event.stopPropagation();showPage(\'karya\')">Revisi</button>';
+      }
+      return '<div class="status-banner sb-orange" onclick="showPage(\'karya\')">'
+        + '<div class="sb-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>'
+        + '<div class="sb-body"><div class="sb-label">' + (jml ? jml + ' catatan revisi dari admin' : 'Perlu perbaikan') + '</div><div class="sb-title">Karya perlu direvisi</div><div class="sb-sub">' + judul + '</div></div>'
+        + actionBtn + '</div>';
     }
     return '';
   }).join('');
@@ -241,31 +275,23 @@ function renderKaryaTable(data) {
   const rows = data || DUMMY_KARYA;
   document.getElementById('karya-tbody').innerHTML = rows.length
     ? rows.map((k, i) => {
-        const revisiRows = (k.status === 'revisi' && k.catatanRevisi && k.catatanRevisi.length)
-          ? k.catatanRevisi.map(r => `
-            <tr><td colspan="6" style="padding:0;">
-              <div style="background:#fffbeb;border-left:3px solid #f59e0b;margin:0 8px 6px 32px;border-radius:0 8px 8px 0;padding:10px 14px;">
-                <div style="display:flex;gap:8px;">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2.2" stroke-linecap="round" style="margin-top:2px;flex-shrink:0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                  <div>
-                    <div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:12px;color:#92400e;margin-bottom:2px;">Catatan Revisi — ${r.kolom}</div>
-                    <div style="font-size:13px;color:#78350f;line-height:1.5;">${r.catatan}</div>
-                  </div>
-                </div>
-              </div>
-            </td></tr>`).join('')
-          : '';
+        const hasCatatan = k.status === 'revisi' && k.catatan_revisi && Object.keys(k.catatan_revisi).some(function(key){ return k.catatan_revisi[key] && k.catatan_revisi[key].trim(); });
+        const catatanCount = hasCatatan ? Object.keys(k.catatan_revisi).filter(function(key){ return k.catatan_revisi[key] && k.catatan_revisi[key].trim(); }).length : 0;
+        const encodedCatatan = hasCatatan ? encodeURIComponent(JSON.stringify(k.catatan_revisi)) : encodeURIComponent('{}');
+        const escapedJudul = k.judul.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
         return `
           <tr style="${k.status === 'revisi' ? 'background:#fffdf5;' : ''}">
             <td style="color:var(--text-muted);font-weight:700">${i + 1}</td>
             <td style="font-weight:600;max-width:280px">
               ${k.judul}
-              ${k.status === 'revisi' && k.catatanRevisi
+              ${hasCatatan
                 ? `<div style="font-size:11px;color:#d97706;font-weight:700;margin-top:3px;display:flex;align-items:center;gap:4px;">
                     <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                    ${k.catatanRevisi.length} catatan revisi
+                    ${catatanCount} catatan revisi dari admin
                    </div>`
-                : ''}
+                : (k.status === 'revisi'
+                  ? `<div style="font-size:11px;color:#d97706;font-weight:700;margin-top:3px;">Perlu perbaikan — hubungi admin</div>`
+                  : '')}
             </td>
             <td><span style="font-size:12px;background:#e8f4f6;padding:2px 9px;border-radius:6px;color:var(--navy);font-weight:600">${k.jenis}</span></td>
             <td>${k.tahun}</td>
@@ -274,11 +300,16 @@ function renderKaryaTable(data) {
               <button class="btn btn-ghost btn-sm btn-icon" title="Detail">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
               </button>
+              ${hasCatatan
+                ? `<button class="btn btn-sm" onclick="openCatatanModal('${escapedJudul}', JSON.parse(decodeURIComponent('${encodedCatatan}')))" style="background:#fff3e0;color:#f97316;border:1px solid #fed7aa;border-radius:999px;font-weight:700;font-size:11px;padding:4px 10px;cursor:pointer;">Lihat Catatan</button>`
+                : (k.status === 'revisi'
+                  ? `<button class="btn btn-orange btn-sm" onclick="showPage('unggah')">Kirim Ulang</button>`
+                  : '')}
               ${k.status === 'revisi'
-                ? `<button class="btn btn-orange btn-sm" onclick="showPage('unggah')">Edit & Kirim Ulang</button>`
+                ? `<button class="btn btn-ghost btn-sm" onclick="showPage('unggah')" style="margin-left:4px;">Edit</button>`
                 : ''}
             </td>
-          </tr>${revisiRows}`;
+          </tr>`;
       }).join('')
     : '<tr><td colspan="6"><div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><p>Belum ada karya diunggah</p></div></td></tr>';
 }

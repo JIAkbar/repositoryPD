@@ -1047,8 +1047,68 @@ function saveProfil(){
 }
 
 
+// ══ CATATAN REVISI MODAL ══
+function openCatatanModal(judul, catatan) {
+  document.getElementById('cm-judul-karya').textContent = judul;
+  var list = document.getElementById('cm-list');
+  var labels = {
+    judul: 'Judul', bahasa: 'Bahasa', jenis: 'Jenis Dokumen',
+    dosen: 'Dosen Pembimbing', tahun: 'Tahun', bidang: 'Bidang / Subjek',
+    panggil: 'No. Panggil', abstrak: 'Abstrak'
+  };
+  var html = '';
+  var hasCatatan = false;
+  Object.keys(labels).forEach(function(key) {
+    if (catatan[key] && catatan[key].trim()) {
+      hasCatatan = true;
+      html += '<div style="padding:12px 14px;background:#fff8f0;border:1px solid #fed7aa;border-left:3px solid #f97316;border-radius:6px;">' +
+        '<div style="font-size:.7rem;font-weight:700;color:#f97316;letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px;">' + labels[key] + '</div>' +
+        '<div style="font-size:.88rem;color:#444;line-height:1.5;">' + catatan[key] + '</div>' +
+        '</div>';
+    }
+  });
+  if (!hasCatatan) {
+    html = '<div style="padding:16px;text-align:center;color:#888;font-size:.9rem;">Tidak ada catatan spesifik. Silakan hubungi admin untuk detail revisi.</div>';
+  }
+  list.innerHTML = html;
+  document.getElementById('modal-catatan-overlay').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCatatanModal() {
+  document.getElementById('modal-catatan-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+
 // ── INIT ──
 checkAuth();
 </script>
+
+<!-- Modal Catatan Revisi dari Admin -->
+<div id="modal-catatan-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9000;overflow-y:auto;padding:24px 16px;" onclick="if(event.target===this)closeCatatanModal()">
+  <div style="background:#fff;border-radius:12px;max-width:680px;margin:0 auto;padding:28px;position:relative;" onclick="event.stopPropagation()">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:16px;border-bottom:1.5px solid #f0f0f0;">
+      <div style="width:40px;height:40px;background:#fff3e0;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      </div>
+      <div>
+        <div style="font-size:.72rem;font-weight:700;color:#f97316;letter-spacing:.06em;text-transform:uppercase;">Catatan Revisi dari Admin</div>
+        <div id="cm-judul-karya" style="font-size:.95rem;font-weight:700;color:#1a1a3e;margin-top:2px;"></div>
+      </div>
+      <button onclick="closeCatatanModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;cursor:pointer;font-size:1.2rem;color:#888;line-height:1;">&#x2715;</button>
+    </div>
+    <p style="font-size:.85rem;color:#666;margin:0 0 16px;">Perbaiki bagian-bagian berikut sesuai catatan dari admin pustakawan, lalu unggah ulang karya Anda:</p>
+    <div id="cm-list" style="display:flex;flex-direction:column;gap:10px;"></div>
+    <div style="margin-top:20px;padding-top:16px;border-top:1px solid #f0f0f0;display:flex;justify-content:flex-end;gap:10px;">
+      <button onclick="closeCatatanModal()" style="padding:9px 24px;border:1.5px solid #d1d5db;background:#fff;border-radius:8px;cursor:pointer;font-weight:600;font-size:.9rem;color:#444;">Tutup</button>
+      <button onclick="showPage('unggah'); closeCatatanModal();" style="padding:9px 24px;background:#094e58;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:.9rem;display:inline-flex;align-items:center;gap:6px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+        Unggah Ulang
+      </button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

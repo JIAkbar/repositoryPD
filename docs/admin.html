@@ -132,6 +132,13 @@ input,select,textarea{font-family:'Lato',sans-serif;}
 .btn-green:hover{background:#15803d;}
 .btn-red{height:42px;padding:0 28px;background:#dc2626;color:#fff;border:none;border-radius:8px;font-weight:700;font-size:14px;transition:background .15s;}
 .btn-red:hover{background:#b91c1c;}
+.btn-warning{height:42px;padding:0 20px;background:var(--orange);color:#fff;border:none;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background .15s;}
+.btn-warning:hover{background:#ea6c00;}
+.btn-outline{height:42px;padding:0 24px;background:#f0f0f5;color:var(--text-dark);border:1.5px solid var(--border);border-radius:8px;font-weight:600;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background .15s;}
+.btn-outline:hover{background:#e4e4ec;}
+.btn{height:42px;padding:0 20px;border-radius:8px;font-weight:600;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background .15s;}
+.btn-primary{height:42px;padding:0 20px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background .15s;}
+.btn-primary:hover{background:var(--navy-dark);}
 
 /* ── VERIFIKASI TABLE ── */
 .table-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
@@ -667,14 +674,65 @@ tr:hover td{background:#fafbff;}
             <div class="detail-row"><span class="detail-label">Dokumen (PDF)</span><div class="file-preview"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>dokumen.pdf</div></div>
             <div class="detail-row"><span class="detail-label">Foto / Video</span><div class="file-preview"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M21 3H3C2 3 1 4 1 5v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1-1-2-2-2zm-1 16H4V5h16v14z"/></svg>foto.jpg</div></div>
           </div>
+          <!-- Form Catatan Revisi — muncul saat admin klik Revisi -->
+          <div id="revisi-form" style="display:none; margin:16px 0; padding:16px; background:var(--bg); border:1.5px solid #f97316; border-radius:8px;">
+            <p style="font-weight:700; color:#c0392b; margin:0 0 12px; font-size:.9rem;">
+              &#9999;&#65039; Isi catatan revisi untuk field yang perlu diperbaiki (kosongkan jika tidak perlu):
+            </p>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+              <div>
+                <label style="font-size:.75rem; font-weight:700; color:var(--text-mid)">CATATAN REVISI JUDUL</label>
+                <textarea id="cr-judul" rows="2" placeholder="Contoh: Judul kurang spesifik..." style="width:100%;padding:8px;border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:.85rem;resize:vertical;box-sizing:border-box;margin-top:4px;"></textarea>
+              </div>
+              <div>
+                <label style="font-size:.75rem; font-weight:700; color:var(--text-mid)">CATATAN REVISI BAHASA</label>
+                <textarea id="cr-bahasa" rows="2" placeholder="Catatan bahasa..." style="width:100%;padding:8px;border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:.85rem;resize:vertical;box-sizing:border-box;margin-top:4px;"></textarea>
+              </div>
+              <div>
+                <label style="font-size:.75rem; font-weight:700; color:var(--text-mid)">CATATAN REVISI JENIS DOKUMEN</label>
+                <textarea id="cr-jenis" rows="2" placeholder="Catatan jenis dokumen..." style="width:100%;padding:8px;border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:.85rem;resize:vertical;box-sizing:border-box;margin-top:4px;"></textarea>
+              </div>
+              <div>
+                <label style="font-size:.75rem; font-weight:700; color:var(--text-mid)">CATATAN REVISI DOSEN PEMBIMBING</label>
+                <textarea id="cr-dosen" rows="2" placeholder="Catatan dosen pembimbing..." style="width:100%;padding:8px;border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:.85rem;resize:vertical;box-sizing:border-box;margin-top:4px;"></textarea>
+              </div>
+              <div>
+                <label style="font-size:.75rem; font-weight:700; color:var(--text-mid)">CATATAN REVISI TAHUN</label>
+                <textarea id="cr-tahun" rows="2" placeholder="Catatan tahun..." style="width:100%;padding:8px;border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:.85rem;resize:vertical;box-sizing:border-box;margin-top:4px;"></textarea>
+              </div>
+              <div>
+                <label style="font-size:.75rem; font-weight:700; color:var(--text-mid)">CATATAN REVISI BIDANG / SUBJEK</label>
+                <textarea id="cr-bidang" rows="2" placeholder="Catatan bidang..." style="width:100%;padding:8px;border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:.85rem;resize:vertical;box-sizing:border-box;margin-top:4px;"></textarea>
+              </div>
+              <div>
+                <label style="font-size:.75rem; font-weight:700; color:var(--text-mid)">CATATAN REVISI NO. PANGGIL</label>
+                <textarea id="cr-panggil" rows="2" placeholder="Catatan no. panggil..." style="width:100%;padding:8px;border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:.85rem;resize:vertical;box-sizing:border-box;margin-top:4px;"></textarea>
+              </div>
+              <div>
+                <label style="font-size:.75rem; font-weight:700; color:var(--text-mid)">CATATAN REVISI ABSTRAK</label>
+                <textarea id="cr-abstrak" rows="2" placeholder="Catatan abstrak..." style="width:100%;padding:8px;border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:.85rem;resize:vertical;box-sizing:border-box;margin-top:4px;"></textarea>
+              </div>
+            </div>
+          </div>
           <div class="detail-actions">
-            <button class="btn-secondary" onclick="navAdmin('verifikasi')">Batal</button>
-            <button class="btn-red" onclick="setStatus('revision')">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="white" style="vertical-align:-2px;margin-right:4px"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm17.71-10.21a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+            <!-- Tombol normal -->
+            <button id="btn-batal" class="btn-outline" onclick="navAdmin('verifikasi')">Batal</button>
+            <button id="btn-revisi" class="btn-warning" onclick="enterRevisiMode()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
               Revisi
             </button>
-            <button class="btn-green" onclick="setStatus('verified')">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="white" style="vertical-align:-2px;margin-right:4px"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+            <button id="btn-terverifikasi" class="btn-green" onclick="setStatus('verified')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              Terverifikasi
+            </button>
+            <!-- Tombol mode revisi (tersembunyi awalnya) -->
+            <button id="btn-batal-revisi" class="btn-outline" style="display:none" onclick="exitRevisiMode()">Batal</button>
+            <button id="btn-kirim-revisi" class="btn-warning" style="display:none" onclick="submitRevisi()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              Kirim Revisi
+            </button>
+            <button id="btn-terverifikasi-2" class="btn-green" style="display:none" onclick="setStatus('verified')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
               Terverifikasi
             </button>
           </div>
@@ -753,15 +811,16 @@ tr:hover td{background:#fafbff;}
 <script>
 // ══ DATA DUMMY ══
 var karya = [
-  {id:1, nama:'Natasya Adelia R.', nim:'220213704262', jenis:'Laporan Magang', judul:'Laporan Magang Perpustakaan Bung Karno — Implementasi Sistem Digitalisasi', dosen:'Achmad Hamdan, S.Pd., M.Pd.', tahun:'2025', bidang:'Literasi Informasi, Perpustakaan', panggil:'025ADE', bahasa:'Indonesia', tgl:'19-12-2025', status:'pending', abstrak:'Laporan ini membahas implementasi sistem digitalisasi koleksi perpustakaan di Perpustakaan Bung Karno. Digitalisasi dilakukan untuk meningkatkan aksesibilitas dan pelestarian koleksi.'},
-  {id:2, nama:'Riska Nur Amalia', nim:'220213704301', jenis:'Tugas Akhir', judul:'Rancang Bangun Website Manajemen Arsip Digital Berbasis Web', dosen:'Dr. Agus Wedi, M.Pd.', tahun:'2025', bidang:'Teknologi Informasi, Arsip', panggil:'025RIS', bahasa:'Indonesia', tgl:'18-12-2025', status:'verified', abstrak:'Penelitian ini merancang dan membangun sistem manajemen arsip digital berbasis web untuk meningkatkan efisiensi pengelolaan dokumen organisasi.'},
-  {id:3, nama:'Bagas Pratama', nim:'210213704189', jenis:'Artikel Jurnal', judul:'Analisis Kinerja Algoritma Machine Learning untuk Prediksi Kelulusan Mahasiswa', dosen:'Dr. Yerry Soepriyanto, S.T., M.T.', tahun:'2025', bidang:'Machine Learning, Pendidikan', panggil:'025BAG', bahasa:'Indonesia', tgl:'17-12-2025', status:'revision', abstrak:'Penelitian ini menganalisis perbandingan kinerja berbagai algoritma machine learning dalam memprediksi kelulusan mahasiswa berdasarkan data akademik.'},
-  {id:4, nama:'Devi Rahayu', nim:'210213704205', jenis:'Laporan Magang', judul:'Implementasi Sistem Informasi Manajemen SDM di PT. Teknologi Nusantara', dosen:'Drs. Sihkabuden, M.Pd.', tahun:'2025', bidang:'Sistem Informasi, SDM', panggil:'025DEV', bahasa:'Indonesia', tgl:'15-12-2025', status:'pending', abstrak:'Laporan Magang ini mendokumentasikan proses implementasi modul penggajian dan absensi pada sistem informasi manajemen SDM perusahaan.'},
-  {id:5, nama:'Ahmad Fauzi', nim:'220213704318', jenis:'Proyek Inovasi', judul:'Prototipe Alat Monitoring Kualitas Udara Berbasis IoT', dosen:'Dr. Yerry Soepriyanto, S.T., M.T.', tahun:'2026', bidang:'IoT, Lingkungan', panggil:'026FAU', bahasa:'Indonesia', tgl:'10-12-2025', status:'verified', abstrak:'Proyek ini mengembangkan prototipe alat monitoring kualitas udara berbasis IoT menggunakan sensor MQ-135 dan NodeMCU yang terkoneksi ke dashboard web real-time.'},
-  {id:6, nama:'Siti Rahmawati', nim:'210213704224', jenis:'Tugas Akhir', judul:'Perancangan UI/UX Aplikasi Mobile Perpustakaan Digital', dosen:'Achmad Hamdan, S.Pd., M.Pd.', tahun:'2025', bidang:'UI/UX, Mobile', panggil:'025SIT', bahasa:'Indonesia', tgl:'08-12-2025', status:'pending', abstrak:'Penelitian ini merancang antarmuka pengguna aplikasi mobile perpustakaan digital menggunakan metodologi User-Centered Design dengan pendekatan design thinking.'},
+  {id:1, nama:'Natasya Adelia R.', nim:'220213704262', jenis:'Laporan Magang', judul:'Laporan Magang Perpustakaan Bung Karno — Implementasi Sistem Digitalisasi', dosen:'Achmad Hamdan, S.Pd., M.Pd.', tahun:'2025', bidang:'Literasi Informasi, Perpustakaan', panggil:'025ADE', bahasa:'Indonesia', tgl:'19-12-2025', status:'pending', abstrak:'Laporan ini membahas implementasi sistem digitalisasi koleksi perpustakaan di Perpustakaan Bung Karno. Digitalisasi dilakukan untuk meningkatkan aksesibilitas dan pelestarian koleksi.', catatan_revisi: {}},
+  {id:2, nama:'Riska Nur Amalia', nim:'220213704301', jenis:'Tugas Akhir', judul:'Rancang Bangun Website Manajemen Arsip Digital Berbasis Web', dosen:'Dr. Agus Wedi, M.Pd.', tahun:'2025', bidang:'Teknologi Informasi, Arsip', panggil:'025RIS', bahasa:'Indonesia', tgl:'18-12-2025', status:'verified', abstrak:'Penelitian ini merancang dan membangun sistem manajemen arsip digital berbasis web untuk meningkatkan efisiensi pengelolaan dokumen organisasi.', catatan_revisi: {}},
+  {id:3, nama:'Bagas Pratama', nim:'210213704189', jenis:'Artikel Jurnal', judul:'Analisis Kinerja Algoritma Machine Learning untuk Prediksi Kelulusan Mahasiswa', dosen:'Dr. Yerry Soepriyanto, S.T., M.T.', tahun:'2025', bidang:'Machine Learning, Pendidikan', panggil:'025BAG', bahasa:'Indonesia', tgl:'17-12-2025', status:'revision', abstrak:'Penelitian ini menganalisis perbandingan kinerja berbagai algoritma machine learning dalam memprediksi kelulusan mahasiswa berdasarkan data akademik.', catatan_revisi: {}},
+  {id:4, nama:'Devi Rahayu', nim:'210213704205', jenis:'Laporan Magang', judul:'Implementasi Sistem Informasi Manajemen SDM di PT. Teknologi Nusantara', dosen:'Drs. Sihkabuden, M.Pd.', tahun:'2025', bidang:'Sistem Informasi, SDM', panggil:'025DEV', bahasa:'Indonesia', tgl:'15-12-2025', status:'pending', abstrak:'Laporan Magang ini mendokumentasikan proses implementasi modul penggajian dan absensi pada sistem informasi manajemen SDM perusahaan.', catatan_revisi: {}},
+  {id:5, nama:'Ahmad Fauzi', nim:'220213704318', jenis:'Proyek Inovasi', judul:'Prototipe Alat Monitoring Kualitas Udara Berbasis IoT', dosen:'Dr. Yerry Soepriyanto, S.T., M.T.', tahun:'2026', bidang:'IoT, Lingkungan', panggil:'026FAU', bahasa:'Indonesia', tgl:'10-12-2025', status:'verified', abstrak:'Proyek ini mengembangkan prototipe alat monitoring kualitas udara berbasis IoT menggunakan sensor MQ-135 dan NodeMCU yang terkoneksi ke dashboard web real-time.', catatan_revisi: {}},
+  {id:6, nama:'Siti Rahmawati', nim:'210213704224', jenis:'Tugas Akhir', judul:'Perancangan UI/UX Aplikasi Mobile Perpustakaan Digital', dosen:'Achmad Hamdan, S.Pd., M.Pd.', tahun:'2025', bidang:'UI/UX, Mobile', panggil:'025SIT', bahasa:'Indonesia', tgl:'08-12-2025', status:'pending', abstrak:'Penelitian ini merancang antarmuka pengguna aplikasi mobile perpustakaan digital menggunakan metodologi User-Centered Design dengan pendekatan design thinking.', catatan_revisi: {}},
 ];
 
 var currentDetailId = null;
+var revisiMode = false;
 
 // ══ AUTH ══
 function checkAuth(){
@@ -915,16 +974,64 @@ function showDetail(id){
   document.getElementById('d-panggil').textContent=k.panggil;
   document.getElementById('d-tgl').textContent=k.tgl;
   document.getElementById('d-abstrak').textContent=k.abstrak;
+  revisiMode = false;
+  exitRevisiMode();
   navAdmin('detail');
 }
 
 function setStatus(status){
   if(!currentDetailId) return;
+  exitRevisiMode();
   var k = karya.find(function(x){return x.id===currentDetailId;});
   if(k){ k.status=status; }
   var label = status==='verified'?'Terverifikasi':'Revisi';
   var color = status==='verified'?'green':'red';
   showToast('Status diperbarui: '+label, color);
+  navAdmin('verifikasi');
+  renderTable();
+}
+function enterRevisiMode() {
+  revisiMode = true;
+  document.getElementById('revisi-form').style.display = 'block';
+  document.getElementById('btn-revisi').style.display = 'none';
+  document.getElementById('btn-terverifikasi').style.display = 'none';
+  document.getElementById('btn-batal').style.display = 'none';
+  document.getElementById('btn-kirim-revisi').style.display = 'inline-flex';
+  document.getElementById('btn-batal-revisi').style.display = 'inline-flex';
+  document.getElementById('btn-terverifikasi-2').style.display = 'inline-flex';
+}
+
+function exitRevisiMode() {
+  revisiMode = false;
+  var f = document.getElementById('revisi-form');
+  if (f) f.style.display = 'none';
+  var btnRevisi = document.getElementById('btn-revisi');
+  if (btnRevisi) {
+    document.getElementById('btn-revisi').style.display = 'inline-flex';
+    document.getElementById('btn-terverifikasi').style.display = 'inline-flex';
+    document.getElementById('btn-batal').style.display = 'inline-flex';
+    document.getElementById('btn-kirim-revisi').style.display = 'none';
+    document.getElementById('btn-batal-revisi').style.display = 'none';
+    document.getElementById('btn-terverifikasi-2').style.display = 'none';
+  }
+}
+
+function submitRevisi() {
+  if (!currentDetailId) return;
+  var k = karya.find(function(x) { return x.id === currentDetailId; });
+  if (!k) return;
+  k.catatan_revisi = {
+    judul:   document.getElementById('cr-judul').value.trim(),
+    bahasa:  document.getElementById('cr-bahasa').value.trim(),
+    jenis:   document.getElementById('cr-jenis').value.trim(),
+    dosen:   document.getElementById('cr-dosen').value.trim(),
+    tahun:   document.getElementById('cr-tahun').value.trim(),
+    bidang:  document.getElementById('cr-bidang').value.trim(),
+    panggil: document.getElementById('cr-panggil').value.trim(),
+    abstrak: document.getElementById('cr-abstrak').value.trim()
+  };
+  k.status = 'revision';
+  showToast('Catatan revisi dikirim ke mahasiswa');
   navAdmin('verifikasi');
   renderTable();
 }
