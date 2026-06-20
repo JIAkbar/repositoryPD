@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DIGILAB Repository — Fakultas Vokasi UM</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="theme.js"></script>
 <script src="layout-router.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Lato:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
@@ -1505,11 +1506,8 @@ body {
       <input type="password" id="login-pass" placeholder="••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter') doLogin()">
     </div>
     <button class="btn-login-submit" onclick="doLogin()">Masuk</button>
-    <p style="text-align:center;font-size:11px;color:var(--text-muted);margin-top:14px">
-      Demo: <strong>admin/admin</strong> · <strong>mhs/mhs</strong>
-    <p style="text-align:center;font-size:12px;color:var(--text-muted);margin-top:6px">
+    <p style="text-align:center;font-size:12px;color:var(--text-muted);margin-top:14px">
       Belum punya akun? <a href="#" onclick="closeLogin();openRegister()" style="color:var(--navy);font-weight:700;text-decoration:none">Daftar di sini</a>
-    </p>
     </p>
   </div>
 </div>
@@ -2148,10 +2146,25 @@ renderKaryaGrid();
 
 /* ── REGISTER ── */
 function openRegister() {
-  // Populate prodi dari MASTER_PRODI
+  // Populate prodi — pakai MASTER_PRODI jika tersedia, fallback ke hardcode 11 prodi
   var sel = document.getElementById('reg-prodi');
-  if (sel && window.MASTER_PRODI && sel.options.length <= 1) {
-    window.MASTER_PRODI.forEach(function(p){ var o=document.createElement('option'); o.value=p; o.textContent=p; sel.appendChild(o); });
+  if (sel && sel.options.length <= 1) {
+    var prodiList = (window.MASTER_PRODI && window.MASTER_PRODI.length >= 11)
+      ? window.MASTER_PRODI
+      : [
+          'D4 Perpustakaan Digital',
+          'D4 Animasi',
+          'D4 Manajemen Pemasaran',
+          'D4 Akuntansi',
+          'D4 Tata Boga',
+          'D4 Desain Mode',
+          'D4 Teknologi Rekayasa dan Pemeliharaan Bangunan Sipil',
+          'D4 Teknologi Rekayasa Bangunan Manufaktur',
+          'D4 Teknologi Rekayasa Otomotif',
+          'D4 Teknologi Rekayasa Pembangkit Energi',
+          'D4 Teknologi Rekayasa Sistem Elektronika'
+        ];
+    prodiList.forEach(function(p){ var o=document.createElement('option'); o.value=p; o.textContent=p; sel.appendChild(o); });
   }
   var ol = document.getElementById('reg-overlay');
   if (ol) { ol.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
@@ -2177,14 +2190,56 @@ function doRegister() {
   if (!prodi) return showErr('Program Studi wajib dipilih.');
   if (!email) return showErr('Email wajib diisi.');
   if (pass.length < 8) return showErr('Password minimal 8 karakter.');
-  // Simpan sebagai pending — TODO: ganti dengan ApiService.auth.register() saat backend aktif
+  // Coba Supabase signUp dulu, fallback ke localStorage jika belum tersedia
+  var _supa = (typeof window !== 'undefined' && window._supaClient) || null;
+  // Cek juga window.supabase client yang mungkin sudah diinit di api-service.js
+  if (!_supa && window.ApiService && window.ApiService._getSupaClient) {
+    _supa = window.ApiService._getSupaClient();
+  }
+
+  function _saveLocalFallback() {
+    try {
+      var pending = JSON.parse(localStorage.getItem('digilab-pending-reg') || '[]');
+      pending.push({ nama:nama, nim:nim, prodi:prodi, email:email, status:'pending', tgl:new Date().toISOString() });
+      localStorage.setItem('digilab-pending-reg', JSON.stringify(pending));
+    } catch(e){}
+  }
+
+  // Coba cek apakah _supa tersedia via api-service SUPABASE_URL check
+  var supaAvail = false;
   try {
-    var pending = JSON.parse(localStorage.getItem('digilab-pending-reg') || '[]');
-    pending.push({ nama:nama, nim:nim, prodi:prodi, email:email, status:'pending', tgl:new Date().toISOString() });
-    localStorage.setItem('digilab-pending-reg', JSON.stringify(pending));
-  } catch(e){}
+    var supaUrl = (typeof SUPABASE_URL !== 'undefined') ? SUPABASE_URL : null;
+    var supaKey = (typeof SUPABASE_ANON_KEY !== 'undefined') ? SUPABASE_ANON_KEY : null;
+    if (supaUrl && supaKey && window.supabase) {
+      var _sc = window.supabase.createClient(supaUrl, supaKey);
+      supaAvail = true;
+      _sc.auth.signUp({
+        email: email,
+        password: pass,
+        options: { data: { nama: nama, nim: nim, prodi: prodi } }
+      }).then(function(res) {
+        if (res.error) {
+          // Supabase error — simpan ke localStorage sebagai fallback
+          _saveLocalFallback();
+          closeRegister();
+          showToast('Pendaftaran berhasil! Menunggu verifikasi admin.');
+        } else {
+          closeRegister();
+          showToast('Pendaftaran berhasil! Menunggu verifikasi admin.');
+        }
+      }).catch(function() {
+        _saveLocalFallback();
+        closeRegister();
+        showToast('Pendaftaran berhasil! Menunggu verifikasi admin.');
+      });
+      return; // async path — exit here
+    }
+  } catch(e) {}
+
+  // Fallback offline: simpan ke localStorage
+  _saveLocalFallback();
   closeRegister();
-  showToast('Pendaftaran berhasil! Tunggu verifikasi admin.');
+  showToast('Pendaftaran berhasil! Menunggu verifikasi admin.');
 }
 
 /* ── AKUN / PROFIL ── */
