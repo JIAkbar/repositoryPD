@@ -188,8 +188,8 @@ const _PRODI_LIST = [
 const _DUMMY_USERS = [
   { email:'admin', password:'admin', name:'Admin Pustakawan', role:'Admin Pustakawan' },
   { email:'mhs',   password:'mhs',   name:'Natasya Adelia R.', role:'Mahasiswa' },
-  { email:'admin@digilab.demo',          password:'Admin123!', name:'Admin Pustakawan', role:'Admin Pustakawan' },
-  { email:'natasya@digilab.demo',        password:'Mhs12345!', name:'Natasya Adelia R.', role:'Mahasiswa' },
+  { email:'admin@digilab.demo',          password:'admin123',  name:'Admin Pustakawan', role:'Admin Pustakawan' },
+  { email:'natasya@digilab.demo',        password:'admin123',  name:'Natasya Adelia R.', role:'Admin Pustakawan' },
   { email:'admin@vokasi.um.ac.id',       password:'admin123', name:'Admin Pustakawan', role:'Admin Pustakawan' },
   { email:'mahasiswa@vokasi.um.ac.id',   password:'mhs123',   name:'Natasya Adelia R.', role:'Mahasiswa' },
 ];
