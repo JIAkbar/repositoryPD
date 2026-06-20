@@ -21,7 +21,7 @@
 -- Untuk keperluan demo/development, insert langsung ke tabel users
 -- dengan UUID yang sudah diketahui.
 
-INSERT INTO users (id, nim_nidn, nama, role, prodi_id, is_active) VALUES
+INSERT INTO users (id, nim_nidn, nama, role, prodi_id, is_active, foto_url) VALUES
   -- Admin / pustakawan
   (
     '00000000-0000-0000-0000-000000000001',
@@ -29,7 +29,8 @@ INSERT INTO users (id, nim_nidn, nama, role, prodi_id, is_active) VALUES
     'Achmad Hamdan, S.Pd., M.Pd.',
     'admin',
     (SELECT id FROM program_studi WHERE kode = 'D4-PD'),
-    true
+    true,
+    NULL
   ),
   -- Mahasiswa demo 1 (Natasya — penulis karya di mahasiswa.html)
   (
@@ -38,7 +39,8 @@ INSERT INTO users (id, nim_nidn, nama, role, prodi_id, is_active) VALUES
     'Natasya Adelia R.',
     'mahasiswa',
     (SELECT id FROM program_studi WHERE kode = 'D4-PD'),
-    true
+    true,
+    NULL
   ),
   -- Mahasiswa demo 2–5 (untuk tabel verifikasi akun di admin.html)
   (
@@ -47,7 +49,8 @@ INSERT INTO users (id, nim_nidn, nama, role, prodi_id, is_active) VALUES
     'Bima Saputra',
     'mahasiswa',
     (SELECT id FROM program_studi WHERE kode = 'D4-TRSE'),   -- D4 Teknologi Rekayasa Sistem Elektronika
-    true
+    true,
+    NULL
   ),
   (
     '00000000-0000-0000-0000-000000000004',
@@ -55,7 +58,8 @@ INSERT INTO users (id, nim_nidn, nama, role, prodi_id, is_active) VALUES
     'Laila Fitriani',
     'mahasiswa',
     (SELECT id FROM program_studi WHERE kode = 'D4-MP'),  -- D4 Manajemen Pemasaran
-    true
+    true,
+    NULL
   ),
   (
     '00000000-0000-0000-0000-000000000005',
@@ -63,7 +67,8 @@ INSERT INTO users (id, nim_nidn, nama, role, prodi_id, is_active) VALUES
     'Rizal Hidayatullah',
     'mahasiswa',
     (SELECT id FROM program_studi WHERE kode = 'D4-AK'),   -- D4 Akuntansi
-    true
+    true,
+    NULL
   ),
   (
     '00000000-0000-0000-0000-000000000006',
@@ -71,7 +76,8 @@ INSERT INTO users (id, nim_nidn, nama, role, prodi_id, is_active) VALUES
     'Dwi Kurniawati',
     'mahasiswa',
     (SELECT id FROM program_studi WHERE kode = 'D4-MP'),  -- D4 Manajemen Pemasaran
-    true
+    true,
+    NULL
   ),
   (
     '00000000-0000-0000-0000-000000000007',
@@ -79,7 +85,8 @@ INSERT INTO users (id, nim_nidn, nama, role, prodi_id, is_active) VALUES
     'Fajar Nugroho',
     'mahasiswa',
     (SELECT id FROM program_studi WHERE kode = 'D4-MP'),   -- D4 Manajemen Pemasaran
-    true
+    true,
+    NULL
   ),
   -- Penulis karya ilmiah (dari KARYA_DATA index.html)
   (
@@ -88,7 +95,8 @@ INSERT INTO users (id, nim_nidn, nama, role, prodi_id, is_active) VALUES
     'Karina Aliya',
     'mahasiswa',
     (SELECT id FROM program_studi WHERE kode = 'D4-PD'),
-    true
+    true,
+    NULL
   ),
   (
     '00000000-0000-0000-0000-000000000011',
@@ -96,7 +104,8 @@ INSERT INTO users (id, nim_nidn, nama, role, prodi_id, is_active) VALUES
     'Hartono',
     'mahasiswa',
     (SELECT id FROM program_studi WHERE kode = 'D4-TRSE'),
-    true
+    true,
+    NULL
   ),
   (
     '00000000-0000-0000-0000-000000000012',
@@ -104,7 +113,8 @@ INSERT INTO users (id, nim_nidn, nama, role, prodi_id, is_active) VALUES
     'Suherman',
     'mahasiswa',
     (SELECT id FROM program_studi WHERE kode = 'D4-TRO'),
-    true
+    true,
+    NULL
   ),
   (
     '00000000-0000-0000-0000-000000000013',
@@ -112,7 +122,8 @@ INSERT INTO users (id, nim_nidn, nama, role, prodi_id, is_active) VALUES
     'Dewi Rahayu',
     'mahasiswa',
     (SELECT id FROM program_studi WHERE kode = 'D4-TRSE'),
-    true
+    true,
+    NULL
   ),
   (
     '00000000-0000-0000-0000-000000000014',
@@ -120,7 +131,8 @@ INSERT INTO users (id, nim_nidn, nama, role, prodi_id, is_active) VALUES
     'Ahmad Fauzi',
     'mahasiswa',
     (SELECT id FROM program_studi WHERE kode = 'D4-DM'),
-    true
+    true,
+    NULL
   ),
   (
     '00000000-0000-0000-0000-000000000015',
@@ -128,7 +140,8 @@ INSERT INTO users (id, nim_nidn, nama, role, prodi_id, is_active) VALUES
     'Rizki Amalia',
     'mahasiswa',
     (SELECT id FROM program_studi WHERE kode = 'D4-AK'),
-    true
+    true,
+    NULL
   )
 ON CONFLICT (id) DO NOTHING;
 

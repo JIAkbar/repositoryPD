@@ -1284,9 +1284,18 @@ function toggleSidebar() {
 var currentVerifFilter = 'pending'; // default sub-filter
 
 function toggleVerifMenu() {
-  // Reset filter ke pending saat klik parent nav
-  currentVerifFilter = 'pending';
-  navAdmin('verif-karya');
+  var sub = document.getElementById('sub-verif');
+  var arrow = document.getElementById('arrow-verif');
+  var isOpen = sub && sub.classList.contains('open');
+  if (isOpen) {
+    // Sudah terbuka → tutup accordion saja, tanpa navigate
+    if (sub) sub.classList.remove('open');
+    if (arrow) arrow.classList.remove('open');
+  } else {
+    // Belum terbuka → buka accordion + navigate ke verif-karya (pending)
+    currentVerifFilter = 'pending';
+    navAdmin('verif-karya');
+  }
 }
 
 function navVerifSub(filter) {

@@ -22,7 +22,7 @@ const API_BASE = 'http://localhost:5000/api';
 
 // localStorage keys — terpusat di sini, tidak boleh hardcode di page lain
 const LS = {
-  USER:        'digilab-user',        // {name, email, role, token}  → Supabase Auth
+  USER:        'digilab-user',        // {name, email, role, token, foto}  → Supabase Auth
   PENDING_REG: 'digilab-pending-reg', // {name,email,nim,prodi,role} → public.users (pending)
   THEME:       'digilab-theme',       // UI only — tetap di localStorage
   LAYOUT:      'digilab-layout',      // UI only — tetap di localStorage
@@ -37,7 +37,7 @@ const _KARYA_PUBLIK = [
     id: 1,
     judul: 'Sistem Informasi Akademik Terintegrasi Berbasis Cloud',
     penulis: 'Dewi Rahayu',
-    prodi: 'D4 Teknologi Informasi',
+    prodi: 'D4 Teknologi Rekayasa Sistem Elektronika',
     tahun: 2023,
     jenis: 'Tugas Akhir',
     pembimbing: 'Dr. Wahyu Pratama, M.Kom.',
@@ -82,7 +82,7 @@ const _KARYA_PUBLIK = [
     id: 4,
     judul: 'Prototipe Alat Monitoring Kualitas Air Sungai Berbasis IoT',
     penulis: 'Bagas Prasetyo',
-    prodi: 'D4 Teknik Mesin',
+    prodi: 'D4 Teknologi Rekayasa Otomotif',
     tahun: 2024,
     jenis: 'Proyek Inovasi',
     pembimbing: 'Ir. Teguh Widodo, M.T.',
@@ -97,7 +97,7 @@ const _KARYA_PUBLIK = [
     id: 5,
     judul: 'Implementasi Sistem Manajemen Arsip Digital di Dinas Pendidikan Kota Malang',
     penulis: 'Sari Wulandari',
-    prodi: 'D3 Administrasi Perkantoran',
+    prodi: 'D4 Manajemen Pemasaran',
     tahun: 2022,
     jenis: 'Laporan Magang',
     pembimbing: 'Dra. Retno Purwandari, M.Si.',
@@ -112,7 +112,7 @@ const _KARYA_PUBLIK = [
     id: 6,
     judul: 'Identitas Visual Brand UMKM Kota Malang: Studi Kasus Produk Kerajinan Lokal',
     penulis: 'Ahmad Fauzan',
-    prodi: 'D4 Desain Komunikasi Visual',
+    prodi: 'D4 Desain Mode',
     tahun: 2022,
     jenis: 'Produk Kreatif',
     pembimbing: 'Wahyu Dinata, S.Sn., M.Ds.',
@@ -137,20 +137,20 @@ const _KARYA_MAHASISWA = [
 ];
 
 const _KARYA_ADMIN = [
-  { id:1, nopanggil:'BAG/TM/PI/PRO/2024', judul:'Prototipe Alat Monitoring Kualitas Air Sungai Berbasis IoT', mhs:'Bagas Prasetyo', prodi:'D4 Teknik Mesin', tgl:'12 Jun 2025', status:'pending', link:'https://github.com/bagas/iot-water' },
-  { id:2, nopanggil:'DEW/TI/TA/SIS/2023', judul:'Sistem Informasi Akademik Terintegrasi Berbasis Cloud', mhs:'Dewi Rahayu', prodi:'D4 Teknologi Informasi', tgl:'09 Jun 2025', status:'disetujui', link:'' },
-  { id:3, nopanggil:'SAR/AP/LM/IMP/2022', judul:'Implementasi Sistem Manajemen Arsip Digital', mhs:'Sari Wulandari', prodi:'D3 Administrasi Perkantoran', tgl:'10 Jun 2025', status:'revisi', link:'' },
+  { id:1, nopanggil:'BAG/TM/PI/PRO/2024', judul:'Prototipe Alat Monitoring Kualitas Air Sungai Berbasis IoT', mhs:'Bagas Prasetyo', prodi:'D4 Teknologi Rekayasa Otomotif', tgl:'12 Jun 2025', status:'pending', link:'https://github.com/bagas/iot-water' },
+  { id:2, nopanggil:'DEW/TI/TA/SIS/2023', judul:'Sistem Informasi Akademik Terintegrasi Berbasis Cloud', mhs:'Dewi Rahayu', prodi:'D4 Teknologi Rekayasa Sistem Elektronika', tgl:'09 Jun 2025', status:'disetujui', link:'' },
+  { id:3, nopanggil:'SAR/AP/LM/IMP/2022', judul:'Implementasi Sistem Manajemen Arsip Digital', mhs:'Sari Wulandari', prodi:'D4 Manajemen Pemasaran', tgl:'10 Jun 2025', status:'revisi', link:'' },
   { id:4, nopanggil:'RIZ/AK/AJ/ANA/2023', judul:'Analisis Efisiensi Anggaran Daerah Kota Malang 2020–2023', mhs:'Rizki Amalia', prodi:'D4 Akuntansi', tgl:'09 Jun 2025', status:'disetujui', link:'' },
   { id:5, nopanggil:'KAR/PD/TA/RAN/2020', judul:'Rancang Bangun Website Perpustakaan Keliling Berbasis PWA', mhs:'Karina Aliya', prodi:'D4 Perpustakaan Digital', tgl:'08 Jun 2025', status:'pending', link:'' },
-  { id:6, nopanggil:'FAU/DKV/PI/IDE/2022', judul:'Identitas Visual Brand UMKM Kota Malang', mhs:'Ahmad Fauzan', prodi:'D4 Desain Komunikasi Visual', tgl:'07 Jun 2025', status:'pending', link:'' }
+  { id:6, nopanggil:'FAU/DKV/PI/IDE/2022', judul:'Identitas Visual Brand UMKM Kota Malang', mhs:'Ahmad Fauzan', prodi:'D4 Desain Mode', tgl:'07 Jun 2025', status:'pending', link:'' }
 ];
 
 const _AKUN_PENDING = [
-  { nim:'230213704301', nama:'Bima Saputra',       prodi:'D4 Teknologi Informasi',    tgl:'10 Jun', status:'pending' },
-  { nim:'230213704302', nama:'Laila Fitriani',     prodi:'D3 Administrasi Perkantoran', tgl:'11 Jun', status:'pending' },
+  { nim:'230213704301', nama:'Bima Saputra',       prodi:'D4 Teknologi Rekayasa Sistem Elektronika',    tgl:'10 Jun', status:'pending' },
+  { nim:'230213704302', nama:'Laila Fitriani',     prodi:'D4 Manajemen Pemasaran', tgl:'11 Jun', status:'pending' },
   { nim:'230213704303', nama:'Rizal Hidayatullah', prodi:'D4 Akuntansi',               tgl:'11 Jun', status:'pending' },
   { nim:'230213704305', nama:'Dwi Kurniawati',     prodi:'D4 Perpustakaan Digital',    tgl:'12 Jun', status:'disetujui' },
-  { nim:'230213704306', nama:'Fajar Nugroho',      prodi:'D4 Teknik Mesin',            tgl:'08 Jun', status:'ditolak' }
+  { nim:'230213704306', nama:'Fajar Nugroho',      prodi:'D4 Teknologi Rekayasa Otomotif',            tgl:'08 Jun', status:'ditolak' }
 ];
 
 const _PROFIL_DUMMY = {
@@ -160,20 +160,21 @@ const _PROFIL_DUMMY = {
   angkatan: '2022',
   gender: 'P',
   email: 'mahasiswa@vokasi.um.ac.id',
+  foto_url: null,  // Supabase Storage URL saat backend aktif; null = tampilkan initials avatar
 };
 
 const _PRODI_LIST = [
   'D4 Perpustakaan Digital',
-  'D3 Teknologi Informasi',
-  'D4 Teknologi Rekayasa Elektro',
-  'D4 Teknologi Mesin',
-  'D4 Manajemen Informatika',
+  'D4 Animasi',
+  'D4 Manajemen Pemasaran',
   'D4 Akuntansi',
-  'D3 Administrasi Perkantoran',
-  'D3 Teknik Mesin',
-  'D4 Teknologi Industri',
-  'D3 Kimia Industri',
-  'D4 Teknologi Pendidikan',
+  'D4 Tata Boga',
+  'D4 Desain Mode',
+  'D4 Teknologi Rekayasa dan Pemeliharaan Bangunan Sipil',
+  'D4 Teknologi Rekayasa Bangunan Manufaktur',
+  'D4 Teknologi Rekayasa Otomotif',
+  'D4 Teknologi Rekayasa Pembangkit Energi',
+  'D4 Teknologi Rekayasa Sistem Elektronika',
 ];
 
 // Dummy login credentials — akan diganti JWT Supabase saat backend siap
@@ -224,7 +225,7 @@ const ApiService = {
     /**
      * Login
      * @returns {ok, user, error}
-     * Supabase: POST /api/auth/login → {token, nama, email, role}
+     * Supabase: POST /api/auth/login → {token, nama, email, role, foto_url}
      */
     async login(email, password) {
       try {
@@ -233,7 +234,13 @@ const ApiService = {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password })
         });
-        const user = { name: data.nama, email: data.email, role: data.role, token: data.token };
+        const user = {
+          name:     data.nama,
+          email:    data.email,
+          role:     data.role,
+          token:    data.token,
+          foto:     data.foto_url || null,  // Supabase Storage URL → stored as 'foto' in LS
+        };
         this.setUser(user);
         return { ok: true, user };
       } catch (e) {
@@ -242,7 +249,7 @@ const ApiService = {
           return u.email === email && u.password === password;
         });
         if (found) {
-          const user = { name: found.name, email: found.email, role: found.role };
+          const user = { name: found.name, email: found.email, role: found.role, foto: null };
           this.setUser(user);
           return { ok: true, user, offline: true };
         }
@@ -267,6 +274,8 @@ const ApiService = {
     /**
      * Daftar akun baru
      * localStorage('digilab-pending-reg') → public.users (status: pending)
+     * Field yang dikirim: { nama, nim, prodi, email, password }
+     * foto_url diisi setelah akun diverifikasi admin + mahasiswa upload foto via uploadFoto()
      * @returns {ok, offline}
      */
     async register(data) {
@@ -287,7 +296,7 @@ const ApiService = {
 
     /**
      * Ambil profil user yang sedang login
-     * Supabase: GET /api/auth/me → public.users row
+     * Supabase: GET /api/auth/me → public.users row (termasuk foto_url dari Storage)
      */
     async getProfile() {
       try {
@@ -300,8 +309,10 @@ const ApiService = {
     },
 
     /**
-     * Update profil
-     * Supabase: PUT /api/auth/me
+     * Update profil teks (nama, email, nim, gender, angkatan, prodi)
+     * Supabase: PUT /api/auth/me → public.users
+     * Untuk update foto, gunakan uploadFoto() terpisah.
+     * @param {Object} data — { nama?, email?, nim?, prodi?, gender?, angkatan?, foto_url? }
      */
     async updateProfile(data) {
       try {
@@ -310,16 +321,109 @@ const ApiService = {
           headers: { 'Content-Type': 'application/json', ..._authHeader() },
           body: JSON.stringify(data)
         });
-        // Sinkron nama di localStorage
-        if (data.nama) {
-          const u = this.getUser();
-          if (u) { u.name = data.nama; this.setUser(u); }
+        // Sinkron nama, email, dan foto_url di localStorage
+        const u = this.getUser();
+        if (u) {
+          if (data.nama)     { u.name  = data.nama; }
+          if (data.email)    { u.email = data.email; }
+          if (data.foto_url) { u.foto  = data.foto_url; }
+          this.setUser(u);
         }
         return { ok: true };
       } catch (e) {
+        // Offline fallback: tetap sinkron localStorage walau API gagal
+        const u = this.getUser();
+        if (u) {
+          if (data.nama)     { u.name  = data.nama; }
+          if (data.email)    { u.email = data.email; }
+          if (data.foto_url) { u.foto  = data.foto_url; }
+          this.setUser(u);
+        }
         return { ok: true, offline: true };
       }
-    }
+    },
+
+    /**
+     * Upload foto profil ke Supabase Storage
+     *
+     * Supabase path  : avatars/{userId}/profile.jpg   (bucket: avatars, public)
+     * Backend endpoint: POST /api/auth/me/foto (multipart, field: foto)
+     *   → server upload ke Storage → update public.users.foto_url → return { foto_url }
+     *
+     * Development fallback: simpan sebagai base64 di localStorage (digilab-user.foto)
+     *   Saat backend aktif, ganti seluruh body try{} dengan fetch ke endpoint di atas.
+     *
+     * @param {File}   file   — File object dari <input type="file">
+     * @param {string} userId — UUID user (dari ApiService.auth.getUser().id atau Supabase uid)
+     * @returns {Promise<string>} — URL foto (base64 di dev, Storage URL di prod)
+     */
+    async uploadFoto(file, userId) {
+      // Validasi file sebelum upload
+      const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+      const MAX_SIZE_MB   = 2;
+      if (!ALLOWED_TYPES.includes(file.type)) {
+        throw new Error('Format foto tidak didukung. Gunakan JPG, PNG, atau WebP.');
+      }
+      if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+        throw new Error('Ukuran foto maksimal ' + MAX_SIZE_MB + 'MB.');
+      }
+
+      try {
+        // ── SAAT BACKEND AKTIF: uncomment blok ini, hapus blok fallback di bawah ──
+        //
+        // const formData = new FormData();
+        // formData.append('foto', file);
+        // const res = await fetch(API_BASE + '/auth/me/foto', {
+        //   method: 'POST',
+        //   headers: _authHeader(),   // Content-Type otomatis multipart dari FormData
+        //   body: formData
+        // });
+        // if (!res.ok) throw new Error('Upload foto gagal: HTTP ' + res.status);
+        // const { foto_url } = await res.json();
+        //
+        // // Sinkron foto_url ke localStorage
+        // const u = this.getUser();
+        // if (u) { u.foto = foto_url; this.setUser(u); }
+        // return foto_url;
+        //
+        // ── ATAU langsung via Supabase JS SDK (tanpa backend) ──
+        //
+        // const ext  = file.name.split('.').pop();
+        // const path = userId + '/profile.' + ext;
+        // const { error: upErr } = await supabase.storage
+        //   .from('avatars')
+        //   .upload(path, file, { upsert: true, contentType: file.type });
+        // if (upErr) throw upErr;
+        // const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(path);
+        // await supabase.from('users').update({ foto_url: publicUrl }).eq('id', userId);
+        // const u = this.getUser();
+        // if (u) { u.foto = publicUrl; this.setUser(u); }
+        // return publicUrl;
+
+        // ── DEVELOPMENT FALLBACK: base64 di localStorage ──────────────────────────
+        // Catatan: base64 ~1.3× ukuran file asli — untuk dev saja, bukan production
+        return await new Promise(function(resolve, reject) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            try {
+              const u = JSON.parse(localStorage.getItem(LS.USER) || '{}');
+              u.foto = e.target.result;
+              localStorage.setItem(LS.USER, JSON.stringify(u));
+              resolve(e.target.result);
+            } catch (writeErr) {
+              reject(new Error('Gagal menyimpan foto ke localStorage: ' + writeErr.message));
+            }
+          };
+          reader.onerror = function() { reject(new Error('Gagal membaca file foto.')); };
+          reader.readAsDataURL(file);
+        });
+        // ─────────────────────────────────────────────────────────────────────────
+
+      } catch (e) {
+        console.error('uploadFoto error:', e);
+        throw e;  // re-throw agar pemanggil bisa tampilkan pesan error ke user
+      }
+    },
   },
 
   // ━━ KARYA ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -386,7 +490,6 @@ const ApiService = {
      */
     async create(data) {
       try {
-        const user = ApiService.auth.getUser();
         const res = await fetch(API_BASE + '/karya', {
           method: 'POST',
           headers: _authHeader(),

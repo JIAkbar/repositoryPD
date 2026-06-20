@@ -20,7 +20,8 @@ CREATE TABLE IF NOT EXISTS users (
   nama         VARCHAR(150) NOT NULL,
   role         VARCHAR(20) NOT NULL DEFAULT 'mahasiswa',
   prodi_id     INT REFERENCES program_studi(id) ON DELETE SET NULL,
-  foto_profil  TEXT,
+  foto_profil  TEXT,                              -- alias lama, tetap untuk kompatibilitas
+  foto_url     TEXT DEFAULT NULL,              -- URL foto profil dari Supabase Storage (bucket: avatars)
   is_active    BOOLEAN DEFAULT TRUE,
   created_at   TIMESTAMPTZ DEFAULT NOW(),
   updated_at   TIMESTAMPTZ DEFAULT NOW()
@@ -153,3 +154,33 @@ CREATE POLICY "dosen_admin_write" ON public.dosen_pembimbing
 -- sebagai teks bebas untuk kemudahan. Saat migrasi ke relasi FK, jalankan:
 --   ALTER TABLE karya_ilmiah
 --     ADD COLUMN dosen_pembimbing_id UUID REFERENCES public.dosen_pembimbing(id);
+
+-- ═══════════════════════════════════════════════════════════════════════════════
+-- SUPABASE STORAGE — Bucket "avatars" (jalankan setup via Dashboard / CLI)
+-- ═══════════════════════════════════════════════════════════════════════════════
+-- 1. Buat bucket "avatars" di Supabase Dashboard → Storage → New Bucket
+--    Nama    : avatars
+--    Public  : TRUE  (foto profil bisa diakses publik tanpa auth)
+--
+-- 2. RLS Policies untuk bucket avatars:
+--    a) INSERT  : auth.uid()::text = (storage.foldername(name))[1]
+--       (user hanya bisa upload ke folder miliknya sendiri)
+--    b) UPDATE  : auth.uid()::text = (storage.foldername(name))[1]
+--       (user hanya bisa replace foto miliknya sendiri)
+--    c) SELECT  : true
+--       (semua orang bisa melihat foto profil — public bucket)
+--    d) DELETE  : auth.uid()::text = (storage.foldername(name))[1]
+--       (user bisa hapus foto miliknya sendiri)
+--
+-- 3. Path format yang digunakan:
+--    avatars/{user_id}/profile.jpg   ← foto profil utama
+--    avatars/{user_id}/profile.png   ← alternatif format
+--    Contoh URL publik:
+--    https://<project>.supabase.co/storage/v1/object/public/avatars/{user_id}/profile.jpg
+--
+-- 4. Setelah upload via frontend, simpan URL ke kolom users.foto_url:
+--    UPDATE public.users SET foto_url = '<public_url>' WHERE id = auth.uid();
+--
+-- 5. Untuk delete + replace foto lama, gunakan Supabase Storage upsert:
+--    supabase.storage.from('avatars').upload(path, file, { upsert: true })
+-- ═══════════════════════════════════════════════════════════════════════════════

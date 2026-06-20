@@ -61,7 +61,7 @@ a{text-decoration:none;color:inherit;}
   position:sticky;top:0;height:100vh;overflow-y:auto;
 }
 /* Sidebar brand */
-.evo-sidebar-brand{padding:14px 16px 12px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.1);}
+.evo-sidebar-brand{height:58px;padding:0 16px;box-sizing:border-box;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.1);flex-shrink:0;}
 .evo-brand-icon{width:36px;height:36px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .evo-brand-icon svg{width:36px;height:36px;}
 .evo-brand-name{font-family:'Nunito',sans-serif;font-weight:900;font-size:.85rem;color:#fff;line-height:1.2;letter-spacing:.04em;}
@@ -281,7 +281,11 @@ tbody tr:hover{background:#faf9f6;}
 .evo-profil-wrap{display:grid;grid-template-columns:260px 1fr;gap:20px;align-items:start;}
 .evo-profil-card{background:var(--bg-card);border-radius:14px;border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow-sm);}
 .evo-profil-top{background:linear-gradient(135deg,var(--navy),var(--navy-mid));padding:32px 24px;text-align:center;}
-.evo-profil-pic{width:88px;height:88px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:900;font-size:34px;color:#fff;margin:0 auto 12px;border:3px solid rgba(255,255,255,.3);}
+.evo-profil-pic{width:88px;height:88px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:900;font-size:34px;color:#fff;margin:0 auto 0;border:3px solid rgba(255,255,255,.3);position:relative;overflow:hidden;cursor:pointer;}
+.evo-profil-pic img{width:100%;height:100%;object-fit:cover;border-radius:50%;position:absolute;inset:0;}
+.evo-profil-pic-wrap{margin:0 auto 12px;width:88px;position:relative;}
+.evo-profil-pic-wrap:hover .evo-profil-pic-edit{opacity:1;}
+.evo-profil-pic-edit{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.5);color:#fff;font-size:10px;font-family:'Lato',sans-serif;text-align:center;padding:4px 0;border-radius:0 0 50px 50px;opacity:0;transition:opacity .2s;cursor:pointer;}
 .evo-profil-name{font-family:'Nunito',sans-serif;font-weight:800;font-size:17px;color:#fff;margin-bottom:3px;}
 .evo-profil-nim{font-size:12px;color:rgba(255,255,255,.5);}
 .evo-profil-body{padding:18px 20px;}
@@ -531,7 +535,6 @@ tbody tr:hover{background:#faf9f6;}
       <div class="evo-topbar-right">
         <div class="evo-topbar-user">
           <div class="evo-topbar-avatar" id="topbar-avatar">N</div>
-          <div class="evo-topbar-name" id="topbar-name">Mahasiswa</div>
         </div>
       </div>
     </div>
@@ -802,7 +805,11 @@ tbody tr:hover{background:#faf9f6;}
         <div class="evo-profil-wrap">
           <div class="evo-profil-card">
             <div class="evo-profil-top">
-              <div class="evo-profil-pic" id="profil-avatar-big">N</div>
+              <div class="evo-profil-pic-wrap" onclick="document.getElementById('foto-input').click()">
+                <div class="evo-profil-pic" id="profil-avatar-big">N</div>
+                <div class="evo-profil-pic-edit">📷 Ganti</div>
+              </div>
+              <input type="file" id="foto-input" accept="image/*" style="display:none" onchange="uploadFotoProfil(this)">
               <div class="evo-profil-name" id="profil-name-big">Mahasiswa</div>
               <div class="evo-profil-nim" id="profil-nim-big">NIM: —</div>
             </div>
@@ -1035,7 +1042,6 @@ function loadApp(u) {
   document.getElementById('evo-profile-nim').textContent = 'NIM: ' + PROFIL_DATA.nim;
   // Topbar
   document.getElementById('topbar-avatar').textContent = initials;
-  document.getElementById('topbar-name').textContent = u.name || 'Mahasiswa';
   // Welcome card
   document.getElementById('welcome-avatar').textContent = initials;
   document.getElementById('welcome-name').textContent = 'Halo, ' + (u.name||'Mahasiswa') + '!';
@@ -1044,7 +1050,7 @@ function loadApp(u) {
   document.getElementById('pf-nim').value = PROFIL_DATA.nim;
   document.getElementById('pf-angkatan').value = PROFIL_DATA.angkatan;
   document.getElementById('pf-email').value = u.email || PROFIL_DATA.email;
-  document.getElementById('profil-avatar-big').textContent = initials;
+  _applyFoto(u.foto||null, initials);
   document.getElementById('profil-name-big').textContent = u.name || PROFIL_DATA.nama;
   document.getElementById('profil-nim-big').textContent = 'NIM: ' + PROFIL_DATA.nim;
   document.getElementById('info-prodi').textContent = PROFIL_DATA.prodi;
@@ -1131,18 +1137,51 @@ function showPage(name) {
 
 
 // ══ PROFIL ══
+function _applyFoto(foto, initials) {
+  const pic = document.getElementById('profil-avatar-big');
+  if (!pic) return;
+  if (foto) {
+    pic.textContent = '';
+    let img = pic.querySelector('img');
+    if (!img) { img = document.createElement('img'); pic.appendChild(img); }
+    img.src = foto;
+  } else {
+    const img = pic.querySelector('img');
+    if (img) img.remove();
+    pic.textContent = initials;
+  }
+  // Sidebar avatar (text only, small)
+  const sav = document.getElementById('evo-profile-avatar');
+  if (sav) sav.textContent = initials;
+  const tav = document.getElementById('topbar-avatar');
+  if (tav) tav.textContent = initials;
+}
+
+async function uploadFotoProfil(input) {
+  const file = input.files[0];
+  if (!file) return;
+  try {
+    const u = JSON.parse(localStorage.getItem('digilab-user') || '{}');
+    // ApiService.auth.uploadFoto handles: validasi, Storage upload (saat backend aktif),
+    // fallback base64 localStorage (saat development). Tinggal uncomment Supabase path di api-service.js.
+    const fotoData = await ApiService.auth.uploadFoto(file, u.id || 'local');
+    const initials = (u.name||'M').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+    _applyFoto(fotoData, initials);
+    showToast('Foto profil diperbarui!');
+  } catch(e) {
+    showToast(e.message || 'Gagal upload foto', true);
+  }
+}
+
 function saveProfil(){
   const u=JSON.parse(localStorage.getItem('digilab-user')||'{}');
   u.name=document.getElementById('pf-nama').value.trim()||u.name;
   localStorage.setItem('digilab-user',JSON.stringify(u));
   const initials=u.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
-  document.getElementById('evo-profile-avatar').textContent=initials;
+  _applyFoto(u.foto||null, initials);
   document.getElementById('evo-profile-name').textContent=u.name;
-  document.getElementById('topbar-avatar').textContent=initials;
-  document.getElementById('topbar-name').textContent=u.name;
   document.getElementById('welcome-avatar').textContent=initials;
   document.getElementById('welcome-name').textContent='Halo, '+u.name+'!';
-  document.getElementById('profil-avatar-big').textContent=initials;
   document.getElementById('profil-name-big').textContent=u.name;
   document.getElementById('info-prodi').textContent=document.getElementById('pf-prodi').value;
   document.getElementById('info-angkatan').textContent=document.getElementById('pf-angkatan').value;
