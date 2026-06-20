@@ -188,8 +188,10 @@ const _PRODI_LIST = [
 const _DUMMY_USERS = [
   { email:'admin', password:'admin', name:'Admin Pustakawan', role:'Admin Pustakawan' },
   { email:'mhs',   password:'mhs',   name:'Natasya Adelia R.', role:'Mahasiswa' },
-  { email:'admin@vokasi.um.ac.id',      password:'admin123', name:'Admin Pustakawan', role:'Admin Pustakawan' },
-  { email:'mahasiswa@vokasi.um.ac.id',  password:'mhs123',   name:'Natasya Adelia R.', role:'Mahasiswa' },
+  { email:'admin@digilab.demo',          password:'Admin123!', name:'Admin Pustakawan', role:'Admin Pustakawan' },
+  { email:'natasya@digilab.demo',        password:'Mhs12345!', name:'Natasya Adelia R.', role:'Mahasiswa' },
+  { email:'admin@vokasi.um.ac.id',       password:'admin123', name:'Admin Pustakawan', role:'Admin Pustakawan' },
+  { email:'mahasiswa@vokasi.um.ac.id',   password:'mhs123',   name:'Natasya Adelia R.', role:'Mahasiswa' },
 ];
 
 // ── HELPER ───────────────────────────────────────────────────────
@@ -263,9 +265,14 @@ const ApiService = {
             .select('*, program_studi(nama)')
             .eq('id', data.user.id)
             .single();
+          // Cek is_active — akun mahasiswa baru butuh verifikasi admin
+          if (profile && profile.is_active === false) {
+            await _supa.auth.signOut();
+            return { ok: false, error: 'Akun Anda belum diverifikasi oleh admin. Silakan tunggu konfirmasi.', inactive: true };
+          }
           const user = {
             id:    data.user.id,
-            name:  profile?.nama_lengkap || data.user.email,
+            name:  profile?.nama || data.user.email,
             email: data.user.email,
             role:  profile?.role || 'mahasiswa',
             nim:   profile?.nim_nidn || null,
@@ -274,13 +281,10 @@ const ApiService = {
           this.setUser(user);
           return { ok: true, user };
         } catch (supaErr) {
-          // Jika error bukan "user not found" (misalnya network error), tetap lanjut ke fallback
           if (supaErr.message && supaErr.message.toLowerCase().includes('invalid login credentials')) {
-            // Credentials salah — tidak perlu coba backend/dummy
-            // tapi tetap coba dummy untuk dev convenience
-          } else if (supaErr.message && supaErr.message.toLowerCase().includes('network')) {
-            // Network error — lanjut ke fallback
+            return { ok: false, error: 'Email atau password salah' };
           }
+          // Network/other error → fall through to dummy fallback
         }
       }
 
@@ -728,6 +732,4 @@ const ApiService = {
       }
     },
   },
-
 };
-/* ─── End ApiService ─────────────────────────────────────────── */

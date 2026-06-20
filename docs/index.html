@@ -1929,41 +1929,76 @@ function closeLoginOutside(e) {
   if (e.target === document.getElementById('login-overlay')) closeLogin();
 }
 
-function doLogin() {
+async function doLogin() {
   var email = (document.getElementById('login-email').value || '').trim();
   var pass  = (document.getElementById('login-pass').value || '').trim();
-  var accounts = {
-    'admin': { pass: 'admin', role: 'Admin Pustakawan' },
-    'mhs':   { pass: 'mhs',   role: 'Mahasiswa' }
+
+  // ── Shortcut demo (admin/admin, mhs/mhs) — tetap sync ──
+  var shortcuts = {
+    'admin': { pass: 'admin', role: 'Admin Pustakawan', name: 'Admin Pustakawan' },
+    'mhs':   { pass: 'mhs',   role: 'Mahasiswa',        name: 'Natasya Adelia R.' }
   };
-  var acc = accounts[email];
-  if (acc && acc.pass === pass) {
-    var user = { name: email === 'admin' ? 'Admin Pustakawan' : 'Natasya Adelia R.', email: email + '@digilab.um.ac.id', role: acc.role };
+  var sc = shortcuts[email];
+  if (sc && sc.pass === pass) {
+    var user = { name: sc.name, email: email + '@digilab.um.ac.id', role: sc.role };
     localStorage.setItem('digilab-user', JSON.stringify(user));
-    // Sembunyikan hint
     var hintEl = document.getElementById('login-hint');
     if (hintEl) hintEl.style.display = 'none';
     closeLogin();
-    // Reset welcome flag so destination page (admin-evo/mahasiswa-evo) shows its own welcome modal
     localStorage.removeItem('digilab-welcome-shown');
     showToast('Login berhasil, mengarahkan...');
-    if (acc.role === 'Admin Pustakawan') {
-      navigateTo('admin');
-    } else if (pendingNav) {
-      // Langsung ke tujuan yang diminta sebelum login
-      var dest = pendingNav;
-      pendingNav = null;
-      if (dest === 'pdf')     navToPdf();
-      else if (dest === 'penulis') navToPenulis();
-      else if (dest === 'produk')  navToProduk();
-    } else {
-      navigateTo('mahasiswa');
-    }
-  } else {
-    var errEl = document.getElementById('login-err');
-    errEl.style.display = 'block';
-    setTimeout(function(){ errEl.style.display = 'none'; }, 3000);
+    _afterLogin(sc.role);
+    return;
   }
+
+  // ── Supabase / ApiService ──
+  if (!email || !pass) {
+    _showLoginErr('Masukkan email dan password.');
+    return;
+  }
+  var btn = document.querySelector('.btn-login-submit');
+  if (btn) { btn.disabled = true; btn.textContent = 'Memuat...'; }
+  try {
+    var res = await ApiService.auth.login(email, pass);
+    if (res.ok) {
+      var hintEl2 = document.getElementById('login-hint');
+      if (hintEl2) hintEl2.style.display = 'none';
+      closeLogin();
+      localStorage.removeItem('digilab-welcome-shown');
+      showToast('Login berhasil, mengarahkan...');
+      _afterLogin(res.user.role);
+    } else if (res.inactive) {
+      _showLoginErr('Akun Anda belum diverifikasi oleh admin. Silakan tunggu konfirmasi.', 6000);
+    } else {
+      _showLoginErr(res.error || 'Email atau password salah');
+    }
+  } catch (e) {
+    _showLoginErr('Terjadi kesalahan. Coba lagi.');
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = 'Masuk'; }
+  }
+}
+
+function _afterLogin(role) {
+  if (role === 'Admin Pustakawan' || role === 'admin') {
+    navigateTo('admin');
+  } else if (pendingNav) {
+    var dest = pendingNav;
+    pendingNav = null;
+    if (dest === 'pdf')          navToPdf();
+    else if (dest === 'penulis') navToPenulis();
+    else if (dest === 'produk')  navToProduk();
+  } else {
+    navigateTo('mahasiswa');
+  }
+}
+
+function _showLoginErr(msg, dur) {
+  var errEl = document.getElementById('login-err');
+  if (!errEl) return;
+  errEl.textContent = msg;
+  errEl.style.display = 'block';
+  setTimeout(function(){ errEl.style.display = 'none'; errEl.textContent = 'Email atau password salah'; }, dur || 3000);
 }
 
 function openLogoutConfirm() {
@@ -2306,28 +2341,4 @@ function saveProfilEvo() {
   try { user = JSON.parse(localStorage.getItem('digilab-user')); } catch(e){}
   if (!user) return;
   var pn = document.getElementById('pf-nama-evo'); if(pn) user.name = pn.value.trim();
-  var pe = document.getElementById('pf-email-evo'); if(pe) user.email = pe.value.trim();
-  localStorage.setItem('digilab-user', JSON.stringify(user));
-  // Update header chip
-  var chip = document.getElementById('user-name'); if(chip) chip.textContent = user.name;
-  var av = document.getElementById('user-ava');
-  if(av) av.textContent = (user.name||'U').split(' ').map(function(w){return w[0]||'';}).slice(0,2).join('').toUpperCase()||'U';
-  showToast('Profil berhasil disimpan!');
-}
-</script>
-
-<!-- Admin Redirect Modal -->
-<div id="admin-redirect-overlay" onclick="closeAdminRedirect()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9998;align-items:center;justify-content:center;">
-  <div onclick="event.stopPropagation()" style="background:#fff;border-radius:20px;padding:36px 32px;max-width:380px;width:90%;text-align:center;box-shadow:0 12px 48px rgba(0,0,0,.2);">
-    <div style="width:60px;height:60px;border-radius:50%;background:var(--orange,#e8821e);color:#fff;font-size:1.6rem;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">🛡️</div>
-    <h3 style="margin:0 0 8px;font-family:Nunito,sans-serif;font-size:1.15rem;color:var(--text-dark,#122830);">Akses Dibatasi</h3>
-    <p style="margin:0 0 20px;color:var(--text-muted,#6b8e96);font-size:.9rem;line-height:1.5;">Anda login sebagai <strong>Admin Pustakawan</strong>.<br>Silakan gunakan <strong>Panel Admin</strong> untuk mengelola repository.</p>
-    <div style="display:flex;gap:12px;flex-direction:column;">
-      <button onclick="closeAdminRedirect(); navigateTo('admin');" style="padding:12px;border:none;border-radius:999px;background:var(--navy,#094e58);color:#fff;cursor:pointer;font-family:Nunito,sans-serif;font-weight:700;font-size:.95rem;">→ Ke Panel Admin</button>
-      <button onclick="closeAdminRedirect()" style="padding:10px;border:1.5px solid var(--border,#dde8ea);border-radius:999px;background:#fff;cursor:pointer;font-family:Nunito,sans-serif;font-weight:600;color:var(--text-mid,#2d5a65);">Tutup</button>
-    </div>
-  </div>
-</div>
-
-</body>
-</html>
+  var pe = document.getElementById('pf
