@@ -6,7 +6,9 @@
 <title>DIGILAB Repository — Fakultas Vokasi UM</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="theme.js"></script>
+<script src="data-master.js"></script>
 <script src="layout-router.js"></script>
+<script src="api-service.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Lato:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
 <style>
 /* ── EVO PALETTE ── */
@@ -2051,13 +2053,13 @@ function closeAdminRedirect() {
 }
 
 /* ── TOAST ── */
-function showToast(msg, isErr) {
+function showToast(msg, isErr, dur) {
   var t = document.getElementById('toast');
   if (!t) return;
   t.textContent = msg;
   t.className = 'show' + (isErr ? ' err' : '');
   clearTimeout(t._tid);
-  t._tid = setTimeout(function(){ t.className = ''; }, 2800);
+  t._tid = setTimeout(function(){ t.className = ''; }, dur || 2800);
 }
 
 /* ── INIT ── */
@@ -2176,7 +2178,7 @@ function closeRegister() {
   ['reg-nama','reg-nim','reg-prodi','reg-email','reg-pass'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
   var err = document.getElementById('reg-error'); if(err) err.style.display='none';
 }
-function doRegister() {
+async function doRegister() {
   var nama  = (document.getElementById('reg-nama').value||'').trim();
   var nim   = (document.getElementById('reg-nim').value||'').trim();
   var prodi = document.getElementById('reg-prodi').value;
@@ -2190,56 +2192,48 @@ function doRegister() {
   if (!prodi) return showErr('Program Studi wajib dipilih.');
   if (!email) return showErr('Email wajib diisi.');
   if (pass.length < 8) return showErr('Password minimal 8 karakter.');
-  // Coba Supabase signUp dulu, fallback ke localStorage jika belum tersedia
-  var _supa = (typeof window !== 'undefined' && window._supaClient) || null;
-  // Cek juga window.supabase client yang mungkin sudah diinit di api-service.js
-  if (!_supa && window.ApiService && window.ApiService._getSupaClient) {
-    _supa = window.ApiService._getSupaClient();
-  }
 
-  function _saveLocalFallback() {
+  // Disable tombol saat proses
+  var btn = document.querySelector('#reg-overlay .btn-login');
+  if (btn) { btn.disabled = true; btn.textContent = 'Mendaftar...'; }
+  function resetBtn(){ if(btn){btn.disabled=false;btn.textContent='Daftar Sekarang';} }
+
+  // Coba Supabase signUp via _supa dari api-service.js
+  if (typeof _supa !== 'undefined' && _supa) {
     try {
-      var pending = JSON.parse(localStorage.getItem('digilab-pending-reg') || '[]');
-      pending.push({ nama:nama, nim:nim, prodi:prodi, email:email, status:'pending', tgl:new Date().toISOString() });
-      localStorage.setItem('digilab-pending-reg', JSON.stringify(pending));
-    } catch(e){}
-  }
-
-  // Coba cek apakah _supa tersedia via api-service SUPABASE_URL check
-  var supaAvail = false;
-  try {
-    var supaUrl = (typeof SUPABASE_URL !== 'undefined') ? SUPABASE_URL : null;
-    var supaKey = (typeof SUPABASE_ANON_KEY !== 'undefined') ? SUPABASE_ANON_KEY : null;
-    if (supaUrl && supaKey && window.supabase) {
-      var _sc = window.supabase.createClient(supaUrl, supaKey);
-      supaAvail = true;
-      _sc.auth.signUp({
+      var res = await _supa.auth.signUp({
         email: email,
         password: pass,
         options: { data: { nama: nama, nim: nim, prodi: prodi } }
-      }).then(function(res) {
-        if (res.error) {
-          // Supabase error — simpan ke localStorage sebagai fallback
-          _saveLocalFallback();
-          closeRegister();
-          showToast('Pendaftaran berhasil! Menunggu verifikasi admin.');
-        } else {
-          closeRegister();
-          showToast('Pendaftaran berhasil! Menunggu verifikasi admin.');
-        }
-      }).catch(function() {
-        _saveLocalFallback();
-        closeRegister();
-        showToast('Pendaftaran berhasil! Menunggu verifikasi admin.');
       });
-      return; // async path — exit here
+      resetBtn();
+      if (res.error) {
+        // Tampilkan error Supabase di form
+        var msg = res.error.message || 'Pendaftaran gagal.';
+        if (msg.includes('already registered')) msg = 'Email sudah terdaftar. Coba login.';
+        if (msg.includes('rate limit'))         msg = 'Terlalu banyak percobaan. Tunggu beberapa menit.';
+        if (msg.includes('invalid'))            msg = 'Format email tidak valid.';
+        return showErr(msg);
+      }
+      // Sukses via Supabase
+      closeRegister();
+      showToast('Pendaftaran berhasil! Menunggu verifikasi admin.', false, 5000);
+      return;
+    } catch(e) {
+      resetBtn();
+      // Lanjut ke fallback
     }
-  } catch(e) {}
+  }
 
   // Fallback offline: simpan ke localStorage
-  _saveLocalFallback();
+  resetBtn();
+  try {
+    var pending = JSON.parse(localStorage.getItem('digilab-pending-reg') || '[]');
+    pending.push({ nama:nama, nim:nim, prodi:prodi, email:email, status:'pending', tgl:new Date().toISOString() });
+    localStorage.setItem('digilab-pending-reg', JSON.stringify(pending));
+  } catch(e){}
   closeRegister();
-  showToast('Pendaftaran berhasil! Menunggu verifikasi admin.');
+  showToast('Pendaftaran berhasil! Menunggu verifikasi admin.', false, 5000);
 }
 
 /* ── AKUN / PROFIL ── */
@@ -2284,4 +2278,4 @@ function saveProfilEvo() {
 </div>
 
 </body>
-</html>
+</html>                                                                                                                                                                                                                                                             
