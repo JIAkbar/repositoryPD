@@ -63,17 +63,17 @@ let formData = {};
 
 // ── Konstanta No. Panggil ──
 var PRODI_KODE = {
-  'D4 Perpustakaan Digital':       'PD',
-  'D3 Teknologi Informasi':        'TI',
-  'D4 Teknologi Rekayasa Elektro': 'TRE',
-  'D4 Teknologi Mesin':            'TM',
-  'D4 Manajemen Informatika':      'MI',
-  'D4 Akuntansi':                  'AK',
-  'D3 Administrasi Perkantoran':   'AP',
-  'D3 Teknik Mesin':               'TKM',
-  'D4 Teknologi Industri':         'TID',
-  'D3 Kimia Industri':             'KI',
-  'D4 Teknologi Pendidikan':       'TP',
+  'D4 Perpustakaan Digital':                              'PD',
+  'D4 Animasi':                                           'AN',
+  'D4 Manajemen Pemasaran':                               'MP',
+  'D4 Akuntansi':                                         'AK',
+  'D4 Tata Boga':                                         'TB',
+  'D4 Desain Mode':                                       'DM',
+  'D4 Teknologi Rekayasa dan Pemeliharaan Bangunan Sipil':'TRBS',
+  'D4 Teknologi Rekayasa Bangunan Manufaktur':            'TRBM',
+  'D4 Teknologi Rekayasa Otomotif':                       'TRO',
+  'D4 Teknologi Rekayasa Pembangkit Energi':              'TRPE',
+  'D4 Teknologi Rekayasa Sistem Elektronika':             'TRSE',
 };
 var JENIS_KODE = {
   'Tugas Akhir':    'TA',
@@ -521,4 +521,37 @@ function generateNoPanggil() {
   if (!judulPilih && judulKata.length > 0) judulPilih = judulKata[0].replace(/[^A-Za-z]/g, '');
   var kodeJudul = judulPilih.substring(0, 3).toUpperCase() || '???';
   out.value = kodeNama + '/' + kodeProdi + '/' + kodeJenis + '/' + kodeJudul + '/' + tahun;
+}
+// ══════════════════════════════════════════
+// MASTER DATA RENDERERS — from window.MASTER_DOSEN / window.MASTER_PRODI
+// Dipanggil di loadApp() di setiap halaman mahasiswa
+// ══════════════════════════════════════════
+function renderMasterDosen(selectId) {
+  var el = document.getElementById(selectId);
+  if (!el || !window.MASTER_DOSEN || !window.MASTER_DOSEN.length) return;
+  // Unwrap searchable wrapper if present
+  var wrap = el.closest ? el.closest('.srch-wrap') : null;
+  if (wrap) { wrap.parentNode.insertBefore(el, wrap); wrap.remove(); el.removeAttribute('data-searchable'); }
+  var cur = el.value;
+  el.innerHTML = '<option value="">-- Pilih Dosen --</option>';
+  window.MASTER_DOSEN.forEach(function(d) {
+    var o = document.createElement('option');
+    o.value = d; o.textContent = d;
+    el.appendChild(o);
+  });
+  if (cur) el.value = cur;
+  if (typeof initSearchableSelect === 'function') initSearchableSelect(el);
+}
+
+function renderMasterProdi(selectId, withEmpty) {
+  var el = document.getElementById(selectId);
+  if (!el || !window.MASTER_PRODI || !window.MASTER_PRODI.length) return;
+  var cur = el.value;
+  el.innerHTML = withEmpty ? '<option value="">-- Pilih Prodi --</option>' : '';
+  window.MASTER_PRODI.forEach(function(p) {
+    var o = document.createElement('option');
+    o.value = p; o.textContent = p;
+    el.appendChild(o);
+  });
+  if (cur) el.value = cur;
 }

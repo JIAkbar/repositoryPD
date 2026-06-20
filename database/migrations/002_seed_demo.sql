@@ -46,7 +46,7 @@ INSERT INTO users (id, nim_nidn, nama, role, prodi_id, is_active) VALUES
     '230213704301',
     'Bima Saputra',
     'mahasiswa',
-    (SELECT id FROM program_studi WHERE kode = 'D4-TI'),   -- D4 Teknologi Informasi
+    (SELECT id FROM program_studi WHERE kode = 'D4-TRSE'),   -- D4 Teknologi Rekayasa Sistem Elektronika
     true
   ),
   (
@@ -54,7 +54,7 @@ INSERT INTO users (id, nim_nidn, nama, role, prodi_id, is_active) VALUES
     '230213704302',
     'Laila Fitriani',
     'mahasiswa',
-    (SELECT id FROM program_studi WHERE kode = 'D3-ADP'),  -- D3 Administrasi Perkantoran
+    (SELECT id FROM program_studi WHERE kode = 'D4-MP'),  -- D4 Manajemen Pemasaran
     true
   ),
   (
@@ -70,7 +70,7 @@ INSERT INTO users (id, nim_nidn, nama, role, prodi_id, is_active) VALUES
     '220213704280',
     'Dwi Kurniawati',
     'mahasiswa',
-    (SELECT id FROM program_studi WHERE kode = 'D3-ADP'),  -- D3 Administrasi Perkantoran
+    (SELECT id FROM program_studi WHERE kode = 'D4-MP'),  -- D4 Manajemen Pemasaran
     true
   ),
   (
@@ -78,7 +78,7 @@ INSERT INTO users (id, nim_nidn, nama, role, prodi_id, is_active) VALUES
     '220213704281',
     'Fajar Nugroho',
     'mahasiswa',
-    (SELECT id FROM program_studi WHERE kode = 'D4-MO'),   -- D4 Manajemen Operasional
+    (SELECT id FROM program_studi WHERE kode = 'D4-MP'),   -- D4 Manajemen Pemasaran
     true
   ),
   -- Penulis karya ilmiah (dari KARYA_DATA index.html)
@@ -95,7 +95,7 @@ INSERT INTO users (id, nim_nidn, nama, role, prodi_id, is_active) VALUES
     '190213700002',
     'Hartono',
     'mahasiswa',
-    (SELECT id FROM program_studi WHERE kode = 'D4-TI'),
+    (SELECT id FROM program_studi WHERE kode = 'D4-TRSE'),
     true
   ),
   (
@@ -103,7 +103,7 @@ INSERT INTO users (id, nim_nidn, nama, role, prodi_id, is_active) VALUES
     '190213700003',
     'Suherman',
     'mahasiswa',
-    (SELECT id FROM program_studi WHERE kode = 'D4-TM'),
+    (SELECT id FROM program_studi WHERE kode = 'D4-TRO'),
     true
   ),
   (
@@ -111,7 +111,7 @@ INSERT INTO users (id, nim_nidn, nama, role, prodi_id, is_active) VALUES
     '200213700001',
     'Dewi Rahayu',
     'mahasiswa',
-    (SELECT id FROM program_studi WHERE kode = 'D4-TI'),
+    (SELECT id FROM program_studi WHERE kode = 'D4-TRSE'),
     true
   ),
   (
@@ -119,7 +119,7 @@ INSERT INTO users (id, nim_nidn, nama, role, prodi_id, is_active) VALUES
     '200213700002',
     'Ahmad Fauzi',
     'mahasiswa',
-    (SELECT id FROM program_studi WHERE kode = 'D4-DKV'),
+    (SELECT id FROM program_studi WHERE kode = 'D4-DM'),
     true
   ),
   (
@@ -167,7 +167,7 @@ VALUES
     'website, laundry, lokasi, GPS, Google Maps',
     2021, 'Tugas Akhir', 'HAR/TI/TA/RAN/2021', 'WEBSITE — TEKNOLOGI INFORMASI', 'disetujui',
     '00000000-0000-0000-0000-000000000011',
-    (SELECT id FROM program_studi WHERE kode = 'D4-TI'),
+    (SELECT id FROM program_studi WHERE kode = 'D4-TRSE'),
     (SELECT id FROM kategori WHERE nama = 'Tugas Akhir'),
     'Dr. Budi Santoso, M.T.',
     34
@@ -178,7 +178,7 @@ VALUES
     'mesin, limbah tekstil, daur ulang, ramah lingkungan, prototipe',
     2022, 'Artikel Jurnal', 'SUH/TM/SKR/RAN/2022', 'TEKNIK MESIN — LINGKUNGAN', 'disetujui',
     '00000000-0000-0000-0000-000000000012',
-    (SELECT id FROM program_studi WHERE kode = 'D4-TM'),
+    (SELECT id FROM program_studi WHERE kode = 'D4-TRO'),
     (SELECT id FROM kategori WHERE nama = 'Tugas Akhir'),
     'Prof. Ir. Ahmad Syukur, M.T.',
     5
@@ -189,7 +189,7 @@ VALUES
     'sistem informasi, akademik, cloud, microservices, Node.js',
     2023, 'Tugas Akhir', 'DEW/TI/TA/SIS/2023', 'SISTEM INFORMASI — AKADEMIK', 'disetujui',
     '00000000-0000-0000-0000-000000000013',
-    (SELECT id FROM program_studi WHERE kode = 'D4-TI'),
+    (SELECT id FROM program_studi WHERE kode = 'D4-TRSE'),
     (SELECT id FROM kategori WHERE nama = 'Tugas Akhir'),
     'Dr. Wahyu Pratama, M.Kom.',
     87
@@ -200,7 +200,7 @@ VALUES
     'identitas visual, brand, UMKM, logo, desain komunikasi visual',
     2023, 'Tugas Akhir', 'FAU/DKV/TA/DES/2023', 'DESAIN KOMUNIKASI VISUAL', 'disetujui',
     '00000000-0000-0000-0000-000000000014',
-    (SELECT id FROM program_studi WHERE kode = 'D4-DKV'),
+    (SELECT id FROM program_studi WHERE kode = 'D4-DM'),
     (SELECT id FROM kategori WHERE nama = 'Tugas Akhir'),
     'Ir. Sinta Dewi, M.Ds.',
     43
@@ -293,3 +293,84 @@ UNION ALL
 SELECT 'media_files',   COUNT(*) FROM media_files
 UNION ALL
 SELECT 'kategori',      COUNT(*) FROM kategori;
+
+-- ── Seed: Dosen Pembimbing (72 item) ─────────────────────────────────────────
+-- Data sinkron dengan window.MASTER_DOSEN di docs/data-master.js
+-- Catatan: nama #46 (Dewi 'Izzatus Tsamroh) mengandung apostrof → di-escape jadi ''
+INSERT INTO public.dosen_pembimbing (nama, aktif) VALUES
+  ('Inawati, S.I.P., M.M.', TRUE),
+  ('Dr. Sokhibul Ansor, S.Sos., M.Hum.', TRUE),
+  ('Setiawan, S.Sos, M.IP', TRUE),
+  ('Adi Prasetyawan, S.Sos, M.A.', TRUE),
+  ('Lidya Amalia Rahmania, S.Kom, M.Kom', TRUE),
+  ('Joko Samodra, S.Kom., M.T.', TRUE),
+  ('Andy Pramono, S.Kom., M.T.', TRUE),
+  ('Mitra Istiar Wardhana, S.Kom, M.T.', TRUE),
+  ('Ima Kusumawati Hidayat, S.Sn., M.Ds.', TRUE),
+  ('Nuril Kusuma Wardani, S.Sn., M.Ds.', TRUE),
+  ('Dimas Rifky Novica, S.Sn., M.Ds.', TRUE),
+  ('Arif Sutrisno, S.Sn., M.Ds.', TRUE),
+  ('Bunga Fefiana Mustikasarii, S.Sn., M.Ds.', TRUE),
+  ('Rayie Tariaranie Wiraguna SE.,MM', TRUE),
+  ('Dr. Ely siswanto S.Sos.,MM', TRUE),
+  ('Handri dian S.Pd.,M.Sc', TRUE),
+  ('Della Ayu zonna Lia S.AB.,M.AB', TRUE),
+  ('Safira Rusyida SE.,M.MT', TRUE),
+  ('Ababil Karhoma Wijaya SE.,M.SM', TRUE),
+  ('Cesya Rizkika S.E. M.BA', TRUE),
+  ('Arum prasasti SE.,MSc', TRUE),
+  ('Ferby Mutia Edwy, S.E., M.Ak', TRUE),
+  ('Aulia Azzardina, S.E., M.Sc', TRUE),
+  ('Meirna Puspita Permatasari, S.E., M.Ak', TRUE),
+  ('Muhammad, S.E., M.S.A., Ak., CSRS', TRUE),
+  ('Fitri Purnamasari, S.E., M.S.A', TRUE),
+  ('Inanda Shinta Anugrahani, S.E., M.A', TRUE),
+  ('Dr. Muchammad Harly, S.T., M.T.', TRUE),
+  ('Windra Irdianto, S.Pd., M.Pd.', TRUE),
+  ('Ir. M. Ihwanudin, S.Pd., M.Pd.', TRUE),
+  ('Drs. Eddy Rudiyanto, M.Pd.', TRUE),
+  ('Fuad Indra Kusuma, S.Pd., M.Pd.', TRUE),
+  ('Drs. Nemesius Bambang Revantoro, M.T.', TRUE),
+  ('Apif Miptahul Hajji, S.T., M.T., M.Sc., Ph.D.', TRUE),
+  ('Pranoto, S.T., M.T.', TRUE),
+  ('Viola Malta Ramadhani, S.T., M.Ars.', TRUE),
+  ('Achmad Saiful Arifin, S.Pd, M.T.', TRUE),
+  ('Prabowo, S.T., M.T.', TRUE),
+  ('Ika Salsabila Nurahida, S.Tr.T, M.T.', TRUE),
+  ('Rais Amin, S.Pd, M.Pd', TRUE),
+  ('Obaja Eden Sentosa Riyanto, S.S.T., M.Sc.', TRUE),
+  ('Drs. Abdul Qolik, M.Pd', TRUE),
+  ('Drs. Imam Sudjono, M.T.', TRUE),
+  ('Riana Nurmalasari, S.Pd., M.Pd.', TRUE),
+  ('Ir. Didin Zakariya Lubis, S.Pd, M.Eng', TRUE),
+  ('Dewi ''Izzatus Tsamroh, S.Pd., M.T.', TRUE),
+  ('Drs. Wahono, M.Pd', TRUE),
+  ('Muhammad Ilman Nur Sasongko, S.Pd., M.T.', TRUE),
+  ('Sis Nanda Kus Andrianto, S.T., S.H., M.T.', TRUE),
+  ('Jibril Maulana, S.T., M.T.', TRUE),
+  ('Drs. Slamet Wibawanto, M.T.', TRUE),
+  ('Ir. Arya Kusumawardana, S.Pd., M.T.', TRUE),
+  ('Misbahul Munir, S.T., M.T.', TRUE),
+  ('Ir. Muhammad Afnan Habibi, S.T., M.T., M.Eng.', TRUE),
+  ('Royb Fatkhur Rizal, M.Eng.', TRUE),
+  ('Singgih Dwi Prasetyo, S.T., M.T.', TRUE),
+  ('Soraya Norma Mustika, S.T.,M.T., M.Sc', TRUE),
+  ('Dr. Muladi, S.T., M.T.', TRUE),
+  ('Achmad Hamdan, S.Pd, M.Pd', TRUE),
+  ('Satrio Dwi Sanjaya, S.T., M.Sc.', TRUE),
+  ('Dra. Wiwik Wahyuni, M.Pd.', TRUE),
+  ('Dr. Mazarina Devi, M.Si.', TRUE),
+  ('Dr. Ir. Soenar Soekopitojo, M.Si.', TRUE),
+  ('Nonny Aji Sunaryo, S.Pd., M.Par.', TRUE),
+  ('Arzendy Berlian Sabrina, S.Pd., M.Par.', TRUE),
+  ('Chintya Paramita Puspita, S.Pd., M.Pd.', TRUE),
+  ('Dr. Nurul Hidayati, S.Pd., M.Sn', TRUE),
+  ('Dr. Agus Sunandar, S.Pd., M.Sn', TRUE),
+  ('Dra. Sri Eko Puji Rahayu, M.Si', TRUE),
+  ('Rizky Yulianingrum, S.Pd., M.Pd', TRUE),
+  ('Ajeng Atma Kusuma, S.Pd., M.Pd', TRUE),
+  ('Rizka Sarah Heydarian Fatima, S.Pd., M.Pd', TRUE)
+ON CONFLICT (nama) DO NOTHING;
+
+-- Verifikasi tambahan
+SELECT 'dosen_pembimbing' AS tabel, COUNT(*) AS jumlah FROM public.dosen_pembimbing;

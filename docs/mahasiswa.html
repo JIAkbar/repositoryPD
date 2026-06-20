@@ -398,6 +398,47 @@ tbody tr:hover{background:#f8f8fc;}
     font-size:16px!important;
   }
 }
+/* ── Searchable Select ── */
+.srch-wrap { position: relative; }
+.srch-trigger {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; padding: 9px 12px; border: 1.5px solid var(--border);
+  border-radius: 6px; font-family: 'Lato', sans-serif; font-size: 14px;
+  background: var(--bg-card); color: var(--text-dark); cursor: pointer;
+  box-sizing: border-box; user-select: none; transition: border-color .2s;
+}
+.srch-trigger:hover, .srch-trigger:focus { border-color: var(--navy); outline: none; }
+.srch-trigger-text { flex: 1; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.srch-trigger-arrow { width: 16px; height: 16px; transition: transform .2s; flex-shrink: 0; }
+.srch-wrap.open .srch-trigger-arrow { transform: rotate(180deg); }
+.srch-dropdown {
+  position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+  background: var(--bg-card); border: 1.5px solid var(--border);
+  border-radius: 8px; max-height: 240px; overflow: hidden;
+  z-index: 9999; box-shadow: 0 6px 24px rgba(46,49,146,.15); display: none;
+  flex-direction: column;
+}
+.srch-wrap.open .srch-dropdown { display: flex; }
+.srch-search-box {
+  padding: 8px; border-bottom: 1px solid var(--border);
+  background: var(--bg-card); position: sticky; top: 0; flex-shrink: 0;
+}
+.srch-search-box input {
+  width: 100%; padding: 6px 10px; border: 1.5px solid var(--border);
+  border-radius: 5px; font-family: 'Lato', sans-serif; font-size: 13px;
+  color: var(--text-dark); background: var(--bg); box-sizing: border-box;
+  outline: none;
+}
+.srch-search-box input:focus { border-color: var(--navy); }
+.srch-list { overflow-y: auto; flex: 1; }
+.srch-item {
+  padding: 8px 14px; cursor: pointer; font-size: 13.5px;
+  color: var(--text-dark); transition: background .1s;
+}
+.srch-item:hover { background: var(--bg); }
+.srch-item.srch-selected { background: var(--navy); color: #fff; font-weight: 700; }
+.srch-item.srch-placeholder { color: var(--text-muted); font-style: italic; }
+.srch-empty { padding: 12px 14px; color: var(--text-muted); font-size: 13px; font-style: italic; }
 </style>
 </head>
 <body>
@@ -629,16 +670,16 @@ tbody tr:hover{background:#f8f8fc;}
               <select class="form-select" id="f-prodi-upload" onchange="generateNoPanggil();clearFieldError('f-prodi-upload')">
                 <option value="">Pilih prodi...</option>
                 <option value="D4 Perpustakaan Digital">D4 Perpustakaan Digital</option>
-                <option value="D3 Teknologi Informasi">D3 Teknologi Informasi</option>
-                <option value="D4 Teknologi Rekayasa Elektro">D4 Teknologi Rekayasa Elektro</option>
-                <option value="D4 Teknologi Mesin">D4 Teknologi Mesin</option>
-                <option value="D4 Manajemen Informatika">D4 Manajemen Informatika</option>
+                <option value="D4 Animasi">D4 Animasi</option>
+                <option value="D4 Manajemen Pemasaran">D4 Manajemen Pemasaran</option>
                 <option value="D4 Akuntansi">D4 Akuntansi</option>
-                <option value="D3 Administrasi Perkantoran">D3 Administrasi Perkantoran</option>
-                <option value="D3 Teknik Mesin">D3 Teknik Mesin</option>
-                <option value="D4 Teknologi Industri">D4 Teknologi Industri</option>
-                <option value="D3 Kimia Industri">D3 Kimia Industri</option>
-                <option value="D4 Teknologi Pendidikan">D4 Teknologi Pendidikan</option>
+                <option value="D4 Tata Boga">D4 Tata Boga</option>
+                <option value="D4 Desain Mode">D4 Desain Mode</option>
+                <option value="D4 Teknologi Rekayasa dan Pemeliharaan Bangunan Sipil">D4 Teknologi Rekayasa dan Pemeliharaan Bangunan Sipil</option>
+                <option value="D4 Teknologi Rekayasa Bangunan Manufaktur">D4 Teknologi Rekayasa Bangunan Manufaktur</option>
+                <option value="D4 Teknologi Rekayasa Otomotif">D4 Teknologi Rekayasa Otomotif</option>
+                <option value="D4 Teknologi Rekayasa Pembangkit Energi">D4 Teknologi Rekayasa Pembangkit Energi</option>
+                <option value="D4 Teknologi Rekayasa Sistem Elektronika">D4 Teknologi Rekayasa Sistem Elektronika</option>
               </select>
               <span class="field-error-msg" id="err-prodi">⚠ Wajib memilih Program Studi.</span>
             </div>
@@ -657,18 +698,6 @@ tbody tr:hover{background:#f8f8fc;}
               <label class="form-label">Dosen Pembimbing <span>*</span></label>
               <select class="form-select" id="f-pembimbing" onchange="clearFieldError('f-pembimbing')">
                 <option value="">-- Pilih Dosen --</option>
-                <option>Achmad Hamdan, S.Pd., M.Pd.</option>
-                <option>Dr. Agus Wedi, M.Pd.</option>
-                <option>Drs. Sihkabuden, M.Pd.</option>
-                <option>Dr. Yerry Soepriyanto, S.T., M.T.</option>
-                <option>Hariyanto, S.Pd., M.Pd.</option>
-                <option>Dr. Siti Rahayu, M.Lib.</option>
-                <option>Prof. Ir. Ahmad Syukur, M.T.</option>
-                <option>Dr. Budi Santoso, M.T.</option>
-                <option>Dr. Wahyu Pratama, M.Kom.</option>
-                <option>Candra Ariawan, S.Kom., M.Kom.</option>
-                <option>Dr. Endang Wahyu, M.Ak.</option>
-                <option>Ir. Sinta Dewi, M.Ds.</option>
               </select>
               <span class="field-error-msg" id="err-pembimbing">⚠ Wajib mencantumkan Dosen Pembimbing.</span>
             </div>
@@ -815,16 +844,16 @@ tbody tr:hover{background:#f8f8fc;}
                 <label class="profil-form-label">Program Studi</label>
                 <select class="profil-form-input" id="pf-prodi">
                   <option>D4 Perpustakaan Digital</option>
-                  <option>D3 Teknologi Informasi</option>
-                  <option>D4 Manajemen Informatika</option>
-                  <option>D3 Akuntansi</option>
-                  <option>D4 Akuntansi Perpajakan</option>
-                  <option>D3 Desain Komunikasi Visual</option>
-                  <option>D4 Desain Grafis</option>
-                  <option>D3 Teknik Mesin</option>
-                  <option>D4 Teknologi Rekayasa Mekatronika</option>
-                  <option>D3 Teknik Elektronika</option>
-                  <option>D4 Teknik Elektronika</option>
+                  <option>D4 Animasi</option>
+                  <option>D4 Manajemen Pemasaran</option>
+                  <option>D4 Akuntansi</option>
+                  <option>D4 Tata Boga</option>
+                  <option>D4 Desain Mode</option>
+                  <option>D4 Teknologi Rekayasa dan Pemeliharaan Bangunan Sipil</option>
+                  <option>D4 Teknologi Rekayasa Bangunan Manufaktur</option>
+                  <option>D4 Teknologi Rekayasa Otomotif</option>
+                  <option>D4 Teknologi Rekayasa Pembangkit Energi</option>
+                  <option>D4 Teknologi Rekayasa Sistem Elektronika</option>
                 </select>
               </div>
               <div class="profil-form-group">
@@ -879,9 +908,87 @@ tbody tr:hover{background:#f8f8fc;}
   <span id="toast-msg">Berhasil disimpan!</span>
 </div>
 
+  <script src="data-master.js"></script>
 <script src="api-service.js"></script>
 <script src="mahasiswa-shared.js"></script>
 <script>
+/* ── Searchable Select ── */
+function initSearchableSelect(selectEl) {
+  if (!selectEl || selectEl.dataset.searchable) return;
+  selectEl.dataset.searchable = '1';
+  var opts = Array.from(selectEl.options);
+  var wrap = document.createElement('div');
+  wrap.className = 'srch-wrap';
+  var trigger = document.createElement('div');
+  trigger.className = 'srch-trigger';
+  trigger.setAttribute('tabindex', '0');
+  var triggerText = document.createElement('span');
+  triggerText.className = 'srch-trigger-text';
+  triggerText.textContent = opts[0] ? opts[0].text : 'Pilih...';
+  var triggerArrow = document.createElementNS('http://www.w3.org/2000/svg','svg');
+  triggerArrow.setAttribute('viewBox','0 0 24 24'); triggerArrow.setAttribute('fill','none');
+  triggerArrow.setAttribute('stroke','currentColor'); triggerArrow.setAttribute('stroke-width','2.5');
+  triggerArrow.setAttribute('class','srch-trigger-arrow');
+  var arrowPath = document.createElementNS('http://www.w3.org/2000/svg','polyline');
+  arrowPath.setAttribute('points','6 9 12 15 18 9'); triggerArrow.appendChild(arrowPath);
+  trigger.appendChild(triggerText); trigger.appendChild(triggerArrow);
+  var dropdown = document.createElement('div');
+  dropdown.className = 'srch-dropdown';
+  var searchBox = document.createElement('div');
+  searchBox.className = 'srch-search-box';
+  var searchInput = document.createElement('input');
+  searchInput.type = 'text'; searchInput.placeholder = 'Ketik untuk mencari...';
+  searchBox.appendChild(searchInput);
+  var list = document.createElement('div');
+  list.className = 'srch-list';
+  dropdown.appendChild(searchBox); dropdown.appendChild(list);
+  function renderList(q) {
+    list.innerHTML = '';
+    var filtered = opts.filter(function(o) {
+      return !q || o.text.toLowerCase().indexOf(q.toLowerCase()) >= 0;
+    });
+    if (filtered.length === 0) {
+      var empty = document.createElement('div');
+      empty.className = 'srch-empty'; empty.textContent = 'Tidak ditemukan';
+      list.appendChild(empty); return;
+    }
+    filtered.forEach(function(o) {
+      var item = document.createElement('div');
+      item.className = 'srch-item' + (o.value === '' ? ' srch-placeholder' : '') + (o.value === selectEl.value ? ' srch-selected' : '');
+      item.textContent = o.text;
+      item.addEventListener('mousedown', function(e) {
+        e.preventDefault();
+        selectEl.value = o.value;
+        triggerText.textContent = o.value ? o.text : (opts[0] ? opts[0].text : 'Pilih...');
+        selectEl.dispatchEvent(new Event('change'));
+        closeDropdown();
+      });
+      list.appendChild(item);
+    });
+  }
+  function openDropdown() {
+    wrap.classList.add('open');
+    renderList('');
+    searchInput.value = '';
+    setTimeout(function(){ searchInput.focus(); }, 50);
+  }
+  function closeDropdown() { wrap.classList.remove('open'); }
+  trigger.addEventListener('click', function() {
+    wrap.classList.contains('open') ? closeDropdown() : openDropdown();
+  });
+  trigger.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDropdown(); }
+    if (e.key === 'Escape') closeDropdown();
+  });
+  searchInput.addEventListener('input', function() { renderList(searchInput.value); });
+  searchInput.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeDropdown(); });
+  document.addEventListener('mousedown', function(e) {
+    if (!wrap.contains(e.target)) closeDropdown();
+  });
+  selectEl.style.display = 'none';
+  wrap.appendChild(trigger); wrap.appendChild(dropdown);
+  selectEl.parentNode.insertBefore(wrap, selectEl);
+}
 // ══ LAYOUT-SPECIFIC — mahasiswa.html (Classic) ══
 // Data, auth, upload, tabel, notifikasi → mahasiswa-shared.js
 
@@ -925,6 +1032,7 @@ function loadApp(u) {
   renderBerandaTable();
   renderKaryaTable();
   renderNotifBanners();
+  renderMasterDosen('f-pembimbing');
 }
 
 // ── V.EVOLUTION SWITCH ──

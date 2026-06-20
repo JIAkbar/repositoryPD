@@ -98,17 +98,17 @@ CREATE POLICY "User lihat karya sendiri" ON karya_ilmiah
 
 -- ─── Seed: Program Studi Fakultas Vokasi UM ───
 INSERT INTO program_studi (kode, nama, jenjang) VALUES
-  ('D3-AK',  'D3 Akuntansi', 'D3'),
-  ('D3-ADP', 'D3 Administrasi Perkantoran', 'D3'),
-  ('D3-MP',  'D3 Manajemen Pemasaran', 'D3'),
-  ('D4-AK',  'D4 Akuntansi', 'D4'),
-  ('D4-MO',  'D4 Manajemen Operasional', 'D4'),
-  ('D4-TI',  'D4 Teknologi Informasi', 'D4'),
-  ('D4-DKV', 'D4 Desain Komunikasi Visual', 'D4'),
-  ('D4-TM',  'D4 Teknik Mesin', 'D4'),
-  ('D4-TE',  'D4 Teknik Elektro', 'D4'),
-  ('D4-TB',  'D4 Teknologi Bangunan', 'D4'),
-  ('D4-PD',  'D4 Perpustakaan Digital', 'D4')
+  ('D4-PD',   'D4 Perpustakaan Digital', 'D4'),
+  ('D4-AN',   'D4 Animasi', 'D4'),
+  ('D4-MP',   'D4 Manajemen Pemasaran', 'D4'),
+  ('D4-AK',   'D4 Akuntansi', 'D4'),
+  ('D4-TB',   'D4 Tata Boga', 'D4'),
+  ('D4-DM',   'D4 Desain Mode', 'D4'),
+  ('D4-TRBS', 'D4 Teknologi Rekayasa dan Pemeliharaan Bangunan Sipil', 'D4'),
+  ('D4-TRBM', 'D4 Teknologi Rekayasa Bangunan Manufaktur', 'D4'),
+  ('D4-TRO',  'D4 Teknologi Rekayasa Otomotif', 'D4'),
+  ('D4-TRPE', 'D4 Teknologi Rekayasa Pembangkit Energi', 'D4'),
+  ('D4-TRSE', 'D4 Teknologi Rekayasa Sistem Elektronika', 'D4')
 ON CONFLICT (kode) DO NOTHING;
 
 -- ─── Seed: Kategori ───
@@ -116,3 +116,40 @@ INSERT INTO kategori (nama) VALUES
   ('Tugas Akhir'), ('Artikel Jurnal'), ('Laporan Magang'),
   ('Proyek Inovasi'), ('Produk Kreatif'), ('Lainnya')
 ON CONFLICT (nama) DO NOTHING;
+
+-- ── Dosen Pembimbing ──────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS public.dosen_pembimbing (
+  id          UUID        DEFAULT gen_random_uuid() PRIMARY KEY,
+  nama        TEXT        NOT NULL UNIQUE,
+  nidn        TEXT,
+  email       TEXT,
+  prodi_id    TEXT        REFERENCES public.program_studi(kode) ON DELETE SET NULL,
+  aktif       BOOLEAN     DEFAULT TRUE,
+  created_at  TIMESTAMPTZ DEFAULT NOW(),
+  updated_at  TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Index untuk pencarian nama
+CREATE INDEX IF NOT EXISTS idx_dosen_nama ON public.dosen_pembimbing(nama);
+
+-- RLS
+ALTER TABLE public.dosen_pembimbing ENABLE ROW LEVEL SECURITY;
+
+-- Semua user bisa baca dosen yang aktif
+CREATE POLICY "dosen_public_read" ON public.dosen_pembimbing
+  FOR SELECT USING (aktif = TRUE);
+
+-- Hanya admin/pustakawan yang bisa insert/update/delete
+CREATE POLICY "dosen_admin_write" ON public.dosen_pembimbing
+  FOR ALL USING (
+    EXISTS (
+      SELECT 1 FROM public.users u
+      WHERE u.id = auth.uid()
+      AND u.role IN ('admin', 'pustakawan')
+    )
+  );
+
+-- Catatan: kolom karya_ilmiah.dosen_pembimbing (VARCHAR 150) menyimpan nama dosen
+-- sebagai teks bebas untuk kemudahan. Saat migrasi ke relasi FK, jalankan:
+--   ALTER TABLE karya_ilmiah
+--     ADD COLUMN dosen_pembimbing_id UUID REFERENCES public.dosen_pembimbing(id);
