@@ -265,18 +265,19 @@ const ApiService = {
             .select('*, program_studi(nama)')
             .eq('id', data.user.id)
             .single();
-          // Cek is_active — akun mahasiswa baru butuh verifikasi admin
-          if (profile && profile.is_active === false) {
+          // Cek is_active — blokir jika profil tidak ada ATAU is_active bukan TRUE
+          // profile null = trigger gagal / row belum ada → tetap blokir
+          if (!profile || profile.is_active !== true) {
             await _supa.auth.signOut();
             return { ok: false, error: 'Akun Anda belum diverifikasi oleh admin. Silakan tunggu konfirmasi.', inactive: true };
           }
           const user = {
             id:    data.user.id,
-            name:  profile?.nama || data.user.email,
+            name:  profile.nama || data.user.email,
             email: data.user.email,
-            role:  profile?.role || 'mahasiswa',
-            nim:   profile?.nim_nidn || null,
-            foto:  profile?.foto_url || null,
+            role:  profile.role || 'mahasiswa',
+            nim:   profile.nim_nidn || null,
+            foto:  profile.foto_url || null,
           };
           this.setUser(user);
           return { ok: true, user };
