@@ -1265,6 +1265,7 @@ function navAdmin(page) {
     if (arrow) arrow.classList.add('open');
     filterKarya();
   }
+  if (page === 'verif-akun') { loadAkunData(); }
   if (page === 'unggah') { renderFormDropdownsEvo(); }
   if (page === 'peng-dosen') { renderDosenTableEvo(''); var sp = document.getElementById('sub-peng'); var ap = document.getElementById('arrow-peng'); if(sp) sp.classList.add('open'); if(ap) ap.classList.add('open'); var sd = document.getElementById('sub-peng-dosen'); if(sd) sd.classList.add('active'); }
   if (page === 'peng-prodi') { renderProdiTableEvo(''); var sp = document.getElementById('sub-peng'); var ap = document.getElementById('arrow-peng'); if(sp) sp.classList.add('open'); if(ap) ap.classList.add('open'); var sp2 = document.getElementById('sub-peng-prodi'); if(sp2) sp2.classList.add('active'); }
@@ -1467,10 +1468,40 @@ function filterAkun() {
   var q = (document.getElementById('va-search').value || '').toLowerCase();
   var st = document.getElementById('va-filter').value;
   var data = DUMMY_AKUN.filter(function(a){
-    return (!q || a.nama.toLowerCase().includes(q) || a.nim.includes(q)) &&
+    return (!q || a.nama.toLowerCase().includes(q) || (a.nim||'').includes(q)) &&
            (!st || a.status === st);
   });
   renderAkun(data);
+}
+
+async function loadAkunData() {
+  if (typeof ApiService === 'undefined') { renderAkun(DUMMY_AKUN); return; }
+  try {
+    var res = await ApiService.admin.getPendingAccounts();
+    var accounts = null;
+    if (res && res.ok && Array.isArray(res.data) && res.data.length) {
+      var mon = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Ags','Sep','Okt','Nov','Des'];
+      accounts = res.data.map(function(u) {
+        var d = new Date(u.created_at || Date.now());
+        return {
+          id:     u.id,
+          nim:    u.nim || '-',
+          nama:   u.nama || u.email || '-',
+          prodi:  u.prodi || 'Belum diisi',
+          tgl:    d.getDate() + ' ' + mon[d.getMonth()],
+          status: 'pending'
+        };
+      });
+    } else if (Array.isArray(res) && res.length) {
+      accounts = res;
+    }
+    if (accounts && accounts.length) {
+      // Ganti DUMMY_AKUN dengan data real dari Supabase
+      DUMMY_AKUN.length = 0;
+      accounts.forEach(function(a) { DUMMY_AKUN.push(a); });
+    }
+  } catch(e) { /* gunakan DUMMY_AKUN */ }
+  filterAkun();
 }
 
 function aksiAkun(userId, action, nimFallback) {
@@ -1669,7 +1700,7 @@ function saveEditProfil() {
 
 /* ── INIT ── */
 filterKarya();
-renderAkun(DUMMY_AKUN);
+loadAkunData();
 renderKelola();
 checkAuth();
 
@@ -2050,39 +2081,4 @@ function deleteProdiEvo(idx){
     </div>
   </div>
 </div>
-<!-- ===== Delete Confirm Modal (Evo) ===== -->
-<div class="dm-overlay" id="dm-overlay-evo">
-  <div class="dm-box">
-    <div class="dm-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
-      </svg>
-    </div>
-    <p class="dm-title" id="dm-title-evo">Hapus Item</p>
-    <p class="dm-msg" id="dm-msg-evo">Yakin ingin menghapus item ini?</p>
-    <div class="dm-actions">
-      <button class="dm-btn-cancel" onclick="closeDmEvo()">Batal</button>
-      <button class="dm-btn-del" id="dm-confirm-btn-evo">Hapus</button>
-    </div>
-  </div>
-</div>
-<script>
-function openDmEvo(title, msg, onConfirm) {
-  document.getElementById('dm-title-evo').textContent = title;
-  document.getElementById('dm-msg-evo').innerHTML = msg;
-  document.getElementById('dm-confirm-btn-evo').onclick = function() { closeDmEvo(); onConfirm(); };
-  document.getElementById('dm-overlay-evo').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeDmEvo() {
-  document.getElementById('dm-overlay-evo').classList.remove('open');
-  document.body.style.overflow = '';
-}
-document.addEventListener('DOMContentLoaded', function() {
-  renderFormDropdownsEvo();
-  var ov = document.getElementById('dm-overlay-evo');
-  if(ov) ov.addEventListener('click', function(e){ if(e.target===this) closeDmEvo(); });
-});
-</script>
-</body>
-</html>
+<!-- ===== Delete Confirm Modal (Evo
