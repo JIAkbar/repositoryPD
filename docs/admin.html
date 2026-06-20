@@ -1478,25 +1478,23 @@ async function loadAkunData() {
   if (typeof ApiService === 'undefined') { renderAkun(DUMMY_AKUN); return; }
   try {
     var res = await ApiService.admin.getPendingAccounts();
-    var accounts = null;
-    if (res && res.ok && Array.isArray(res.data) && res.data.length) {
+    // getPendingAccounts() sudah return array langsung (data.data), bukan {ok, data}
+    var raw = Array.isArray(res) ? res
+            : (res && res.ok && Array.isArray(res.data)) ? res.data
+            : null;
+    if (raw && raw.length) {
       var mon = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Ags','Sep','Okt','Nov','Des'];
-      accounts = res.data.map(function(u) {
+      var accounts = raw.map(function(u) {
         var d = new Date(u.created_at || Date.now());
         return {
           id:     u.id,
-          nim:    u.nim || '-',
+          nim:    u.nim || u.nim_nidn || '-',
           nama:   u.nama || u.email || '-',
           prodi:  u.prodi || 'Belum diisi',
           tgl:    d.getDate() + ' ' + mon[d.getMonth()],
           status: 'pending'
         };
       });
-    } else if (Array.isArray(res) && res.length) {
-      accounts = res;
-    }
-    if (accounts && accounts.length) {
-      // Ganti DUMMY_AKUN dengan data real dari Supabase
       DUMMY_AKUN.length = 0;
       accounts.forEach(function(a) { DUMMY_AKUN.push(a); });
     }
