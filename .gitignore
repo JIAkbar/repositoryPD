@@ -55,15 +55,27 @@ coverage/
 # ─── Dev Scripts (Windows only, tidak perlu di repo) ───
 *.bat
 
-# ─── AI & Internal Context ───
+# ─── AI & Internal Context (tidak boleh masuk repo publik) ───
 CLAUDE.md
+WORKFLOW-GLOBAL.md
+kemampuan.md
 _context/
 data/
+prompt-next-session.md
 
-# ─── Internal Tracking (tidak perlu di repo publik) ───
+# ─── Internal Tracking ───
 changelog.md
 checklist.md
 updatelist.md
+
+# ─── Safety Net (file evo lama — sudah digantikan canonical) ───
+docs/index-evo.html
+docs/admin-evo.html
+docs/mahasiswa-evo.html
+docs/statistik-evo.html
+
+# ─── Import Guide (internal, bukan bagian repo publik) ───
+database/migrations/README_IMPORT.md
 
 # ─── File duplikat / sisa lama ───
 DIGILAB_MindMap.html
@@ -77,8 +89,5 @@ design/
 tests/
 database/seeds/
 
-# ─── Cleanup script (jalankan lokal, tidak perlu di repo) ───
-cleanup_files.bat
-changelog.md
-updatelist.md
-prompt-next-session.md
+# ─── Script lokal (jalankan manual, tidak perlu di repo) ───
+*.bat
