@@ -4,9 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Panel — DIGILAB Repository</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="theme.js"></script>
   <script src="data-master.js"></script>
 <script src="layout-router.js"></script>
+<script src="api-service.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
@@ -1230,11 +1232,11 @@ var DUMMY_KARYA = [
 
 // TODO: ganti dengan fetch('/api/admin/akun/pending')
 var DUMMY_AKUN = [
-  { nim:'230213704301', nama:'Bima Saputra', prodi:'D4 Teknologi Rekayasa Sistem Elektronika', tgl:'10 Jun', status:'pending' },
-  { nim:'230213704302', nama:'Laila Fitriani', prodi:'D4 Manajemen Pemasaran', tgl:'11 Jun', status:'pending' },
-  { nim:'230213704303', nama:'Rizal Hidayatullah', prodi:'D4 Akuntansi', tgl:'11 Jun', status:'pending' },
-  { nim:'230213704305', nama:'Dwi Kurniawati', prodi:'D4 Perpustakaan Digital', tgl:'12 Jun', status:'disetujui' },
-  { nim:'230213704306', nama:'Fajar Nugroho', prodi:'D4 Teknologi Rekayasa Otomotif', tgl:'08 Jun', status:'ditolak' }
+  { id:'00000000-0000-0000-0000-000000000003', nim:'230213704301', nama:'Bima Saputra',          prodi:'D4 Teknik Rekayasa Sistem Elektronika', tgl:'10 Jun', status:'pending'   },
+  { id:'00000000-0000-0000-0000-000000000004', nim:'230213704302', nama:'Laila Fitriani',         prodi:'D4 Manajemen Pemasaran',               tgl:'11 Jun', status:'pending'   },
+  { id:'00000000-0000-0000-0000-000000000005', nim:'230213704303', nama:'Rizal Hidayatullah',     prodi:'D4 Akuntansi',                         tgl:'11 Jun', status:'pending'   },
+  { id:'00000000-0000-0000-0000-000000000006', nim:'230213704305', nama:'Dwi Kurniawati',         prodi:'D4 Perpustakaan Digital',              tgl:'12 Jun', status:'disetujui' },
+  { id:'00000000-0000-0000-0000-000000000007', nim:'230213704306', nama:'Fajar Nugroho',          prodi:'D4 Teknik Rekayasa Otomotif',          tgl:'08 Jun', status:'ditolak'   }
 ];
 
 /* ── NAVIGATION ── */
@@ -1447,9 +1449,10 @@ function renderAkun(data) {
   if (!data.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--text-muted)">Tidak ada data</td></tr>'; return; }
   tbody.innerHTML = data.map(function(a){
     var badge = statusBadge(a.status);
+    var uid = a.id || a.nim;
     var aksi = a.status === 'pending'
-      ? '<button class="btn-act btn-ok" onclick="aksiAkun(\''+a.nim+'\',\'disetujui\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>✓</button>' +
-        '<button class="btn-act btn-no" onclick="aksiAkun(\''+a.nim+'\',\'ditolak\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>✗</button>'
+      ? '<button class="btn-act btn-ok" onclick="aksiAkun(\''+uid+'\',\'disetujui\',\''+a.nim+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>✓</button>' +
+        '<button class="btn-act btn-no" onclick="aksiAkun(\''+uid+'\',\'ditolak\',\''+a.nim+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>✗</button>'
       : '<button class="btn-detail-sm">Detail</button>';
     return '<tr><td class="td-muted" style="font-size:11px">' + a.nim + '</td>' +
            '<td class="td-bold">' + a.nama + '</td>' +
@@ -1470,14 +1473,44 @@ function filterAkun() {
   renderAkun(data);
 }
 
-function aksiAkun(nim, action) {
-  var a = DUMMY_AKUN.find(function(x){ return x.nim === nim; });
-  if (a) { a.status = action; }
+function aksiAkun(userId, action, nimFallback) {
+  var label = action === 'disetujui' ? 'Menyetujui akun...' : 'Menolak akun...';
+  showToast(label);
+
+  // ── Coba API dulu (Supabase RPC) ──
+  if (typeof ApiService !== 'undefined') {
+    var apiCall = action === 'disetujui'
+      ? ApiService.admin.approveAccount(userId)
+      : ApiService.admin.rejectAccount(userId);
+
+    apiCall.then(function(res) {
+      if (res && res.ok) {
+        showToast(res.msg || (action === 'disetujui' ? 'Akun disetujui ✓' : 'Akun ditolak ✗'));
+      } else {
+        showToast((res && res.error) || 'Gagal memproses akun', true);
+      }
+      // Selalu refresh tampilan (dummy atau real)
+      _aksiAkunLocal(userId, nimFallback, action);
+    }).catch(function() {
+      _aksiAkunLocal(userId, nimFallback, action);
+    });
+    return;
+  }
+
+  // ── Fallback lokal (dummy data) ──
+  _aksiAkunLocal(userId, nimFallback, action);
+}
+
+function _aksiAkunLocal(userId, nim, action) {
+  // Update DUMMY_AKUN (cocokkan id atau nim)
+  var a = DUMMY_AKUN.find(function(x){ return x.id === userId || x.nim === nim || x.nim === userId; });
+  if (a) { a.status = action === 'disetujui' ? 'disetujui' : 'ditolak'; }
   var pendingCount = DUMMY_AKUN.filter(function(x){ return x.status === 'pending'; }).length;
-  document.getElementById('badge-akun').textContent = pendingCount;
-  document.getElementById('ca-pending').textContent = pendingCount;
+  var badge = document.getElementById('badge-akun');
+  var caPending = document.getElementById('ca-pending');
+  if (badge) badge.textContent = pendingCount;
+  if (caPending) caPending.textContent = pendingCount;
   filterAkun();
-  showToast(action === 'disetujui' ? 'Akun disetujui' : 'Akun ditolak');
 }
 
 /* ── KELOLA ── */

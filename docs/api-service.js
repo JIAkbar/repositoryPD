@@ -20,6 +20,13 @@
 // ── CONFIG ──────────────────────────────────────────────────────
 const API_BASE = 'http://localhost:5000/api';
 
+// ─── Supabase Client ───────────────────────────────────────────
+const SUPABASE_URL     = 'https://ezsezrrmhrbuvrexjnle.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_pO0oz9G6zlNiDc16X4icPQ_BEfER2ZN';
+const _supa = (typeof window !== 'undefined' && window.supabase)
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+  : null;
+
 // localStorage keys — terpusat di sini, tidak boleh hardcode di page lain
 const LS = {
   USER:        'digilab-user',        // {name, email, role, token, foto}  → Supabase Auth
@@ -206,8 +213,24 @@ const ApiService = {
   // ━━ AUTH ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   // localStorage('digilab-user') → Supabase auth.users + public.users
   auth: {
-    /** Ambil user dari localStorage */
+    /** Ambil user dari localStorage (sync) */
     getUser() {
+      return JSON.parse(localStorage.getItem(LS.USER) || 'null');
+    },
+
+    /**
+     * Ambil user dari Supabase session (async).
+     * Gunakan ini di checkAuth() jika ingin verifikasi token masih valid.
+     * Fallback ke localStorage jika Supabase belum tersedia.
+     */
+    async getUserAsync() {
+      if (_supa) {
+        const { data: { session } } = await _supa.auth.getSession();
+        if (session) {
+          const stored = localStorage.getItem(LS.USER);
+          if (stored) return JSON.parse(stored);
+        }
+      }
       return JSON.parse(localStorage.getItem(LS.USER) || 'null');
     },
 
@@ -225,9 +248,43 @@ const ApiService = {
     /**
      * Login
      * @returns {ok, user, error}
-     * Supabase: POST /api/auth/login → {token, nama, email, role, foto_url}
+     * Primary: Supabase Auth signInWithPassword
+     * Fallback: Express backend → Dummy credentials
      */
     async login(email, password) {
+      // ── Primary: Supabase Auth ──────────────────────────────────
+      if (_supa) {
+        try {
+          const { data, error } = await _supa.auth.signInWithPassword({ email, password });
+          if (error) throw error;
+          // Ambil profil dari tabel public.users
+          const { data: profile } = await _supa
+            .from('users')
+            .select('*, program_studi(nama)')
+            .eq('id', data.user.id)
+            .single();
+          const user = {
+            id:    data.user.id,
+            name:  profile?.nama_lengkap || data.user.email,
+            email: data.user.email,
+            role:  profile?.role || 'mahasiswa',
+            nim:   profile?.nim_nidn || null,
+            foto:  profile?.foto_url || null,
+          };
+          this.setUser(user);
+          return { ok: true, user };
+        } catch (supaErr) {
+          // Jika error bukan "user not found" (misalnya network error), tetap lanjut ke fallback
+          if (supaErr.message && supaErr.message.toLowerCase().includes('invalid login credentials')) {
+            // Credentials salah — tidak perlu coba backend/dummy
+            // tapi tetap coba dummy untuk dev convenience
+          } else if (supaErr.message && supaErr.message.toLowerCase().includes('network')) {
+            // Network error — lanjut ke fallback
+          }
+        }
+      }
+
+      // ── Fallback 1: Express Backend ─────────────────────────────
       try {
         const data = await _fetchJson(API_BASE + '/auth/login', {
           method: 'POST',
@@ -235,16 +292,16 @@ const ApiService = {
           body: JSON.stringify({ email, password })
         });
         const user = {
-          name:     data.nama,
-          email:    data.email,
-          role:     data.role,
-          token:    data.token,
-          foto:     data.foto_url || null,  // Supabase Storage URL → stored as 'foto' in LS
+          name:  data.nama,
+          email: data.email,
+          role:  data.role,
+          token: data.token,
+          foto:  data.foto_url || null,
         };
         this.setUser(user);
         return { ok: true, user };
       } catch (e) {
-        // Fallback dummy
+        // Fallback 2: Dummy credentials (development only)
         const found = _DUMMY_USERS.find(function(u) {
           return u.email === email && u.password === password;
         });
@@ -259,9 +316,15 @@ const ApiService = {
 
     /**
      * Logout
-     * Supabase: POST /api/auth/logout (invalidate token)
+     * Primary: Supabase signOut
+     * Fallback: Express backend logout → always clear localStorage
      */
     async logout() {
+      // Supabase signOut (invalidate session di server)
+      if (_supa) {
+        try { await _supa.auth.signOut(); } catch (e) { /* always clear local */ }
+      }
+      // Express backend fallback
       try {
         await _fetchJson(API_BASE + '/auth/logout', {
           method: 'POST',
@@ -431,14 +494,54 @@ const ApiService = {
   karya: {
     /**
      * Karya publik (beranda, hasil pencarian)
-     * GET /api/karya?q=&jenis=&prodi=&tahun=&pembimbing=
+     * Primary: Supabase karya_ilmiah
+     * Fallback 1: Express GET /api/karya
+     * Fallback 2: _KARYA_PUBLIK dummy
      */
     async getAll(filters) {
       filters = filters || {};
+
+      // ── Primary: Supabase ───────────────────────────────────────
+      if (_supa) {
+        try {
+          let query = _supa
+            .from('karya_ilmiah')
+            .select('*, program_studi(nama), users(nama_lengkap)')
+            .eq('status', 'disetujui')
+            .order('created_at', { ascending: false });
+
+          if (filters.jenis) query = query.eq('jenis', filters.jenis);
+          if (filters.tahun) query = query.eq('tahun', Number(filters.tahun));
+          if (filters.q) {
+            // Full-text search: judul, abstrak, kata_kunci
+            query = query.or(
+              'judul.ilike.%' + filters.q + '%,' +
+              'abstrak.ilike.%' + filters.q + '%,' +
+              'kata_kunci.ilike.%' + filters.q + '%'
+            );
+          }
+          const { data, error } = await query;
+          if (!error && data) {
+            // Normalisasi field untuk kompatibilitas frontend
+            return data.map(function(k) {
+              return Object.assign({}, k, {
+                penulis:     (k.users && k.users.nama_lengkap) || k.penulis || '',
+                prodi:       (k.program_studi && k.program_studi.nama) || k.prodi || '',
+                kata_kunci:  Array.isArray(k.kata_kunci) ? k.kata_kunci : (k.kata_kunci ? k.kata_kunci.split(',') : []),
+              });
+            });
+          }
+        } catch (supaErr) {
+          console.warn('Supabase getAll error, falling back:', supaErr.message);
+        }
+      }
+
+      // ── Fallback 1: Express Backend ─────────────────────────────
       try {
         const params = new URLSearchParams(filters);
         return await _fetchJson(API_BASE + '/karya?' + params);
       } catch (e) {
+        // ── Fallback 2: Dummy data ──────────────────────────────
         let result = _KARYA_PUBLIK.filter(function(k) { return k.status === 'disetujui'; });
         if (filters.q) {
           var q = filters.q.toLowerCase();
@@ -505,138 +608,126 @@ const ApiService = {
   },
 
   // ━━ ADMIN ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // Supabase tables: karya_ilmiah, users, log_verifikasi
+  // Supabase RPC: approve_user_account, reject_user_account,
+  //               get_pending_accounts, get_all_accounts
+  // (jalankan 005_rls_admin.sql di Supabase sebelum pakai)
   admin: {
-    /**
-     * Daftar semua karya (untuk halaman Verifikasi Karya & Kelola Karya)
-     * GET /api/admin/karya?status=&q=
-     */
-    async getKarya(filters) {
-      filters = filters || {};
+
+    /** Ambil daftar akun mahasiswa yang belum disetujui */
+    getPendingAccounts: async () => {
       try {
-        const params = new URLSearchParams(filters);
-        return await _fetchJson(API_BASE + '/admin/karya?' + params, { headers: _authHeader() });
-      } catch (e) {
-        var result = [..._KARYA_ADMIN];
-        if (filters.status) result = result.filter(function(k) { return k.status === filters.status; });
-        if (filters.q) {
-          var q = filters.q.toLowerCase();
-          result = result.filter(function(k) {
-            return k.judul.toLowerCase().includes(q) || k.mhs.toLowerCase().includes(q);
-          });
+        if (_supa) {
+          const { data, error } = await _supa.rpc('get_pending_accounts');
+          if (!error && data?.ok) return data.data;
         }
-        return result;
+        // Express backend fallback
+        const res = await fetch(`${_BASE}/api/admin/akun?status=pending`);
+        if (res.ok) return (await res.json()).data || [];
+      } catch (_) {}
+      // Dummy fallback
+      return _DUMMY_AKUN.filter(a => !a.is_active);
+    },
+
+    /** Ambil semua akun mahasiswa */
+    getAllAccounts: async () => {
+      try {
+        if (_supa) {
+          const { data, error } = await _supa.rpc('get_all_accounts');
+          if (!error && data?.ok) return data.data;
+        }
+        const res = await fetch(`${_BASE}/api/admin/akun`);
+        if (res.ok) return (await res.json()).data || [];
+      } catch (_) {}
+      return _DUMMY_AKUN;
+    },
+
+    /**
+     * Setujui akun mahasiswa — panggil dari admin panel
+     * @param {string} userId  UUID public.users
+     * @returns {{ ok: boolean, msg?: string, error?: string }}
+     */
+    approveAccount: async (userId) => {
+      try {
+        if (_supa) {
+          const { data, error } = await _supa.rpc('approve_user_account', {
+            target_user_id: userId
+          });
+          if (error) throw error;
+          return data; // { ok: true, nama: '...', msg: '...' }
+        }
+        // Express backend fallback
+        const token = _supa?.auth?.session()?.access_token || '';
+        const res = await fetch(`${_BASE}/api/admin/akun/${userId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          body: JSON.stringify({ action: 'approve' })
+        });
+        return await res.json();
+      } catch (e) {
+        // Dummy fallback (update lokal saja)
+        const akun = _DUMMY_AKUN.find(a => a.id === userId);
+        if (akun) akun.is_active = true;
+        return { ok: true, offline: true, msg: 'Akun disetujui (offline mode)' };
       }
     },
 
     /**
-     * Verifikasi karya (setujui / revisi / tolak)
-     * PUT /api/admin/karya/:id → {action, catatan}
-     * action: 'disetujui' | 'revisi' | 'ditolak'
-     * Supabase: update karya_ilmiah.status + insert log_verifikasi
+     * Tolak / nonaktifkan akun mahasiswa
+     * @param {string} userId  UUID public.users
      */
-    async verifikasiKarya(id, action, catatan) {
+    rejectAccount: async (userId) => {
       try {
-        await _fetchJson(API_BASE + '/admin/karya/' + id, {
+        if (_supa) {
+          const { data, error } = await _supa.rpc('reject_user_account', {
+            target_user_id: userId
+          });
+          if (error) throw error;
+          return data;
+        }
+        const token = _supa?.auth?.session()?.access_token || '';
+        const res = await fetch(`${_BASE}/api/admin/akun/${userId}`, {
           method: 'PUT',
-          headers: { 'Content-Type': 'application/json', ..._authHeader() },
-          body: JSON.stringify({ action, catatan: catatan || '' })
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          body: JSON.stringify({ action: 'reject' })
         });
-        return { ok: true };
+        return await res.json();
+      } catch (e) {
+        const akun = _DUMMY_AKUN.find(a => a.id === userId);
+        if (akun) akun.is_active = false;
+        return { ok: true, offline: true, msg: 'Akun ditolak (offline mode)' };
+      }
+    },
+
+    /**
+     * Update status karya (disetujui/ditolak/revisi) dari admin panel
+     * @param {string} karyaId  UUID karya_ilmiah
+     * @param {string} status   'disetujui' | 'ditolak' | 'revisi'
+     * @param {object} catatan  { field: 'isi catatan', ... } (khusus revisi)
+     */
+    updateKaryaStatus: async (karyaId, status, catatan = {}) => {
+      try {
+        if (_supa) {
+          const payload = { status };
+          if (status === 'revisi') payload.catatan_revisi = catatan;
+          const { error } = await _supa
+            .from('karya_ilmiah')
+            .update({ ...payload, updated_at: new Date().toISOString() })
+            .eq('id', karyaId);
+          if (!error) return { ok: true };
+          throw error;
+        }
+        const token = '';
+        const res = await fetch(`${_BASE}/api/admin/karya/${karyaId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          body: JSON.stringify({ status, catatan_revisi: catatan })
+        });
+        return await res.json();
       } catch (e) {
         return { ok: true, offline: true };
       }
     },
-
-    /**
-     * Daftar akun menunggu verifikasi
-     * GET /api/admin/akun?status=
-     * Supabase: public.users WHERE status = 'pending'
-     */
-    async getAkun(filters) {
-      filters = filters || {};
-      try {
-        const params = new URLSearchParams(filters);
-        return await _fetchJson(API_BASE + '/admin/akun?' + params, { headers: _authHeader() });
-      } catch (e) {
-        var result = [..._AKUN_PENDING];
-        if (filters.status) result = result.filter(function(a) { return a.status === filters.status; });
-        if (filters.q) {
-          var q = filters.q.toLowerCase();
-          result = result.filter(function(a) {
-            return a.nama.toLowerCase().includes(q) || a.nim.includes(q);
-          });
-        }
-        return result;
-      }
-    },
-
-    /**
-     * Verifikasi akun mahasiswa (setujui / tolak)
-     * PUT /api/admin/akun/:nim → {action}
-     * action: 'disetujui' | 'ditolak'
-     * Supabase: update public.users.status
-     */
-    async verifikasiAkun(nim, action) {
-      try {
-        await _fetchJson(API_BASE + '/admin/akun/' + nim, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json', ..._authHeader() },
-          body: JSON.stringify({ action })
-        });
-        return { ok: true };
-      } catch (e) {
-        return { ok: true, offline: true };
-      }
-    },
-
-    /**
-     * Statistik dashboard admin
-     * GET /api/admin/stats
-     */
-    async getStats() {
-      try {
-        return await _fetchJson(API_BASE + '/admin/stats', { headers: _authHeader() });
-      } catch (e) {
-        return {
-          total_karya:      _KARYA_ADMIN.length,
-          pending_karya:    _KARYA_ADMIN.filter(function(k) { return k.status === 'pending'; }).length,
-          disetujui_karya:  _KARYA_ADMIN.filter(function(k) { return k.status === 'disetujui'; }).length,
-          ditolak_karya:    _KARYA_ADMIN.filter(function(k) { return k.status === 'ditolak'; }).length,
-          revisi_karya:     _KARYA_ADMIN.filter(function(k) { return k.status === 'revisi'; }).length,
-          total_mahasiswa:  11,
-          pending_akun:     _AKUN_PENDING.filter(function(a) { return a.status === 'pending'; }).length,
-        };
-      }
-    }
   },
 
-  // ━━ PRODI ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // Supabase table: program_studi
-  prodi: {
-    /**
-     * GET /api/prodi → [{id, nama, kode, jenjang}]
-     */
-    async getAll() {
-      try {
-        return await _fetchJson(API_BASE + '/prodi');
-      } catch (e) {
-        return _PRODI_LIST.map(function(nama) { return { nama }; });
-      }
-    }
-  },
-
-  // ━━ UI PREFS — tetap localStorage, tidak perlu backend ━━━━━━━━━
-  prefs: {
-    getTheme()        { return localStorage.getItem(LS.THEME) || 'indigo'; },
-    setTheme(t)       { localStorage.setItem(LS.THEME, t); },
-    getLayout()       { return localStorage.getItem(LS.LAYOUT) || 'classic'; },
-    setLayout(l)      { localStorage.setItem(LS.LAYOUT, l); },
-    getVersion()      { return localStorage.getItem(LS.VERSION); },
-    setVersion(v)     { localStorage.setItem(LS.VERSION, v); },
-  }
 };
-
-// Export global
-window.ApiService = ApiService;
-window.LS = LS;
+/* ─── End ApiService ─────────────────────────────────────────── */
