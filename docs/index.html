@@ -2341,4 +2341,28 @@ function saveProfilEvo() {
   try { user = JSON.parse(localStorage.getItem('digilab-user')); } catch(e){}
   if (!user) return;
   var pn = document.getElementById('pf-nama-evo'); if(pn) user.name = pn.value.trim();
-  var pe = document.getElementById('pf
+  var pe = document.getElementById('pf-email-evo'); if(pe) user.email = pe.value.trim();
+  localStorage.setItem('digilab-user', JSON.stringify(user));
+  // Update header chip
+  var chip = document.getElementById('user-name'); if(chip) chip.textContent = user.name;
+  var av = document.getElementById('user-ava');
+  if(av) av.textContent = (user.name||'U').split(' ').map(function(w){return w[0]||'';}).slice(0,2).join('').toUpperCase()||'U';
+  showToast('Profil berhasil disimpan!');
+}
+</script>
+
+<!-- Admin Redirect Modal -->
+<div id="admin-redirect-overlay" onclick="closeAdminRedirect()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9998;align-items:center;justify-content:center;">
+  <div onclick="event.stopPropagation()" style="background:#fff;border-radius:20px;padding:36px 32px;max-width:380px;width:90%;text-align:center;box-shadow:0 12px 48px rgba(0,0,0,.2);">
+    <div style="width:60px;height:60px;border-radius:50%;background:var(--orange,#e8821e);color:#fff;font-size:1.6rem;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">🛡️</div>
+    <h3 style="margin:0 0 8px;font-family:Nunito,sans-serif;font-size:1.15rem;color:var(--text-dark,#122830);">Akses Dibatasi</h3>
+    <p style="margin:0 0 20px;color:var(--text-muted,#6b8e96);font-size:.9rem;line-height:1.5;">Anda login sebagai <strong>Admin Pustakawan</strong>.<br>Silakan gunakan <strong>Panel Admin</strong> untuk mengelola repository.</p>
+    <div style="display:flex;gap:12px;flex-direction:column;">
+      <button onclick="closeAdminRedirect(); navigateTo('admin');" style="padding:12px;border:none;border-radius:999px;background:var(--navy,#094e58);color:#fff;cursor:pointer;font-family:Nunito,sans-serif;font-weight:700;font-size:.95rem;">→ Ke Panel Admin</button>
+      <button onclick="closeAdminRedirect()" style="padding:10px;border:1.5px solid var(--border,#dde8ea);border-radius:999px;background:#fff;cursor:pointer;font-family:Nunito,sans-serif;font-weight:600;color:var(--text-mid,#2d5a65);">Tutup</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
