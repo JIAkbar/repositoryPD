@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<script src="theme.js"></script>
+<script src="layout-router.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Statistik Data — DIGILAB Repository</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:       #094e58;
+      --navy-dark:  #072e37;
+      --navy-mid:   #0d6b79;
+      --bg:         #f5f0e8;
+      --bg-card:    #ffffff;
+      --text-dark:  #122830;
+      --text-mid:   #2d5a65;
+      --text-muted: #6b8e96;
+      --red:        #c0392b;
+      --red-dark:   #8b0000;
+      --orange:     #e8821e;
+      --teal:       #14b8a6;
+      --border:     #dde8ea;
+      --shadow-sm:  0 1px 4px rgba(9,78,88,.08);
+      --shadow:     0 2px 10px rgba(9,78,88,.12);
+      --shadow-lg:  0 6px 24px rgba(9,78,88,.18);
+      --pill:       999px;
+      --r:          8px;
+    }
+    body { font-family:'Lato',sans-serif; background:var(--bg); color:var(--text-dark); min-height:100vh; }
+
+    /* ── HEADER (identik index.html) ── */
+    .site-header {
+      position:sticky; top:0; z-index:100;
+      background:var(--navy); height:66px;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 28px; flex-shrink:0;
+      box-shadow:0 2px 12px rgba(0,0,0,.25);
+    }
+    .header-brand { display:flex; align-items:center; gap:13px; text-decoration:none; user-select:none; }
+    .header-logo-svg { width:46px; height:46px; flex-shrink:0; }
+    .h-title { font-family:'Nunito',sans-serif; font-weight:900; font-size:14.5px; color:#fff; letter-spacing:.4px; line-height:1.15; }
+    .h-sub { font-family:'Lato',sans-serif; font-weight:300; font-size:10px; color:rgba(255,255,255,.78); letter-spacing:.3px; }
+    .header-right { display:flex; align-items:center; gap:8px; }
+    .header-page-label {
+      display:flex; align-items:center; gap:7px;
+      background:rgba(255,255,255,.18); border:1.5px solid rgba(255,255,255,.38);
+      border-radius:var(--pill); padding:0 18px; height:38px;
+      font-family:'Nunito',sans-serif; font-weight:800; font-size:13px;
+      color:#fff; letter-spacing:.1px; white-space:nowrap; pointer-events:none; flex-shrink:0;
+    }
+    .btn-back {
+      display:flex; align-items:center; gap:7px;
+      background:rgba(255,255,255,.1); border:1.5px solid rgba(255,255,255,.2);
+      color:rgba(255,255,255,.88); border-radius:var(--pill); padding:0 18px; height:38px;
+      font-family:'Nunito',sans-serif; font-weight:700; font-size:13px;
+      cursor:pointer; text-decoration:none; transition:background .15s, color .15s;
+      white-space:nowrap; flex-shrink:0;
+    }
+    .btn-back:hover { background:rgba(255,255,255,.22); color:#fff; }
+
+    /* ── MAIN LAYOUT ── */
+    .main-wrap { max-width:1200px; margin:0 auto; padding:32px 24px 48px; }
+    .dashboard-title {
+      font-family:'Nunito',sans-serif; font-weight:900; font-size:22px;
+      color:var(--text-dark); text-align:center; margin-bottom:28px; letter-spacing:-.3px;
+    }
+
+    /* ── STAT CARDS ── */
+    .stat-cards { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:24px; }
+    .stat-card {
+      background:var(--bg-card); border-radius:12px;
+      box-shadow:var(--shadow); padding:20px 22px;
+      display:flex; flex-direction:column; gap:4px; position:relative; overflow:hidden;
+    }
+    .stat-card-top { display:flex; align-items:flex-start; justify-content:space-between; }
+    .stat-icon {
+      width:44px; height:44px; border-radius:10px;
+      display:flex; align-items:center; justify-content:center;
+      flex-shrink:0;
+    }
+    .stat-icon.navy { background:rgba(46,49,146,.10); }
+    .stat-icon.teal { background:rgba(8,145,178,.10); }
+    .stat-icon.orange { background:rgba(249,115,22,.10); }
+    .stat-trend {
+      display:flex; align-items:center; gap:3px;
+      font-family:'Nunito',sans-serif; font-weight:700; font-size:12px;
+      padding:3px 8px; border-radius:var(--pill);
+    }
+    .stat-trend.up { color:#16a34a; background:#dcfce7; }
+    .stat-trend.neutral { color:var(--text-muted); background:#f3f4f6; }
+    .stat-label {
+      font-size:11px; font-weight:700; letter-spacing:.6px; text-transform:uppercase;
+      color:var(--text-muted); margin-top:10px;
+    }
+    .stat-value {
+      font-family:'Nunito',sans-serif; font-weight:900; font-size:32px;
+      color:var(--text-dark); letter-spacing:-1px; line-height:1.1;
+    }
+    .stat-sub { font-size:12px; color:var(--text-muted); margin-top:2px; }
+    .sparkline-wrap { height:36px; margin-top:10px; }
+    .stat-donut-wrap { display:flex; align-items:center; gap:16px; margin-top:10px; }
+    .stat-donut-canvas { width:64px !important; height:64px !important; }
+    .stat-donut-label { font-family:'Nunito',sans-serif; font-weight:800; font-size:15px; color:var(--text-dark); }
+    .stat-donut-sub { font-size:11px; color:var(--text-muted); margin-top:2px; }
+
+    /* ── GRID ROWS ── */
+    .grid-2col { display:grid; grid-template-columns:1.6fr 1fr; gap:16px; margin-bottom:16px; }
+    .grid-2col-even { display:grid; grid-template-columns:1.6fr 1fr; gap:16px; }
+
+    /* ── CHART CARDS ── */
+    .chart-card {
+      background:var(--bg-card); border-radius:12px;
+      box-shadow:var(--shadow); padding:22px 24px;
+    }
+    .chart-card-header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:18px; gap:12px; }
+    .chart-card-title { font-family:'Nunito',sans-serif; font-weight:800; font-size:15px; color:var(--text-dark); }
+    .chart-card-sub { font-size:12px; color:var(--text-muted); margin-top:2px; }
+    .chart-actions { display:flex; gap:8px; flex-shrink:0; }
+    .btn-chip {
+      display:flex; align-items:center; gap:5px;
+      border:1px solid var(--border); background:#fff;
+      color:var(--text-mid); border-radius:var(--pill);
+      padding:5px 12px; font-size:11px; font-weight:700; font-family:'Nunito',sans-serif;
+      cursor:pointer; transition:all .15s; white-space:nowrap;
+    }
+    .btn-chip:hover { background:var(--bg); border-color:var(--navy); color:var(--navy); }
+    .btn-chip.primary {
+      background:var(--navy); color:#fff; border-color:var(--navy);
+    }
+    .btn-chip.primary:hover { background:var(--navy-dark); }
+    .chart-body { position:relative; }
+
+    /* ── DONUT LEGEND ── */
+    .donut-layout { display:flex; gap:20px; align-items:center; }
+    .donut-chart-wrap { flex-shrink:0; width:160px; }
+    .donut-legend { flex:1; display:flex; flex-direction:column; gap:8px; }
+    .legend-item { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-mid); }
+    .legend-dot { width:11px; height:11px; border-radius:50%; flex-shrink:0; }
+    .legend-pct { font-family:'Nunito',sans-serif; font-weight:700; color:var(--text-dark); margin-left:auto; }
+    .btn-rekapan {
+      width:100%; margin-top:20px;
+      background:var(--navy); color:#fff; border:none; border-radius:8px;
+      padding:10px 0; font-family:'Nunito',sans-serif; font-weight:800; font-size:13px;
+      cursor:pointer; display:flex; align-items:center; justify-content:center; gap:7px;
+      transition:background .15s;
+    }
+    .btn-rekapan:hover { background:var(--navy-dark); }
+
+    /* ── TABLE ── */
+    .top-table { width:100%; border-collapse:collapse; font-size:12.5px; }
+    .top-table thead th {
+      background:#f7f7fb; color:var(--text-muted);
+      font-family:'Nunito',sans-serif; font-weight:700; font-size:11px;
+      text-transform:uppercase; letter-spacing:.5px;
+      padding:9px 10px; text-align:left; border-bottom:1px solid var(--border);
+    }
+    .top-table thead th:last-child { text-align:right; }
+    .top-table tbody tr { transition:background .1s; }
+    .top-table tbody tr:hover { background:#f7f7fb; }
+    .top-table tbody td {
+      padding:10px 10px; border-bottom:1px solid #f0f0f6;
+      color:var(--text-dark); vertical-align:middle;
+    }
+    .top-table tbody td:last-child { text-align:right; font-family:'Nunito',sans-serif; font-weight:800; color:var(--navy); }
+    .row-num { font-family:'Nunito',sans-serif; font-weight:700; color:var(--text-muted); width:24px; }
+    .row-title { font-weight:700; max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .row-tag {
+      display:inline-block; padding:2px 8px; border-radius:var(--pill);
+      font-size:10px; font-weight:700; font-family:'Nunito',sans-serif;
+      background:var(--teal-lt); color:var(--teal);
+    }
+    .readers-bar-wrap { display:flex; align-items:center; gap:8px; justify-content:flex-end; }
+    .readers-bar { height:5px; border-radius:3px; background:var(--navy); opacity:.18; }
+
+    /* ── MOBILE ── */
+    @media(max-width:900px) {
+      .stat-cards { grid-template-columns:1fr 1fr; }
+      .grid-2col, .grid-2col-even { grid-template-columns:1fr; }
+    }
+    @media(max-width:768px) {
+      .site-header { padding:0 14px; }
+      .h-sub { display:none; }
+      .header-logo-svg { width:36px; height:36px; }
+      .h-title { font-size:14px; }
+      .nav-actions { gap:8px; }
+      .dashboard-title { font-size:20px; }
+      .stat-card-label { font-size:11px; }
+      .rekapan-header { flex-direction:column; align-items:flex-start; gap:10px; }
+      .rekapan-header .btn-rekapan { width:100%; justify-content:center; }
+      .chart-section { padding:18px 14px; }
+      .top-table-wrap { overflow-x:auto; }
+    }
+    @media(max-width:600px) {
+      .stat-cards { grid-template-columns:1fr; }
+      .main-wrap { padding:20px 14px 40px; }
+      .dashboard-title { font-size:18px; }
+    }
+    @media(max-width:480px) {
+      .site-header { padding:0 10px; }
+      .header-logo-svg { width:32px; height:32px; }
+      .h-title { font-size:13px; }
+      .stat-card { padding:14px 12px; }
+      .stat-card-val { font-size:26px; }
+      .chart-section { padding:14px 10px; border-radius:8px; }
+      .chart-section-title { font-size:13px; }
+      .main-wrap { padding:14px 10px 36px; }
+    
+  /* rekapan header stack */
+  .rekapan-header{flex-direction:column!important;align-items:flex-start!important;gap:8px!important;}
+  .rekapan-header .btn-rekapan{width:100%!important;justify-content:center;height:44px!important;}
+  /* top table */
+  .top-table-wrap{overflow-x:auto!important;}
+  .top-table{min-width:360px;}
+  /* dashboard header */
+  .dashboard-header{flex-direction:column;align-items:flex-start;gap:6px;}
+  .dashboard-title{font-size:18px!important;}
+  /* stat cards single column */
+  .stat-cards{grid-template-columns:1fr!important;}
+}
+
+/* ─── Safe area + tap targets ─── */
+@media(max-width:768px){
+  .site-header{
+    padding-top:env(safe-area-inset-top,0px);
+    height:calc(60px + env(safe-area-inset-top,0px));
+  }
+  .site-footer{
+    padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));
+  }
+  .nav-actions button,.nav-actions a{min-height:44px!important;}
+  /* iOS font-size safety net */
+  input,select,textarea{font-size:16px!important;}
+}
+  
+    /* ─── Tema Switcher — sync dengan theme.js ─── */
+    [data-theme=emerald] {
+      --navy:#065f46; --navy-dark:#064e3b; --navy-mid:#047857;
+      --bg:#f0fdf4; --text-dark:#022c22; --text-mid:#166534; --text-muted:#6b7280;
+      --orange:#f59e0b; --teal:#10b981; --border:#bbf7d0;
+      --shadow-sm:0 1px 4px rgba(6,95,70,.08); --shadow:0 2px 10px rgba(6,95,70,.12); --shadow-lg:0 6px 24px rgba(6,95,70,.18);
+    }
+    [data-theme=charcoal] {
+      --navy:#1c1c2e; --navy-dark:#0f0f1a; --navy-mid:#2d2d44;
+      --bg:#f5f5f7; --text-dark:#1c1c2e; --text-mid:#44445a; --text-muted:#888899;
+      --orange:#e85d04; --teal:#4cc9f0; --border:#dcdce4;
+      --shadow-sm:0 1px 4px rgba(28,28,46,.08); --shadow:0 2px 10px rgba(28,28,46,.14); --shadow-lg:0 6px 24px rgba(28,28,46,.20);
+    }
+    [data-theme=violet] {
+      --navy:#4c1d95; --navy-dark:#2e1065; --navy-mid:#6d28d9;
+      --bg:#f5f3ff; --text-dark:#1e1b4b; --text-mid:#4338ca; --text-muted:#8b5cf6;
+      --orange:#f59e0b; --teal:#06b6d4; --border:#ddd6fe;
+      --shadow-sm:0 1px 4px rgba(76,29,149,.08); --shadow:0 2px 10px rgba(76,29,149,.13); --shadow-lg:0 6px 24px rgba(76,29,149,.20);
+    }
+    [data-theme=rose] {
+      --navy:#881337; --navy-dark:#4c0519; --navy-mid:#be123c;
+      --bg:#fff1f2; --text-dark:#1c0508; --text-mid:#9f1239; --text-muted:#9ca3af;
+      --orange:#f97316; --teal:#0891b2; --border:#fecdd3;
+      --shadow-sm:0 1px 4px rgba(136,19,55,.08); --shadow:0 2px 10px rgba(136,19,55,.13); --shadow-lg:0 6px 24px rgba(136,19,55,.20);
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <a href="index.html" class="header-brand">
+    <svg class="header-logo-svg" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="7" y="20" width="32" height="20" rx="2.5" fill="white" opacity=".92"/>
+      <rect x="7" y="20" width="4.5" height="20" rx="1.5" fill="rgba(255,255,255,.5)"/>
+      <path d="M23 20 C23 20 9 18 9 12 L9 20 Z" fill="rgba(255,255,255,.6)"/>
+      <path d="M23 20 C23 20 37 18 37 12 L37 20 Z" fill="rgba(255,255,255,.6)"/>
+      <line x1="23" y1="12" x2="23" y2="40" stroke="rgba(46,49,146,.3)" stroke-width="1"/>
+      <circle cx="16" cy="8"  r="2.2" fill="white"/>
+      <circle cx="23" cy="5"  r="2.2" fill="white"/>
+      <circle cx="30" cy="8"  r="2.2" fill="white"/>
+      <line x1="16" y1="10.2" x2="16" y2="14" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="23" y1="7.2"  x2="23" y2="12" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="30" y1="10.2" x2="30" y2="14" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M16 14 Q19.5 16.5 23 15.5 Q26.5 16.5 30 14" stroke="white" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div>
+      <div class="h-title">DIGILAB REPOSITORY</div>
+      <div class="h-sub">FAKULTAS VOKASI — UNIVERSITAS NEGERI MALANG</div>
+    </div>
+  </a>
+  <div class="header-right">
+    <div class="header-page-label">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+      Statistik Data
+    </div>
+    <button onclick="switchLayout()" style="background:var(--navy);color:#fff;border:none;border-radius:999px;padding:8px 18px;font-size:13px;font-family:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      Evo
+    </button>
+    <a href="javascript:history.back()" class="btn-back">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Kembali
+    </a>
+  </div>
+</header>
+
+<div class="main-wrap">
+  <h1 class="dashboard-title">Dashboard Rekapan Data Karya Ilmiah</h1>
+
+  <!-- STAT CARDS -->
+  <div class="stat-cards">
+    <!-- Card 1 -->
+    <div class="stat-card">
+      <div class="stat-card-top">
+        <div class="stat-icon navy">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <rect x="2" y="15" width="18" height="3" rx="1.5" fill="var(--navy)"/>
+            <rect x="2" y="9.5" width="18" height="3" rx="1.5" fill="var(--navy)" opacity=".65"/>
+            <rect x="2" y="4" width="18" height="3" rx="1.5" fill="var(--navy)" opacity=".35"/>
+          </svg>
+        </div>
+        <span class="stat-trend up">↑ +5%</span>
+      </div>
+      <div class="stat-label">Total Karya Ilmiah</div>
+      <div class="stat-value">1,245</div>
+      <div class="stat-sub">tersimpan di repositori</div>
+      <div class="sparkline-wrap"><canvas id="spark1"></canvas></div>
+    </div>
+    <!-- Card 2 -->
+    <div class="stat-card">
+      <div class="stat-card-top">
+        <div class="stat-icon teal">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <circle cx="11" cy="7" r="4" stroke="var(--teal)" stroke-width="2"/>
+            <path d="M3 19c0-3.314 3.582-6 8-6s8 2.686 8 6" stroke="var(--teal)" stroke-width="2" stroke-linecap="round"/>
+            <path d="M14 11.5l2 1.5-2 1.5" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="stat-trend up">↑ +12%</span>
+      </div>
+      <div class="stat-label">Total Pembaca (Bulan Ini)</div>
+      <div class="stat-value">5,320</div>
+      <div class="stat-sub">akses terhadap karya</div>
+      <div class="sparkline-wrap"><canvas id="spark2"></canvas></div>
+    </div>
+    <!-- Card 3 -->
+    <div class="stat-card">
+      <div class="stat-card-top">
+        <div class="stat-icon orange">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <path d="M11 3 A8 8 0 1 1 3 11" stroke="var(--orange)" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M11 3 A8 8 0 0 1 19 11" stroke="var(--navy)" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="11" cy="11" r="3" fill="var(--bg-card)" stroke="var(--border)" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <span class="stat-trend neutral">Terbanyak</span>
+      </div>
+      <div class="stat-label">Kategori Terbanyak</div>
+      <div class="stat-donut-wrap">
+        <canvas id="miniDonut" class="stat-donut-canvas"></canvas>
+        <div>
+          <div class="stat-donut-label">Tugas Akhir</div>
+          <div class="stat-donut-sub" style="font-family:'Nunito',sans-serif;font-weight:800;color:var(--teal);font-size:15px;">76%</div>
+          <div class="stat-donut-sub">dari total karya</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 1: Bar Chart + Donut -->
+  <div class="grid-2col">
+    <!-- Bar Chart -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <div class="chart-card-title">Sebaran Karya Per Prodi</div>
+          <div class="chart-card-sub">Jumlah karya tiap program studi</div>
+        </div>
+        <div class="chart-actions">
+          <button class="btn-chip" onclick="eksporBarChart()">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v7M3 5l3 3 3-3M1 10h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Ekspor Data
+          </button>
+          <button class="btn-chip" onclick="filterBarChart()">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 3h10M3 6h6M5 9h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Filter
+          </button>
+        </div>
+      </div>
+      <div class="chart-body" style="height:240px;">
+        <canvas id="chartProdi"></canvas>
+      </div>
+    </div>
+    <!-- Donut -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <div class="chart-card-title">Komposisi Jenis Karya Ilmiah</div>
+          <div class="chart-card-sub">Distribusi berdasarkan jenis dokumen</div>
+        </div>
+      </div>
+      <div class="donut-layout">
+        <div class="donut-chart-wrap">
+          <canvas id="chartJenis"></canvas>
+        </div>
+        <div class="donut-legend">
+          <div class="legend-item"><span class="legend-dot" style="background:#2e3192"></span>Tugas Akhir<span class="legend-pct">76%</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background:#0891b2"></span>Laporan Magang<span class="legend-pct">9%</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background:#f97316"></span>Artikel Jurnal<span class="legend-pct">7%</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background:#a855f7"></span>Proyek Inovasi<span class="legend-pct">5%</span></div>
+          <div class="legend-item"><span class="legend-dot" style="background:#ec4899"></span>Lainnya<span class="legend-pct">3%</span></div>
+        </div>
+      </div>
+      <button class="btn-rekapan" onclick="eksporCSV()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v9M4 7l3 3 3-3M1 12h12" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        REKAPAN DATA
+      </button>
+    </div>
+  </div>
+
+  <!-- ROW 2: Line Chart + Top 5 Table -->
+  <div class="grid-2col-even" style="margin-top:16px;">
+    <!-- Line Chart -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <div class="chart-card-title">Grafik Garis "Tren Pembaca Bulanan"</div>
+          <div class="chart-card-sub">Total pembaca per bulan — tahun ini</div>
+        </div>
+        <div class="chart-actions">
+          <button class="btn-chip" onclick="eksporLineChart()">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v7M3 5l3 3 3-3M1 10h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Ekspor Data
+          </button>
+          <button class="btn-chip" onclick="filterLineChart()">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 3h10M3 6h6M5 9h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Filter
+          </button>
+        </div>
+      </div>
+      <div class="chart-body" style="height:220px;">
+        <canvas id="chartTren"></canvas>
+      </div>
+    </div>
+    <!-- Top 5 Table -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <div class="chart-card-title">5 Karya Teratas <span style="font-weight:400;color:var(--text-muted)">(Bulan Ini)</span></div>
+          <div class="chart-card-sub">Berdasarkan jumlah pembaca</div>
+        </div>
+        <div class="chart-actions">
+          <button class="btn-chip">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 3h10M3 6h6M5 9h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Filter
+          </button>
+        </div>
+      </div>
+      <table class="top-table">
+        <thead>
+          <tr>
+            <th style="width:24px;">#</th>
+            <th>Judul</th>
+            <th>Penulis</th>
+            <th>Pembaca</th>
+          </tr>
+        </thead>
+        <tbody id="top5-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── DATA ──
+var TOP5 = [
+  { judul:'Rancang Bangun Sistem Informasi Perpustakaan Digital Berbasis Web', penulis:'Karina, Aliya', jenis:'Tugas Akhir', n:287 },
+  { judul:'Sistem Informasi Manajemen Akademik Terintegrasi RFID', penulis:'Rizky Pratama', jenis:'Proyek Inovasi', n:251 },
+  { judul:'Analisis Kinerja Jaringan Nirkabel Kampus Menggunakan QoS', penulis:'Dewi Nurhalliza', jenis:'Artikel Jurnal', n:198 },
+  { judul:'Rancang Bangun Aplikasi Monitoring Energi Berbasis IoT', penulis:'Bima Arya', jenis:'Tugas Akhir', n:174 },
+  { judul:'Implementasi Machine Learning untuk Deteksi Spam Email', penulis:'Sinta Maharani', jenis:'Laporan Magang', n:143 },
+];
+
+var PRODI_LABELS = ['D4 Perpustakaan Digital','D4 Animasi','D4 Manajemen Pemasaran','D4 Akuntansi','D4 Tata Boga','D4 Desain Mode','D4 Tek. Rek. Bangunan Sipil','D4 Tek. Rek. Bangunan Manufaktur','D4 Tek. Rek. Otomotif','D4 Tek. Rek. Pembangkit Energi','D4 Tek. Rek. Sistem Elektronika'];
+var PRODI_DATA   = [142, 118, 95, 88, 76, 64, 58, 45, 39, 35, 28];
+
+var BULAN = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agt','Sep','Okt','Nov','Des'];
+var TREN  = [1800, 2200, 5800, 1700, 4900, 2100, 4100, 5300, 4000, 3200, 2600, 2900];
+
+var SPARK1 = [80,95,88,102,97,110,108,120,115,125,130,135];
+var SPARK2 = [290,320,480,250,420,310,390,530,400,350,310,420];
+
+var JENIS_DATA = [76,9,7,5,3];
+var JENIS_COLORS = ['#2e3192','#0891b2','#f97316','#a855f7','#ec4899'];
+
+// ── SPARKLINES ──
+function drawSparkline(id, data, color) {
+  var ctx = document.getElementById(id).getContext('2d');
+  new Chart(ctx, {
+    type:'line',
+    data:{ labels:BULAN, datasets:[{ data:data, borderColor:color, borderWidth:2, pointRadius:0, fill:true, backgroundColor: color+'18', tension:.4 }] },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false},tooltip:{enabled:false}},
+      scales:{ x:{display:false}, y:{display:false} }, animation:{duration:600} }
+  });
+}
+
+// ── MINI DONUT (stat card) ──
+function drawMiniDonut() {
+  var ctx = document.getElementById('miniDonut').getContext('2d');
+  new Chart(ctx, {
+    type:'doughnut',
+    data:{ datasets:[{ data:[76,24], backgroundColor:['#0891b2','#e8e8f0'], borderWidth:0 }] },
+    options:{ responsive:false, cutout:'70%', plugins:{legend:{display:false},tooltip:{enabled:false}}, animation:{duration:600} }
+  });
+}
+
+// ── BAR CHART (Prodi) ──
+function drawBarChart() {
+  var ctx = document.getElementById('chartProdi').getContext('2d');
+  var colors = ['#2e3192','#0891b2','#2e3192','#0891b2','#2e3192','#0891b2','#2e3192','#0891b2','#2e3192'];
+  new Chart(ctx, {
+    type:'bar',
+    data:{
+      labels: PRODI_LABELS,
+      datasets:[{ label:'Jumlah Karya', data:PRODI_DATA, backgroundColor:colors, borderRadius:4, borderSkipped:false }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false, indexAxis:'y',
+      plugins:{
+        legend:{display:false},
+        tooltip:{ callbacks:{ label: ctx => ' '+ctx.parsed.x+' karya' } }
+      },
+      scales:{
+        x:{ grid:{color:'rgba(0,0,0,.05)'}, ticks:{font:{size:11},color:'#8888aa'} },
+        y:{ grid:{display:false}, ticks:{font:{size:11},color:'#4a4a6a'} }
+      }
+    }
+  });
+}
+
+// ── DONUT (Jenis) ──
+function drawDonutJenis() {
+  var ctx = document.getElementById('chartJenis').getContext('2d');
+  new Chart(ctx, {
+    type:'doughnut',
+    data:{
+      labels:['Tugas Akhir','Laporan Magang','Artikel Jurnal','Proyek Inovasi','Lainnya'],
+      datasets:[{ data:JENIS_DATA, backgroundColor:JENIS_COLORS, borderWidth:2, borderColor:'#fff', hoverOffset:6 }]
+    },
+    options:{
+      responsive:true, cutout:'60%',
+      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx => ' '+ctx.label+': '+ctx.parsed+'%' } } }
+    }
+  });
+}
+
+// ── LINE CHART (Tren) ──
+function drawLineChart() {
+  var ctx = document.getElementById('chartTren').getContext('2d');
+  new Chart(ctx, {
+    type:'line',
+    data:{
+      labels: BULAN,
+      datasets:[{
+        label:'Total Pembaca', data:TREN,
+        borderColor:'#0891b2', borderWidth:2.5, pointRadius:3,
+        pointBackgroundColor:'#0891b2', fill:true,
+        backgroundColor:'rgba(8,145,178,.08)', tension:.4
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{ display:true, position:'top', labels:{font:{size:11},color:'#0891b2',boxWidth:12,padding:12} },
+        tooltip:{ callbacks:{ label: ctx => ' '+ctx.parsed.y.toLocaleString('id')+' pembaca' } }
+      },
+      scales:{
+        x:{ grid:{display:false}, ticks:{font:{size:11},color:'#8888aa'} },
+        y:{ grid:{color:'rgba(0,0,0,.05)'}, ticks:{font:{size:11},color:'#8888aa'} }
+      }
+    }
+  });
+}
+
+// ── TOP 5 TABLE ──
+function renderTop5() {
+  var max = TOP5[0].n;
+  var tbody = document.getElementById('top5-body');
+  tbody.innerHTML = TOP5.map(function(r, i) {
+    var short = r.judul.length > 38 ? r.judul.substring(0,38)+'...' : r.judul;
+    var pct = Math.round(r.n / max * 100);
+    return '<tr>' +
+      '<td class="row-num">'+(i+1)+'.</td>' +
+      '<td><div class="row-title" title="'+r.judul+'">'+short+'</div><span class="row-tag">'+r.jenis+'</span></td>' +
+      '<td style="font-size:12px;color:var(--text-mid);">'+r.penulis+'</td>' +
+      '<td><div class="readers-bar-wrap"><div class="readers-bar" style="width:'+pct+'px;opacity:.25;background:var(--navy)"></div><strong>'+r.n+'</strong></div></td>' +
+    '</tr>';
+  }).join('');
+}
+
+// ── EKSPOR CSV ──
+function eksporCSV() {
+  var rows = [['Judul','Penulis','Jenis','Jumlah Pembaca']].concat(TOP5.map(function(r){ return ['"'+r.judul+'"',r.penulis,r.jenis,r.n]; }));
+  var csv = rows.map(function(r){ return r.join(','); }).join('\n');
+  var blob = new Blob(['﻿'+csv], {type:'text/csv;charset=utf-8;'});
+  var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'rekapan_karya.csv'; a.click();
+}
+function eksporBarChart() { eksporCSV(); }
+function eksporLineChart() {
+  var rows = [['Bulan','Jumlah Pembaca']].concat(BULAN.map(function(b,i){ return [b, TREN[i]]; }));
+  var csv = rows.map(function(r){ return r.join(','); }).join('\n');
+  var blob = new Blob(['﻿'+csv], {type:'text/csv;charset=utf-8;'});
+  var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'tren_pembaca.csv'; a.click();
+}
+function filterBarChart() { showToast('Filter Prodi — segera tersedia setelah koneksi database'); }
+function filterLineChart() { showToast('Filter Tahun — segera tersedia setelah koneksi database'); }
+
+// ── TOAST ──
+function showToast(msg) {
+  var t = document.getElementById('stat-toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'stat-toast';
+    t.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#2e3192;color:#fff;border-radius:99px;padding:10px 22px;font-size:13px;font-weight:600;font-family:"Nunito",sans-serif;z-index:9999;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap;box-shadow:0 4px 16px rgba(46,49,146,.25);';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(t._tid);
+  t._tid = setTimeout(function(){ t.style.opacity = '0'; }, 2800);
+}
+
+// ── INIT ──
+window.addEventListener('DOMContentLoaded', function() {
+  drawSparkline('spark1', SPARK1, '#0891b2');
+  drawSparkline('spark2', SPARK2, '#f97316');
+  drawMiniDonut();
+  drawBarChart();
+  drawDonutJenis();
+  drawLineChart();
+  renderTop5();
+});
+</script>
+</body>
+</html>

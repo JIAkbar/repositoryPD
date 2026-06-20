@@ -1,6 +1,6 @@
 /**
  * mahasiswa-shared.js
- * Shared logic untuk mahasiswa.html (Classic) dan mahasiswa-evo.html (V.Evolution)
+ * Shared logic untuk mahasiswa.html (Classic) dan mahasiswa.html (V.Evolution)
  *
  * ATURAN: File ini adalah single source of truth untuk semua logic mahasiswa.
  * Jika ada bug fix atau fitur baru di sini, otomatis berlaku di kedua tampilan.
@@ -11,7 +11,7 @@
  *   - PAGE_META          — subtitle bisa beda per layout
  *   - saveProfil()       — DOM IDs berbeda per layout
  *   - switchToEvo()      — hanya ada di mahasiswa.html
- *   - switchToClassic()  — hanya ada di mahasiswa-evo.html
+ *   - switchToClassic()  — hanya ada di mahasiswa.html
  */
 
 // ══════════════════════════════════════════

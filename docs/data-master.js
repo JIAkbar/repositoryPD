@@ -3,7 +3,7 @@
  * Dosen Pembimbing (72 item) dan Program Studi (11 prodi D4)
  *
  * Load file ini SEBELUM script lain di semua halaman:
- *   admin.html, admin-evo.html, mahasiswa.html, mahasiswa-evo.html
+ *   admin.html, admin.html, mahasiswa.html, mahasiswa.html
  *
  * Variabel global:
  *   window.MASTER_DOSEN  — array 72 string nama dosen
