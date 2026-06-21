@@ -5,6 +5,29 @@
 -- ON CONFLICT DO NOTHING — aman dijalankan ulang
 -- =====================================================
 
+-- ─── Auth Users (WAJIB sebelum INSERT ke public.users) ───
+-- public.users punya FK ke auth.users(id), jadi harus ada dulu
+INSERT INTO auth.users (
+  id, instance_id, email, encrypted_password,
+  email_confirmed_at, raw_user_meta_data,
+  role, aud, created_at, updated_at
+) VALUES
+  ('00000000-0000-0000-0000-000000000021','00000000-0000-0000-0000-000000000000','user021@demo.local',crypt('Demo12345!',gen_salt('bf')),NOW(),'{"nama":"Dinda Pratiwi","role":"mahasiswa"}'::jsonb,'authenticated','authenticated',NOW(),NOW()),
+  ('00000000-0000-0000-0000-000000000022','00000000-0000-0000-0000-000000000000','user022@demo.local',crypt('Demo12345!',gen_salt('bf')),NOW(),'{"nama":"Reza Kurniawan","role":"mahasiswa"}'::jsonb,'authenticated','authenticated',NOW(),NOW()),
+  ('00000000-0000-0000-0000-000000000023','00000000-0000-0000-0000-000000000000','user023@demo.local',crypt('Demo12345!',gen_salt('bf')),NOW(),'{"nama":"Indra Setiawan","role":"mahasiswa"}'::jsonb,'authenticated','authenticated',NOW(),NOW()),
+  ('00000000-0000-0000-0000-000000000024','00000000-0000-0000-0000-000000000000','user024@demo.local',crypt('Demo12345!',gen_salt('bf')),NOW(),'{"nama":"Ayu Puspita","role":"mahasiswa"}'::jsonb,'authenticated','authenticated',NOW(),NOW()),
+  ('00000000-0000-0000-0000-000000000025','00000000-0000-0000-0000-000000000000','user025@demo.local',crypt('Demo12345!',gen_salt('bf')),NOW(),'{"nama":"Farhan Maulana","role":"mahasiswa"}'::jsonb,'authenticated','authenticated',NOW(),NOW()),
+  ('00000000-0000-0000-0000-000000000026','00000000-0000-0000-0000-000000000000','user026@demo.local',crypt('Demo12345!',gen_salt('bf')),NOW(),'{"nama":"Novia Ramadhani","role":"mahasiswa"}'::jsonb,'authenticated','authenticated',NOW(),NOW()),
+  ('00000000-0000-0000-0000-000000000027','00000000-0000-0000-0000-000000000000','user027@demo.local',crypt('Demo12345!',gen_salt('bf')),NOW(),'{"nama":"Bima Andreansyah","role":"mahasiswa"}'::jsonb,'authenticated','authenticated',NOW(),NOW()),
+  ('00000000-0000-0000-0000-000000000028','00000000-0000-0000-0000-000000000000','user028@demo.local',crypt('Demo12345!',gen_salt('bf')),NOW(),'{"nama":"Cindy Permata","role":"mahasiswa"}'::jsonb,'authenticated','authenticated',NOW(),NOW()),
+  ('00000000-0000-0000-0000-000000000029','00000000-0000-0000-0000-000000000000','user029@demo.local',crypt('Demo12345!',gen_salt('bf')),NOW(),'{"nama":"Yoga Pratama","role":"mahasiswa"}'::jsonb,'authenticated','authenticated',NOW(),NOW()),
+  ('00000000-0000-0000-0000-000000000030','00000000-0000-0000-0000-000000000000','user030@demo.local',crypt('Demo12345!',gen_salt('bf')),NOW(),'{"nama":"Rina Susanti","role":"mahasiswa"}'::jsonb,'authenticated','authenticated',NOW(),NOW()),
+  ('00000000-0000-0000-0000-000000000031','00000000-0000-0000-0000-000000000000','user031@demo.local',crypt('Demo12345!',gen_salt('bf')),NOW(),'{"nama":"Wahyu Hidayat","role":"mahasiswa"}'::jsonb,'authenticated','authenticated',NOW(),NOW()),
+  ('00000000-0000-0000-0000-000000000032','00000000-0000-0000-0000-000000000000','user032@demo.local',crypt('Demo12345!',gen_salt('bf')),NOW(),'{"nama":"Zahira Aulya","role":"mahasiswa"}'::jsonb,'authenticated','authenticated',NOW(),NOW()),
+  ('00000000-0000-0000-0000-000000000033','00000000-0000-0000-0000-000000000000','user033@demo.local',crypt('Demo12345!',gen_salt('bf')),NOW(),'{"nama":"Mira Kusuma","role":"mahasiswa"}'::jsonb,'authenticated','authenticated',NOW(),NOW()),
+  ('00000000-0000-0000-0000-000000000034','00000000-0000-0000-0000-000000000000','user034@demo.local',crypt('Demo12345!',gen_salt('bf')),NOW(),'{"nama":"Hendra Prasetya","role":"mahasiswa"}'::jsonb,'authenticated','authenticated',NOW(),NOW())
+ON CONFLICT (id) DO NOTHING;
+
 -- ─── Users baru (penulis karya #7–#20) ───
 INSERT INTO users (id, nim_nidn, nama, role, prodi_id, is_active, foto_url) VALUES
   ('00000000-0000-0000-0000-000000000021', '210213700021', 'Dinda Pratiwi',      'mahasiswa', (SELECT id FROM program_studi WHERE kode='D4-AN'),   true, NULL),
@@ -22,6 +45,17 @@ INSERT INTO users (id, nim_nidn, nama, role, prodi_id, is_active, foto_url) VALU
   ('00000000-0000-0000-0000-000000000033', '210213700033', 'Mira Kusuma',        'mahasiswa', (SELECT id FROM program_studi WHERE kode='D4-TB'),   true, NULL),
   ('00000000-0000-0000-0000-000000000034', '210213700034', 'Hendra Prasetya',    'mahasiswa', (SELECT id FROM program_studi WHERE kode='D4-TRBS'), true, NULL)
 ON CONFLICT (id) DO NOTHING;
+
+-- ─── Hapus karya lama dari penulis ini (idempotent guard) ───
+DELETE FROM karya_ilmiah WHERE penulis_id IN (
+  '00000000-0000-0000-0000-000000000021','00000000-0000-0000-0000-000000000022',
+  '00000000-0000-0000-0000-000000000023','00000000-0000-0000-0000-000000000024',
+  '00000000-0000-0000-0000-000000000025','00000000-0000-0000-0000-000000000026',
+  '00000000-0000-0000-0000-000000000027','00000000-0000-0000-0000-000000000028',
+  '00000000-0000-0000-0000-000000000029','00000000-0000-0000-0000-000000000030',
+  '00000000-0000-0000-0000-000000000031','00000000-0000-0000-0000-000000000032',
+  '00000000-0000-0000-0000-000000000033','00000000-0000-0000-0000-000000000034'
+);
 
 -- ─── Karya #7–#20 (sinkron dengan window.KARYA_DATA frontend) ───
 INSERT INTO karya_ilmiah (judul, abstrak, kata_kunci, tahun, jenis, no_panggil, bidang, status, penulis_id, prodi_id, kategori_id, dosen_pembimbing, views) VALUES
@@ -165,7 +199,7 @@ INSERT INTO karya_ilmiah (judul, abstrak, kata_kunci, tahun, jenis, no_panggil, 
     (SELECT id FROM kategori WHERE nama='Laporan Magang'),
     'Pranoto, S.T., M.T.', 59
   )
-ON CONFLICT (no_panggil) DO NOTHING;
+;
 
 -- ─── Verifikasi ───
 SELECT 'Total karya disetujui' AS label, COUNT(*) AS jumlah FROM karya_ilmiah WHERE status='disetujui';

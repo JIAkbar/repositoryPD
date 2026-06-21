@@ -77,6 +77,10 @@ docs/statistik-evo.html
 # ─── Import Guide (internal, bukan bagian repo publik) ───
 database/migrations/README_IMPORT.md
 
+# ─── Generated SQL (berisi password plaintext / data sensitif — JANGAN commit) ───
+database/migrations/update_credentials.sql
+database/generated/*.sql
+
 # ─── File duplikat / sisa lama ───
 DIGILAB_MindMap.html
 changelog.html
@@ -91,3 +95,10 @@ database/seeds/
 
 # ─── Script lokal (jalankan manual, tidak perlu di repo) ───
 *.bat
+
+# ─── Untracked artifacts (tidak perlu di repo) ───
+digilab_page_visualizer.html
+nul
+
+# ─── Auth seed (berisi plaintext password — JANGAN commit) ───
+database/migrations/000_seed_auth_users.sql

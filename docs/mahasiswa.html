@@ -53,15 +53,18 @@ a{text-decoration:none;color:inherit;}
 .login-daftar{display:block;margin-top:14px;font-size:12.5px;text-align:center;color:var(--text-muted);}
 .login-daftar a{color:var(--navy);font-weight:700;cursor:pointer;}
 .login-daftar a:hover{text-decoration:underline;}
-.reg-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9990;align-items:center;justify-content:center;padding:20px 0;overflow-y:auto;}
+.reg-overlay{display:none;position:fixed;inset:0;background:rgba(9,78,88,.5);backdrop-filter:blur(6px);z-index:9990;align-items:center;justify-content:center;padding:20px;overflow-y:auto;}
 .reg-overlay.open{display:flex;}
-.reg-card{background:#fff;border-radius:20px;padding:36px 40px 28px;width:420px;max-width:95vw;box-shadow:0 20px 60px rgba(0,0,0,.25);animation:popIn .25s cubic-bezier(.34,1.56,.64,1) both;}
+.reg-card{background:#fff;border-radius:12px;padding:32px;width:420px;max-width:95vw;box-shadow:0 20px 60px rgba(0,0,0,.2);animation:popIn .25s cubic-bezier(.34,1.56,.64,1) both;position:relative;}
 @keyframes popIn{from{opacity:0;transform:scale(.92) translateY(8px)}to{opacity:1;transform:scale(1) translateY(0)}}
-.reg-header{text-align:center;margin-bottom:22px;}
-.reg-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:18px;color:var(--text-dark);margin-bottom:4px;}
-.reg-sub{font-size:12px;color:var(--text-muted);}
-.reg-error{color:var(--red);font-size:13px;margin-top:10px;min-height:18px;font-weight:600;}
-.reg-footer{display:block;margin-top:16px;font-size:12.5px;text-align:center;color:var(--text-muted);}
+.reg-logo{display:flex;align-items:center;gap:12px;margin-bottom:22px;}
+.reg-logo-icon{width:42px;height:42px;background:var(--navy);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.reg-title{font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;color:var(--text-dark);margin-bottom:2px;}
+.reg-sub{font-size:11px;color:var(--text-muted);}
+.reg-x{position:absolute;top:12px;right:12px;width:30px;height:30px;background:transparent;border:1.5px solid var(--border);border-radius:50%;color:var(--text-muted);font-size:18px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.reg-x:hover{border-color:var(--text-mid);color:var(--text-dark);}
+.reg-error{color:var(--red);font-size:13px;margin-bottom:10px;min-height:16px;font-weight:600;display:none;}
+.reg-footer{display:block;margin-top:14px;font-size:12.5px;text-align:center;color:var(--text-muted);}
 .reg-footer a{color:var(--navy);font-weight:700;cursor:pointer;}
 .reg-footer a:hover{text-decoration:underline;}
 .reg-success-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9991;align-items:center;justify-content:center;}
@@ -448,7 +451,7 @@ tbody tr:hover{background:#faf9f6;}
     </div>
     <div class="login-field">
       <label>Email / NIM</label>
-      <input type="email" id="login-email" placeholder="mhs" autocomplete="email">
+      <input type="email" id="login-email" placeholder="Email atau NIM" autocomplete="email">
     </div>
     <div class="login-field">
       <label>Kata Sandi</label>
@@ -466,37 +469,41 @@ tbody tr:hover{background:#faf9f6;}
 <!-- ══ REGISTER OVERLAY ══ -->
 <div class="reg-overlay" id="reg-overlay" onclick="if(event.target===this)closeRegister()">
   <div class="reg-card" onclick="event.stopPropagation()">
-    <div class="reg-header">
-      <div class="reg-title">Daftar Akun Mahasiswa</div>
-      <div class="reg-sub">Buat akun untuk mengunggah karya ilmiah Anda</div>
+    <button class="reg-x" onclick="closeRegister()">×</button>
+    <div class="reg-logo">
+      <div class="reg-logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <div>
+        <div class="reg-title">Daftar Akun Mahasiswa</div>
+        <div class="reg-sub">Fakultas Vokasi · Universitas Negeri Malang</div>
+      </div>
     </div>
+    <div class="reg-error" id="reg-err"></div>
     <div class="login-field">
       <label>Nama Lengkap</label>
       <input type="text" id="reg-nama" placeholder="Nama sesuai KTM" autocomplete="name">
     </div>
     <div class="login-field">
       <label>NIM</label>
-      <input type="text" id="reg-nim" placeholder="220213XXXXXX">
+      <input type="text" id="reg-nim" placeholder="Nomor Induk Mahasiswa">
     </div>
     <div class="login-field">
       <label>Program Studi</label>
-      <select id="reg-prodi">
+      <select id="reg-prodi" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 12px;font-size:14px;color:var(--text-dark);background:#fafafa;outline:none;font-family:'Lato',sans-serif;box-sizing:border-box;transition:border-color .2s;" onfocus="this.style.borderColor='var(--navy)'" onblur="this.style.borderColor='var(--border)'">
         <option value="">— Pilih Program Studi —</option>
       </select>
     </div>
     <div class="login-field">
       <label>Email</label>
-      <input type="email" id="reg-email" placeholder="nama@students.um.ac.id" autocomplete="email">
+      <input type="email" id="reg-email" placeholder="email@student.um.ac.id" autocomplete="email">
     </div>
     <div class="login-field">
       <label>Kata Sandi</label>
       <input type="password" id="reg-pass" placeholder="Minimal 8 karakter" autocomplete="new-password">
     </div>
-    <button class="login-btn" id="reg-btn" onclick="doRegister()">Daftar Sekarang</button>
-    <div class="reg-error" id="reg-err"></div>
-    <div class="reg-footer">
-      Sudah punya akun? <a onclick="closeRegister()">Masuk di sini</a>
-    </div>
+    <button class="login-btn" id="reg-btn" onclick="doRegister()" style="border-radius:99px;margin-top:4px;">Daftar Sekarang</button>
+    <div class="reg-footer">Sudah punya akun? <a onclick="closeRegister()">Masuk di sini</a></div>
   </div>
 </div>
 
