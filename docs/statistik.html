@@ -189,15 +189,6 @@ body {
   font-family:'Nunito',sans-serif; font-weight:800; font-size:14px; color:var(--text-dark);
 }
 .chart-card-sub { font-size:11px; color:var(--text-muted); margin-top:2px; }
-.chart-actions { display:flex; gap:6px; flex-shrink:0; }
-.btn-chip {
-  display:flex; align-items:center; gap:5px;
-  border:1px solid var(--border); background:var(--bg-card);
-  color:var(--text-mid); border-radius:var(--pill);
-  padding:5px 10px; font-size:10px; font-weight:700;
-  font-family:'Nunito',sans-serif; cursor:pointer; transition:all .15s;
-}
-.btn-chip:hover { background:var(--navy-light); border-color:var(--navy); color:var(--navy); }
 .chart-body { position:relative; }
 
 /* ── DONUT LEGEND ── */
@@ -207,15 +198,6 @@ body {
 .legend-item { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-mid); }
 .legend-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
 .legend-pct { font-family:'Nunito',sans-serif; font-weight:700; color:var(--text-dark); margin-left:auto; }
-.btn-rekapan {
-  width:100%; margin-top:18px;
-  background:var(--navy); color:#fff; border:none; border-radius:var(--radius);
-  padding:10px 0; font-family:'Nunito',sans-serif; font-weight:800; font-size:13px;
-  cursor:pointer; display:flex; align-items:center; justify-content:center; gap:7px;
-  transition:background .15s;
-}
-.btn-rekapan:hover { background:var(--navy-dark); }
-
 /* ── TABLE ── */
 .top-table { width:100%; border-collapse:collapse; font-size:12px; }
 .top-table thead th {
@@ -300,7 +282,7 @@ body {
   font-family:'Nunito',sans-serif; font-size:10px; font-weight:700;
   padding:3px 10px; border-radius:var(--pill); flex-shrink:0; white-space:nowrap;
 }
-.mhs-badge.disetujui { background:#d1fae5; color:#065f46; }
+.mhs-badge.disetujui { background:var(--green-bg); color:#065f46; }
 .mhs-badge.pending   { background:#fef9c3; color:#854d0e; }
 .mhs-badge.revisi    { background:#ffedd5; color:#c2410c; }
 .mhs-badge.ditolak   { background:#fee2e2; color:#991b1b; }
@@ -325,6 +307,54 @@ body {
   .mhs-stat-cards { grid-template-columns:1fr; }
   .stat-page { padding:12px; }
 }
+
+/* ── EXPORT MODAL ── */
+.exp-overlay {
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,.45);
+  z-index:9990; align-items:center; justify-content:center;
+}
+.exp-overlay.open { display:flex; }
+.exp-card {
+  background:#fff; border-radius:16px; padding:28px 28px 24px;
+  max-width:420px; width:90%; box-shadow:0 12px 48px rgba(9,78,88,.25);
+  animation: modalIn .22s cubic-bezier(.34,1.56,.64,1) both;
+}
+.exp-title {
+  font-family:'Nunito',sans-serif; font-weight:900; font-size:16px;
+  color:var(--text-dark); margin-bottom:4px;
+}
+.exp-sub { font-size:12px; color:var(--text-muted); margin-bottom:18px; }
+.exp-section-title {
+  font-family:'Nunito',sans-serif; font-weight:700; font-size:10px;
+  text-transform:uppercase; letter-spacing:.6px; color:var(--text-muted);
+  margin-bottom:8px;
+}
+.exp-checks { display:flex; flex-direction:column; gap:8px; margin-bottom:16px; }
+.exp-check-item { display:flex; align-items:center; gap:8px; cursor:pointer; }
+.exp-check-item input[type="checkbox"] { width:16px; height:16px; cursor:pointer; accent-color:var(--navy); }
+.exp-check-item span { font-size:13px; color:var(--text-dark); }
+.exp-format-row { display:flex; gap:12px; margin-bottom:20px; }
+.exp-format-btn {
+  flex:1; padding:10px 0; border:2px solid var(--border);
+  border-radius:var(--radius); background:#fff; cursor:pointer;
+  font-family:'Nunito',sans-serif; font-weight:700; font-size:13px;
+  color:var(--text-mid); transition:all .15s; display:flex;
+  align-items:center; justify-content:center; gap:6px;
+}
+.exp-format-btn.selected { border-color:var(--navy); color:var(--navy); background:var(--navy-light); }
+.exp-actions { display:flex; gap:10px; }
+.exp-btn-cancel {
+  flex:1; padding:10px; border:1.5px solid var(--border);
+  border-radius:var(--pill); background:#fff; cursor:pointer;
+  font-family:'Nunito',sans-serif; font-weight:700; color:var(--text-mid);
+}
+.exp-btn-do {
+  flex:2; padding:10px; border:none;
+  border-radius:var(--pill); background:var(--navy); color:#fff; cursor:pointer;
+  font-family:'Nunito',sans-serif; font-weight:700; font-size:13px;
+  display:flex; align-items:center; justify-content:center; gap:6px;
+}
+.exp-btn-do:hover { background:var(--navy-dark); }
 </style>
 </head>
 <body>
@@ -360,10 +390,6 @@ body {
     <button class="btn-topbar" onclick="navigateTo('public')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
       Beranda
-    </button>
-    <button class="btn-topbar" onclick="eksporCSV()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      Unduh CSV
     </button>
   </div>
 </div>
@@ -408,12 +434,8 @@ body {
       <div class="sidebar-section-label">Ringkasan</div>
       <div style="padding:10px 8px;">
         <div style="font-size:11px;color:rgba(255,255,255,.5);margin-bottom:6px;">Total Karya</div>
-        <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:22px;color:#fff;">1,245</div>
+        <div id="sidebar-total-karya" style="font-family:'Nunito',sans-serif;font-weight:900;font-size:22px;color:#fff;">1,245</div>
         <div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:2px;">tersimpan di repositori</div>
-        <div style="margin-top:12px;height:2px;background:rgba(255,255,255,.1);border-radius:1px;">
-          <div style="height:2px;width:76%;background:var(--orange);border-radius:1px;"></div>
-        </div>
-        <div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:4px;">Tugas Akhir 76%</div>
       </div>
     </div>
 
@@ -436,9 +458,9 @@ body {
           <p>Data statistik repositori — diperbarui secara berkala</p>
         </div>
         <div class="page-header-actions">
-          <button class="btn-action" onclick="eksporCSV()">
+          <button class="btn-action primary" id="btn-export-admin" onclick="openExportModal()" style="display:none;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Unduh CSV
+            Ekspor Data
           </button>
         </div>
       </div>
@@ -543,16 +565,6 @@ body {
               <div class="chart-card-title">Sebaran Karya Per Prodi</div>
               <div class="chart-card-sub">Jumlah karya tiap program studi</div>
             </div>
-            <div class="chart-actions">
-              <button class="btn-chip" onclick="eksporBarChart()">
-                <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M6 1v7M3 5l3 3 3-3M1 10h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                Ekspor
-              </button>
-              <button class="btn-chip">
-                <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M1 3h10M3 6h6M5 9h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-                Filter
-              </button>
-            </div>
           </div>
           <div class="chart-body" style="height:220px;">
             <canvas id="chartProdi"></canvas>
@@ -571,17 +583,13 @@ body {
               <canvas id="chartJenis"></canvas>
             </div>
             <div class="donut-legend">
-              <div class="legend-item"><span class="legend-dot" style="background:#094e58"></span>Tugas Akhir<span class="legend-pct">76%</span></div>
-              <div class="legend-item"><span class="legend-dot" style="background:#14b8a6"></span>Laporan Magang<span class="legend-pct">9%</span></div>
-              <div class="legend-item"><span class="legend-dot" style="background:#e8821e"></span>Artikel Jurnal<span class="legend-pct">7%</span></div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--navy)"></span>Tugas Akhir<span class="legend-pct">76%</span></div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--teal)"></span>Laporan Magang<span class="legend-pct">9%</span></div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--orange)"></span>Artikel Jurnal<span class="legend-pct">7%</span></div>
               <div class="legend-item"><span class="legend-dot" style="background:#a855f7"></span>Proyek Inovasi<span class="legend-pct">5%</span></div>
               <div class="legend-item"><span class="legend-dot" style="background:#ec4899"></span>Lainnya<span class="legend-pct">3%</span></div>
             </div>
           </div>
-          <button class="btn-rekapan" onclick="eksporCSV()">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v9M4 7l3 3 3-3M1 12h12" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            REKAPAN DATA
-          </button>
         </div>
       </div>
 
@@ -593,16 +601,6 @@ body {
             <div>
               <div class="chart-card-title">Tren Pembaca Bulanan</div>
               <div class="chart-card-sub">Total pembaca per bulan — tahun ini</div>
-            </div>
-            <div class="chart-actions">
-              <button class="btn-chip" onclick="eksporLineChart()">
-                <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M6 1v7M3 5l3 3 3-3M1 10h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                Ekspor
-              </button>
-              <button class="btn-chip">
-                <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M1 3h10M3 6h6M5 9h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-                Filter
-              </button>
             </div>
           </div>
           <div class="chart-body" style="height:200px;">
@@ -703,6 +701,9 @@ function checkAuth() {
     var sbAdmin = document.getElementById('sb-admin');
     if (sbAdmin) sbAdmin.style.display = 'flex';
   }
+  // Tampilkan tombol Ekspor hanya untuk admin
+  var btnExp = document.getElementById('btn-export-admin');
+  if (btnExp) btnExp.style.display = (u && (u.role === 'Admin Pustakawan' || u.role === 'admin')) ? '' : 'none';
   // Show Statistik Karya Saya for mahasiswa (not admin)
   var isAdmin = u && (u.role === 'Admin Pustakawan' || u.role === 'admin');
   var secMhs = document.getElementById('section-mhs-stats');
@@ -864,13 +865,6 @@ function eksporCSV() {
   var blob = new Blob(['﻿'+csv], {type:'text/csv;charset=utf-8;'});
   var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'rekapan_karya.csv'; a.click();
 }
-function eksporBarChart() { eksporCSV(); }
-function eksporLineChart() {
-  var rows = [['Bulan','Jumlah Pembaca']].concat(BULAN.map(function(b,i){ return [b, TREN[i]]; }));
-  var csv = rows.map(function(r){ return r.join(','); }).join('\n');
-  var blob = new Blob(['﻿'+csv], {type:'text/csv;charset=utf-8;'});
-  var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'tren_pembaca.csv'; a.click();
-}
 
 // ── ADMIN REDIRECT ──
 function goToPortalMahasiswa() {
@@ -899,17 +893,85 @@ window.addEventListener('DOMContentLoaded', function() {
   drawLineChart();
   renderTop5();
 });
+
+/* ── EXPORT MODAL (ADMIN ONLY) ── */
+var _expFormat = 'excel';
+function openExportModal() {
+  var ov = document.getElementById('exp-overlay');
+  if (ov) ov.classList.add('open');
+}
+function closeExportModal() {
+  var ov = document.getElementById('exp-overlay');
+  if (ov) ov.classList.remove('open');
+}
+function selectFormat(fmt) {
+  _expFormat = fmt;
+  document.getElementById('fmt-excel').classList.toggle('selected', fmt === 'excel');
+  document.getElementById('fmt-pdf').classList.toggle('selected', fmt === 'pdf');
+}
+function doExport() {
+  var wantTop5  = document.getElementById('exp-top5').checked;
+  var wantProdi = document.getElementById('exp-prodi').checked;
+  var wantTren  = document.getElementById('exp-tren').checked;
+  var wantJenis = document.getElementById('exp-jenis').checked;
+  if (!wantTop5 && !wantProdi && !wantTren && !wantJenis) {
+    alert('Pilih minimal 1 data untuk diekspor.');
+    return;
+  }
+  closeExportModal();
+  if (_expFormat === 'excel') {
+    _eksporExcel(wantTop5, wantProdi, wantTren, wantJenis);
+  } else {
+    window.print();
+  }
+}
+function _eksporExcel(top5, prodi, tren, jenis) {
+  var bom = '\uFEFF';
+  var sections = [];
+  if (top5) {
+    sections.push('5 KARYA TERATAS');
+    sections.push('No,Judul,Penulis,Jenis,Pembaca');
+    TOP5.forEach(function(r, i) { sections.push((i+1)+',"'+r.judul+'",'+r.penulis+','+r.jenis+','+r.n); });
+    sections.push('');
+  }
+  if (prodi) {
+    sections.push('SEBARAN KARYA PER PRODI');
+    sections.push('Program Studi,Jumlah Karya');
+    PRODI_LABELS.forEach(function(l, i) { sections.push('"'+l+'",'+PRODI_DATA[i]); });
+    sections.push('');
+  }
+  if (tren) {
+    sections.push('TREN PEMBACA BULANAN');
+    sections.push('Bulan,Pembaca');
+    BULAN.forEach(function(b, i) { sections.push(b+','+TREN[i]); });
+    sections.push('');
+  }
+  if (jenis) {
+    sections.push('KOMPOSISI JENIS KARYA');
+    sections.push('Jenis,Persentase');
+    var jLabels = ['Tugas Akhir','Laporan Magang','Artikel Jurnal','Proyek Inovasi','Lainnya'];
+    JENIS_DATA.forEach(function(d, i) { sections.push(jLabels[i]+','+d+'%'); });
+  }
+  var csv = bom + sections.join('\n');
+  var blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'statistik_digilab_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+}
+
+
 </script>
 
 <!-- Admin Redirect Modal -->
 <div id="admin-redirect-overlay" onclick="closeAdminRedirect()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9998;align-items:center;justify-content:center;">
   <div onclick="event.stopPropagation()" style="background:#fff;border-radius:20px;padding:36px 32px;max-width:380px;width:90%;text-align:center;box-shadow:0 12px 48px rgba(0,0,0,.2);">
-    <div style="width:60px;height:60px;border-radius:50%;background:var(--orange,#e8821e);color:#fff;font-size:1.6rem;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">🛡️</div>
-    <h3 style="margin:0 0 8px;font-family:Nunito,sans-serif;font-size:1.15rem;color:var(--text-dark,#122830);">Akses Dibatasi</h3>
-    <p style="margin:0 0 20px;color:var(--text-muted,#6b8e96);font-size:.9rem;line-height:1.5;">Anda login sebagai <strong>Admin Pustakawan</strong>.<br>Silakan gunakan <strong>Panel Admin</strong> untuk mengelola repository.</p>
+    <div style="width:60px;height:60px;border-radius:50%;background:var(--orange,var(--orange));color:#fff;font-size:1.6rem;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">🛡️</div>
+    <h3 style="margin:0 0 8px;font-family:Nunito,sans-serif;font-size:1.15rem;color:var(--text-dark,var(--text-dark));">Akses Dibatasi</h3>
+    <p style="margin:0 0 20px;color:var(--text-muted,var(--text-muted));font-size:.9rem;line-height:1.5;">Anda login sebagai <strong>Admin Pustakawan</strong>.<br>Silakan gunakan <strong>Panel Admin</strong> untuk mengelola repository.</p>
     <div style="display:flex;gap:12px;flex-direction:column;">
-      <button onclick="closeAdminRedirect(); navigateTo('admin');" style="padding:12px;border:none;border-radius:999px;background:var(--navy,#094e58);color:#fff;cursor:pointer;font-family:Nunito,sans-serif;font-weight:700;font-size:.95rem;">→ Ke Panel Admin</button>
-      <button onclick="closeAdminRedirect()" style="padding:10px;border:1.5px solid var(--border,#dde8ea);border-radius:999px;background:#fff;cursor:pointer;font-family:Nunito,sans-serif;font-weight:600;color:var(--text-mid,#2d5a65);">Tutup</button>
+      <button onclick="closeAdminRedirect(); navigateTo('admin');" style="padding:12px;border:none;border-radius:999px;background:var(--navy,var(--navy));color:#fff;cursor:pointer;font-family:Nunito,sans-serif;font-weight:700;font-size:.95rem;">→ Ke Panel Admin</button>
+      <button onclick="closeAdminRedirect()" style="padding:10px;border:1.5px solid var(--border,var(--border));border-radius:999px;background:#fff;cursor:pointer;font-family:Nunito,sans-serif;font-weight:600;color:var(--text-mid,#2d5a65);">Tutup</button>
     </div>
   </div>
 </div>
@@ -936,5 +998,51 @@ window.addEventListener('DOMContentLoaded', function() {
     <div style="background:var(--bg);border-radius:8px;padding:10px 14px;margin-bottom:20px;font-size:.85rem;color:var(--text-mid);">📊 Halaman Statistik Data</div>
     <button onclick="closeWelcome()" style="width:100%;padding:12px;border:none;border-radius:999px;background:var(--navy);color:#fff;font-family:Nunito,sans-serif;font-weight:700;font-size:1rem;cursor:pointer;">Mulai →</button>
   </div>
+
+<!-- Export Modal (Admin Only) -->
+<div class="exp-overlay" id="exp-overlay" onclick="if(event.target===this)closeExportModal()">
+  <div class="exp-card" onclick="event.stopPropagation()">
+    <div class="exp-title">Ekspor Data Statistik</div>
+    <div class="exp-sub">Pilih data dan format yang ingin diekspor</div>
+    <div class="exp-section-title">Data yang diekspor</div>
+    <div class="exp-checks">
+      <label class="exp-check-item">
+        <input type="checkbox" id="exp-top5" checked>
+        <span>5 Karya Teratas (judul, penulis, pembaca)</span>
+      </label>
+      <label class="exp-check-item">
+        <input type="checkbox" id="exp-prodi" checked>
+        <span>Sebaran Karya Per Prodi</span>
+      </label>
+      <label class="exp-check-item">
+        <input type="checkbox" id="exp-tren">
+        <span>Tren Pembaca Bulanan</span>
+      </label>
+      <label class="exp-check-item">
+        <input type="checkbox" id="exp-jenis">
+        <span>Komposisi Jenis Karya</span>
+      </label>
+    </div>
+    <div class="exp-section-title">Format file</div>
+    <div class="exp-format-row">
+      <button class="exp-format-btn selected" id="fmt-excel" onclick="selectFormat('excel')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Excel / CSV
+      </button>
+      <button class="exp-format-btn" id="fmt-pdf" onclick="selectFormat('pdf')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="9" y1="15" x2="9" y2="12"/><line x1="12" y1="15" x2="12" y2="9"/><line x1="15" y1="15" x2="15" y2="11"/></svg>
+        Cetak PDF
+      </button>
+    </div>
+    <div class="exp-actions">
+      <button class="exp-btn-cancel" onclick="closeExportModal()">Batal</button>
+      <button class="exp-btn-do" onclick="doExport()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Ekspor Sekarang
+      </button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

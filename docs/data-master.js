@@ -53,3 +53,98 @@ window.MASTER_PRODI = [
   'D4 Teknologi Rekayasa Pembangkit Energi',
   'D4 Teknologi Rekayasa Sistem Elektronika'
 ];
+
+// ── KARYA DATA (fallback jika Supabase tidak tersedia) ──
+// Saat backend aktif, ganti dengan fetch('/api/karya') di api-service.js
+window.KARYA_DATA = [
+  {
+    id: 1,
+    judul: 'Sistem Informasi Akademik Terintegrasi Berbasis Cloud',
+    penulis: 'Dewi Rahayu',
+    prodi: 'D4 Teknologi Rekayasa Sistem Elektronika',
+    tahun: 2023,
+    jenis: 'Tugas Akhir',
+    pembimbing: 'Dr. Wahyu Pratama, M.Kom.',
+    abstrak: 'Platform akademik berbasis cloud yang mengintegrasikan manajemen mahasiswa, jadwal, nilai, dan komunikasi dalam satu ekosistem terpadu. Dibangun dengan arsitektur microservices menggunakan Node.js dan PostgreSQL. Load testing menunjukkan sistem mampu menangani 500 pengguna konkuren tanpa degradasi performa signifikan.',
+    kata_kunci: ['sistem informasi', 'akademik', 'cloud', 'microservices', 'Node.js'],
+    no_panggil: 'DEW/TI/TA/SIS/2023',
+    pembaca: 87,
+    link: 'https://github.com/demo/siakad',
+    status: 'disetujui'
+  },
+  {
+    id: 2,
+    judul: 'Analisis Efisiensi Anggaran Daerah Kota Malang 2020–2023',
+    penulis: 'Rizki Amalia',
+    prodi: 'D4 Akuntansi',
+    tahun: 2023,
+    jenis: 'Artikel Jurnal',
+    pembimbing: 'Drs. Budi Santoso, M.M.',
+    abstrak: 'Penelitian ini menganalisis efisiensi pengelolaan anggaran daerah Kota Malang selama periode 2020–2023 menggunakan metode Data Envelopment Analysis (DEA). Hasil menunjukkan rata-rata efisiensi sebesar 82,4% dengan tren peningkatan setiap tahun.',
+    kata_kunci: ['anggaran daerah', 'efisiensi', 'DEA', 'akuntansi sektor publik'],
+    no_panggil: 'RIZ/AK/AJ/ANA/2023',
+    pembaca: 62,
+    link: '',
+    status: 'disetujui'
+  },
+  {
+    id: 3,
+    judul: 'Rancang Bangun Website Perpustakaan Keliling Berbasis Progressive Web App',
+    penulis: 'Karina Aliya',
+    prodi: 'D4 Perpustakaan Digital',
+    tahun: 2020,
+    jenis: 'Tugas Akhir',
+    pembimbing: 'Dr. Rina Dewi, M.Pd.',
+    abstrak: 'Perancangan dan implementasi website perpustakaan keliling menggunakan teknologi Progressive Web App (PWA) untuk memastikan aksesibilitas konten bahkan dalam kondisi jaringan terbatas. Sistem dilengkapi fitur offline-first, notifikasi push, dan manajemen koleksi buku digital.',
+    kata_kunci: ['perpustakaan keliling', 'PWA', 'offline-first', 'manajemen koleksi'],
+    no_panggil: 'KAR/PD/TA/RAN/2020',
+    pembaca: 20,
+    link: 'https://perpus-keliling.vercel.app',
+    status: 'disetujui'
+  },
+  {
+    id: 4,
+    judul: 'Identitas Visual Brand UMKM Kota Malang: Studi Desain Kontemporer',
+    penulis: 'Ahmad Fauzan',
+    prodi: 'D4 Desain Mode',
+    tahun: 2022,
+    jenis: 'Proyek Inovasi',
+    pembimbing: 'Ir. Siti Rahma, M.T.',
+    abstrak: 'Proyek ini merancang identitas visual 12 UMKM di Kota Malang dengan pendekatan desain kontemporer yang menggabungkan nilai lokal dan estetika modern. Meliputi logo, panduan merek, media sosial template, dan packaging design.',
+    kata_kunci: ['identitas visual', 'brand', 'UMKM', 'desain kontemporer'],
+    no_panggil: 'FAU/DKV/PI/IDE/2022',
+    pembaca: 43,
+    link: '',
+    status: 'disetujui'
+  },
+  {
+    id: 5,
+    judul: 'Implementasi Sistem Manajemen Arsip Digital di Pemerintah Daerah',
+    penulis: 'Sari Wulandari',
+    prodi: 'D4 Manajemen Pemasaran',
+    tahun: 2022,
+    jenis: 'Laporan Magang',
+    pembimbing: 'Drs. Budi Santoso, M.M.',
+    abstrak: 'Laporan magang ini mendokumentasikan proses implementasi sistem manajemen arsip digital di lingkungan Pemerintah Daerah Kota Malang. Meliputi analisis kebutuhan, pelatihan staf, migrasi data dari sistem analog, dan evaluasi pasca implementasi.',
+    kata_kunci: ['arsip digital', 'manajemen dokumen', 'pemerintah daerah', 'digitalisasi'],
+    no_panggil: 'SAR/AP/LM/IMP/2022',
+    pembaca: 31,
+    link: '',
+    status: 'disetujui'
+  },
+  {
+    id: 6,
+    judul: 'Prototipe Alat Monitoring Kualitas Air Sungai Berbasis IoT',
+    penulis: 'Bagas Prasetyo',
+    prodi: 'D4 Teknologi Rekayasa Otomotif',
+    tahun: 2024,
+    jenis: 'Proyek Inovasi',
+    pembimbing: 'Ir. Siti Rahma, M.T.',
+    abstrak: 'Pengembangan prototipe alat pemantau kualitas air sungai secara real-time menggunakan mikrokontroler ESP32 dan sensor pH, kekeruhan, serta suhu. Data dikirimkan ke dashboard web melalui protokol MQTT untuk pemantauan jarak jauh oleh instansi terkait.',
+    kata_kunci: ['IoT', 'monitoring', 'kualitas air', 'ESP32', 'MQTT'],
+    no_panggil: 'BAG/TM/PI/PRO/2024',
+    pembaca: 55,
+    link: 'https://github.com/bagas/iot-water',
+    status: 'disetujui'
+  }
+];

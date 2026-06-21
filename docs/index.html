@@ -141,7 +141,7 @@ body {
 }
 .user-chip .uname { font-size: 12px; color: #fff; font-weight: 600; }
 .user-chip .urole { font-size: 10px; color: rgba(255,255,255,.6); }
-#user-dropdown > div:hover { background: var(--bg, #f5f0e8); }
+#user-dropdown > div:hover { background: var(--bg, var(--bg)); }
 
 /* ── PAGES ── */
 @keyframes evoPageIn {
@@ -1054,15 +1054,15 @@ body {
           </div>
         </div>
         <div id="user-dropdown" style="display:none;position:absolute;right:0;top:calc(100% + 8px);background:#fff;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,.15);min-width:180px;overflow:hidden;z-index:500;">
-          <div id="user-menu-admin-link" style="display:none;padding:12px 16px;cursor:pointer;font-family:Nunito,sans-serif;font-size:.9rem;color:var(--text-dark,#122830);border-bottom:1px solid var(--border,#dde8ea);align-items:center;gap:10px;" onclick="closeUserMenu(); navigateTo('admin');">
+          <div id="user-menu-admin-link" style="display:none;padding:12px 16px;cursor:pointer;font-family:Nunito,sans-serif;font-size:.9rem;color:var(--text-dark,var(--text-dark));border-bottom:1px solid var(--border,var(--border));align-items:center;gap:10px;" onclick="closeUserMenu(); navigateTo('admin');">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
             Panel Admin
           </div>
-          <div id="user-menu-mahasiswa-link" style="display:none;padding:12px 16px;cursor:pointer;font-family:Nunito,sans-serif;font-size:.9rem;color:var(--text-dark,#122830);border-bottom:1px solid var(--border,#dde8ea);align-items:center;gap:10px;" onclick="closeUserMenu(); goToPortalMahasiswa();">
+          <div id="user-menu-mahasiswa-link" style="display:none;padding:12px 16px;cursor:pointer;font-family:Nunito,sans-serif;font-size:.9rem;color:var(--text-dark,var(--text-dark));border-bottom:1px solid var(--border,var(--border));align-items:center;gap:10px;" onclick="closeUserMenu(); goToPortalMahasiswa();">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             Portal Mahasiswa
           </div>
-          <div style="padding:12px 16px;cursor:pointer;font-family:Nunito,sans-serif;font-size:.9rem;color:#c0392b;display:flex;align-items:center;gap:10px;" onclick="closeUserMenu(); openLogoutConfirm();">
+          <div style="padding:12px 16px;cursor:pointer;font-family:Nunito,sans-serif;font-size:.9rem;color:var(--red);display:flex;align-items:center;gap:10px;" onclick="closeUserMenu(); openLogoutConfirm();">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
             Keluar
           </div>
@@ -1717,9 +1717,7 @@ function nav(page) {
 }
 
 function navSearch() {
-  renderHasil(KARYA_DATA);
-  document.getElementById('hasil-info').textContent = 'Menampilkan semua karya (' + KARYA_DATA.length + ')';
-  nav('hasil');
+  window.location.href = 'karya.html'; // nosweep — intentional redirect ke SPA karya
 }
 
 function _requireLogin(dest) {
@@ -1808,19 +1806,12 @@ function _runSearch(q, infoLabel) {
 }
 
 function doSearch() {
-  var q = (document.getElementById('hero-search').value || '').toLowerCase().trim();
-  _runSearch(q);
-  var hs = document.getElementById('hasil-search'); if (hs) hs.value = q;
-  nav('hasil');
+  var q = (document.getElementById('hero-search').value || '').trim();
+  window.location.href = 'karya.html' + (q ? '?q=' + encodeURIComponent(q) : ''); // nosweep — intentional redirect ke SPA karya
 }
 
 function quickSearch(jenis) {
-  var hasil = KARYA_DATA.filter(function(k){ return k.jenis === jenis; });
-  document.getElementById('hasil-info').innerHTML = 'Jenis: <strong>' + jenis + '</strong> — ' + hasil.length + ' karya';
-  renderHasil(hasil);
-  var hs = document.getElementById('hasil-search'); if (hs) hs.value = '';
-  var fj = document.getElementById('f-jenis'); if (fj) fj.value = jenis;
-  nav('hasil');
+  window.location.href = 'karya.html?jenis=' + encodeURIComponent(jenis); // nosweep — intentional redirect ke SPA karya
 }
 
 function doSearchHasil() {
@@ -2354,12 +2345,12 @@ function saveProfilEvo() {
 <!-- Admin Redirect Modal -->
 <div id="admin-redirect-overlay" onclick="closeAdminRedirect()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9998;align-items:center;justify-content:center;">
   <div onclick="event.stopPropagation()" style="background:#fff;border-radius:20px;padding:36px 32px;max-width:380px;width:90%;text-align:center;box-shadow:0 12px 48px rgba(0,0,0,.2);">
-    <div style="width:60px;height:60px;border-radius:50%;background:var(--orange,#e8821e);color:#fff;font-size:1.6rem;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">🛡️</div>
-    <h3 style="margin:0 0 8px;font-family:Nunito,sans-serif;font-size:1.15rem;color:var(--text-dark,#122830);">Akses Dibatasi</h3>
-    <p style="margin:0 0 20px;color:var(--text-muted,#6b8e96);font-size:.9rem;line-height:1.5;">Anda login sebagai <strong>Admin Pustakawan</strong>.<br>Silakan gunakan <strong>Panel Admin</strong> untuk mengelola repository.</p>
+    <div style="width:60px;height:60px;border-radius:50%;background:var(--orange,var(--orange));color:#fff;font-size:1.6rem;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">🛡️</div>
+    <h3 style="margin:0 0 8px;font-family:Nunito,sans-serif;font-size:1.15rem;color:var(--text-dark,var(--text-dark));">Akses Dibatasi</h3>
+    <p style="margin:0 0 20px;color:var(--text-muted,var(--text-muted));font-size:.9rem;line-height:1.5;">Anda login sebagai <strong>Admin Pustakawan</strong>.<br>Silakan gunakan <strong>Panel Admin</strong> untuk mengelola repository.</p>
     <div style="display:flex;gap:12px;flex-direction:column;">
-      <button onclick="closeAdminRedirect(); navigateTo('admin');" style="padding:12px;border:none;border-radius:999px;background:var(--navy,#094e58);color:#fff;cursor:pointer;font-family:Nunito,sans-serif;font-weight:700;font-size:.95rem;">→ Ke Panel Admin</button>
-      <button onclick="closeAdminRedirect()" style="padding:10px;border:1.5px solid var(--border,#dde8ea);border-radius:999px;background:#fff;cursor:pointer;font-family:Nunito,sans-serif;font-weight:600;color:var(--text-mid,#2d5a65);">Tutup</button>
+      <button onclick="closeAdminRedirect(); navigateTo('admin');" style="padding:12px;border:none;border-radius:999px;background:var(--navy,var(--navy));color:#fff;cursor:pointer;font-family:Nunito,sans-serif;font-weight:700;font-size:.95rem;">→ Ke Panel Admin</button>
+      <button onclick="closeAdminRedirect()" style="padding:10px;border:1.5px solid var(--border,var(--border));border-radius:999px;background:#fff;cursor:pointer;font-family:Nunito,sans-serif;font-weight:600;color:var(--text-mid,#2d5a65);">Tutup</button>
     </div>
   </div>
 </div>
