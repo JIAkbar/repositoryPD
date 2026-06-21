@@ -585,6 +585,78 @@ body {
   .detail-body-wrap { padding: 0 14px; margin: 14px auto; }
   .login-card { padding: 24px 20px; }
 }
+
+/* ── SEARCH AREA (karya.html) ── */
+.karya-search-area{background:#fff;border-bottom:1px solid var(--border);padding:14px 24px;}
+.karya-search-wrap{max-width:680px;margin:0 auto;display:flex;gap:8px;}
+.karya-search-input{flex:1;height:42px;border:1.5px solid var(--border);border-radius:10px;padding:0 16px;font-size:14px;outline:none;color:var(--text-dark);font-family:'Lato',sans-serif;transition:border-color .2s;}
+.karya-search-input:focus{border-color:var(--navy);}
+.karya-search-btn{height:42px;padding:0 20px;border-radius:10px;background:var(--navy);color:#fff;border:none;font-weight:700;font-size:13px;display:flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap;font-family:'Nunito',sans-serif;}
+.karya-search-btn:hover{background:var(--navy-dark);}
+.karya-search-info{text-align:center;font-size:12px;color:var(--text-muted);margin-top:8px;}
+
+/* ── FILTER BAR HORIZONTAL ── */
+.filter-bar{background:#fff;border-bottom:1.5px solid var(--border);padding:10px 24px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:sticky;top:56px;z-index:90;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.filter-bar select{height:36px;border:1.5px solid var(--border);border-radius:8px;padding:0 10px;font-size:12.5px;color:var(--text-dark);background:#fafafa;cursor:pointer;min-width:130px;font-family:'Lato',sans-serif;}
+.filter-bar select:focus{outline:none;border-color:var(--navy);}
+.filter-bar-sep{width:1px;height:22px;background:var(--border);margin:0 2px;}
+.filter-bar-count{margin-left:auto;font-size:12px;color:var(--text-muted);white-space:nowrap;}
+.btn-filter-reset{padding:0 12px;height:34px;border:1.5px solid var(--border);border-radius:8px;background:#fff;cursor:pointer;font-size:12px;color:var(--text-mid);display:flex;align-items:center;gap:4px;transition:all .15s;font-family:'Lato',sans-serif;}
+.btn-filter-reset:hover{border-color:var(--red);color:var(--red);}
+
+/* ── TABLE LAYOUT ── */
+.karya-table-wrap { overflow-x: auto; border-radius: 8px 8px 0 0; background: var(--bg-card); box-shadow: var(--shadow); margin: 20px 20px 0; }
+.karya-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.karya-table thead { background: var(--navy); color: #fff; }
+.karya-table th { padding: 10px 12px; text-align: left; font-family: Nunito, sans-serif; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: .5px; white-space: nowrap; cursor: pointer; user-select: none; }
+.karya-table th:hover { background: var(--navy-dark); }
+.karya-table th .sort-icon { margin-left: 4px; opacity: .5; font-size: 10px; }
+.karya-table th.sort-asc .sort-icon::after { content: '▲'; opacity: 1; }
+.karya-table th.sort-desc .sort-icon::after { content: '▼'; opacity: 1; }
+.karya-table tbody tr { border-bottom: 1px solid var(--border); transition: background .1s; }
+.karya-table tbody tr:hover { background: var(--navy-light); }
+.karya-table td { padding: 10px 12px; vertical-align: middle; }
+.kt-num { color: var(--text-muted); font-size: 12px; width: 36px; text-align: center; }
+.kt-judul { font-family: Nunito, sans-serif; font-weight: 700; font-size: 13px; color: var(--text-dark); cursor: pointer; }
+.kt-judul:hover { color: var(--navy); text-decoration: underline; }
+.kt-judul-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.kt-penulis { font-size: 12px; color: var(--text-mid); white-space: nowrap; max-width: 120px; overflow: hidden; text-overflow: ellipsis; }
+.kt-prodi { font-size: 11px; color: var(--text-muted); max-width: 100px; }
+.kt-tahun { font-size: 12px; color: var(--text-mid); text-align: center; white-space: nowrap; }
+.kt-jenis-badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 10px; font-weight: 700; font-family: Nunito, sans-serif; white-space: nowrap; }
+.kt-jenis-badge.ta { background: var(--navy-light); color: var(--navy); }
+.kt-jenis-badge.aj { background: var(--green-bg); color: #065f46; }
+.kt-jenis-badge.lm { background: var(--yellow-bg); color: var(--yellow); }
+.kt-jenis-badge.pi { background: var(--purple-bg); color: var(--purple); }
+.kt-jenis-badge.pk { background: var(--orange-light); color: var(--orange-dark); }
+.kt-views { font-size: 12px; color: var(--text-muted); text-align: center; white-space: nowrap; }
+.kt-btn { padding: 4px 12px; border-radius: 999px; background: var(--navy); color: #fff; border: none; font-size: 11px; font-family: Nunito, sans-serif; font-weight: 700; cursor: pointer; white-space: nowrap; }
+.kt-btn:hover { background: var(--navy-dark); }
+
+/* ── PAGINATION BOTTOM BAR ── */
+.pg-bottom { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: var(--bg-card); border-top: 1px solid var(--border); border-radius: 0 0 8px 8px; gap: 12px; flex-wrap: wrap; margin: 0 20px 32px; box-shadow: var(--shadow); }
+.pg-size-select { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); }
+.pg-size-select select { padding: 3px 8px; border: 1px solid var(--border); border-radius: 4px; font-size: 12px; background: var(--bg-card); }
+.pg-controls { display: flex; gap: 4px; align-items: center; }
+.pg-btn { min-width: 32px; height: 32px; padding: 0 8px; border: 1px solid var(--border); background: var(--bg-card); color: var(--text-dark); border-radius: 4px; font-size: 12px; cursor: pointer; transition: var(--transition); }
+.pg-btn:hover:not(:disabled) { background: var(--navy); color: #fff; border-color: var(--navy); }
+.pg-btn.active { background: var(--navy); color: #fff; border-color: var(--navy); font-weight: 700; }
+.pg-btn:disabled { opacity: .4; cursor: default; }
+.pg-info-text { font-size: 12px; color: var(--text-muted); }
+.karya-empty { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+.karya-empty-title { font-weight: 700; font-size: 15px; margin-bottom: 6px; color: var(--text-mid); }
+
+@media(max-width:640px){
+  .filter-bar{padding:10px 16px;}
+  .filter-bar select{min-width:100px;font-size:12px;}
+  .karya-table-wrap { margin: 12px 12px 0; }
+  .pg-bottom { margin: 0 12px 24px; }
+  .karya-table th:nth-child(4), .karya-table td:nth-child(4),
+  .karya-table th:nth-child(6), .karya-table td:nth-child(6),
+  .karya-table th:nth-child(7), .karya-table td:nth-child(7) { display: none; }
+  .filter-bar-count{margin-left:0;width:100%;}
+  .karya-search-area{padding:12px 14px;}
+}
 </style>
 </head>
 <body>
@@ -688,15 +760,32 @@ body {
     <span class="filter-bar-count" id="filter-bar-count"></span>
   </div>
 
-  <!-- List -->
-  <div class="karya-container">
-    <div class="karya-compact-list" id="hasil-list"></div>
+  <!-- Table -->
+  <div class="karya-table-wrap">
+    <table class="karya-table" id="karya-table">
+      <thead>
+        <tr>
+          <th class="kt-num" style="cursor:default">#</th>
+          <th onclick="toggleSort('judul')">Judul <span class="sort-icon"></span></th>
+          <th onclick="toggleSort('penulis')">Penulis <span class="sort-icon"></span></th>
+          <th onclick="toggleSort('prodi')">Prodi <span class="sort-icon"></span></th>
+          <th onclick="toggleSort('tahun')">Tahun <span class="sort-icon"></span></th>
+          <th onclick="toggleSort('jenis')">Jenis <span class="sort-icon"></span></th>
+          <th onclick="toggleSort('pembaca')" style="text-align:center">👁</th>
+          <th style="width:70px;cursor:default"></th>
+        </tr>
+      </thead>
+      <tbody id="karya-tbody"></tbody>
+    </table>
   </div>
 
-  <!-- Pagination -->
-  <div class="pg-wrapper">
-    <div class="pg-bar" id="pg-bar"></div>
-    <div class="pg-info" id="pg-info"></div>
+  <!-- Pagination bottom bar -->
+  <div class="pg-bottom">
+    <div class="pg-size-select">
+      Tampilkan <select id="pg-size-sel" onchange="changePageSize(this.value)"><option value="20">20</option><option value="50">50</option><option value="100">100</option></select> per halaman
+    </div>
+    <div class="pg-controls" id="pg-bar"></div>
+    <div class="pg-info-text" id="pg-info"></div>
   </div>
 
   <footer class="site-footer">
@@ -1052,8 +1141,16 @@ function readUrlParams() {
 
   if (id) {
     var numId = parseInt(id, 10);
-    var k = KARYA_DATA.find(function(x){ return x.id === numId; });
-    if (k) { openDetail(numId); return; }
+    // Cari by id (integer match atau string match)
+    var k = KARYA_DATA.find(function(x){ return x.id === numId || String(x.id) === String(id); });
+    if (k) { openDetail(k.id); return; }
+    // Fallback: cari by posisi 1-based (karena index.html meneruskan k.id dari data lokal 1-6)
+    // Supabase bisa ganti KARYA_DATA dengan UUID sehingga id integer tidak cocok lagi
+    if (!isNaN(numId) && numId >= 1 && numId <= KARYA_DATA.length) {
+      var kByPos = KARYA_DATA[numId - 1];
+      if (kByPos) { openDetail(kByPos.id); return; }
+    }
+    // Tidak ditemukan sama sekali → tampilkan list
   }
   if (jenis) {
     var fj = document.getElementById('f-jenis');
@@ -1079,9 +1176,11 @@ function readUrlParams() {
 
 /* ── SEARCH & FILTER STATE ── */
 var _currentQuery = '';
-var _currentPage = 1;
-var _pageSize = 20;
+var _currentPage  = 1;
+var _pageSize     = 20;
 var _filteredData = [];
+var _sortField    = 'tahun';
+var _sortDir      = 'desc';
 
 function _runSearch(q, infoLabel) {
   _currentQuery = (q || '').toLowerCase().trim();
@@ -1117,16 +1216,24 @@ function applyFilter() {
     return mQ && mP && mT && mJ;
   });
 
-  // Sort
-  if (sort === 'terpopuler') {
-    _filteredData.sort(function(a,b){ return (b.pembaca||0)-(a.pembaca||0); });
-  } else if (sort === 'az') {
-    _filteredData.sort(function(a,b){ return a.judul.localeCompare(b.judul,'id'); });
-  } else if (sort === 'za') {
-    _filteredData.sort(function(a,b){ return b.judul.localeCompare(a.judul,'id'); });
-  } else {
-    _filteredData.sort(function(a,b){ return (b.tahun||0)-(a.tahun||0); });
-  }
+  // Sort — sync f-sort dropdown with _sortField/_sortDir
+  if (sort === 'terpopuler') { _sortField = 'pembaca'; _sortDir = 'desc'; }
+  else if (sort === 'az')    { _sortField = 'judul';   _sortDir = 'asc'; }
+  else if (sort === 'za')    { _sortField = 'judul';   _sortDir = 'desc'; }
+  else                       { _sortField = 'tahun';   _sortDir = 'desc'; }
+
+  _filteredData.sort(function(a, b) {
+    var av = a[_sortField] !== undefined ? a[_sortField] : '';
+    var bv = b[_sortField] !== undefined ? b[_sortField] : '';
+    if (_sortField === 'tahun' || _sortField === 'pembaca') {
+      av = Number(av) || 0; bv = Number(bv) || 0;
+    } else {
+      av = String(av).toLowerCase(); bv = String(bv).toLowerCase();
+    }
+    if (av < bv) return _sortDir === 'asc' ? -1 : 1;
+    if (av > bv) return _sortDir === 'asc' ? 1 : -1;
+    return 0;
+  });
 
   // Reset button visibility
   var btnReset = document.getElementById('btn-reset-filter');
@@ -1139,61 +1246,105 @@ function applyFilter() {
   renderPage(1);
 }
 
+function toggleSort(field) {
+  if (_sortField === field) {
+    _sortDir = _sortDir === 'asc' ? 'desc' : 'asc';
+  } else {
+    _sortField = field;
+    _sortDir   = (field === 'tahun' || field === 'pembaca') ? 'desc' : 'asc';
+  }
+  // Sync f-sort dropdown to match
+  var sortSel = document.getElementById('f-sort');
+  if (sortSel) {
+    if (field === 'pembaca') sortSel.value = 'terpopuler';
+    else if (field === 'judul' && _sortDir === 'asc')  sortSel.value = 'az';
+    else if (field === 'judul' && _sortDir === 'desc') sortSel.value = 'za';
+    else sortSel.value = 'terbaru';
+  }
+  // Update header classes
+  document.querySelectorAll('.karya-table th').forEach(function(th) {
+    th.classList.remove('sort-asc', 'sort-desc');
+  });
+  var fieldOrder = ['', 'judul', 'penulis', 'prodi', 'tahun', 'jenis', 'pembaca'];
+  var idx = fieldOrder.indexOf(field);
+  if (idx > 0) {
+    var ths = document.querySelectorAll('.karya-table th');
+    if (ths[idx]) ths[idx].classList.add('sort-' + _sortDir);
+  }
+  // Re-sort existing filtered data without re-running the filter query
+  _filteredData.sort(function(a, b) {
+    var av = a[_sortField] !== undefined ? a[_sortField] : '';
+    var bv = b[_sortField] !== undefined ? b[_sortField] : '';
+    if (_sortField === 'tahun' || _sortField === 'pembaca') {
+      av = Number(av) || 0; bv = Number(bv) || 0;
+    } else {
+      av = String(av).toLowerCase(); bv = String(bv).toLowerCase();
+    }
+    if (av < bv) return _sortDir === 'asc' ? -1 : 1;
+    if (av > bv) return _sortDir === 'asc' ? 1 : -1;
+    return 0;
+  });
+  renderPage(1);
+}
+
+function changePageSize(val) {
+  _pageSize = parseInt(val, 10) || 20;
+  renderPage(1);
+}
+
 function renderPage(page) {
   _currentPage = page;
-  var total   = _filteredData.length;
-  var start   = (page - 1) * _pageSize;
-  var end     = Math.min(start + _pageSize, total);
-  var pageData = _filteredData.slice(start, end);
+  var total    = _filteredData.length;
+  var start    = (page - 1) * _pageSize;
+  var end      = Math.min(start + _pageSize, total);
+  var slice    = _filteredData.slice(start, end);
 
   // Search info
   var info = document.getElementById('hasil-info');
   if (info) {
-    if (total === 0) info.textContent = '';
-    else info.textContent = 'Menampilkan ' + (start+1) + '–' + end + ' dari ' + total + ' karya';
+    info.textContent = total === 0 ? '' : 'Menampilkan ' + (start + 1) + '–' + end + ' dari ' + total + ' karya';
   }
 
-  // List
-  var list = document.getElementById('hasil-list');
-  if (!list) return;
+  var tbody = document.getElementById('karya-tbody');
+  if (!tbody) return;
 
-  if (pageData.length === 0) {
-    list.innerHTML = '<div class="karya-empty">' +
-      '<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" style="margin:0 auto 12px;display:block;"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>' +
-      '<div class="karya-empty-title">Karya tidak ditemukan</div>' +
-      '<div style="font-size:13px;">Coba kata kunci atau filter yang berbeda</div></div>';
+  var q = _currentQuery;
+  function hl(txt) {
+    if (!q || !txt) return txt || '';
+    var re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+    return String(txt).replace(re, '<mark style="background:var(--orange-light);color:var(--orange-dark);border-radius:2px;padding:0 2px">$1</mark>');
+  }
+  function jenisClass(j) {
+    var m = { 'Tugas Akhir': 'ta', 'Artikel Jurnal': 'aj', 'Laporan Magang': 'lm', 'Proyek Inovasi': 'pi', 'Produk Kreatif': 'pk' };
+    return m[j] || 'ta';
+  }
+
+  if (!slice.length) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:48px;color:var(--text-muted);font-size:14px">' +
+      '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" style="margin:0 auto 10px;display:block"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>' +
+      'Karya tidak ditemukan — coba kata kunci atau filter yang berbeda</td></tr>';
   } else {
-    var escRe = _currentQuery ? new RegExp('(' + _currentQuery.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi') : null;
-    list.innerHTML = pageData.map(function(k, i) {
+    tbody.innerHTML = slice.map(function(k, i) {
+      var no    = start + i + 1;
       var judul = k.judul || '';
-      if (escRe) judul = judul.replace(escRe, '<mark style="background:#fff3cd;border-radius:2px;padding:0 2px;">$1</mark>');
-      var rowNum = start + i + 1;
-      return '<div class="karya-row" onclick="openDetail('+k.id+')">' +
-        '<div class="karya-row-num">'+rowNum+'</div>' +
-        '<div class="karya-row-main">' +
-          '<div class="karya-row-judul">'+judul+'</div>' +
-          '<div class="karya-row-meta">' +
-            '<span>'+(k.penulis||'')+'</span>' +
-            '<span style="opacity:.3">•</span>' +
-            '<span>'+(k.prodi||'')+'</span>' +
-            '<span style="opacity:.3">•</span>' +
-            '<span>'+(k.tahun||'')+'</span>' +
-            '<span class="karya-row-jenis">'+(k.jenis||'')+'</span>' +
-          '</div>' +
-        '</div>' +
-        '<div class="karya-row-right">' +
-          '<div class="karya-row-views">' +
-            '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>' +
-            (k.pembaca||0) +
-          '</div>' +
-          '<button class="karya-row-btn" onclick="event.stopPropagation();openDetail('+k.id+')">Detail</button>' +
-        '</div>' +
-      '</div>';
+      var judulShort = judul.length > 70 ? judul.slice(0, 70) + '…' : judul;
+      var prodi = (k.prodi || '-').replace('D4 ', '');
+      return '<tr>' +
+        '<td class="kt-num">' + no + '</td>' +
+        '<td><div class="kt-judul" onclick="openDetail(' + k.id + ')">' + hl(judulShort) + '</div>' +
+        '<div class="kt-judul-sub">' + hl(k.penulis || '') + ' · ' + (k.tahun || '-') + '</div></td>' +
+        '<td class="kt-penulis">' + (k.penulis || '-') + '</td>' +
+        '<td class="kt-prodi">' + prodi + '</td>' +
+        '<td class="kt-tahun">' + (k.tahun || '-') + '</td>' +
+        '<td><span class="kt-jenis-badge ' + jenisClass(k.jenis) + '">' + (k.jenis || '-') + '</span></td>' +
+        '<td class="kt-views">' + (k.pembaca || 0) + '</td>' +
+        '<td><button class="kt-btn" onclick="openDetail(' + k.id + ')">Detail</button></td>' +
+        '</tr>';
     }).join('');
   }
 
   renderPagination();
-  window.scrollTo(0,0);
+  window.scrollTo(0, 0);
 }
 
 function renderPagination() {
@@ -1209,29 +1360,29 @@ function renderPagination() {
 
   var p = _currentPage;
   var html = '';
-  html += '<button class="pg-btn" onclick="renderPage('+(p-1)+')" '+(p<=1?'disabled':'')+'>&#8249;</button>';
+  html += '<button class="pg-btn" onclick="renderPage(' + (p - 1) + ')" ' + (p <= 1 ? 'disabled' : '') + '>&#8249;</button>';
 
   var pages = [];
   if (totalPages <= 7) {
-    for (var i=1; i<=totalPages; i++) pages.push(i);
+    for (var i = 1; i <= totalPages; i++) pages.push(i);
   } else {
-    pages = [1,2];
+    pages = [1, 2];
     if (p > 4) pages.push('...');
-    for (var i=Math.max(3,p-1); i<=Math.min(totalPages-2,p+1); i++) pages.push(i);
-    if (p < totalPages-3) pages.push('...');
-    pages.push(totalPages-1, totalPages);
-    var seen = {}; pages = pages.filter(function(x){ if(seen[x]) return false; seen[x]=1; return true; });
+    for (var i = Math.max(3, p - 1); i <= Math.min(totalPages - 2, p + 1); i++) pages.push(i);
+    if (p < totalPages - 3) pages.push('...');
+    pages.push(totalPages - 1, totalPages);
+    var seen = {}; pages = pages.filter(function(x) { if (seen[x]) return false; seen[x] = 1; return true; });
   }
 
   pages.forEach(function(pg) {
     if (pg === '...') {
       html += '<span style="padding:0 4px;color:var(--text-muted);font-size:13px;">…</span>';
     } else {
-      html += '<button class="pg-btn'+(pg===p?' active':'')+'" onclick="renderPage('+pg+')">'+ pg +'</button>';
+      html += '<button class="pg-btn' + (pg === p ? ' active' : '') + '" onclick="renderPage(' + pg + ')">' + pg + '</button>';
     }
   });
 
-  html += '<button class="pg-btn" onclick="renderPage('+(p+1)+')" '+(p>=totalPages?'disabled':'')+'>&#8250;</button>';
+  html += '<button class="pg-btn" onclick="renderPage(' + (p + 1) + ')" ' + (p >= totalPages ? 'disabled' : '') + '>&#8250;</button>';
   bar.innerHTML = html;
   if (info) info.textContent = 'Halaman ' + p + ' dari ' + totalPages;
 }
@@ -1496,6 +1647,18 @@ function initSearchableSelect(selectEl) {
   selectEl.parentNode.insertBefore(wrap, selectEl);
 }
 
+/* ── LOAD DATA SUPABASE ── */
+async function _loadKaryaData() {
+  try {
+    var data = await ApiService.karya.getAll();
+    if (data && data.length) {
+      KARYA_DATA = data;
+    }
+  } catch(e) {
+    console.warn('Gagal load karya dari Supabase, pakai data lokal:', e.message);
+  }
+}
+
 /* ── INIT ── */
 window.addEventListener('DOMContentLoaded', function() {
   // Populate filter dropdowns
@@ -1509,12 +1672,15 @@ window.addEventListener('DOMContentLoaded', function() {
   prodiList.forEach(function(p){ var o=document.createElement('option'); o.value=p; o.textContent=p; fProdi.appendChild(o); });
 
   var fPemb = document.getElementById('f-pembimbing');
-  var dosenList = (window.MASTER_DOSEN && window.MASTER_DOSEN.length) ? window.MASTER_DOSEN : [];
-  dosenList.forEach(function(d){ var o=document.createElement('option'); o.value=d; o.textContent=d; fPemb.appendChild(o); });
-  initSearchableSelect(fPemb);
+  if (fPemb) {
+    var dosenList = (window.MASTER_DOSEN && window.MASTER_DOSEN.length) ? window.MASTER_DOSEN : [];
+    dosenList.forEach(function(d){ var o=document.createElement('option'); o.value=d; o.textContent=d; fPemb.appendChild(o); });
+    initSearchableSelect(fPemb);
+  }
 
   checkAuth();
-  readUrlParams();
+  // Load data dari Supabase dulu, lalu render
+  _loadKaryaData().then(function() { readUrlParams(); });
 });
 </script>
 </body>

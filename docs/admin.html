@@ -508,7 +508,7 @@ tbody td { padding:10px 14px; color:var(--text-mid); vertical-align:middle; }
 .pm-item:hover { background:var(--navy-light); }
 .pm-item.danger { color:#c0392b; }
 .pm-item.danger svg { color:#c0392b; }
-.pm-item.danger:hover { background:#fee2e2; }
+.pm-item.danger:hover { background:var(--red-bg); }
 .pm-divider { height:1px; background:var(--border); margin:2px 0; }
 
 /* ── EDIT PROFIL MODAL ── */
@@ -627,7 +627,7 @@ tbody td { padding:10px 14px; color:var(--text-mid); vertical-align:middle; }
 .dm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(3px);z-index:9500;display:none;align-items:center;justify-content:center;}
 .dm-overlay.open{display:flex;animation:dmFadeIn .18s ease both;}
 .dm-box{background:var(--bg-card,#fff);border-radius:16px;padding:32px 28px 24px;max-width:380px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.25);animation:dmSlideUp .22s cubic-bezier(.34,1.56,.64,1) both;}
-.dm-icon{width:52px;height:52px;border-radius:50%;background:#fee2e2;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
+.dm-icon{width:52px;height:52px;border-radius:50%;background:var(--red-bg);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
 .dm-icon svg{width:26px;height:26px;color:#dc2626;}
 .dm-title{font-family:'Nunito',sans-serif;font-size:18px;font-weight:800;color:var(--text-dark,#1a1a3e);text-align:center;margin:0 0 8px;}
 .dm-msg{font-family:'Lato',sans-serif;font-size:14px;color:var(--text-mid,#4a4a6a);text-align:center;margin:0 0 24px;line-height:1.5;}
@@ -665,13 +665,14 @@ tbody td { padding:10px 14px; color:var(--text-mid); vertical-align:middle; }
 @media(max-width:768px){.form-grid-evo,.upload-grid-evo{grid-template-columns:1fr;}}
 
 /* ── FILE PREVIEW (Unggah Karya) ── */
-.upload-3col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+.upload-3col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;align-items:start;}
+.upload-3col>div{display:flex;flex-direction:column;min-height:340px;}
 @media(max-width:900px){.upload-3col{grid-template-columns:1fr;}}
 .file-preview-box{margin-top:10px;border-radius:10px;overflow:hidden;background:var(--bg);border:1.5px solid var(--border);}
 .file-preview-box.hidden{display:none;}
 .preview-label{font-size:10px;font-weight:700;color:var(--text-muted);padding:5px 10px;background:var(--bg);border-bottom:1px solid var(--border);letter-spacing:.5px;text-transform:uppercase;}
-.pdf-frame{width:100%;height:300px;border:none;display:block;}
-.img-prev-img{width:100%;max-height:220px;object-fit:contain;display:block;background:#f0f0f0;}
+.pdf-frame{width:100%;height:280px;border:none;display:block;}
+.img-prev-img{width:100%;max-height:280px;object-fit:contain;display:block;background:#f0f0f0;}
 .yt-thumb-wrap{position:relative;aspect-ratio:16/9;background:#000;cursor:pointer;}
 .yt-thumb-wrap img{width:100%;height:100%;object-fit:cover;}
 .yt-play-btn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
@@ -711,6 +712,17 @@ tbody td { padding:10px 14px; color:var(--text-mid); vertical-align:middle; }
 /* ── PRIMARY DOWNLOAD BUTTON ── */
 .btn-toolbar.btn-primary-dl{background:var(--navy);color:#fff;border-color:var(--navy);}
 .btn-toolbar.btn-primary-dl:hover{opacity:.88;}
+/* ── VERIF AKUN DETAIL MODAL FIELDS ── */
+.va-dm-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.va-dm-field label { font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:var(--text-muted); font-weight:700; display:block; margin-bottom:4px; }
+.va-dm-field span { font-size:14px; color:var(--text-dark); font-weight:500; }
+/* ── PAGINATION ── */
+.vk-pager { display:flex; align-items:center; justify-content:center; gap:6px; padding:16px 0 4px; }
+.vk-pager button { min-width:32px; height:32px; padding:0 8px; border:1px solid var(--border); background:var(--bg-card); color:var(--text-mid); border-radius:6px; cursor:pointer; font-size:13px; font-weight:600; transition:.15s; }
+.vk-pager button:hover { border-color:var(--navy); color:var(--navy); }
+.vk-pager button.active { background:var(--navy); color:#fff; border-color:var(--navy); }
+.vk-pager button:disabled { opacity:.4; cursor:not-allowed; }
+.vk-pager-info { font-size:12px; color:var(--text-muted); margin:0 6px; }
 </style>
 </head>
 <body>
@@ -858,7 +870,7 @@ tbody td { padding:10px 14px; color:var(--text-mid); vertical-align:middle; }
           <div class="stat-icon teal">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
           </div>
-          <div><div class="stat-num">248</div><div class="stat-lbl">Total Karya</div></div>
+          <div><div class="stat-num" id="ds-total-karya">0</div><div class="stat-lbl">Total Karya</div></div>
         </div>
         <div class="stat-card">
           <div class="stat-icon orange">
@@ -870,13 +882,13 @@ tbody td { padding:10px 14px; color:var(--text-mid); vertical-align:middle; }
           <div class="stat-icon green">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           </div>
-          <div><div class="stat-num">142</div><div class="stat-lbl">Mahasiswa Terdaftar</div></div>
+          <div><div class="stat-num" id="ds-mahasiswa">0</div><div class="stat-lbl">Mahasiswa Terdaftar</div></div>
         </div>
         <div class="stat-card">
           <div class="stat-icon yellow">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           </div>
-          <div><div class="stat-num">1.2k</div><div class="stat-lbl">Total Pembaca</div></div>
+          <div><div class="stat-num" id="ds-total-pembaca">0</div><div class="stat-lbl">Total Pembaca</div></div>
         </div>
       </div>
       <div class="chart-grid">
@@ -900,10 +912,10 @@ tbody td { padding:10px 14px; color:var(--text-mid); vertical-align:middle; }
               <text x="45" y="49" text-anchor="middle" fill="#094e58" font-size="13" font-weight="700" font-family="Nunito,sans-serif">75%</text>
             </svg>
             <div class="donut-legend">
-              <div class="donut-legend-item"><div class="legend-dot" style="background:#094e58"></div>Tugas Akhir 75%</div>
-              <div class="donut-legend-item"><div class="legend-dot" style="background:#e8821e"></div>Artikel Jurnal 14%</div>
-              <div class="donut-legend-item"><div class="legend-dot" style="background:#10b981"></div>Laporan Magang 8%</div>
-              <div class="donut-legend-item"><div class="legend-dot" style="background:#dde8ea"></div>Lainnya 3%</div>
+              <div class="donut-legend-item"><div class="legend-dot" style="background:var(--navy)"></div>Tugas Akhir 75%</div>
+              <div class="donut-legend-item"><div class="legend-dot" style="background:var(--orange)"></div>Artikel Jurnal 14%</div>
+              <div class="donut-legend-item"><div class="legend-dot" style="background:var(--green)"></div>Laporan Magang 8%</div>
+              <div class="donut-legend-item"><div class="legend-dot" style="background:var(--border)"></div>Lainnya 3%</div>
             </div>
           </div>
         </div>
@@ -916,7 +928,7 @@ tbody td { padding:10px 14px; color:var(--text-mid); vertical-align:middle; }
         <div class="table-scroll">
           <table>
             <thead><tr><th>Judul</th><th>Mahasiswa</th><th>Prodi</th><th>Tgl Masuk</th><th>Status</th></tr></thead>
-            <tbody>
+            <tbody id="aktivitas-tbody">
               <tr><td class="td-bold">Sistem Monitoring Kualitas Air IoT</td><td>Bagas Prasetyo</td><td class="td-muted">D4 TRO</td><td class="td-muted">12 Jun</td><td><span class="status-pill s-pending">⏳ Pending</span></td></tr>
               <tr><td class="td-bold">Identitas Visual Brand UMKM</td><td>Ahmad Fauzan</td><td class="td-muted">D4 DM</td><td class="td-muted">11 Jun</td><td><span class="status-pill s-disetujui">✓ Disetujui</span></td></tr>
               <tr><td class="td-bold">Manajemen Arsip Digital</td><td>Sari Wulandari</td><td class="td-muted">D4 MP</td><td class="td-muted">10 Jun</td><td><span class="status-pill s-revisi">✎ Revisi</span></td></tr>
@@ -968,7 +980,7 @@ tbody td { padding:10px 14px; color:var(--text-mid); vertical-align:middle; }
               <!-- DOKUMEN PDF -->
               <div>
                 <label class="form-label-evo" style="margin-bottom:8px;display:block;">Dokumen PDF</label>
-                <div class="upload-area-evo" onclick="document.getElementById('evo-file-doc').click()">
+                <div class="upload-area-evo" id="pdf-upload-area" onclick="document.getElementById('evo-file-doc').click()">
                   <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>
                   <span class="upload-label-evo">Klik untuk pilih .pdf</span>
                 </div>
@@ -982,7 +994,7 @@ tbody td { padding:10px 14px; color:var(--text-mid); vertical-align:middle; }
               <!-- FOTO / GAMBAR -->
               <div>
                 <label class="form-label-evo" style="margin-bottom:8px;display:block;">Foto / Gambar</label>
-                <div class="upload-area-evo" onclick="document.getElementById('evo-file-foto').click()">
+                <div class="upload-area-evo" id="foto-upload-area" onclick="document.getElementById('evo-file-foto').click()">
                   <svg viewBox="0 0 24 24"><path d="M21 3H3C2 3 1 4 1 5v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1-2-2-2-2zm-1 16H4V5h16v14zM9 10l4 5 3-3.5 4 4.5H4l5-6z"/></svg>
                   <span class="upload-label-evo">Klik untuk pilih foto</span>
                 </div>
@@ -995,7 +1007,7 @@ tbody td { padding:10px 14px; color:var(--text-mid); vertical-align:middle; }
               </div>
               <!-- VIDEO YOUTUBE -->
               <div>
-                <label class="form-label-evo" style="margin-bottom:8px;display:block;">Video YouTube</label>
+                <label class="form-label-evo" style="margin-bottom:8px;display:block;">Video YouTube <span style="font-weight:400;color:var(--text-muted);font-size:11px;">(Opsional)</span></label>
                 <input type="url" class="form-input-evo" id="evo-yt-url" placeholder="https://youtu.be/..." oninput="showYtPreview(this.value)" style="margin-bottom:8px;">
                 <div class="upload-note-evo">Tempel link YouTube — thumbnail otomatis tampil</div>
                 <div class="file-preview-box hidden" id="yt-preview-box">
@@ -1068,6 +1080,7 @@ tbody td { padding:10px 14px; color:var(--text-mid); vertical-align:middle; }
           </table>
         </div>
       </div>
+      <div class="vk-pager" id="vk-pager"></div>
     </div><!-- /verif-karya -->
 
     <!-- VERIFIKASI AKUN -->
@@ -1140,9 +1153,6 @@ tbody td { padding:10px 14px; color:var(--text-mid); vertical-align:middle; }
           <option value="">Semua Tahun</option>
           <option>2026</option><option>2025</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option><option>2020</option>
         </select>
-      </div>
-        <select><option>Semua Jenis</option><option>Tugas Akhir</option><option>Artikel Jurnal</option><option>Laporan Magang</option><option>Proyek Inovasi</option></select>
-        <select><option>Semua Tahun</option><option>2024</option><option>2023</option><option>2022</option></select>
       </div>
       <div class="table-card">
         <div class="table-scroll">
@@ -1440,7 +1450,9 @@ function filterKarya() {
     else if (currentVerifFilter === 'verified') matchSub = k.status === 'disetujui' || k.status === 'ditolak';
     return matchSearch && matchDropdown && matchSub;
   });
-  renderKarya(filtered);
+  _vkFiltered = filtered;
+  _vkPage = 1;
+  renderVkPage();
   syncVkTabs();
 }
 
@@ -1553,7 +1565,7 @@ function renderAkun(data) {
     var aksi = a.status === 'pending'
       ? '<button class="btn-act btn-ok" onclick="aksiAkun(\''+uid+'\',\'disetujui\',\''+a.nim+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>✓</button>' +
         '<button class="btn-act btn-no" onclick="aksiAkun(\''+uid+'\',\'ditolak\',\''+a.nim+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>✗</button>'
-      : '<button class="btn-detail-sm">Detail</button>';
+      : '<button class="btn-detail-sm" onclick="openDetailAkun(\''+uid+'\')">Detail</button>';
     return '<tr><td class="td-muted" style="font-size:11px">' + a.nim + '</td>' +
            '<td class="td-bold">' + a.nama + '</td>' +
            '<td class="td-muted">' + a.prodi + '</td>' +
@@ -1699,6 +1711,8 @@ function checkAuth() {
   if (!localStorage.getItem('digilab-welcome-shown')) {
     setTimeout(function(){ showWelcome(u); }, 80);
   }
+  updateDashboardStats();
+  updateKaryaCounts();
 }
 
 function openLogoutConfirm() {
@@ -2083,6 +2097,14 @@ function deleteProdiEvo(idx){
     _admLinksEvo=[]; renderLinksEvo();
     var dn=document.getElementById('evo-doc-name'); if(dn) dn.textContent='Format file: .pdf';
     var mn=document.getElementById('evo-media-name'); if(mn) mn.textContent='Format file: .png / .jpg / .jpeg / .mp4 / .mp3';
+    // clear previews + restore upload areas
+    var pBox = document.getElementById('pdf-preview-box'); if(pBox) pBox.classList.add('hidden');
+    var iBox = document.getElementById('img-preview-box'); if(iBox) iBox.classList.add('hidden');
+    var yBox = document.getElementById('yt-preview-box'); if(yBox) yBox.classList.add('hidden');
+    var ytUrl = document.getElementById('evo-yt-url'); if(ytUrl) ytUrl.value = '';
+    var pFrame = document.getElementById('pdf-frame'); if(pFrame) pFrame.src = 'about:blank';
+    var pArea = document.getElementById('pdf-upload-area'); if(pArea) pArea.style.display = '';
+    var fArea = document.getElementById('foto-upload-area'); if(fArea) fArea.style.display = '';
   }
 
   function submitKaryaEvo() {
@@ -2195,11 +2217,17 @@ function showPdfPreview(input) {
   var name = input.files[0] ? input.files[0].name : '';
   document.getElementById('evo-doc-name').textContent = name || 'Format file: .pdf';
   var box = document.getElementById('pdf-preview-box');
+  var area = document.getElementById('pdf-upload-area');
   var frame = document.getElementById('pdf-frame');
-  if (!input.files[0]) { box.classList.add('hidden'); return; }
+  if (!input.files[0]) {
+    box.classList.add('hidden');
+    if (area) area.style.display = '';
+    return;
+  }
   var url = URL.createObjectURL(input.files[0]);
   frame.src = url;
   box.classList.remove('hidden');
+  if (area) area.style.display = 'none';
 }
 
 /* ── IMAGE PREVIEW ── */
@@ -2207,10 +2235,19 @@ function showImgPreview(input) {
   var name = input.files[0] ? input.files[0].name : '';
   document.getElementById('evo-foto-name').textContent = name || 'Format: .png / .jpg / .jpeg';
   var box = document.getElementById('img-preview-box');
+  var area = document.getElementById('foto-upload-area');
   var img = document.getElementById('img-prev-img');
-  if (!input.files[0]) { box.classList.add('hidden'); return; }
+  if (!input.files[0]) {
+    box.classList.add('hidden');
+    if (area) area.style.display = '';
+    return;
+  }
   var reader = new FileReader();
-  reader.onload = function(e) { img.src = e.target.result; box.classList.remove('hidden'); };
+  reader.onload = function(e) {
+    img.src = e.target.result;
+    box.classList.remove('hidden');
+    if (area) area.style.display = 'none';
+  };
   reader.readAsDataURL(input.files[0]);
 }
 
@@ -2262,6 +2299,72 @@ function unduhRekapanAkun() {
 
 /* ── RESET FORM EVO marker ── */
 var _origResetFormEvo;
+
+/* ── DASHBOARD STATS SYNC ── */
+function updateDashboardStats() {
+  var totalKarya = DUMMY_KARYA.length;
+  var totalPembaca = DUMMY_KARYA.reduce(function(s,k){ return s+(parseInt(k.pembaca)||0); }, 0);
+  var totalMhs = DUMMY_AKUN.length;
+  var elTK = document.getElementById('ds-total-karya');
+  if (elTK) elTK.textContent = totalKarya;
+  var elMhs = document.getElementById('ds-mahasiswa');
+  if (elMhs) elMhs.textContent = totalMhs;
+  var elPB = document.getElementById('ds-total-pembaca');
+  if (elPB) elPB.textContent = totalPembaca > 999 ? (totalPembaca/1000).toFixed(1)+'k' : totalPembaca;
+  // Aktivitas Terbaru — last 5 karya
+  var tbody = document.getElementById('aktivitas-tbody');
+  if (!tbody) return;
+  var recent = DUMMY_KARYA.slice().sort(function(a,b){ return (b.id||0)-(a.id||0); }).slice(0,5);
+  tbody.innerHTML = recent.map(function(k){
+    return '<tr><td class="td-bold">'+k.judul+'</td><td>'+(k.mhs||k.penulis||'-')+'</td><td class="td-muted">'+(k.prodi||'-')+'</td><td class="td-muted">'+(k.tgl||k.tahun||'-')+'</td><td>'+statusBadge(k.status)+'</td></tr>';
+  }).join('');
+}
+
+/* ── VERIF KARYA PAGINATION ── */
+var _vkPage = 1, _vkPageSize = 8, _vkFiltered = [];
+function renderVkPage() {
+  var start = (_vkPage-1)*_vkPageSize, end = start+_vkPageSize;
+  var pageData = _vkFiltered.slice(start, end);
+  renderKarya(pageData);
+  var total = Math.ceil(_vkFiltered.length/_vkPageSize) || 1;
+  var pager = document.getElementById('vk-pager');
+  if (!pager) return;
+  var html = '<button onclick="goVkPage('+(Math.max(1,_vkPage-1))+')" '+ (_vkPage<=1?'disabled':'')+'>‹</button>';
+  for (var p=1;p<=total;p++) html+='<button onclick="goVkPage('+p+')" class="'+(_vkPage===p?'active':'')+'">'+p+'</button>';
+  html+='<button onclick="goVkPage('+(Math.min(total,_vkPage+1))+')" '+(_vkPage>=total?'disabled':'')+'>›</button>';
+  html+='<span class="vk-pager-info">'+(_vkFiltered.length)+' data</span>';
+  pager.innerHTML = html;
+}
+function goVkPage(n) { _vkPage = n; renderVkPage(); }
+
+/* ── VERIF AKUN DETAIL MODAL ── */
+var _vaDmCurrentId = null, _vaDmCurrentNim = null;
+function openDetailAkun(uid) {
+  var akun = DUMMY_AKUN.find(function(a){ return a.id===uid||a.nim===uid; });
+  if (!akun) return;
+  _vaDmCurrentId = akun.id;
+  _vaDmCurrentNim = akun.nim;
+  document.getElementById('va-dm-nama').textContent = akun.nama||'—';
+  document.getElementById('va-dm-nim').textContent = akun.nim||'—';
+  document.getElementById('va-dm-prodi').textContent = akun.prodi||'—';
+  document.getElementById('va-dm-tgl').textContent = akun.tgl||'—';
+  document.getElementById('va-dm-status').innerHTML = statusBadge(akun.status);
+  var isPending = akun.status==='pending';
+  document.getElementById('va-dm-btn-tolak').style.display = isPending?'':'none';
+  document.getElementById('va-dm-btn-setujui').style.display = isPending?'':'none';
+  var ov = document.getElementById('va-detail-overlay');
+  if(ov){ov.style.display=''; ov.classList.add('open');}
+}
+function closeDetailAkun() {
+  var ov = document.getElementById('va-detail-overlay');
+  if(ov) ov.classList.remove('open');
+  _vaDmCurrentId = null;
+}
+function aksiAkunFromModal(action) {
+  if(!_vaDmCurrentId) return;
+  closeDetailAkun();
+  aksiAkun(_vaDmCurrentId, action, _vaDmCurrentNim);
+}
 </script>
 
 
@@ -2288,7 +2391,7 @@ var _origResetFormEvo;
     </div>
     <div style="margin-bottom:20px;">
       <div style="font-size:.7rem;font-weight:700;color:#888;letter-spacing:.05em;margin-bottom:6px;">DOKUMEN (PDF)</div>
-      <a id="md-link" href="#" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:#fee2e2;color:#c0392b;border-radius:6px;text-decoration:none;font-size:.85rem;font-weight:600;">
+      <a id="md-link" href="#" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:var(--red-bg);color:#c0392b;border-radius:6px;text-decoration:none;font-size:.85rem;font-weight:600;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
         Lihat PDF
       </a>
@@ -2312,7 +2415,7 @@ var _origResetFormEvo;
     <!-- Tombol aksi modal — normal mode -->
     <div id="md-actions-normal" style="display:flex;justify-content:flex-end;gap:10px;">
       <button onclick="closeDetailModal()" style="padding:9px 20px;border:1.5px solid #d1d5db;background:#fff;border-radius:8px;cursor:pointer;font-weight:600;font-size:.9rem;">Tutup</button>
-      <button id="md-btn-tolak" onclick="aksiKaryaModal('ditolak')" style="padding:9px 20px;background:#ef4444;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:.9rem;display:inline-flex;align-items:center;gap:6px;">
+      <button id="md-btn-tolak" onclick="aksiKaryaModal('ditolak')" style="padding:9px 20px;background:var(--red);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:.9rem;display:inline-flex;align-items:center;gap:6px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Tolak
       </button>
       <button id="md-btn-revisi" onclick="enterRevisiMode()" style="padding:9px 20px;background:#f97316;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:.9rem;display:inline-flex;align-items:center;gap:6px;">
@@ -2407,5 +2510,25 @@ var _origResetFormEvo;
     </div>
   </div>
 </div>
+  <!-- VERIF AKUN DETAIL MODAL -->
+  <div class="peng-modal-overlay" id="va-detail-overlay" onclick="if(event.target===this)closeDetailAkun()">
+    <div class="peng-modal" style="max-width:480px">
+      <div class="peng-modal-header">Detail Pendaftaran Akun</div>
+      <div class="peng-modal-body">
+        <div class="va-dm-grid">
+          <div class="va-dm-field"><label>Nama Lengkap</label><span id="va-dm-nama">—</span></div>
+          <div class="va-dm-field"><label>NIM</label><span id="va-dm-nim">—</span></div>
+          <div class="va-dm-field"><label>Program Studi</label><span id="va-dm-prodi">—</span></div>
+          <div class="va-dm-field"><label>Tanggal Daftar</label><span id="va-dm-tgl">—</span></div>
+          <div class="va-dm-field" style="grid-column:1/-1"><label>Status</label><span id="va-dm-status">—</span></div>
+        </div>
+      </div>
+      <div class="peng-modal-actions">
+        <button class="btn-peng-cancel" onclick="closeDetailAkun()">Tutup</button>
+        <button class="btn-act btn-no" id="va-dm-btn-tolak" onclick="aksiAkunFromModal('ditolak')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>✗ Tolak</button>
+        <button class="btn-act btn-ok" id="va-dm-btn-setujui" onclick="aksiAkunFromModal('disetujui')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><polyline points="20 6 9 17 4 12"/></svg>✓ Setujui</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

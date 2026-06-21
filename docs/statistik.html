@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Statistik Data — DIGILAB V.Evolution</title>
 <script src="theme.js"></script>
+<script src="data-master.js"></script>
 <script src="layout-router.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -480,7 +481,7 @@ body {
             <span class="stat-trend up">↑ +5%</span>
           </div>
           <div class="stat-label">Total Karya Ilmiah</div>
-          <div class="stat-value">1,245</div>
+          <div class="stat-value" id="stat-total-karya">—</div>
           <div class="stat-sub">tersimpan di repositori</div>
           <div class="sparkline-wrap"><canvas id="spark1"></canvas></div>
         </div>
@@ -496,7 +497,7 @@ body {
             <span class="stat-trend up">↑ +12%</span>
           </div>
           <div class="stat-label">Total Pembaca (Bulan Ini)</div>
-          <div class="stat-value">5,320</div>
+          <div class="stat-value" id="stat-total-pembaca">—</div>
           <div class="stat-sub">akses terhadap karya</div>
           <div class="sparkline-wrap"><canvas id="spark2"></canvas></div>
         </div>
@@ -516,8 +517,8 @@ body {
           <div class="stat-donut-wrap">
             <canvas id="miniDonut" class="stat-donut-canvas"></canvas>
             <div>
-              <div class="stat-donut-label">Tugas Akhir</div>
-              <div class="stat-donut-accent">76%</div>
+              <div class="stat-donut-label" id="stat-top-jenis-label">—</div>
+              <div class="stat-donut-accent" id="stat-top-jenis-pct">—</div>
               <div class="stat-donut-sub">dari total karya</div>
             </div>
           </div>
@@ -582,12 +583,8 @@ body {
             <div class="donut-chart-wrap">
               <canvas id="chartJenis"></canvas>
             </div>
-            <div class="donut-legend">
-              <div class="legend-item"><span class="legend-dot" style="background:var(--navy)"></span>Tugas Akhir<span class="legend-pct">76%</span></div>
-              <div class="legend-item"><span class="legend-dot" style="background:var(--teal)"></span>Laporan Magang<span class="legend-pct">9%</span></div>
-              <div class="legend-item"><span class="legend-dot" style="background:var(--orange)"></span>Artikel Jurnal<span class="legend-pct">7%</span></div>
-              <div class="legend-item"><span class="legend-dot" style="background:#a855f7"></span>Proyek Inovasi<span class="legend-pct">5%</span></div>
-              <div class="legend-item"><span class="legend-dot" style="background:#ec4899"></span>Lainnya<span class="legend-pct">3%</span></div>
+            <div class="donut-legend" id="jenis-legend">
+              <!-- populated by _computeStatsFromKarya() -->
             </div>
           </div>
         </div>
@@ -634,22 +631,151 @@ body {
 </div>
 
 <script>
-// ── DATA ──
-var TOP5 = [
-  { judul:'Rancang Bangun Sistem Informasi Perpustakaan Digital Berbasis Web', penulis:'Karina, Aliya', jenis:'Tugas Akhir', n:287 },
-  { judul:'Sistem Informasi Manajemen Akademik Terintegrasi RFID', penulis:'Rizky Pratama', jenis:'Proyek Inovasi', n:251 },
-  { judul:'Analisis Kinerja Jaringan Nirkabel Kampus Menggunakan QoS', penulis:'Dewi Nurhalliza', jenis:'Artikel Jurnal', n:198 },
-  { judul:'Rancang Bangun Aplikasi Monitoring Energi Berbasis IoT', penulis:'Bima Arya', jenis:'Tugas Akhir', n:174 },
-  { judul:'Implementasi Machine Learning untuk Deteksi Spam Email', penulis:'Sinta Maharani', jenis:'Laporan Magang', n:143 },
-];
-var PRODI_LABELS = ['D4 Perpustakaan Digital','D4 Animasi','D4 Manajemen Pemasaran','D4 Akuntansi','D4 Tata Boga','D4 Desain Mode','D4 Tek. Rek. Bangunan Sipil','D4 Tek. Rek. Bangunan Manufaktur','D4 Tek. Rek. Otomotif','D4 Tek. Rek. Pembangkit Energi','D4 Tek. Rek. Sistem Elektronika'];
-var PRODI_DATA   = [142, 118, 95, 88, 76, 64, 58, 45, 39, 35, 28];
+// ── STATIC CONSTANTS ──
 var BULAN = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agt','Sep','Okt','Nov','Des'];
-var TREN  = [1800, 2200, 5800, 1700, 4900, 2100, 4100, 5300, 4000, 3200, 2600, 2900];
+var JENIS_COLORS = ['#094e58','#14b8a6','#e8821e','#a855f7','#ec4899'];
+// Sparkline data (decorative, tidak perlu dari KARYA_DATA)
 var SPARK1 = [80,95,88,102,97,110,108,120,115,125,130,135];
 var SPARK2 = [290,320,480,250,420,310,390,530,400,350,310,420];
-var JENIS_DATA   = [76,9,7,5,3];
-var JENIS_COLORS = ['#094e58','#14b8a6','#e8821e','#a855f7','#ec4899'];
+
+// ── CHART INSTANCES (global agar bisa di-update) ──
+var _chartProdi  = null;
+var _chartJenis  = null;
+var _chartTren   = null;
+var _miniDonutCh = null;
+
+// ── COMPUTED DATA (diisi oleh _computeStatsFromKarya, dipakai export) ──
+var TOP5        = [];
+var PRODI_LABELS = [];
+var PRODI_DATA   = [];
+var TREN         = [0,0,0,0,0,0,0,0,0,0,0,0];
+var JENIS_DATA   = [];
+var _jenisLabels = [];
+
+// ── HITUNG STATISTIK DARI KARYA_DATA ──
+function _computeStatsFromKarya() {
+  var karya = (window.KARYA_DATA || []).filter(function(k) {
+    return k.status === 'disetujui';
+  });
+
+  // ── Stat Cards ──
+  var totalKarya   = karya.length;
+  var totalPembaca = karya.reduce(function(s, k) { return s + (parseInt(k.pembaca) || 0); }, 0);
+
+  // ── Prodi distribution (sort descending) ──
+  var prodiMap = {};
+  karya.forEach(function(k) {
+    var p = k.prodi || 'Lainnya';
+    prodiMap[p] = (prodiMap[p] || 0) + 1;
+  });
+  var prodiEntries = Object.keys(prodiMap).map(function(p) {
+    return { prodi: p, count: prodiMap[p] };
+  }).sort(function(a, b) { return b.count - a.count; });
+  PRODI_LABELS = prodiEntries.map(function(e) {
+    // Strip leading "D4 " for shorter bar labels
+    return e.prodi.replace(/^D4\s+/, '');
+  });
+  PRODI_DATA = prodiEntries.map(function(e) { return e.count; });
+
+  // ── Jenis distribution ──
+  var jenisMap = {};
+  karya.forEach(function(k) {
+    var j = k.jenis || 'Lainnya';
+    jenisMap[j] = (jenisMap[j] || 0) + 1;
+  });
+  var jenisEntries = Object.keys(jenisMap).map(function(j) {
+    return { jenis: j, count: jenisMap[j] };
+  }).sort(function(a, b) { return b.count - a.count; });
+  _jenisLabels = jenisEntries.map(function(e) { return e.jenis; });
+  JENIS_DATA   = jenisEntries.map(function(e) { return e.count; });
+
+  // ── Top jenis for mini donut (Card 3) ──
+  var topJenis  = jenisEntries.length > 0 ? jenisEntries[0] : { jenis: '—', count: 0 };
+  var topJenisPct = totalKarya > 0 ? Math.round(topJenis.count / totalKarya * 100) : 0;
+
+  // ── Top 5 by pembaca ──
+  TOP5 = karya.slice().sort(function(a, b) {
+    return (parseInt(b.pembaca) || 0) - (parseInt(a.pembaca) || 0);
+  }).slice(0, 5).map(function(k) {
+    return {
+      judul:   k.judul || '—',
+      penulis: k.penulis || '—',
+      jenis:   k.jenis || '—',
+      n:       parseInt(k.pembaca) || 0
+    };
+  });
+
+  // ── Tren bulanan (estimasi dari total pembaca karya tahun 2024) ──
+  var pembacaTahunIni = karya
+    .filter(function(k) { return String(k.tahun) === '2024'; })
+    .reduce(function(s, k) { return s + (parseInt(k.pembaca) || 0); }, 0);
+  // Jika tidak ada karya 2024, pakai total keseluruhan sebagai basis
+  var basisTren = pembacaTahunIni > 0 ? pembacaTahunIni : totalPembaca;
+  var trenWeights = [0.06, 0.07, 0.09, 0.09, 0.08, 0.07, 0.08, 0.09, 0.09, 0.08, 0.08, 0.07];
+  TREN = trenWeights.map(function(w) { return Math.round(basisTren * w); });
+
+  // ── Update DOM: Stat Cards ──
+  var elKarya = document.getElementById('stat-total-karya');
+  if (elKarya) elKarya.textContent = totalKarya.toLocaleString('id');
+
+  var elPembaca = document.getElementById('stat-total-pembaca');
+  if (elPembaca) elPembaca.textContent = totalPembaca.toLocaleString('id');
+
+  var elTopLabel = document.getElementById('stat-top-jenis-label');
+  if (elTopLabel) elTopLabel.textContent = topJenis.jenis;
+
+  var elTopPct = document.getElementById('stat-top-jenis-pct');
+  if (elTopPct) elTopPct.textContent = topJenisPct + '%';
+
+  // ── Update sidebar total ──
+  var sbTotal = document.getElementById('sidebar-total-karya');
+  if (sbTotal) sbTotal.textContent = totalKarya.toLocaleString('id');
+
+  // ── Update Mini Donut (Card 3) ──
+  if (_miniDonutCh) {
+    _miniDonutCh.data.datasets[0].data = [topJenisPct, 100 - topJenisPct];
+    _miniDonutCh.update();
+  }
+
+  // ── Update Bar Chart ──
+  if (_chartProdi) {
+    var colors = PRODI_DATA.map(function(_, i) { return i % 2 === 0 ? '#094e58' : '#14b8a6'; });
+    _chartProdi.data.labels = PRODI_LABELS;
+    _chartProdi.data.datasets[0].data = PRODI_DATA;
+    _chartProdi.data.datasets[0].backgroundColor = colors;
+    _chartProdi.update();
+  }
+
+  // ── Update Donut Chart + Legend ──
+  if (_chartJenis) {
+    _chartJenis.data.labels = _jenisLabels;
+    _chartJenis.data.datasets[0].data = JENIS_DATA;
+    _chartJenis.data.datasets[0].backgroundColor = JENIS_COLORS.slice(0, _jenisLabels.length);
+    _chartJenis.update();
+  }
+  // Re-render donut legend
+  var legendEl = document.getElementById('jenis-legend');
+  if (legendEl && totalKarya > 0) {
+    legendEl.innerHTML = _jenisLabels.map(function(label, i) {
+      var pct = Math.round(JENIS_DATA[i] / totalKarya * 100);
+      var color = JENIS_COLORS[i] || '#aaa';
+      return '<div class="legend-item">' +
+        '<span class="legend-dot" style="background:' + color + '"></span>' +
+        label +
+        '<span class="legend-pct">' + pct + '%</span>' +
+      '</div>';
+    }).join('');
+  }
+
+  // ── Update Line Chart ──
+  if (_chartTren) {
+    _chartTren.data.datasets[0].data = TREN;
+    _chartTren.update();
+  }
+
+  // ── Update Top 5 Table ──
+  renderTop5();
+}
 
 // ── DATA MAHASISWA (sinkron dengan mahasiswa-shared.js) ──
 var DUMMY_KARYA_MHS = [
@@ -780,9 +906,9 @@ function drawSparkline(id, data, color) {
 function drawMiniDonut() {
   var el = document.getElementById('miniDonut');
   if (!el) return;
-  new Chart(el.getContext('2d'), {
+  _miniDonutCh = new Chart(el.getContext('2d'), {
     type:'doughnut',
-    data:{ datasets:[{ data:[76,24], backgroundColor:['#14b8a6','#e4f2f4'], borderWidth:0 }] },
+    data:{ datasets:[{ data:[0,100], backgroundColor:['#14b8a6','#e4f2f4'], borderWidth:0 }] },
     options:{ responsive:false, cutout:'70%', plugins:{legend:{display:false},tooltip:{enabled:false}}, animation:{duration:600} }
   });
 }
@@ -791,15 +917,14 @@ function drawMiniDonut() {
 function drawBarChart() {
   var el = document.getElementById('chartProdi');
   if (!el) return;
-  var colors = PRODI_DATA.map(function(_, i){ return i % 2 === 0 ? '#094e58' : '#14b8a6'; });
-  new Chart(el.getContext('2d'), {
+  _chartProdi = new Chart(el.getContext('2d'), {
     type:'bar',
-    data:{ labels:PRODI_LABELS, datasets:[{ label:'Jumlah Karya', data:PRODI_DATA, backgroundColor:colors, borderRadius:4, borderSkipped:false }] },
+    data:{ labels:[], datasets:[{ label:'Jumlah Karya', data:[], backgroundColor:[], borderRadius:4, borderSkipped:false }] },
     options:{
       responsive:true, maintainAspectRatio:false, indexAxis:'y',
       plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: function(c){ return ' '+c.parsed.x+' karya'; } } } },
       scales:{
-        x:{ grid:{color:'rgba(9,78,88,.07)'}, ticks:{font:{size:10},color:'#6b8e96'} },
+        x:{ grid:{color:'rgba(9,78,88,.07)'}, ticks:{font:{size:10},color:'#6b8e96',stepSize:1}, min:0 },
         y:{ grid:{display:false}, ticks:{font:{size:10},color:'#3d5e66'} }
       }
     }
@@ -810,13 +935,13 @@ function drawBarChart() {
 function drawDonutJenis() {
   var el = document.getElementById('chartJenis');
   if (!el) return;
-  new Chart(el.getContext('2d'), {
+  _chartJenis = new Chart(el.getContext('2d'), {
     type:'doughnut',
     data:{
-      labels:['Tugas Akhir','Laporan Magang','Artikel Jurnal','Proyek Inovasi','Lainnya'],
-      datasets:[{ data:JENIS_DATA, backgroundColor:JENIS_COLORS, borderWidth:2, borderColor:'#fff', hoverOffset:6 }]
+      labels:[],
+      datasets:[{ data:[], backgroundColor:[], borderWidth:2, borderColor:'#fff', hoverOffset:6 }]
     },
-    options:{ responsive:true, cutout:'60%', plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: function(c){ return ' '+c.label+': '+c.parsed+'%'; } } } } }
+    options:{ responsive:true, cutout:'60%', plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: function(c){ return ' '+c.label+': '+c.parsed+' karya'; } } } } }
   });
 }
 
@@ -824,7 +949,7 @@ function drawDonutJenis() {
 function drawLineChart() {
   var el = document.getElementById('chartTren');
   if (!el) return;
-  new Chart(el.getContext('2d'), {
+  _chartTren = new Chart(el.getContext('2d'), {
     type:'line',
     data:{
       labels:BULAN,
@@ -843,12 +968,15 @@ function drawLineChart() {
 
 // ── TOP 5 TABLE ──
 function renderTop5() {
-  var max = TOP5[0].n;
   var tbody = document.getElementById('top5-body');
   if (!tbody) return;
+  if (!TOP5 || TOP5.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:16px;font-size:12px;">Belum ada data karya</td></tr>';
+    return;
+  }
+  var max = TOP5[0].n || 1;
   tbody.innerHTML = TOP5.map(function(r, i) {
     var short = r.judul.length > 36 ? r.judul.substring(0,36)+'...' : r.judul;
-    var pct = Math.round(r.n / max * 100);
     return '<tr>' +
       '<td class="row-num">'+(i+1)+'</td>' +
       '<td><div class="row-title" title="'+r.judul+'">'+short+'</div><span class="row-tag">'+r.jenis+'</span></td>' +
@@ -891,7 +1019,8 @@ window.addEventListener('DOMContentLoaded', function() {
   drawBarChart();
   drawDonutJenis();
   drawLineChart();
-  renderTop5();
+  // Hitung semua statistik dari KARYA_DATA (setelah chart di-init agar bisa di-update)
+  _computeStatsFromKarya();
 });
 
 /* ── EXPORT MODAL (ADMIN ONLY) ── */
@@ -947,10 +1076,13 @@ function _eksporExcel(top5, prodi, tren, jenis) {
     sections.push('');
   }
   if (jenis) {
+    var totalK = JENIS_DATA.reduce(function(s,d){ return s+d; }, 0) || 1;
     sections.push('KOMPOSISI JENIS KARYA');
-    sections.push('Jenis,Persentase');
-    var jLabels = ['Tugas Akhir','Laporan Magang','Artikel Jurnal','Proyek Inovasi','Lainnya'];
-    JENIS_DATA.forEach(function(d, i) { sections.push(jLabels[i]+','+d+'%'); });
+    sections.push('Jenis,Jumlah,Persentase');
+    JENIS_DATA.forEach(function(d, i) {
+      var pct = Math.round(d / totalK * 100);
+      sections.push((_jenisLabels[i] || 'Lainnya')+','+d+','+pct+'%');
+    });
   }
   var csv = bom + sections.join('\n');
   var blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
