@@ -146,103 +146,7 @@ body {
 }
 .hasil-search-wrap .btn-hs:hover { background: var(--navy-dark); }
 .hasil-search-wrap .btn-hs svg { width: 14px; height: 14px; }
-.hasil-layout {
-  max-width: 1100px; margin: 24px auto; padding: 0 20px;
-  display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 20px;
-  flex: 1;
-}
-.filter-panel {
-  background: var(--bg-card);
-  border-radius: var(--radius);
-  padding: 16px;
-  border: 0.5px solid var(--border);
-  box-shadow: var(--shadow);
-  height: fit-content;
-  position: sticky; top: 80px;
-}
-.filter-title {
-  font-family: 'Nunito',sans-serif;
-  font-size: 13px; font-weight: 800;
-  color: var(--text-dark);
-  margin-bottom: 14px;
-  display: flex; align-items: center; gap: 6px;
-}
-.filter-title svg { width:14px; height:14px; color: var(--navy); }
-.filter-group { margin-bottom: 14px; }
-.filter-group label {
-  font-size: 11px; font-weight: 700;
-  color: var(--text-mid);
-  display: block; margin-bottom: 5px;
-}
-.filter-group select {
-  width: 100%;
-  border: 0.5px solid var(--border);
-  border-radius: 6px;
-  padding: 7px 10px;
-  font-size: 12px;
-  color: var(--text-dark);
-  background: var(--bg);
-  font-family: 'Lato',sans-serif;
-  cursor: pointer;
-}
-.filter-group select:focus { outline: 2px solid var(--navy); }
-.btn-filter-apply {
-  width: 100%;
-  background: var(--navy);
-  color: #fff; border: none;
-  font-family: 'Nunito',sans-serif;
-  font-size: 12px; font-weight: 800;
-  padding: 9px;
-  border-radius: 99px;
-  cursor: pointer;
-  transition: var(--transition);
-  margin-top: 4px;
-}
-.btn-filter-apply:hover { background: var(--navy-dark); }
-.hasil-list { display: flex; flex-direction: column; gap: 10px; }
-.hasil-item {
-  background: var(--bg-card);
-  border-radius: var(--radius);
-  padding: 14px 16px;
-  border: 0.5px solid var(--border);
-  box-shadow: var(--shadow);
-  display: flex; gap: 14px; align-items: flex-start;
-  cursor: pointer;
-  transition: var(--transition);
-}
-.hasil-item:hover { border-color: var(--navy-light); box-shadow: var(--shadow-lg); transform: translateX(4px); }
-.hasil-num {
-  width: 32px; height: 32px;
-  background: var(--navy-light);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Nunito',sans-serif; font-size: 12px; font-weight: 800;
-  color: var(--navy);
-  flex-shrink: 0;
-}
-.hasil-meta { flex: 1; }
-.hasil-meta h4 {
-  font-family: 'Nunito',sans-serif;
-  font-size: 13px; font-weight: 700;
-  color: var(--text-dark); margin-bottom: 4px;
-  line-height: 1.4;
-}
-.hasil-meta p { font-size: 11px; color: var(--text-muted); }
-.hasil-badges { display: flex; gap: 6px; margin-top: 7px; flex-wrap: wrap; }
-.badge {
-  border-radius: 99px; padding: 3px 10px;
-  font-size: 10px; font-weight: 700;
-}
-.badge-teal { background: var(--navy-light); color: var(--navy); }
-.badge-orange { background: var(--orange-light); color: var(--orange-dark); }
-.hasil-empty {
-  text-align: center; padding: 48px 20px;
-  color: var(--text-muted);
-}
-.hasil-empty svg { width: 48px; height: 48px; margin-bottom: 12px; opacity: .4; display: block; margin-left: auto; margin-right: auto; }
-.hasil-empty p { font-size: 14px; }
+/* old sidebar layout removed */
 
 /* ── DETAIL KARYA ── */
 .detail-header {
@@ -663,10 +567,9 @@ body {
 
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
-  .hasil-layout { grid-template-columns: 1fr; }
-  .filter-panel { position: static; display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; }
+
   .filter-title { grid-column: 1/-1; }
-  .btn-filter-apply { grid-column: 1/-1; }
+
   .detail-body-wrap { grid-template-columns: 1fr; }
   .detail-side { flex-direction: row; flex-wrap: wrap; position: static; }
   .detail-side .side-btn { flex: 1; min-width: 120px; }
@@ -676,7 +579,7 @@ body {
 @media (max-width: 600px) {
   .karya-topbar { padding: 0 14px; }
   .karya-topbar-title { font-size: 12px; }
-  .hasil-layout { margin: 14px auto; }
+
   .hasil-search-area { padding: 12px 14px 10px; }
   .hasil-search-wrap .btn-hs { padding: 10px 14px; font-size: 12px; }
   .detail-body-wrap { padding: 0 14px; margin: 14px auto; }
@@ -733,64 +636,73 @@ body {
 
 <!-- PAGE: HASIL PENCARIAN -->
 <div id="page-hasil" class="evo-page active" style="flex-direction:column;">
-  <div class="hasil-search-area">
-    <div class="hasil-search-wrap">
-      <input type="text" id="hasil-search" placeholder="Cari judul, penulis, atau kata kunci..." onkeydown="if(event.key==='Enter') doSearchHasil()">
-      <button class="btn-hs" onclick="doSearchHasil()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+
+  <!-- Search area -->
+  <div class="karya-search-area">
+    <div class="karya-search-wrap">
+      <input type="text" id="hasil-search" class="karya-search-input"
+             placeholder="Cari judul, penulis, atau kata kunci..."
+             onkeydown="if(event.key==='Enter')doSearchHasil()">
+      <button class="karya-search-btn" onclick="doSearchHasil()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
         Cari
       </button>
     </div>
-    <div class="hasil-info" id="hasil-info">Menampilkan semua karya</div>
+    <div class="karya-search-info" id="hasil-info"></div>
   </div>
-  <div class="hasil-layout">
-    <div class="filter-panel">
-      <div class="filter-title">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-        Filter
-      </div>
-      <div class="filter-group">
-        <label>Program Studi</label>
-        <select id="f-prodi">
-          <option value="">Semua Prodi</option>
-        </select>
-      </div>
-      <div class="filter-group">
-        <label>Tahun</label>
-        <select id="f-tahun">
-          <option value="">Semua Tahun</option>
-          <option>2025</option><option>2024</option>
-          <option>2023</option><option>2022</option>
-          <option>2021</option><option>2020</option>
-        </select>
-      </div>
-      <div class="filter-group">
-        <label>Jenis Karya</label>
-        <select id="f-jenis">
-          <option value="">Semua Jenis</option>
-          <option>Tugas Akhir</option>
-          <option>Artikel Jurnal</option>
-          <option>Laporan Magang</option>
-          <option>Proyek Inovasi</option>
-          <option>Produk Kreatif</option>
-          <option>Lainnya</option>
-        </select>
-      </div>
-      <div class="filter-group">
-        <label>Pembimbing</label>
-        <select id="f-pembimbing">
-          <option value="">Semua</option>
-        </select>
-      </div>
-      <button class="btn-filter-apply" onclick="applyFilter()">Terapkan Filter</button>
-    </div>
-    <div>
-      <div class="hasil-list" id="hasil-list"></div>
-    </div>
+
+  <!-- Filter bar horizontal -->
+  <div class="filter-bar">
+    <select id="f-prodi" onchange="applyFilter()">
+      <option value="">Semua Prodi</option>
+    </select>
+    <select id="f-tahun" onchange="applyFilter()">
+      <option value="">Semua Tahun</option>
+      <option value="2025">2025</option>
+      <option value="2024">2024</option>
+      <option value="2023">2023</option>
+      <option value="2022">2022</option>
+      <option value="2021">2021</option>
+      <option value="2020">2020</option>
+      <option value="2019">2019</option>
+    </select>
+    <select id="f-jenis" onchange="applyFilter()">
+      <option value="">Semua Jenis</option>
+      <option value="Tugas Akhir">Tugas Akhir</option>
+      <option value="Artikel Jurnal">Artikel Jurnal</option>
+      <option value="Laporan Magang">Laporan Magang</option>
+      <option value="Proyek Inovasi">Proyek Inovasi</option>
+      <option value="Produk Kreatif">Produk Kreatif</option>
+    </select>
+    <div class="filter-bar-sep"></div>
+    <select id="f-sort" onchange="applyFilter()">
+      <option value="terbaru">Terbaru</option>
+      <option value="terpopuler">Terpopuler</option>
+      <option value="az">A → Z</option>
+      <option value="za">Z → A</option>
+    </select>
+    <button class="btn-filter-reset" id="btn-reset-filter" onclick="resetFilter()" style="display:none;">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      Reset
+    </button>
+    <span class="filter-bar-count" id="filter-bar-count"></span>
   </div>
+
+  <!-- List -->
+  <div class="karya-container">
+    <div class="karya-compact-list" id="hasil-list"></div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pg-wrapper">
+    <div class="pg-bar" id="pg-bar"></div>
+    <div class="pg-info" id="pg-info"></div>
+  </div>
+
   <footer class="site-footer">
     <p>© 2025 DIGILAB Repository — Fakultas Vokasi, Universitas Negeri Malang</p>
   </footer>
+
 </div><!-- /page-hasil -->
 
 <!-- PAGE: DETAIL KARYA -->
@@ -1146,92 +1058,201 @@ function readUrlParams() {
   if (jenis) {
     var fj = document.getElementById('f-jenis');
     if (fj) fj.value = jenis;
-    _runSearch('', 'Jenis: <strong>' + jenis + '</strong> — ' + KARYA_DATA.filter(function(x){ return x.jenis === jenis; }).length + ' karya', jenis, '');
+    _currentQuery = '';
+    applyFilter();
+    nav('hasil');
     return;
   }
   if (q) {
     var hs = document.getElementById('hasil-search');
     if (hs) hs.value = q;
-    _runSearch(q);
+    _currentQuery = q.toLowerCase().trim();
+    applyFilter();
+    nav('hasil');
     return;
   }
   // default: tampilkan semua
-  _runSearch('');
+  _currentQuery = '';
+  applyFilter();
   nav('hasil');
 }
 
-/* ── SEARCH ── */
-function _runSearch(q, infoLabel, filterJenis, filterProdi) {
-  var hasil = KARYA_DATA.filter(function(k) {
-    var matchQ = !q || (
-      k.judul.toLowerCase().includes(q.toLowerCase()) ||
-      k.penulis.toLowerCase().includes(q.toLowerCase()) ||
-      k.prodi.toLowerCase().includes(q.toLowerCase()) ||
-      k.kata_kunci.some(function(kk){ return kk.toLowerCase().includes(q.toLowerCase()); })
-    );
-    var matchJenis = !filterJenis || k.jenis === filterJenis;
-    var matchProdi = !filterProdi || k.prodi === filterProdi;
-    return matchQ && matchJenis && matchProdi;
-  });
-  var infoEl = document.getElementById('hasil-info');
-  if (infoEl) {
-    infoEl.innerHTML = infoLabel ||
-      (q ? 'Menampilkan <strong>' + hasil.length + ' hasil</strong> untuk "' + q + '"'
-         : 'Menampilkan semua karya (' + KARYA_DATA.length + ')');
-  }
-  renderHasil(hasil, q);
-  return hasil;
+/* ── SEARCH & FILTER STATE ── */
+var _currentQuery = '';
+var _currentPage = 1;
+var _pageSize = 20;
+var _filteredData = [];
+
+function _runSearch(q, infoLabel) {
+  _currentQuery = (q || '').toLowerCase().trim();
+  _currentPage = 1;
+  var hs = document.getElementById('hasil-search');
+  if (hs && q) hs.value = q;
+  applyFilter();
 }
 
 function doSearchHasil() {
-  var q = (document.getElementById('hasil-search').value || '').trim();
-  _runSearch(q);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  var el = document.getElementById('hasil-search');
+  _currentQuery = ((el && el.value) || '').toLowerCase().trim();
+  _currentPage = 1;
+  applyFilter();
 }
 
 function applyFilter() {
-  var prodi = document.getElementById('f-prodi').value;
-  var tahun = document.getElementById('f-tahun').value;
-  var jenis = document.getElementById('f-jenis').value;
-  var pemb  = document.getElementById('f-pembimbing').value;
-  var hasil = KARYA_DATA.filter(function(k){
-    return (!prodi || k.prodi === prodi) &&
-           (!tahun || String(k.tahun) === tahun) &&
-           (!jenis || k.jenis === jenis) &&
-           (!pemb  || k.pembimbing === pemb);
+  var q     = _currentQuery;
+  var prodi = (document.getElementById('f-prodi') || {}).value || '';
+  var tahun = (document.getElementById('f-tahun') || {}).value || '';
+  var jenis = (document.getElementById('f-jenis') || {}).value || '';
+  var sort  = (document.getElementById('f-sort')  || {}).value || 'terbaru';
+
+  _filteredData = KARYA_DATA.filter(function(k) {
+    var mQ = !q ||
+      (k.judul     && k.judul.toLowerCase().includes(q)) ||
+      (k.penulis   && k.penulis.toLowerCase().includes(q)) ||
+      (k.abstrak   && k.abstrak.toLowerCase().includes(q)) ||
+      (k.kata_kunci && k.kata_kunci.join(' ').toLowerCase().includes(q));
+    var mP = !prodi || k.prodi === prodi;
+    var mT = !tahun || String(k.tahun) === tahun;
+    var mJ = !jenis || k.jenis === jenis;
+    return mQ && mP && mT && mJ;
   });
-  document.getElementById('hasil-info').innerHTML = 'Filter aktif — <strong>' + hasil.length + ' hasil</strong>';
-  renderHasil(hasil);
+
+  // Sort
+  if (sort === 'terpopuler') {
+    _filteredData.sort(function(a,b){ return (b.pembaca||0)-(a.pembaca||0); });
+  } else if (sort === 'az') {
+    _filteredData.sort(function(a,b){ return a.judul.localeCompare(b.judul,'id'); });
+  } else if (sort === 'za') {
+    _filteredData.sort(function(a,b){ return b.judul.localeCompare(a.judul,'id'); });
+  } else {
+    _filteredData.sort(function(a,b){ return (b.tahun||0)-(a.tahun||0); });
+  }
+
+  // Reset button visibility
+  var btnReset = document.getElementById('btn-reset-filter');
+  if (btnReset) btnReset.style.display = (prodi||tahun||jenis||q) ? '' : 'none';
+
+  // Count
+  var countEl = document.getElementById('filter-bar-count');
+  if (countEl) countEl.textContent = _filteredData.length + ' karya ditemukan';
+
+  renderPage(1);
+}
+
+function renderPage(page) {
+  _currentPage = page;
+  var total   = _filteredData.length;
+  var start   = (page - 1) * _pageSize;
+  var end     = Math.min(start + _pageSize, total);
+  var pageData = _filteredData.slice(start, end);
+
+  // Search info
+  var info = document.getElementById('hasil-info');
+  if (info) {
+    if (total === 0) info.textContent = '';
+    else info.textContent = 'Menampilkan ' + (start+1) + '–' + end + ' dari ' + total + ' karya';
+  }
+
+  // List
+  var list = document.getElementById('hasil-list');
+  if (!list) return;
+
+  if (pageData.length === 0) {
+    list.innerHTML = '<div class="karya-empty">' +
+      '<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" style="margin:0 auto 12px;display:block;"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>' +
+      '<div class="karya-empty-title">Karya tidak ditemukan</div>' +
+      '<div style="font-size:13px;">Coba kata kunci atau filter yang berbeda</div></div>';
+  } else {
+    var escRe = _currentQuery ? new RegExp('(' + _currentQuery.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi') : null;
+    list.innerHTML = pageData.map(function(k, i) {
+      var judul = k.judul || '';
+      if (escRe) judul = judul.replace(escRe, '<mark style="background:#fff3cd;border-radius:2px;padding:0 2px;">$1</mark>');
+      var rowNum = start + i + 1;
+      return '<div class="karya-row" onclick="openDetail('+k.id+')">' +
+        '<div class="karya-row-num">'+rowNum+'</div>' +
+        '<div class="karya-row-main">' +
+          '<div class="karya-row-judul">'+judul+'</div>' +
+          '<div class="karya-row-meta">' +
+            '<span>'+(k.penulis||'')+'</span>' +
+            '<span style="opacity:.3">•</span>' +
+            '<span>'+(k.prodi||'')+'</span>' +
+            '<span style="opacity:.3">•</span>' +
+            '<span>'+(k.tahun||'')+'</span>' +
+            '<span class="karya-row-jenis">'+(k.jenis||'')+'</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="karya-row-right">' +
+          '<div class="karya-row-views">' +
+            '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>' +
+            (k.pembaca||0) +
+          '</div>' +
+          '<button class="karya-row-btn" onclick="event.stopPropagation();openDetail('+k.id+')">Detail</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  renderPagination();
+  window.scrollTo(0,0);
+}
+
+function renderPagination() {
+  var totalPages = Math.ceil(_filteredData.length / _pageSize);
+  var bar  = document.getElementById('pg-bar');
+  var info = document.getElementById('pg-info');
+  if (!bar) return;
+  if (totalPages <= 1) {
+    bar.innerHTML = '';
+    if (info) info.textContent = '';
+    return;
+  }
+
+  var p = _currentPage;
+  var html = '';
+  html += '<button class="pg-btn" onclick="renderPage('+(p-1)+')" '+(p<=1?'disabled':'')+'>&#8249;</button>';
+
+  var pages = [];
+  if (totalPages <= 7) {
+    for (var i=1; i<=totalPages; i++) pages.push(i);
+  } else {
+    pages = [1,2];
+    if (p > 4) pages.push('...');
+    for (var i=Math.max(3,p-1); i<=Math.min(totalPages-2,p+1); i++) pages.push(i);
+    if (p < totalPages-3) pages.push('...');
+    pages.push(totalPages-1, totalPages);
+    var seen = {}; pages = pages.filter(function(x){ if(seen[x]) return false; seen[x]=1; return true; });
+  }
+
+  pages.forEach(function(pg) {
+    if (pg === '...') {
+      html += '<span style="padding:0 4px;color:var(--text-muted);font-size:13px;">…</span>';
+    } else {
+      html += '<button class="pg-btn'+(pg===p?' active':'')+'" onclick="renderPage('+pg+')">'+ pg +'</button>';
+    }
+  });
+
+  html += '<button class="pg-btn" onclick="renderPage('+(p+1)+')" '+(p>=totalPages?'disabled':'')+'>&#8250;</button>';
+  bar.innerHTML = html;
+  if (info) info.textContent = 'Halaman ' + p + ' dari ' + totalPages;
+}
+
+function resetFilter() {
+  ['f-prodi','f-tahun','f-jenis'].forEach(function(id){
+    var el = document.getElementById(id); if (el) el.value = '';
+  });
+  var sort = document.getElementById('f-sort');
+  if (sort) sort.value = 'terbaru';
+  _currentQuery = '';
+  var hs = document.getElementById('hasil-search');
+  if (hs) hs.value = '';
+  applyFilter();
 }
 
 function renderHasil(data, query) {
-  var el = document.getElementById('hasil-list');
-  if (!el) return;
-  if (!data || !data.length) {
-    el.innerHTML = '<div class="hasil-empty">' +
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>' +
-      '<p>Tidak ada karya yang ditemukan</p></div>';
-    return;
-  }
-  el.innerHTML = data.map(function(k, i){
-    var titleHtml = k.judul;
-    if (query) {
-      var re = new RegExp('(' + query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
-      titleHtml = k.judul.replace(re, '<mark style="background:var(--orange-light);color:var(--orange-dark)">$1</mark>');
-    }
-    return '<div class="hasil-item" onclick="openDetail(' + k.id + ')">' +
-      '<div class="hasil-num">' + (i+1) + '</div>' +
-      '<div class="hasil-meta">' +
-        '<h4>' + titleHtml + '</h4>' +
-        '<p>' + k.penulis + ' · ' + k.prodi + ' · ' + k.tahun + '</p>' +
-        '<div class="hasil-badges">' +
-          '<span class="badge badge-teal">' + k.jenis + '</span>' +
-          '<span class="badge badge-orange">' +
-            '<svg style="width:10px;height:10px;display:inline;vertical-align:middle;margin-right:2px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>' +
-            k.pembaca + ' pembaca</span>' +
-        '</div>' +
-      '</div></div>';
-  }).join('');
+  // Compatibility shim
+  if (query !== undefined) _currentQuery = (query||'').toLowerCase().trim();
+  if (data) _filteredData = data.slice();
+  renderPage(1);
 }
 
 /* ── DETAIL ── */

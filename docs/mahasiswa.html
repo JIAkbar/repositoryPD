@@ -23,8 +23,8 @@
 }
 [data-theme="emerald"]{--navy:#065f46;--navy-dark:#064e3b;--navy-mid:#047857;--bg:#f0fdf4;--border:#bbf7d0;--orange:#d97706;}
 [data-theme="charcoal"]{--navy:#1c1c2e;--navy-dark:#0f0f1a;--navy-mid:#2d2d44;--bg:#f1f1f5;--border:#d4d4e8;--orange:#f59e0b;}
-[data-theme="violet"]{--navy:#4c1d95;--navy-dark:#3b0764;--navy-mid:#6d28d9;--bg:#f5f3ff;--border:#ddd6fe;--orange:#f97316;}
-[data-theme="rose"]{--navy:#881337;--navy-dark:#4c0519;--navy-mid:#9f1239;--bg:#fff1f2;--border:#fecdd3;--orange:#f97316;}
+[data-theme="violet"]{--navy:#4c1d95;--navy-dark:#3b0764;--navy-mid:#6d28d9;--bg:#f5f3ff;--border:#ddd6fe;--orange:var(--orange);}
+[data-theme="rose"]{--navy:var(--navy);--navy-dark:var(--navy-dark);--navy-mid:var(--navy-mid);--bg:var(--bg);--border:var(--border);--orange:var(--orange);}
 
 @keyframes pageLoad{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text-dark);display:flex;min-height:100vh;transition:background .3s;animation:pageLoad .28s cubic-bezier(.25,.46,.45,.94) both;}
@@ -46,9 +46,31 @@ a{text-decoration:none;color:inherit;}
 .login-field input:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(9,78,88,.1);background:#fff;}
 .login-btn{width:100%;height:46px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-weight:800;font-size:15px;margin-top:4px;transition:background .15s,transform .1s,box-shadow .15s;}
 .login-btn:hover{background:var(--navy-dark);transform:translateY(-1px);box-shadow:0 4px 16px rgba(9,78,88,.3);}
-.login-error{color:#c0392b;font-size:13px;margin-top:10px;min-height:18px;font-weight:600;}
+.login-error{color:var(--red);font-size:13px;margin-top:10px;min-height:18px;font-weight:600;}
 .login-back{display:block;margin-top:18px;font-size:12px;color:var(--text-muted);text-align:center;transition:color .15s;}
 .login-back:hover{color:var(--navy);}
+/* ── REGISTER OVERLAY ── */
+.login-daftar{display:block;margin-top:14px;font-size:12.5px;text-align:center;color:var(--text-muted);}
+.login-daftar a{color:var(--navy);font-weight:700;cursor:pointer;}
+.login-daftar a:hover{text-decoration:underline;}
+.reg-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9990;align-items:center;justify-content:center;padding:20px 0;overflow-y:auto;}
+.reg-overlay.open{display:flex;}
+.reg-card{background:#fff;border-radius:20px;padding:36px 40px 28px;width:420px;max-width:95vw;box-shadow:0 20px 60px rgba(0,0,0,.25);animation:popIn .25s cubic-bezier(.34,1.56,.64,1) both;}
+@keyframes popIn{from{opacity:0;transform:scale(.92) translateY(8px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.reg-header{text-align:center;margin-bottom:22px;}
+.reg-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:18px;color:var(--text-dark);margin-bottom:4px;}
+.reg-sub{font-size:12px;color:var(--text-muted);}
+.reg-error{color:var(--red);font-size:13px;margin-top:10px;min-height:18px;font-weight:600;}
+.reg-footer{display:block;margin-top:16px;font-size:12.5px;text-align:center;color:var(--text-muted);}
+.reg-footer a{color:var(--navy);font-weight:700;cursor:pointer;}
+.reg-footer a:hover{text-decoration:underline;}
+.reg-success-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9991;align-items:center;justify-content:center;}
+.reg-success-overlay.open{display:flex;}
+.reg-success-card{background:#fff;border-radius:20px;padding:40px 36px;max-width:360px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.25);animation:popIn .25s cubic-bezier(.34,1.56,.64,1) both;}
+.reg-success-icon{width:64px;height:64px;background:#e8f5e9;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
+.reg-success-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:18px;color:var(--text-dark);margin-bottom:8px;}
+.reg-success-msg{font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:24px;}
+.reg-success-btn{width:100%;height:44px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-weight:800;font-size:14px;cursor:pointer;}
 
 /* ══ APP SHELL ══ */
 #app{display:none;flex:1;width:100%;min-height:100vh;}
@@ -251,9 +273,9 @@ tbody tr:hover{background:#faf9f6;}
 .form-textarea{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;font-size:14px;color:var(--text-dark);background:var(--bg-card);outline:none;resize:vertical;min-height:120px;transition:border-color .2s;}
 .form-textarea:focus{border-color:var(--navy);}
 .evo-form-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:24px;padding-top:20px;border-top:1px solid var(--border);}
-.field-error-msg{display:none;font-size:11.5px;color:#c0392b;font-weight:600;margin-top:4px;align-items:center;gap:4px;}
+.field-error-msg{display:none;font-size:11.5px;color:var(--red);font-weight:600;margin-top:4px;align-items:center;gap:4px;}
 .field-error-msg.show{display:flex;}
-.form-input.has-error,.form-select.has-error{border-color:#c0392b!important;background:#fff5f5!important;}
+.form-input.has-error,.form-select.has-error{border-color:var(--red)!important;background:#fff5f5!important;}
 
 /* Upload dropzone */
 .evo-upload-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;}
@@ -435,6 +457,58 @@ tbody tr:hover{background:#faf9f6;}
     <button class="login-btn" onclick="doLogin()">Masuk</button>
     <div class="login-error" id="login-err"></div>
     <a href="index.html" class="login-back">← Kembali ke beranda</a>
+    <div class="login-daftar">
+      Belum punya akun? <a onclick="openRegister()">Daftar di sini</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══ REGISTER OVERLAY ══ -->
+<div class="reg-overlay" id="reg-overlay" onclick="if(event.target===this)closeRegister()">
+  <div class="reg-card" onclick="event.stopPropagation()">
+    <div class="reg-header">
+      <div class="reg-title">Daftar Akun Mahasiswa</div>
+      <div class="reg-sub">Buat akun untuk mengunggah karya ilmiah Anda</div>
+    </div>
+    <div class="login-field">
+      <label>Nama Lengkap</label>
+      <input type="text" id="reg-nama" placeholder="Nama sesuai KTM" autocomplete="name">
+    </div>
+    <div class="login-field">
+      <label>NIM</label>
+      <input type="text" id="reg-nim" placeholder="220213XXXXXX">
+    </div>
+    <div class="login-field">
+      <label>Program Studi</label>
+      <select id="reg-prodi">
+        <option value="">— Pilih Program Studi —</option>
+      </select>
+    </div>
+    <div class="login-field">
+      <label>Email</label>
+      <input type="email" id="reg-email" placeholder="nama@students.um.ac.id" autocomplete="email">
+    </div>
+    <div class="login-field">
+      <label>Kata Sandi</label>
+      <input type="password" id="reg-pass" placeholder="Minimal 8 karakter" autocomplete="new-password">
+    </div>
+    <button class="login-btn" id="reg-btn" onclick="doRegister()">Daftar Sekarang</button>
+    <div class="reg-error" id="reg-err"></div>
+    <div class="reg-footer">
+      Sudah punya akun? <a onclick="closeRegister()">Masuk di sini</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══ REG SUCCESS MODAL ══ -->
+<div class="reg-success-overlay" id="reg-success-overlay" onclick="if(event.target===this)closeRegSuccess()">
+  <div class="reg-success-card" onclick="event.stopPropagation()">
+    <div class="reg-success-icon">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2e7d32" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+    </div>
+    <div class="reg-success-title">Pendaftaran Berhasil! 🎉</div>
+    <div class="reg-success-msg">Akun Anda telah didaftarkan dan sedang menunggu verifikasi dari admin pustakawan.<br><br>Anda akan mendapat notifikasi setelah akun disetujui.</div>
+    <button class="reg-success-btn" onclick="closeRegSuccess()">Tutup</button>
   </div>
 </div>
 
@@ -937,7 +1011,7 @@ tbody tr:hover{background:#faf9f6;}
     <p style="margin:0 0 24px;font-size:13px;color:#666;line-height:1.5;">Sesi Anda akan diakhiri dan diarahkan ke halaman utama.</p>
     <div style="display:flex;gap:10px;">
       <button onclick="closeLogoutConfirm()" style="flex:1;padding:10px 0;border-radius:999px;border:1.5px solid var(--border);background:#fff;font-size:13px;font-weight:700;cursor:pointer;color:#555;">Batal</button>
-      <button onclick="doLogout()" style="flex:1;padding:10px 0;border-radius:999px;border:none;background:#c0392b;color:#fff;font-size:13px;font-weight:700;cursor:pointer;">Ya, Keluar</button>
+      <button onclick="doLogout()" style="flex:1;padding:10px 0;border-radius:999px;border:none;background:var(--red);color:#fff;font-size:13px;font-weight:700;cursor:pointer;">Ya, Keluar</button>
     </div>
   </div>
 </div>
@@ -1203,8 +1277,8 @@ function openCatatanModal(judul, catatan) {
   Object.keys(labels).forEach(function(key) {
     if (catatan[key] && catatan[key].trim()) {
       hasCatatan = true;
-      html += '<div style="padding:12px 14px;background:#fff8f0;border:1px solid #fed7aa;border-left:3px solid #f97316;border-radius:6px;">' +
-        '<div style="font-size:.7rem;font-weight:700;color:#f97316;letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px;">' + labels[key] + '</div>' +
+      html += '<div style="padding:12px 14px;background:#fff8f0;border:1px solid #fed7aa;border-left:3px solid var(--orange);border-radius:6px;">' +
+        '<div style="font-size:.7rem;font-weight:700;color:var(--orange);letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px;">' + labels[key] + '</div>' +
         '<div style="font-size:.88rem;color:#444;line-height:1.5;">' + catatan[key] + '</div>' +
         '</div>';
     }
@@ -1223,6 +1297,102 @@ function closeCatatanModal() {
 }
 
 
+/* ── REGISTER ── */
+function openRegister() {
+  var sel = document.getElementById('reg-prodi');
+  if (sel && sel.options.length <= 1 && window.MASTER_PRODI) {
+    window.MASTER_PRODI.forEach(function(p) {
+      var opt = document.createElement('option');
+      opt.value = p; opt.textContent = p;
+      sel.appendChild(opt);
+    });
+  }
+  var ov = document.getElementById('reg-overlay');
+  if (ov) ov.classList.add('open');
+  setTimeout(function(){ var el=document.getElementById('reg-nama'); if(el) el.focus(); }, 120);
+}
+
+function closeRegister() {
+  var ov = document.getElementById('reg-overlay');
+  if (ov) ov.classList.remove('open');
+  ['reg-nama','reg-nim','reg-email','reg-pass'].forEach(function(id){
+    var el = document.getElementById(id); if (el) el.value = '';
+  });
+  var sel = document.getElementById('reg-prodi'); if (sel) sel.selectedIndex = 0;
+  var err = document.getElementById('reg-err'); if (err) err.textContent = '';
+  var btn = document.getElementById('reg-btn');
+  if (btn) { btn.disabled = false; btn.textContent = 'Daftar Sekarang'; }
+}
+
+function openRegSuccess() {
+  var ov = document.getElementById('reg-success-overlay');
+  if (ov) ov.classList.add('open');
+}
+
+function closeRegSuccess() {
+  var ov = document.getElementById('reg-success-overlay');
+  if (ov) ov.classList.remove('open');
+}
+
+async function doRegister() {
+  var nama  = (document.getElementById('reg-nama')  || {}).value || '';
+  var nim   = (document.getElementById('reg-nim')   || {}).value || '';
+  var prodi = (document.getElementById('reg-prodi') || {}).value || '';
+  var email = (document.getElementById('reg-email') || {}).value || '';
+  var pass  = (document.getElementById('reg-pass')  || {}).value || '';
+  var err   = document.getElementById('reg-err');
+  var btn   = document.getElementById('reg-btn');
+
+  nama = nama.trim(); nim = nim.trim(); email = email.trim();
+  if (err) err.textContent = '';
+
+  if (!nama)  { if (err) err.textContent = 'Nama lengkap wajib diisi.'; return; }
+  if (!nim)   { if (err) err.textContent = 'NIM wajib diisi.'; return; }
+  if (!prodi) { if (err) err.textContent = 'Pilih program studi Anda.'; return; }
+  if (!email) { if (err) err.textContent = 'Email wajib diisi.'; return; }
+  if (pass.length < 8) { if (err) err.textContent = 'Kata sandi minimal 8 karakter.'; return; }
+
+  if (btn) { btn.disabled = true; btn.textContent = 'Mendaftar...'; }
+
+  try {
+    var registered = false;
+    if (typeof _supa !== 'undefined' && _supa) {
+      var r = await _supa.auth.signUp({
+        email: email, password: pass,
+        options: { data: { nama: nama, nim: nim, prodi: prodi, role: 'mahasiswa' } }
+      });
+      if (r.error) {
+        var msg = r.error.message || '';
+        if (msg.includes('already registered') || msg.includes('already exists')) msg = 'Email sudah terdaftar. Gunakan email lain atau masuk langsung.';
+        else if (msg.includes('rate limit') || msg.includes('too many')) msg = 'Terlalu banyak percobaan. Coba lagi beberapa saat.';
+        else if (msg.includes('invalid email')) msg = 'Format email tidak valid.';
+        if (err) err.textContent = msg;
+        if (btn) { btn.disabled = false; btn.textContent = 'Daftar Sekarang'; }
+        return;
+      }
+      registered = true;
+    }
+    if (!registered) {
+      var pending = [];
+      try { pending = JSON.parse(localStorage.getItem('digilab-pending-reg') || '[]'); } catch(e){}
+      pending.push({ nama: nama, nim: nim, prodi: prodi, email: email, tgl: new Date().toISOString() });
+      localStorage.setItem('digilab-pending-reg', JSON.stringify(pending));
+    }
+    closeRegister();
+    openRegSuccess();
+  } catch(e) {
+    if (err) err.textContent = 'Terjadi kesalahan. Periksa koneksi dan coba lagi.';
+  }
+  if (btn) { btn.disabled = false; btn.textContent = 'Daftar Sekarang'; }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  ['reg-nama','reg-nim','reg-email','reg-pass'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('keydown', function(e){ if(e.key==='Enter') doRegister(); });
+  });
+});
+
 // ── INIT ──
 checkAuth();
 </script>
@@ -1235,7 +1405,7 @@ checkAuth();
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
       </div>
       <div>
-        <div style="font-size:.72rem;font-weight:700;color:#f97316;letter-spacing:.06em;text-transform:uppercase;">Catatan Revisi dari Admin</div>
+        <div style="font-size:.72rem;font-weight:700;color:var(--orange);letter-spacing:.06em;text-transform:uppercase;">Catatan Revisi dari Admin</div>
         <div id="cm-judul-karya" style="font-size:.95rem;font-weight:700;color:#1a1a3e;margin-top:2px;"></div>
       </div>
       <button onclick="closeCatatanModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;cursor:pointer;font-size:1.2rem;color:#888;line-height:1;">&#x2715;</button>
