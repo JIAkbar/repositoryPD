@@ -663,6 +663,54 @@ tbody td { padding:10px 14px; color:var(--text-mid); vertical-align:middle; }
 .link-item-evo button{border:none;background:none;cursor:pointer;color:var(--text-muted);font-size:16px;line-height:1;padding:0 2px;}
 .link-item-evo button:hover{color:#dc2626;}
 @media(max-width:768px){.form-grid-evo,.upload-grid-evo{grid-template-columns:1fr;}}
+
+/* ── FILE PREVIEW (Unggah Karya) ── */
+.upload-3col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+@media(max-width:900px){.upload-3col{grid-template-columns:1fr;}}
+.file-preview-box{margin-top:10px;border-radius:10px;overflow:hidden;background:var(--bg);border:1.5px solid var(--border);}
+.file-preview-box.hidden{display:none;}
+.preview-label{font-size:10px;font-weight:700;color:var(--text-muted);padding:5px 10px;background:var(--bg);border-bottom:1px solid var(--border);letter-spacing:.5px;text-transform:uppercase;}
+.pdf-frame{width:100%;height:300px;border:none;display:block;}
+.img-prev-img{width:100%;max-height:220px;object-fit:contain;display:block;background:#f0f0f0;}
+.yt-thumb-wrap{position:relative;aspect-ratio:16/9;background:#000;cursor:pointer;}
+.yt-thumb-wrap img{width:100%;height:100%;object-fit:cover;}
+.yt-play-btn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+.yt-play-btn svg{width:52px;height:52px;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5));}
+.yt-info{padding:7px 10px;font-size:11px;color:var(--text-muted);font-family:'Lato',sans-serif;}
+
+/* ── VK TABS (Verif Karya page) ── */
+.vk-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.vk-tab{padding:7px 16px;border-radius:99px;border:1.5px solid var(--border);background:var(--bg-card);font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;color:var(--text-mid);cursor:pointer;transition:.15s;}
+.vk-tab:hover{border-color:var(--navy);color:var(--navy);}
+.vk-tab.active{background:var(--navy);border-color:var(--navy);color:#fff;}
+
+/* ── VA TABS (Verif Akun page) ── */
+.va-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.va-tab{padding:7px 16px;border-radius:99px;border:1.5px solid var(--border);background:var(--bg-card);font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;color:var(--text-mid);cursor:pointer;transition:.15s;}
+.va-tab:hover{border-color:var(--navy);color:var(--navy);}
+.va-tab.active{background:var(--navy);border-color:var(--navy);color:#fff;}
+
+/* ── KELOLA DETAIL MODAL ── */
+.kelola-dm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:9999;opacity:0;pointer-events:none;transition:.2s;}
+.kelola-dm-overlay.open{opacity:1;pointer-events:all;}
+.kelola-dm-card{background:var(--bg-card);border-radius:16px;padding:28px;width:min(640px,95vw);max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2);transform:translateY(16px) scale(.97);transition:.22s cubic-bezier(.34,1.56,.64,1);}
+.kelola-dm-overlay.open .kelola-dm-card{transform:none;}
+.kdm-title{font-family:'Nunito',sans-serif;font-size:17px;font-weight:800;color:var(--text-dark);margin:0 0 3px;}
+.kdm-sub{font-size:12px;color:var(--text-muted);font-family:'Lato',sans-serif;margin-bottom:16px;}
+.kdm-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.kdm-field{background:var(--bg);border-radius:8px;padding:10px 12px;}
+.kdm-field label{font-size:10px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:3px;}
+.kdm-field span{font-size:13px;font-weight:600;color:var(--text-dark);}
+.kdm-full{grid-column:1/-1;}
+.kdm-abstrak span{font-size:12px;font-weight:400;line-height:1.65;}
+.kdm-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:18px;padding-top:14px;border-top:1px solid var(--border);}
+.btn-kdm-close{padding:9px 20px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg-card);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--text-mid);cursor:pointer;}
+.btn-kdm-close:hover{background:var(--bg);}
+.btn-kdm-pdf{padding:9px 20px;border-radius:8px;border:none;background:#e0e7ff;color:var(--navy);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;}
+
+/* ── PRIMARY DOWNLOAD BUTTON ── */
+.btn-toolbar.btn-primary-dl{background:var(--navy);color:#fff;border-color:var(--navy);}
+.btn-toolbar.btn-primary-dl:hover{opacity:.88;}
 </style>
 </head>
 <body>
@@ -916,24 +964,48 @@ tbody td { padding:10px 14px; color:var(--text-mid); vertical-align:middle; }
           <div class="fg-evo"><label class="form-label-evo">No. Panggil</label><input class="form-input-evo" type="text" id="adm-nopanggil-evo" placeholder="Contoh: KAR/PD/TA/RAN/2020"></div>
           <div class="fg-evo full"><label class="form-label-evo">Abstrak</label><textarea class="form-textarea-evo" id="adm-abstrak-evo" placeholder="Tuliskan abstrak karya..."></textarea></div>
           <div class="fg-evo full">
-            <div class="upload-grid-evo">
+            <div class="upload-3col">
+              <!-- DOKUMEN PDF -->
               <div>
-                <label class="form-label-evo" style="margin-bottom:8px;display:block;">Dokumen</label>
+                <label class="form-label-evo" style="margin-bottom:8px;display:block;">Dokumen PDF</label>
                 <div class="upload-area-evo" onclick="document.getElementById('evo-file-doc').click()">
                   <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>
-                  <span class="upload-label-evo">Klik untuk pilih file</span>
+                  <span class="upload-label-evo">Klik untuk pilih .pdf</span>
                 </div>
-                <input type="file" id="evo-file-doc" accept=".pdf" style="display:none" onchange="showFileNameEvo(this,'evo-doc-name')">
+                <input type="file" id="evo-file-doc" accept=".pdf" style="display:none" onchange="showPdfPreview(this)">
                 <div class="upload-note-evo" id="evo-doc-name">Format file: .pdf</div>
-              </div>
-              <div>
-                <label class="form-label-evo" style="margin-bottom:8px;display:block;">Foto / Video</label>
-                <div class="upload-area-evo" onclick="document.getElementById('evo-file-media').click()">
-                  <svg viewBox="0 0 24 24"><path d="M21 3H3C2 3 1 4 1 5v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1-2-2-2-2zm-1 16H4V5h16v14zM9 10l4 5 3-3.5 4 4.5H4l5-6z"/></svg>
-                  <span class="upload-label-evo">Klik untuk pilih file</span>
+                <div class="file-preview-box hidden" id="pdf-preview-box">
+                  <div class="preview-label">Preview PDF</div>
+                  <iframe class="pdf-frame" id="pdf-frame" src="about:blank"></iframe>
                 </div>
-                <input type="file" id="evo-file-media" accept=".png,.jpg,.jpeg,.mp4,.mp3" style="display:none" onchange="showFileNameEvo(this,'evo-media-name')">
-                <div class="upload-note-evo" id="evo-media-name">Format file: .png / .jpg / .jpeg / .mp4 / .mp3</div>
+              </div>
+              <!-- FOTO / GAMBAR -->
+              <div>
+                <label class="form-label-evo" style="margin-bottom:8px;display:block;">Foto / Gambar</label>
+                <div class="upload-area-evo" onclick="document.getElementById('evo-file-foto').click()">
+                  <svg viewBox="0 0 24 24"><path d="M21 3H3C2 3 1 4 1 5v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1-2-2-2-2zm-1 16H4V5h16v14zM9 10l4 5 3-3.5 4 4.5H4l5-6z"/></svg>
+                  <span class="upload-label-evo">Klik untuk pilih foto</span>
+                </div>
+                <input type="file" id="evo-file-foto" accept=".png,.jpg,.jpeg,.webp" style="display:none" onchange="showImgPreview(this)">
+                <div class="upload-note-evo" id="evo-foto-name">Format: .png / .jpg / .jpeg</div>
+                <div class="file-preview-box hidden" id="img-preview-box">
+                  <div class="preview-label">Preview Foto</div>
+                  <img class="img-prev-img" id="img-prev-img" src="" alt="preview">
+                </div>
+              </div>
+              <!-- VIDEO YOUTUBE -->
+              <div>
+                <label class="form-label-evo" style="margin-bottom:8px;display:block;">Video YouTube</label>
+                <input type="url" class="form-input-evo" id="evo-yt-url" placeholder="https://youtu.be/..." oninput="showYtPreview(this.value)" style="margin-bottom:8px;">
+                <div class="upload-note-evo">Tempel link YouTube — thumbnail otomatis tampil</div>
+                <div class="file-preview-box hidden" id="yt-preview-box">
+                  <div class="preview-label">Preview Video</div>
+                  <div class="yt-thumb-wrap" id="yt-thumb-wrap" onclick="openYtVideo()">
+                    <img id="yt-thumb-img" src="" alt="YouTube thumbnail">
+                    <div class="yt-play-btn"><svg viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.5 7.7a8.5 8.5 0 0 0-6-6C56.1 0 34 0 34 0S11.9 0 7.5 1.7a8.5 8.5 0 0 0-6 6C0 12.1 0 24 0 24s0 11.9 1.5 16.3a8.5 8.5 0 0 0 6 6C11.9 48 34 48 34 48s22.1 0 26.5-1.7a8.5 8.5 0 0 0 6-6C68 35.9 68 24 68 24s0-11.9-1.5-16.3z" fill="red"/><path d="M27 34l18-10-18-10z" fill="white"/></svg></div>
+                  </div>
+                  <div class="yt-info" id="yt-info">Klik thumbnail untuk buka di YouTube</div>
+                </div>
               </div>
             </div>
           </div>
@@ -960,10 +1032,16 @@ tbody td { padding:10px 14px; color:var(--text-mid); vertical-align:middle; }
         </div>
       </div>
       <div class="chip-row">
-        <div class="chip-stat"><div class="chip-dot" style="background:var(--yellow)"></div>Menunggu: <strong id="ck-pending">3</strong></div>
-        <div class="chip-stat"><div class="chip-dot" style="background:var(--green)"></div>Disetujui: <strong>12</strong></div>
-        <div class="chip-stat"><div class="chip-dot" style="background:var(--red)"></div>Ditolak: <strong>2</strong></div>
-        <div class="chip-stat"><div class="chip-dot" style="background:#7c3aed"></div>Revisi: <strong>1</strong></div>
+        <div class="chip-stat"><div class="chip-dot" style="background:var(--yellow)"></div>Menunggu: <strong id="ck-pending">0</strong></div>
+        <div class="chip-stat"><div class="chip-dot" style="background:var(--green)"></div>Disetujui: <strong id="ck-disetujui">0</strong></div>
+        <div class="chip-stat"><div class="chip-dot" style="background:var(--red)"></div>Ditolak: <strong id="ck-ditolak">0</strong></div>
+        <div class="chip-stat"><div class="chip-dot" style="background:#7c3aed"></div>Revisi: <strong id="ck-revisi">0</strong></div>
+      </div>
+      <div class="vk-tabs" id="vk-tabs">
+        <button class="vk-tab active" onclick="setVkTab(this,'')">Semua</button>
+        <button class="vk-tab" onclick="setVkTab(this,'pending')">⏳ Menunggu</button>
+        <button class="vk-tab" onclick="setVkTab(this,'revisi')">✎ Catatan Revisi</button>
+        <button class="vk-tab" onclick="setVkTab(this,'verified')">✓ Sudah Diverifikasi</button>
       </div>
       <div class="toolbar">
         <div class="search-wrap-rel">
@@ -977,9 +1055,9 @@ tbody td { padding:10px 14px; color:var(--text-mid); vertical-align:middle; }
           <option value="ditolak">Ditolak</option>
           <option value="revisi">Revisi</option>
         </select>
-        <button class="btn-toolbar outline">
+        <button class="btn-toolbar btn-primary-dl" onclick="unduhRekapanKarya()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Unduh Rekapan
+          Unduh CSV
         </button>
       </div>
       <div class="table-card">
@@ -1001,9 +1079,15 @@ tbody td { padding:10px 14px; color:var(--text-mid); vertical-align:middle; }
         </div>
       </div>
       <div class="chip-row">
-        <div class="chip-stat"><div class="chip-dot" style="background:var(--yellow)"></div>Menunggu: <strong id="ca-pending">3</strong></div>
-        <div class="chip-stat"><div class="chip-dot" style="background:var(--green)"></div>Disetujui: <strong>1</strong></div>
-        <div class="chip-stat"><div class="chip-dot" style="background:var(--red)"></div>Ditolak: <strong>1</strong></div>
+        <div class="chip-stat"><div class="chip-dot" style="background:var(--yellow)"></div>Menunggu: <strong id="ca-pending">0</strong></div>
+        <div class="chip-stat"><div class="chip-dot" style="background:var(--green)"></div>Disetujui: <strong id="ca-disetujui">0</strong></div>
+        <div class="chip-stat"><div class="chip-dot" style="background:var(--red)"></div>Ditolak: <strong id="ca-ditolak">0</strong></div>
+      </div>
+      <div class="va-tabs" id="va-tabs">
+        <button class="va-tab active" onclick="setVaTab(this,'')">Semua</button>
+        <button class="va-tab" onclick="setVaTab(this,'pending')">⏳ Menunggu</button>
+        <button class="va-tab" onclick="setVaTab(this,'disetujui')">✓ Disetujui</button>
+        <button class="va-tab" onclick="setVaTab(this,'ditolak')">✗ Ditolak</button>
       </div>
       <div class="toolbar">
         <div class="search-wrap-rel">
@@ -1016,9 +1100,9 @@ tbody td { padding:10px 14px; color:var(--text-mid); vertical-align:middle; }
           <option value="disetujui">Disetujui</option>
           <option value="ditolak">Ditolak</option>
         </select>
-        <button class="btn-toolbar outline">
+        <button class="btn-toolbar btn-primary-dl" onclick="unduhRekapanAkun()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Unduh Rekapan
+          Unduh CSV
         </button>
       </div>
       <div class="table-card">
@@ -1042,8 +1126,21 @@ tbody td { padding:10px 14px; color:var(--text-mid); vertical-align:middle; }
       <div class="toolbar">
         <div class="search-wrap-rel" style="flex:1">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input class="toolbar-search" placeholder="Cari judul, penulis, prodi...">
+          <input class="toolbar-search" id="kelola-search" placeholder="Cari judul, penulis, prodi..." oninput="filterKelola()">
         </div>
+        <select id="kelola-jenis" onchange="filterKelola()">
+          <option value="">Semua Jenis</option>
+          <option value="Tugas Akhir">Tugas Akhir</option>
+          <option value="Artikel Jurnal">Artikel Jurnal</option>
+          <option value="Laporan Magang">Laporan Magang</option>
+          <option value="Proyek Inovasi">Proyek Inovasi</option>
+          <option value="Produk Kreatif">Produk Kreatif</option>
+        </select>
+        <select id="kelola-tahun" onchange="filterKelola()">
+          <option value="">Semua Tahun</option>
+          <option>2026</option><option>2025</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option><option>2020</option>
+        </select>
+      </div>
         <select><option>Semua Jenis</option><option>Tugas Akhir</option><option>Artikel Jurnal</option><option>Laporan Magang</option><option>Proyek Inovasi</option></select>
         <select><option>Semua Tahun</option><option>2024</option><option>2023</option><option>2022</option></select>
       </div>
@@ -1267,6 +1364,7 @@ function navAdmin(page) {
   }
   if (page === 'verif-akun') { loadAkunData(); }
   if (page === 'unggah') { renderFormDropdownsEvo(); }
+  if (page === 'kelola') { renderKelola(); }
   if (page === 'peng-dosen') { renderDosenTableEvo(''); var sp = document.getElementById('sub-peng'); var ap = document.getElementById('arrow-peng'); if(sp) sp.classList.add('open'); if(ap) ap.classList.add('open'); var sd = document.getElementById('sub-peng-dosen'); if(sd) sd.classList.add('active'); }
   if (page === 'peng-prodi') { renderProdiTableEvo(''); var sp = document.getElementById('sub-peng'); var ap = document.getElementById('arrow-peng'); if(sp) sp.classList.add('open'); if(ap) ap.classList.add('open'); var sp2 = document.getElementById('sub-peng-prodi'); if(sp2) sp2.classList.add('active'); }
   // auto-close sidebar on mobile
@@ -1284,7 +1382,9 @@ function toggleSidebar() {
 }
 
 /* ── VERIFIKASI KARYA ── */
-var currentVerifFilter = 'pending'; // default sub-filter
+var currentVerifFilter = ''; // default: show all
+var _vaTabFilter = ''; // verif-akun tab filter
+var _kelolaData = []; // cached kelola data
 
 function toggleVerifMenu() {
   var sub = document.getElementById('sub-verif');
@@ -1328,6 +1428,7 @@ function renderKarya(data) {
 }
 
 function filterKarya() {
+  updateKaryaCounts();
   var q = (document.getElementById('vk-search').value || '').toLowerCase();
   var st = document.getElementById('vk-filter') ? document.getElementById('vk-filter').value : '';
   var filtered = DUMMY_KARYA.filter(function(k){
@@ -1340,17 +1441,15 @@ function filterKarya() {
     return matchSearch && matchDropdown && matchSub;
   });
   renderKarya(filtered);
+  syncVkTabs();
 }
 
 function aksiKarya(id, action) {
   var k = DUMMY_KARYA.find(function(x){ return x.id === id; });
   if (k) { k.status = action; }
-  var pendingCount = DUMMY_KARYA.filter(function(x){ return x.status === 'pending'; }).length;
-  document.getElementById('badge-karya').textContent = pendingCount;
-  document.getElementById('ds-pending').textContent = pendingCount;
-  document.getElementById('ck-pending').textContent = pendingCount;
+  updateKaryaCounts();
   filterKarya();
-  showToast({ 'disetujui': 'Karya disetujui', 'ditolak': 'Karya ditolak', 'revisi': 'Dikembalikan untuk revisi' }[action] || 'Aksi berhasil');
+  showToast({ 'disetujui': 'Karya disetujui ✓', 'ditolak': 'Karya ditolak ✗', 'revisi': 'Dikembalikan untuk revisi ✎' }[action] || 'Aksi berhasil');
 }
 
 
@@ -1465,13 +1564,16 @@ function renderAkun(data) {
 }
 
 function filterAkun() {
+  updateAkunCounts();
   var q = (document.getElementById('va-search').value || '').toLowerCase();
-  var st = document.getElementById('va-filter').value;
-  var data = DUMMY_AKUN.filter(function(a){
-    return (!q || a.nama.toLowerCase().includes(q) || (a.nim||'').includes(q)) &&
-           (!st || a.status === st);
+  var st = document.getElementById('va-filter') ? document.getElementById('va-filter').value : '';
+  var filtered = DUMMY_AKUN.filter(function(a){
+    var matchSearch = !q || (a.nama||'').toLowerCase().includes(q) || (a.nim||'').toLowerCase().includes(q);
+    var matchDropdown = !st || a.status === st;
+    var matchTab = !_vaTabFilter || a.status === _vaTabFilter;
+    return matchSearch && matchDropdown && matchTab;
   });
-  renderAkun(data);
+  renderAkun(filtered);
 }
 
 async function loadAkunData() {
@@ -1499,6 +1601,7 @@ async function loadAkunData() {
       accounts.forEach(function(a) { DUMMY_AKUN.push(a); });
     }
   } catch(e) { /* gunakan DUMMY_AKUN */ }
+  updateAkunCounts();
   filterAkun();
 }
 
@@ -1539,21 +1642,36 @@ function _aksiAkunLocal(userId, nim, action) {
   var caPending = document.getElementById('ca-pending');
   if (badge) badge.textContent = pendingCount;
   if (caPending) caPending.textContent = pendingCount;
+  updateAkunCounts();
   filterAkun();
 }
 
 /* ── KELOLA ── */
-function renderKelola() {
+async function renderKelola() {
+  var data = DUMMY_KARYA.slice();
+  if (typeof ApiService !== 'undefined') {
+    try {
+      var res = await ApiService.karya.getAll({});
+      var arr = Array.isArray(res) ? res : (res && res.ok && Array.isArray(res.data)) ? res.data : null;
+      if (arr && arr.length) data = arr;
+    } catch(e) {}
+  }
+  _kelolaData = data;
+  renderKelolaTbody(data);
+}
+
+function renderKelolaTbody(data) {
   var tbody = document.getElementById('kelola-tbody');
-  tbody.innerHTML = DUMMY_KARYA.map(function(k){
+  if (!data || !data.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:28px;color:var(--text-muted)">Tidak ada data karya</td></tr>'; return; }
+  tbody.innerHTML = data.map(function(k){
     return '<tr>' +
-      '<td class="td-muted" style="font-size:10px">' + k.nopanggil + '</td>' +
+      '<td class="td-muted" style="font-size:10px">' + (k.nopanggil||'-') + '</td>' +
       '<td class="td-bold">' + k.judul + '</td>' +
-      '<td>' + k.mhs + '</td>' +
-      '<td class="td-muted">' + k.prodi.split(' ')[0] + ' ' + k.prodi.split(' ')[1] + '</td>' +
-      '<td class="td-muted">2024</td>' +
-      '<td style="font-weight:700;color:var(--navy)">—</td>' +
-      '<td><div class="td-actions"><button class="btn-detail-sm" onclick="showToast(\'Membuka detail\')">Detail</button></div></td>' +
+      '<td>' + (k.mhs||k.penulis||'-') + '</td>' +
+      '<td class="td-muted">' + (k.jenis||'-') + '</td>' +
+      '<td class="td-muted">' + (k.tahun||'-') + '</td>' +
+      '<td style="font-weight:700;color:var(--navy)">' + (k.pembaca||'—') + '</td>' +
+      '<td><div class="td-actions"><button class="btn-detail-sm" onclick="openDetailKelola(' + k.id + ')">Detail</button></div></td>' +
     '</tr>';
   }).join('');
 }
@@ -1973,6 +2091,177 @@ function deleteProdiEvo(idx){
     if(typeof showToast==='function') showToast('Karya berhasil diunggah!');
     resetFormEvo();
   }
+
+/* ── KELOLA FILTER ── */
+function filterKelola() {
+  var q = (document.getElementById('kelola-search').value || '').toLowerCase();
+  var jenis = (document.getElementById('kelola-jenis') || {}).value || '';
+  var tahun = (document.getElementById('kelola-tahun') || {}).value || '';
+  var data = _kelolaData.length ? _kelolaData : DUMMY_KARYA;
+  var filtered = data.filter(function(k) {
+    var matchQ = !q || (k.judul||'').toLowerCase().includes(q) ||
+                 (k.mhs||k.penulis||'').toLowerCase().includes(q) ||
+                 (k.prodi||'').toLowerCase().includes(q);
+    var matchJenis = !jenis || k.jenis === jenis;
+    var matchTahun = !tahun || String(k.tahun) === tahun;
+    return matchQ && matchJenis && matchTahun;
+  });
+  renderKelolaTbody(filtered);
+}
+
+/* ── KELOLA DETAIL ── */
+var _currentKelolId = null;
+function openDetailKelola(id) {
+  var k = (_kelolaData.length ? _kelolaData : DUMMY_KARYA).find(function(x){ return x.id === id; });
+  if (!k) return;
+  _currentKelolId = id;
+  document.getElementById('kdm-judul').textContent = k.judul || '-';
+  document.getElementById('kdm-nopanggil').textContent = 'No. Panggil: ' + (k.nopanggil || '-');
+  document.getElementById('kdm-mhs').textContent = k.mhs || k.penulis || '-';
+  document.getElementById('kdm-nim').textContent = k.nim || '-';
+  document.getElementById('kdm-prodi').textContent = k.prodi || '-';
+  document.getElementById('kdm-jenis').textContent = k.jenis || '-';
+  document.getElementById('kdm-tahun').textContent = k.tahun || '-';
+  document.getElementById('kdm-dosen').textContent = k.dosen || '-';
+  document.getElementById('kdm-bahasa').textContent = k.bahasa || 'Indonesia';
+  document.getElementById('kdm-status').innerHTML = statusBadge(k.status);
+  document.getElementById('kdm-abstrak').textContent = k.abstrak || 'Abstrak belum tersedia.';
+  var pdfLink = document.getElementById('kdm-pdf-link');
+  if (k.link) {
+    pdfLink.href = k.link;
+    pdfLink.style.display = 'inline-block';
+  } else {
+    pdfLink.style.display = 'none';
+  }
+  var overlay = document.getElementById('kelola-dm-overlay');
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeDetailKelola() {
+  var overlay = document.getElementById('kelola-dm-overlay');
+  if (overlay) overlay.classList.remove('open');
+  document.body.style.overflow = '';
+  _currentKelolId = null;
+}
+
+/* ── VK TABS ── */
+function setVkTab(btn, val) {
+  document.querySelectorAll('.vk-tab').forEach(function(t){ t.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  currentVerifFilter = val;
+  ['pending','revisi','verified'].forEach(function(f) {
+    var el = document.getElementById('sub-' + f);
+    if (el) el.classList.toggle('active', f === val);
+  });
+  filterKarya();
+}
+function syncVkTabs() {
+  document.querySelectorAll('.vk-tab').forEach(function(t) {
+    var m = (t.getAttribute('onclick') || '').match(/setVkTab\(this,'([^']*)'\)/);
+    if (m) t.classList.toggle('active', m[1] === currentVerifFilter);
+  });
+}
+
+/* ── VA TABS ── */
+function setVaTab(btn, val) {
+  _vaTabFilter = val;
+  document.querySelectorAll('.va-tab').forEach(function(t){ t.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  filterAkun();
+}
+
+/* ── CHIP COUNTS ── */
+function updateKaryaCounts() {
+  var counts = { pending:0, disetujui:0, ditolak:0, revisi:0 };
+  DUMMY_KARYA.forEach(function(k){ if(counts[k.status]!==undefined) counts[k.status]++; });
+  var ckP = document.getElementById('ck-pending'); if(ckP) ckP.textContent = counts.pending;
+  var ckD = document.getElementById('ck-disetujui'); if(ckD) ckD.textContent = counts.disetujui;
+  var ckT = document.getElementById('ck-ditolak'); if(ckT) ckT.textContent = counts.ditolak;
+  var ckR = document.getElementById('ck-revisi'); if(ckR) ckR.textContent = counts.revisi;
+  var bk = document.getElementById('badge-karya'); if(bk) bk.textContent = counts.pending || '';
+  var dsP = document.getElementById('ds-pending'); if(dsP) dsP.textContent = counts.pending;
+}
+function updateAkunCounts() {
+  var counts = { pending:0, disetujui:0, ditolak:0 };
+  DUMMY_AKUN.forEach(function(a){ if(counts[a.status]!==undefined) counts[a.status]++; });
+  var caP = document.getElementById('ca-pending'); if(caP) caP.textContent = counts.pending;
+  var caD = document.getElementById('ca-disetujui'); if(caD) caD.textContent = counts.disetujui;
+  var caT = document.getElementById('ca-ditolak'); if(caT) caT.textContent = counts.ditolak;
+  var ba = document.getElementById('badge-akun'); if(ba) ba.textContent = counts.pending || '';
+}
+
+/* ── PDF PREVIEW ── */
+function showPdfPreview(input) {
+  var name = input.files[0] ? input.files[0].name : '';
+  document.getElementById('evo-doc-name').textContent = name || 'Format file: .pdf';
+  var box = document.getElementById('pdf-preview-box');
+  var frame = document.getElementById('pdf-frame');
+  if (!input.files[0]) { box.classList.add('hidden'); return; }
+  var url = URL.createObjectURL(input.files[0]);
+  frame.src = url;
+  box.classList.remove('hidden');
+}
+
+/* ── IMAGE PREVIEW ── */
+function showImgPreview(input) {
+  var name = input.files[0] ? input.files[0].name : '';
+  document.getElementById('evo-foto-name').textContent = name || 'Format: .png / .jpg / .jpeg';
+  var box = document.getElementById('img-preview-box');
+  var img = document.getElementById('img-prev-img');
+  if (!input.files[0]) { box.classList.add('hidden'); return; }
+  var reader = new FileReader();
+  reader.onload = function(e) { img.src = e.target.result; box.classList.remove('hidden'); };
+  reader.readAsDataURL(input.files[0]);
+}
+
+/* ── YOUTUBE PREVIEW ── */
+function parseYoutubeId(url) {
+  if (!url) return null;
+  var m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
+var _ytCurrentId = null;
+function showYtPreview(url) {
+  var id = parseYoutubeId(url);
+  var box = document.getElementById('yt-preview-box');
+  if (!id) { box.classList.add('hidden'); _ytCurrentId = null; return; }
+  _ytCurrentId = id;
+  document.getElementById('yt-thumb-img').src = 'https://img.youtube.com/vi/' + id + '/hqdefault.jpg';
+  document.getElementById('yt-info').textContent = 'Klik thumbnail untuk buka di YouTube ↗';
+  box.classList.remove('hidden');
+}
+function openYtVideo() {
+  if (_ytCurrentId) window.open('https://youtu.be/' + _ytCurrentId, '_blank'); // nosweep
+}
+
+/* ── UNDUH CSV ── */
+function _csvDownload(rows, filename) {
+  var csv = rows.map(function(r){ return r.map(function(c){ return '"'+String(c||'').replace(/"/g,'""')+'"'; }).join(','); }).join('\n');
+  var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+}
+function unduhRekapanKarya() {
+  var rows = [['No. Panggil','Judul','Mahasiswa','NIM','Prodi','Jenis','Tahun','Status','Tanggal']];
+  DUMMY_KARYA.forEach(function(k){
+    rows.push([k.nopanggil||'-',k.judul,k.mhs||'-',k.nim||'-',k.prodi||'-',k.jenis||'-',k.tahun||'-',k.status,k.tgl||'-']);
+  });
+  _csvDownload(rows, 'rekapan-karya-' + new Date().toISOString().slice(0,10) + '.csv');
+  showToast('CSV berhasil diunduh ↓');
+}
+function unduhRekapanAkun() {
+  var rows = [['NIM','Nama','Program Studi','Tanggal Daftar','Status']];
+  DUMMY_AKUN.forEach(function(a){
+    rows.push([a.nim||'-',a.nama||'-',a.prodi||'-',a.tgl||'-',a.status]);
+  });
+  _csvDownload(rows, 'rekapan-akun-' + new Date().toISOString().slice(0,10) + '.csv');
+  showToast('CSV berhasil diunduh ↓');
+}
+
+/* ── RESET FORM EVO marker ── */
+var _origResetFormEvo;
 </script>
 
 
@@ -2079,4 +2368,44 @@ function deleteProdiEvo(idx){
     </div>
   </div>
 </div>
-<!-- ===== Delete Confirm Modal (Evo
+<!-- KELOLA DETAIL MODAL -->
+<div class="kelola-dm-overlay" id="kelola-dm-overlay" onclick="if(event.target===this)closeDetailKelola()">
+  <div class="kelola-dm-card">
+    <div class="kdm-title" id="kdm-judul">—</div>
+    <div class="kdm-sub" id="kdm-nopanggil">No. Panggil: —</div>
+    <div class="kdm-grid">
+      <div class="kdm-field"><label>Penulis / Mahasiswa</label><span id="kdm-mhs">—</span></div>
+      <div class="kdm-field"><label>NIM</label><span id="kdm-nim">—</span></div>
+      <div class="kdm-field"><label>Program Studi</label><span id="kdm-prodi">—</span></div>
+      <div class="kdm-field"><label>Jenis Karya</label><span id="kdm-jenis">—</span></div>
+      <div class="kdm-field"><label>Tahun</label><span id="kdm-tahun">—</span></div>
+      <div class="kdm-field"><label>Dosen Pembimbing</label><span id="kdm-dosen">—</span></div>
+      <div class="kdm-field"><label>Bahasa</label><span id="kdm-bahasa">—</span></div>
+      <div class="kdm-field"><label>Status</label><span id="kdm-status">—</span></div>
+      <div class="kdm-field kdm-full kdm-abstrak"><label>Abstrak</label><span id="kdm-abstrak">—</span></div>
+    </div>
+    <div class="kdm-actions">
+      <button class="btn-kdm-close" onclick="closeDetailKelola()">Tutup</button>
+      <a class="btn-kdm-pdf" id="kdm-pdf-link" href="#" target="_blank" style="display:none">📄 Lihat PDF</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Delete Confirm Modal (Admin classic) ===== -->
+<div class="dm-overlay" id="dm-overlay-adm">
+  <div class="dm-box">
+    <div class="dm-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+      </svg>
+    </div>
+    <p class="dm-title" id="dm-title-adm">Hapus Item</p>
+    <p class="dm-msg" id="dm-msg-adm">Yakin ingin menghapus item ini?</p>
+    <div class="dm-actions">
+      <button class="dm-btn-cancel" onclick="closeDmAdm()">Batal</button>
+      <button class="dm-btn-del" id="dm-confirm-btn-adm">Hapus</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>

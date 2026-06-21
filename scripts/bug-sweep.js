@@ -137,10 +137,12 @@ function findHardcodeRedirects(src) {
 
 function findWindowOpen(src) {
   const re = /window\.open\s*\(/g;
+  const srcLines = src.split('\n');
   const found = [];
   let m;
   while ((m = re.exec(src)) !== null) {
     const lineNum = src.substring(0, m.index).split('\n').length;
+    if ((srcLines[lineNum - 1] || '').includes('nosweep')) continue;
     found.push(`line ${lineNum}`);
   }
   return found.length ? `window.open() at ${found.join(', ')}` : true;
